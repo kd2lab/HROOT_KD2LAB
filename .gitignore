@@ -1,0 +1,10 @@
+.bundle
+db/*.sqlite3
+.gitignore~
+log/*.log
+tmp/
+.DS_Store
+.rvmrc
+.sass-cache/*
+public/stylesheets/compiled/*
+db/schema.rb
