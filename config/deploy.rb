@@ -1,7 +1,7 @@
 # capistrano integration
 $:.unshift(File.expand_path('./lib', ENV['rvm_path']))
 require "rvm/capistrano"
-set :rvm_ruby_string, "1.9.2@boilerplate"
+set :rvm_ruby_string, "1.9.2@hroot"
 set :use_sudo, false
 
 set :bundle_dir, ""
