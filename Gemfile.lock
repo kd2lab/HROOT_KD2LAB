@@ -1,3 +1,10 @@
+GIT
+  remote: git://github.com/100hz/rails-settings.git
+  revision: a85f9121f503d3ae9761bae651d52b2fa94ae7cc
+  specs:
+    rails-settings (0.1.1)
+      rails (>= 3.0.0)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -132,6 +139,7 @@ DEPENDENCIES
   mocha
   mysql2 (~> 0.2.6)
   rails (= 3.0.9)
+  rails-settings!
   ruby-debug19
   shoulda
   unicorn

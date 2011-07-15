@@ -19,6 +19,7 @@ gem 'ruby-debug19', :require => 'ruby-debug'
 gem "compass", ">= 0.11.3"
 gem 'authlogic'
 gem 'haml'
+gem "rails-settings", :git => "git://github.com/100hz/rails-settings.git"
 
 # Bundle the extra gems:
 # gem 'bj'
