@@ -12,14 +12,16 @@
       = stylesheet_link_tag 'compiled/ie.css', :media => 'screen, projection'
     
   %body
-    .container.showgrid
+    .container
       .span-24
-        %h1 Hroot
-
-        = pluralize User.logged_in.count, "user"
-        currently logged in
-        %br
-        %br
+        .logo
+          .logo-uni
+            != image_tag("logo-uni-hh.png")
+          .logo-fakultaet
+            != image_tag("logo_fakultaet.jpg")
+          
+        .header-line hroot - Rekrutierungssystem für ökonomische Experimente
+        
         
         - if !current_user  
           = link_to "Register", new_user_path
@@ -39,8 +41,6 @@
         
       .span-4
         left
-      .span-16
+      .span-20.last
         = yield
-      .span-4.last
-        right
         
