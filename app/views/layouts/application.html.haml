@@ -20,27 +20,42 @@
           .logo-fakultaet
             != image_tag("logo_fakultaet.jpg")
           
-        .header-line hroot - Rekrutierungssystem für ökonomische Experimente
-        
-        
-        - if !current_user  
-          = link_to "Register", new_user_path
-          |
-          = link_to "Log In", login_path
-          |
-          = link_to "Forgot password", new_password_reset_path
-          #new_password_reset_path 
-        - else
-          = link_to "My Account", account_path
-          |
-          = link_to "Logout", logout_path
+        .header-line
+          hroot - Rekrutierungssystem für ökonomische Experimente
+          .header-menu
+            - if !current_user  
+              = link_to "Anmelden", new_user_path
+              |
+              = link_to "Login", login_path
+              
+             
+            - else
+              = link_to "My Account", account_path
+              |
+              = link_to "Logout", logout_path
           
         %p= flash[:notice]
         
         %hr
         
       .span-4
-        left
+        linker Bereich... 
+        %br
+        Menü 1 
+        %br
+        Menü 2
+        %br
+        %br
+        %br
+        %br
+        %br
+        %br
+        %br
+        %br
+        %br
       .span-20.last
         = yield
+      .span-24
+        %hr
+        fusszeile...
         

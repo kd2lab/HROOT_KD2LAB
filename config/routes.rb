@@ -1,4 +1,8 @@
 Hroot::Application.routes.draw do
+  get "admin/index"
+  get "admin/options"
+  get "admin/users"
+
   resources :users, :only => [:new, :create]
   resources :user_sessions, :only => [:create]
   resources :password_resets
@@ -9,7 +13,7 @@ Hroot::Application.routes.draw do
   match 'login' => 'user_sessions#new', :as => :login
   match 'logout' => 'user_sessions#destroy', :as => :logout
   
-  root :to => "user_sessions#new"
+  root :to => "home#index"
   
   #map.resource :account, :controller => "users"
   #map.resources :password_resets
