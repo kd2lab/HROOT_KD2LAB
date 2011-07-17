@@ -21,7 +21,7 @@ server "root@lvps83-169-5-139.dedicated.hosteurope.de", :app, :web, :db
 namespace :deploy do
   desc "Tell unicorn to restart the app."
   task :restart, :roles => :app do
-    run "(test -f #{current_path}/tmp/pids/unicorn.pid && kill -HUP `cat #{current_path}/tmp/pids/unicorn.pid`) || (cd #{current_path} && RAILS_ENV=qa unicorn_rails -c #{current_path}/config/unicorn.rb -D)"
+    run "(test -f #{current_path}/tmp/pids/unicorn.pid && kill -s USR2 `cat #{current_path}/tmp/pids/unicorn.pid`)"
   end
   
   desc "Compile css"
