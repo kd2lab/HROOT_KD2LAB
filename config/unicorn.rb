@@ -3,6 +3,7 @@ pid         "/var/www/rails/hroot/shared/pids/unicorn.pid"
 stderr_path "/var/www/rails/hroot/shared/log/unicorn.log"
 stdout_path "/var/www/rails/hroot/shared/log/unicorn.log"
 listen 8090
+preload_app true
 
 before_fork do |server, worker|
   ##
