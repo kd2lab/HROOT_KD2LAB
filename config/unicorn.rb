@@ -2,6 +2,7 @@ worker_processes 2
 pid         "/var/www/rails/hroot/shared/pids/unicorn.pid"
 stderr_path "/var/www/rails/hroot/shared/log/unicorn.log"
 stdout_path "/var/www/rails/hroot/shared/log/unicorn.log"
+working_directory "/var/www/rails/hroot/current"
 listen 8090
 preload_app true
 
