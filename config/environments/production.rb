@@ -51,3 +51,15 @@ Hroot::Application.configure do
     :host => 'hroot.ingmar.net'
   }
 end
+
+ActionMailer::Base.delivery_method = :smtp
+ActionMailer::Base.smtp_settings[:enable_starttls_auto] = false
+# {
+#   :address              => "smtp.gmail.com",
+#   :port                 => "587",
+#   :domain               => "googlemail.com",
+#   :user_name            => "ingmar.baetge@googlemail.com",
+#   :password             => "v1rtua11nsan1ty",
+#   :authentication       => "plain",
+#   :enable_starttls_auto => true
+# }
