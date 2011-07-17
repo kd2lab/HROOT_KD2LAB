@@ -30,7 +30,7 @@ de:
     models:
       user: User
     attributes:
-      user: 
+     user: 
         email: E-Mail
         password: Passwort
         password_confirmation: Passwort-Wiederholung
@@ -38,6 +38,8 @@ de:
       models:
         user:
           attributes:
+            email:
+              taken: ist bereits vergeben.
             password: 
               confirmation: muss wiederholt werden
               too_short: ist zu kurz (mindestens 4 Zeichen)
