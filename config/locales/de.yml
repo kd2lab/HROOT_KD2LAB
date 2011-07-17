@@ -24,7 +24,7 @@ de:
       user_session: 
         login: login
         email: E-Mail
-        password: passwort
+        password: Passwort
         remember_me: remember me
   activerecord:
     models:
