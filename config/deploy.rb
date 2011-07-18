@@ -31,3 +31,4 @@ namespace :deploy do
 end
 
 before "deploy:restart", "deploy:compile"
+after "deploy", "deploy:migrate"

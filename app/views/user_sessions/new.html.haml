@@ -2,7 +2,7 @@
   Login
 
 = form_for @user_session, :url => user_sessions_path do |f| 
-  = f.error_messages 
+  
   = f.label :email
   %br
   = f.text_field :email
@@ -11,6 +11,6 @@
   = f.label :password
   %br
   = f.password_field :password 
-  /%br
-  /%br
+  %br
+  %br
   = f.submit "Login"

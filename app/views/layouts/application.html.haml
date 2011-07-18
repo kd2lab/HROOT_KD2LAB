@@ -34,8 +34,10 @@
               |
               = link_to "Logout", logout_path
           
-        %p= flash[:notice]
-        
+        - if flash[:notice]  
+          .flash= flash[:notice]
+        - else
+          %br
         %hr
         
       .span-4

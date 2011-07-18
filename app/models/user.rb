@@ -2,6 +2,8 @@ class User < ActiveRecord::Base
   acts_as_authorization_subject  :association_name => :roles
   acts_as_authentic
 
+  validates_presence_of :firstname, :lastname, :matrikel
+
   def deliver_password_reset_instructions!
     reset_perishable_token!
     UserMailer.password_reset_instructions(self).deliver

@@ -13,6 +13,7 @@ class UserSessionsController < ApplicationController
       flash[:notice] = "Login successful!"
       redirect_back_or_default account_url
     else
+      flash[:notice] = @user_session.errors.full_messages.join ', '
       render :action => :new
     end
   end

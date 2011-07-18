@@ -13,7 +13,7 @@ class UsersController < ApplicationController
     if @user.save_without_session_maintenance
       flash[:notice] = nil
       @user.deliver_activation_instructions!
-      flash[:notice] = 'Es wurde Dir eine Mail zugesandt.'
+      flash[:notice] = 'Es wurde Ihnen eine E-Mail zur Aktivierung Ihres Zugangs zugesandt.'
       
       redirect_to root_url
     else
@@ -30,10 +30,10 @@ class UsersController < ApplicationController
       # login user
       UserSession.create(@user)
 
-      flash[:notice] = 'You activated your account'
+      flash[:notice] = 'Ihr Zugang wurde aktiviert'
       redirect_to account_url
     else
-      flash[:notice] = 'There was no user for this activation code'
+      flash[:notice] = 'Dieser Aktivierungscode ist ungültig'
       redirect_to login_url
     end
   end
