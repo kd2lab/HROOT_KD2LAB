@@ -16,7 +16,7 @@ set :scm, :git
 set :deploy_to, "/var/www/rails/#{application}"
 set :user, "root"
 
-server "root@lvps83-169-5-139.dedicated.hosteurope.de", :app, :web, :db
+server "root@lvps83-169-5-139.dedicated.hosteurope.de", :app, :web, :db, :primary => true
 
 namespace :deploy do
   desc "Tell unicorn to restart the app."

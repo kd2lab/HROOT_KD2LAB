@@ -10,7 +10,6 @@ class UserSessionsController < ApplicationController
     @user_session = UserSession.new(params[:user_session])
   
     if @user_session.save
-      flash[:notice] = "Login successful!"
       redirect_back_or_default account_url
     else
       flash[:notice] = @user_session.errors.full_messages.join ', '
@@ -20,7 +19,7 @@ class UserSessionsController < ApplicationController
 
   def destroy
     current_user_session.destroy
-    flash[:notice] = "Logout successful!"
+    flash[:notice] = "Sie wurden ausgeloggt."
     redirect_back_or_default login_url
   end
   
