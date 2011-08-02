@@ -5,6 +5,8 @@ log/*.log
 tmp/
 .DS_Store
 .rvmrc
+.rvmrc~
+coverage/*
 .sass-cache/*
 public/stylesheets/compiled/*
 db/schema.rb
