@@ -1,0 +1,54 @@
+# Additional translations at http://github.com/plataformatec/devise/wiki/I18n
+
+de:
+  errors:
+    messages:
+      expired: "ist abgelaufen"
+      not_found: "nicht gefunden"
+      already_confirmed: "wurde bereits bestätigt"
+      not_locked: "ist nicht gesperrt"
+      not_saved:
+        one: "1 Fehler ist aufgetreten:"
+        other: "%{count} Fehler sind aufgetreten:"
+      
+  devise:
+    failure:
+      already_authenticated: 'Sie sind bereits angemeldet.'
+      unauthenticated: 'Sie müssen sich anmelden oder registrieren, bevor Sie weiterfahren können.'
+      unconfirmed: 'Sie müssen Ihren Zugang bestätigen, bevor Sie weiterfahren können.'
+      locked: 'Ihr Zugang ist gesperrt.'
+      invalid: 'Ungültige Anmeldedaten.'
+      invalid_token: 'Invalid authentication token.'
+      timeout: 'Ihre Sitzung ist abgelaufen, bitte melden Sie sich erneut an.'
+      inactive: 'Ihr Zugang ist nicht aktiv.'
+    sessions:
+      signed_in: 'Erfolgreich angemeldet.'
+      signed_out: 'Erfolgreich abgemeldet.'
+    passwords:
+      send_instructions: 'Sie erhalten in wenigen Minuten eine E-Mail mit der Anleitung, wie Sie ihr Passwort zurücksetzten können.' 
+      updated: 'Ihr Passwort wurde geändert. Sie sind angemeldet.'    
+      send_paranoid_instructions: "If your e-mail exists on our database, you will receive a password recovery link on your e-mail"
+    confirmations:
+      send_instructions: 'Sie erhalten in wenigen Minuten eine E-Mail mit der Anleitung, wie Sie ihr Passwort zurücksetzen können.' 
+      updated: 'Ihr Passwort wurde geändert. Sie sind angemeldet.'
+      confirmed: 'Ihr Zugang wurde aktiviert, Sie sind jetzt angemeldet.'
+    registrations:
+      signed_up: 'Sie haben sich erfolgreich registriert. Es kann sein, dass Sie eine Aktivierungs-E-Mail erhalten.'
+      inactive_signed_up: 'Sie haben sich erfolgreich registriert. Sie werden in Kürze eine Aktivierungs-E-Mail erhalten.'
+      updated: 'Die Angaben wurden erfolgreich geändert.'
+      destroyed: 'Ihr Zugang wurde erfolgreich gelöscht.'
+    unlocks:
+      send_instructions: 'Sie erhalten in wenigen Minuten eine E-Mail mit der Anleitung, wie Sie Ihren Zugang entsperren können.'
+      unlocked: 'Ihr Zugang wurde entsperrt. Sie sind angemeldet.'
+    oauth_callbacks:
+      success: 'Erfolgreich mit dem %{kind}-Zugang angemeldet.'
+      failure: 'Sie konnten nicht mit dem %{kind}-Zugang angemeldet werden, weil "%{reason}".'
+    mailer:
+      confirmation_instructions:
+        subject: 'Anmeldung zu hroot: Aktivierung Ihres Zugangs'
+      reset_password_instructions:
+        subject: 'Anleitung um das Passwort zurückzusetzten'
+      unlock_instructions:
+        subject: 'Anleitung um Ihren Zugang freizuschalten'
+        
+        

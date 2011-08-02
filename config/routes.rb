@@ -1,17 +1,14 @@
 Hroot::Application.routes.draw do
+  devise_for :users
+  
+  resources :experiments
+
   get "admin/index"
   get "admin/options"
   get "admin/users"
 
-  resources :users, :only => [:new, :create]
-  resources :user_sessions, :only => [:create]
-  resources :password_resets
-  
-  match 'account' => 'account#index'
-  match '/activate/:activation_code' => 'users#activate', :as => :activate
-  
-  match 'login' => 'user_sessions#new', :as => :login
-  match 'logout' => 'user_sessions#destroy', :as => :logout
+  get "home/import"
+  get "home/test"
   
   root :to => "home#index"
   

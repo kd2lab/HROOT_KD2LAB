@@ -1,0 +1,19 @@
+= hidden_field_tag :direction, params[:direction]
+= hidden_field_tag :sort, params[:sort]
+
+%table
+  %tr
+    %th= sortable 'name', 'Name'
+    %th= sortable 'type', 'Typ'
+    %th
+
+  - @experiments.each do |experiment| 
+    %tr
+      %td= experiment.name
+      %td= experiment.type
+      %td
+        = link_to 'Show', experiment
+        = link_to 'Edit', edit_experiment_path(experiment)
+        = link_to 'Destroy', experiment, :confirm => 'Are you sure?', :method => :delete      
+        
+= will_paginate @experiments

@@ -1,19 +1,33 @@
 require 'test_helper'
 
 class AdminControllerTest < ActionController::TestCase
-  test "should get index" do
-    get :index
-    assert_response :success
+  setup do
+    @admin = Factory(:admin)
+    sign_in @admin
+  end
+  
+  context "A request with GET to index" do
+    setup do
+      get :index
+    end
+
+    should respond_with :success
+  end
+  
+  context "A request with GET to options" do
+    setup do
+      get :options
+    end
+
+    should respond_with :success
   end
 
-  test "should get options" do
-    get :options
-    assert_response :success
-  end
+  context "A request with GET to users" do
+    setup do
+      get :users
+    end
 
-  test "should get users" do
-    get :users
-    assert_response :success
+    should respond_with :success
   end
-
+  
 end

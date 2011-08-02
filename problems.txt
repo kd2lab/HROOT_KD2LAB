@@ -1,0 +1,52 @@
+Doppelte E-Mail-Adressen:
+
+stefanie.hubrich@gmail.com {:email=>["ist bereits vergeben."]}
+Norbert.Strehle@gmx.de {:email=>["ist bereits vergeben."]}
+marcus_nendel@yahoo.de {:email=>["ist bereits vergeben."]}
+m.a.r.s.i.a@hotmail.de {:email=>["ist bereits vergeben."]}
+Merlinde.Claudia.Tews@studium.uni-hamburg.de {:email=>["ist bereits vergeben."]}
+freakmeta@hotmail.de {:email=>["ist bereits vergeben."]}
+bobbele79@live.de {:email=>["ist bereits vergeben."]}
+greetje_1990@gmx.de {:email=>["ist bereits vergeben."]}
+flo@came.de {:email=>["ist bereits vergeben."]}
+kajas-adresse@hotmail.de {:email=>["ist bereits vergeben."]}
+r.lueder@web.de {:email=>["ist bereits vergeben."]}
+rama.satari527@yahoo.de {:email=>["ist bereits vergeben."]}
+sandra.willuweit@web.de {:email=>["ist bereits vergeben."]}
+
+
+
+Falsche Mailadressen bei admins:
+
+ingo.knuth@wiso.uni-hamburg,de (KOMMA)
+
+
+
+Benamung der Tabellen:
+
+experiment_name usw.
+
+
+
+Rechtevergabe:
+
+Kann eine Person einmal Admin und einmal nur Experimenter sein?
+
+
+Experimentetypen:
+
+- extrem verwirrend in der Datenbank, aufräumen
+
+
+Ablauf der Passwortvergabe für die Zukunft
+
+
+
+Versendemail konfigurierbar?
+
+
+
+
+
+
+

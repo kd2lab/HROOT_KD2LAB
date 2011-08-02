@@ -1,0 +1,13 @@
+<h1>Experimente</h1>
+
+
+
+<%= form_tag experiments_path, :method => 'get', :id => "experiment_search" do %>  
+  <p>  
+    <%= text_field_tag :search, params[:search] %>  
+    <%= submit_tag "Suche", :name => nil %>  
+  </p>  
+ <div id="experiments"><%= render 'experiments' %></div>  
+<% end %>  
+  
+<%= link_to 'Neues Experiment', new_experiment_path %>

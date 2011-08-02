@@ -3,7 +3,7 @@
   %head
     %title Hroot
     %meta{:"http-equiv" => "content-type", :content => "text/html;charset=UTF-8"}
-    = stylesheet_link_tag :all
+    /= stylesheet_link_tag :all
     = javascript_include_tag :defaults
     = csrf_meta_tag
     = stylesheet_link_tag 'compiled/screen.css', :media => 'screen, projection'
@@ -23,21 +23,24 @@
         .header-line
           hroot - Rekrutierungssystem für ökonomische Experimente
           .header-menu
-            - if !current_user  
-              = link_to "Anmelden", new_user_path
+            -if user_signed_in? 
+              Eingeloggt als
+              = current_user.email
               |
-              = link_to "Login", login_path
-              
-             
-            - else
-              = link_to "Mein Zugang", account_path
-              |
-              = link_to "Logout", logout_path
+              = link_to "Logout", destroy_user_session_path, :method => :delete
+            -else 
+              = link_to "Registrieren", new_user_registration_path 
+              oder 
+              = link_to "Login", new_user_session_path
+
+
+
+        -if notice  
+          %p.notice= notice
+
+        -if alert
+          %p.alert= alert
           
-        - if flash[:notice]  
-          .flash= flash[:notice]
-        - else
-          %br
         %hr
         
       .span-4

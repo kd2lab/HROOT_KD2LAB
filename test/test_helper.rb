@@ -12,7 +12,7 @@ class ActiveSupport::TestCase
   # Add more helper methods to be used by all tests here...
 end
 
-unless defined?(Test::Unit::AssertionFailedError)
-  class Test::Unit::AssertionFailedError < ActiveSupport::TestCase::Assertion
-  end
+#devise testing
+class ActionController::TestCase
+  include Devise::TestHelpers
 end

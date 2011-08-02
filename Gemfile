@@ -17,10 +17,13 @@ gem 'capistrano'
 # gem 'ruby-debug'
 gem 'ruby-debug19', :require => 'ruby-debug'
 gem "compass", ">= 0.11.3"
-gem 'authlogic'
 gem 'haml'
 gem "rails-settings", :git => "git://github.com/100hz/rails-settings.git"
 gem 'acl9', :require => 'acl9'
+gem 'sequel'
+gem 'jquery-rails', '>= 1.0.12'
+gem 'will_paginate', '3.0.pre4' 
+gem 'devise'
 
 # Bundle the extra gems:
 # gem 'bj'
@@ -36,4 +39,6 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'shoulda'
   gem 'mocha'
+  gem 'rcov'
+  gem "rails_code_qa"
 end

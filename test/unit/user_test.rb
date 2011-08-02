@@ -6,7 +6,7 @@ class UserTest < ActiveSupport::TestCase
       @user = Factory(:user)
     end
 
-    should validate_uniqueness_of(:email).case_insensitive
+    #should validate_uniqueness_of(:email)
     
     should allow_value("foo@bar.xyz").for(:email)
     should allow_value("baz@foo.zya").for(:email)
@@ -27,12 +27,6 @@ class UserTest < ActiveSupport::TestCase
 
     should "be valid" do
       assert @user.valid?
-    end
-    
-    should "be activated with activate mathod" do
-      assert !@user.active
-      @user.activate!
-      assert @user.active
     end
 
   end
