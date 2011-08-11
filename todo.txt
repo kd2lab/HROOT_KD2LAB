@@ -1,0 +1,8 @@
+- Menü nur als Admin sichtbar
+- Rollen einbauen
+- Übersicht Eperimente besser
+- Übersicht User besser
+- User dem Experiment zuordnen
+- Sessions pflegen
+- Accountbereich
+- tests

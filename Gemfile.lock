@@ -9,7 +9,6 @@ GEM
   remote: http://rubygems.org/
   specs:
     abstract (1.0.0)
-    acl9 (0.12.0)
     actionmailer (3.0.9)
       actionpack (= 3.0.9)
       mail (~> 2.2.19)
@@ -40,6 +39,7 @@ GEM
     arel (2.0.10)
     bcrypt-ruby (2.1.4)
     builder (2.1.2)
+    cancan (1.6.5)
     capistrano (2.6.0)
       highline
       net-scp (>= 1.0.0)
@@ -155,7 +155,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  acl9
+  cancan
   capistrano
   compass (>= 0.11.3)
   devise

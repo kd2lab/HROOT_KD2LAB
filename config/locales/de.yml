@@ -5,30 +5,10 @@ de:
   errors:
     template:
       body: "Es sind Fehler aufgetreten:"
-  authlogic:
-    error_messages:
-      login_blank: darf nicht leer sein
-      login_not_found: wurde nicht gefunden
-      login_invalid: ist ungültig
-      consecutive_failed_logins_limit_exceeded: Zuviele Fehlversuche, dieser Account wurde gesperrt.
-      email_invalid: ist nicht gültig
-      password_blank: darf nicht leer sein
-      password_invalid: ist ungültig
-      not_active: Dieser Account ist noch nicht aktiviert.
-      not_confirmed: Your account is not confirmed
-      not_approved: Your account is not approved
-      no_authentication_details: You did not provide any details for authentication.
-    models:
-      user_session: UserSession
-    attributes:
-      user_session: 
-        login: login
-        email: E-Mail
-        password: Passwort
-        remember_me: remember me
   activerecord:
     models:
       user: User
+      experiment: Experiment
     attributes:
      user: 
         firstname: Vorname
@@ -37,6 +17,8 @@ de:
         email: E-Mail
         password: Passwort
         password_confirmation: Passwort-Wiederholung
+     experiment:
+        description: Beschreibung
     errors:
       models:
         user:
@@ -49,6 +31,6 @@ de:
               taken: ist bereits vergeben.
             password: 
               confirmation: muss wiederholt werden
-              too_short: ist zu kurz (mindestens 4 Zeichen)
+              too_short: ist zu kurz (mindestens 6 Zeichen)
             password_confirmation:
-              too_short: ist zu kurz (mindestens 4 Zeichen) 
+              too_short: ist zu kurz (mindestens 6 Zeichen) 

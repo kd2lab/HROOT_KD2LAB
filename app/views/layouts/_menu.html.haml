@@ -1,0 +1,10 @@
+.menu
+  - if can? :manage, :all
+    Admin-Menü
+    %br
+    %br
+    = link_to "Experimente", :experiments
+    %br
+    = link_to "Benutzer", :users
+  - else
+    Menü

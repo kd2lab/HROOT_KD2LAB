@@ -2,11 +2,12 @@ class CreateExperiments < ActiveRecord::Migration
   def self.up
     create_table :experiments do |t|
       t.string  :name
-      t.string  :public_name
-      t.string  :type
+      t.string  :typ
       t.string  :description
-      t.string  :old_id
-      
+      t.boolean :restricted
+      t.boolean :finished 
+      t.boolean :hidden_stats
+      t.boolean :hidden_calendar
       t.timestamps
     end
   end

@@ -44,23 +44,10 @@
         %hr
         
       .span-4
-        linker Bereich... 
-        %br
-        Menü 1 
-        %br
-        Menü 2
-        %br
-        %br
-        %br
-        %br
-        %br
-        %br
-        %br
-        %br
-        %br
+        = render :partial => 'layouts/menu' 
       .span-20.last
         = yield
       .span-24
         %hr
-        fusszeile...
+        &copy; 2011 Universität Hamburg
         

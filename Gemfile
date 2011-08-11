@@ -19,11 +19,12 @@ gem 'ruby-debug19', :require => 'ruby-debug'
 gem "compass", ">= 0.11.3"
 gem 'haml'
 gem "rails-settings", :git => "git://github.com/100hz/rails-settings.git"
-gem 'acl9', :require => 'acl9'
 gem 'sequel'
 gem 'jquery-rails', '>= 1.0.12'
 gem 'will_paginate', '3.0.pre4' 
 gem 'devise'
+
+gem 'cancan'
 
 # Bundle the extra gems:
 # gem 'bj'

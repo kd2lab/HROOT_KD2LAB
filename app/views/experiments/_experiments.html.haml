@@ -4,16 +4,15 @@
 %table
   %tr
     %th= sortable 'name', 'Name'
-    %th= sortable 'type', 'Typ'
+    %th= sortable 'typ', 'Typ'
     %th
 
   - @experiments.each do |experiment| 
     %tr
       %td= experiment.name
-      %td= experiment.type
+      %td= experiment.typ
       %td
-        = link_to 'Show', experiment
-        = link_to 'Edit', edit_experiment_path(experiment)
-        = link_to 'Destroy', experiment, :confirm => 'Are you sure?', :method => :delete      
+        = link_to 'Bearbeiten', edit_experiment_path(experiment)
+        = link_to 'Löschen', experiment, :confirm => 'Soll dieses Experiment wirklich gelöscht werden?', :method => :delete      
         
 = will_paginate @experiments

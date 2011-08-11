@@ -2,13 +2,14 @@ Hroot::Application.routes.draw do
   devise_for :users
   
   resources :experiments
+  resources :users
 
   get "admin/index"
   get "admin/options"
   get "admin/users"
 
   get "home/import"
-  get "home/test"
+  get "home/index"
   
   root :to => "home#index"
   

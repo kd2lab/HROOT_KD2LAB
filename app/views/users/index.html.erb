@@ -1,0 +1,13 @@
+<h1>Benutzeraccounts</h1>
+
+<%= form_tag users_path, :method => 'get', :id => "user_search" do %>  
+  <p>  
+    <%= text_field_tag :search, params[:search] %>  
+    <%= submit_tag "Suche", :name => nil %>  
+  </p>  
+ <div id="users"><%= render 'users' %></div>  
+<% end %>  
+  
+<br/>
+
+<%= link_to 'Neuer Benutzer', new_user_path %>
