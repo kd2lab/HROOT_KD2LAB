@@ -25,7 +25,7 @@ de:
       signed_in: 'Erfolgreich angemeldet.'
       signed_out: 'Erfolgreich abgemeldet.'
     passwords:
-      send_instructions: 'Sie erhalten in wenigen Minuten eine E-Mail mit der Anleitung, wie Sie ihr Passwort zurücksetzten können.' 
+      send_instructions: 'Sie erhalten in wenigen Minuten eine E-Mail mit der Anleitung, wie Sie ihr Passwort zurücksetzen können.' 
       updated: 'Ihr Passwort wurde geändert. Sie sind angemeldet.'    
       send_paranoid_instructions: "If your e-mail exists on our database, you will receive a password recovery link on your e-mail"
     confirmations:
@@ -47,7 +47,7 @@ de:
       confirmation_instructions:
         subject: 'Anmeldung zu hroot: Aktivierung Ihres Zugangs'
       reset_password_instructions:
-        subject: 'Anleitung um das Passwort zurückzusetzten'
+        subject: 'Anleitung zum Zurücksetzen des Passworts'
       unlock_instructions:
         subject: 'Anleitung um Ihren Zugang freizuschalten'
         
