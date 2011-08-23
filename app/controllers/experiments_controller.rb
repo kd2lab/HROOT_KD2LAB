@@ -3,10 +3,12 @@
 class ExperimentsController < ApplicationController
   load_and_authorize_resource
   
-  helper_method :sort_column, :sort_direction
-  
   def index
-    @experiments = Experiment.search(params[:search]).where(:finished => false).order(sort_column + ' ' + sort_direction).paginate(:per_page => 30, :page => params[:page])  
+    @experiments = Experiment
+      .search(params[:search])
+      .includes(:experimenter_assignments, :experimenters, :sessions)
+      .order("COALESCE(sessions.start, experiments.created_at) DESC")
+      .paginate(:per_page => 30, :page => params[:page])  
   end
 
   def new
@@ -14,24 +16,28 @@ class ExperimentsController < ApplicationController
   end
 
   def edit
-  #  @experiment = Experiment.find(params[:id])
+    params[:experiment_leiter] = @experiment.experimenter_assignments.where(:role => "experiment_admin").collect(&:user_id) 
+    params[:experiment_helper] = @experiment.experimenter_assignments.where(:role => "experiment_helper").collect(&:user_id) 
   end
 
   def create
     @experiment = Experiment.new(params[:experiment])
-
+    
     if @experiment.save
-      redirect_to(@experiment, :notice => 'Das Experiment wurde erfolgreich geändert.') 
+      @experiment.update_experiment_assignments(params[:experiment_helper], "experiment_helper")
+      @experiment.update_experiment_assignments(params[:experiment_leiter], "experiment_admin")
+      redirect_to(edit_experiment_path(@experiment), :notice => 'Das Experiment wurde erfolgreich angelegt.') 
     else
       render :action => "new"
     end
   end
 
   def update
-  #  @experiment = Experiment.find(params[:id])
-
     if @experiment.update_attributes(params[:experiment])
-      redirect_to(experiments_url, :notice => 'Das Experiment wurde erfolgreich geändert.')
+      @experiment.update_experiment_assignments(params[:experiment_helper], "experiment_helper")
+      @experiment.update_experiment_assignments(params[:experiment_leiter], "experiment_admin")
+      
+      redirect_to(edit_experiment_url(@experiment), :notice => 'Das Experiment wurde erfolgreich geändert.')
     else
       render :action => "edit"
     end
@@ -44,13 +50,18 @@ class ExperimentsController < ApplicationController
     redirect_to(experiments_url)
   end
   
-  private
-
-  def sort_column
-    Experiment.column_names.include?(params[:sort]) ? params[:sort] : "name"
-  end
-
-  def sort_direction
-    %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
+  def participants
+    if params[:search]
+      @participants = @experiment.participants
+                     .where('(firstname LIKE ? OR lastname LIKE ? OR email LIKE ?)',
+                       '%'+params[:search]+'%',  '%'+params[:search]+'%',  '%'+params[:search]+'%',
+                     )
+                     .order("lastname, firstname")
+                     .paginate(:per_page => 50, :page => params[:page])  
+    else
+      @participants = @experiment.participants
+                      .order("lastname, firstname")
+                      .paginate(:per_page => 50, :page => params[:page])
+    end
   end
 end

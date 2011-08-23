@@ -139,6 +139,9 @@ GEM
     sequel (3.25.0)
     sexp_processor (3.0.5)
     shoulda (2.11.3)
+    simple_form (1.4.2)
+      actionpack (~> 3.0)
+      activemodel (~> 3.0)
     thor (0.14.6)
     treetop (1.4.9)
       polyglot (>= 0.3.1)
@@ -172,5 +175,6 @@ DEPENDENCIES
   ruby-debug19
   sequel
   shoulda
+  simple_form
   unicorn
   will_paginate (= 3.0.pre4)

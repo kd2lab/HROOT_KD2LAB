@@ -1,0 +1,38 @@
+
+= simple_form_for @experiment, :html => {:class => "guarded_form"} do |f| 
+  = f.input :name, :required => false
+  = f.input :typ, :collection => Settings.experiment_classes, :input_html => {:class => "chzn-select"}
+  
+  %br
+
+  .input.string
+    %label.string Experimentleiter
+    = select_tag( |
+      :experiment_leiter, |
+      options_for_select( |
+        User.where("role = 'admin' OR role='experimenter'").order(:lastname, :firstname).collect do |u| [u.lastname+", "+u.firstname, u.id] end, |
+        params[:experiment_leiter] |
+      ), |
+      {:multiple => true, :class => "chzn-select", :'data-placeholder' => "Personen wählen...", :style=>"width:410px"} |
+    ) |
+  
+    
+  .input.string
+    %label.string Experimenthelfer
+    = select_tag( |
+        :experiment_helper, |
+        options_for_select( |
+          User.where("role = 'admin' OR role='experimenter'").order(:lastname, :firstname).collect do |u| [u.lastname+", "+u.firstname, u.id] end, |
+          params[:experiment_helper] |
+        ), |
+        {:multiple => true, :class => "chzn-select", :'data-placeholder' => "Personen wählen...", :style=>"width:410px"} |
+      ) |
+
+  
+  = f.input :description, :as => :text
+  = f.input :show_in_stats, :label => "Dieses Experiment in der Statistik berücksichtigen" 
+  = f.input :show_in_calendar, :label => "Dieses Experiment im Kalender anzeigen" 
+  %br
+  = f.submit "Experiment speichern", :class => "guarded_form_save"
+  %br
+  %br

@@ -23,6 +23,7 @@ gem 'sequel'
 gem 'jquery-rails', '>= 1.0.12'
 gem 'will_paginate', '3.0.pre4' 
 gem 'devise'
+gem 'simple_form'
 
 gem 'cancan'
 

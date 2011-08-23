@@ -1,0 +1,49 @@
+= content_for :breadcrumb do
+  &gt;
+  = link_to "Experimente", experiments_path
+  &gt;
+  = link_to @experiment.name, edit_experiment_path(@experiment)
+  &gt;
+  Sessions
+
+= render :partial => "experiments/tabs", :locals => {:selected => 2}
+
+%br
+%br
+%br
+= button_to 'Neue Session anlegen', new_experiment_session_path(@experiment), :method => :get
+%br
+
+- @sessions.each do |session| 
+  .sessionline
+    /%a{:href=>edit_experiment_session_path(@experiment, session)}
+    .right
+      =button_to "Duplizieren", duplicate_experiment_session_path(@experiment, session)
+      =button_to "Bearbeiten", edit_experiment_session_path(@experiment, session), :method => :get
+      =button_to "Löschen", experiment_session_path(@experiment, session), :method => :delete
+      %br
+      
+      
+    .left
+      %b
+        =session.start.to_date
+        =session.start.strftime("%H:%M")+"-"+(session.start+session.duration.minutes).strftime("%H:%M")
+      
+      %br
+      =truncate(session.location.name, :length => 40) if session.location
+      
+      %br
+      zugeordnet
+      =session.experiment_participations.count
+      | registriert
+      =session.experiment_participations.where(:registered => true).count
+      | showup
+      =session.experiment_participations.where(:showup => true).count
+      | teilgenommen
+      =session.experiment_participations.where(:participated => true).count
+      %br
+        
+        
+      
+    
+%br

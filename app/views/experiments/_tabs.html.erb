@@ -1,0 +1,10 @@
+<%= render :partial => "layouts/tabs", 
+           :locals => {
+             :selected => selected,
+             :links => [
+               {:title => "Allgemeine Daten", :url=>edit_experiment_url(@experiment)}, 
+               {:title => "Teilnehmer", :url => participants_experiment_path(@experiment)},
+               {:title => "Sessions", :url => experiment_sessions_path(@experiment)}
+             ]
+           }
+%>

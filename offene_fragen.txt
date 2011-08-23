@@ -1,0 +1,18 @@
+Experimente
+
+- Sortierung der Experimentliste
+- Welche Informationen sollen in der Experimentliste angezeigt werden?
+- Wie können Experimente ohne Sessions abegeschlossen werden?
+- Löschen von Experimenten
+
+Sessions
+
+- Löschen von Sessions?
+- Anmeldung der Teilnehmer: Zu Sessions / zu Experimenten?
+
+
+Teilnehmer
+
+- Versand der Einladungen
+- 
+

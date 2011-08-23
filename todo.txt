@@ -1,6 +1,8 @@
+- Session löschen: anmeldungen überprüfen
+- Experimentliste ordentlich
 - Menü nur als Admin sichtbar
 - Rollen einbauen
-- Übersicht Eperimente besser
+- Übersicht Experimente besser
 - Übersicht User besser
 - User dem Experiment zuordnen
 - Sessions pflegen

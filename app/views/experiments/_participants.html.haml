@@ -1,0 +1,16 @@
+= will_paginate @participants, :prev_label => "&lt;&lt;&nbsp;", :next_label => "&nbsp;&gt;&gt;"
+%br
+
+- @participants.each do |participant| 
+  .participantline
+    .right
+      //rightmenu
+      //=button_to "Bearbeiten", edit_experiment_path(experiment), :method => :get
+    .left
+      = highlight(participant.lastname+", "+participant.firstname, params[:search])
+    
+    = highlight( participant.email, params[:search])
+      
+          
+%br        
+= will_paginate @participants, :prev_label => "&lt;&lt;&nbsp;", :next_label => "&nbsp;&gt;&gt;"

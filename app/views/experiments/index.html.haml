@@ -1,0 +1,19 @@
+= content_for :breadcrumb do
+  &gt;
+  = link_to "Experimente", experiments_path
+
+
+= button_to 'Neues Experiment', new_experiment_path, :method => :get 
+
+%br
+
+= form_tag experiments_path, :method => 'get', :id => "experiment_search" do
+  %p  
+    = text_field_tag :search, params[:search] 
+    = submit_tag "Suche", :name => nil  
+
+#experiments
+  = render 'experiments'
+
+  
+

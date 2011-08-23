@@ -1,7 +1,18 @@
 Hroot::Application.routes.draw do
   devise_for :users
   
-  resources :experiments
+  resources :experiments, :except => :show do
+    resources :sessions do
+      member do
+        post :duplicate
+      end
+    end
+    
+    member do
+      get :participants
+    end
+  end
+  
   resources :users
 
   get "admin/index"

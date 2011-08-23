@@ -6,8 +6,9 @@ class CreateExperiments < ActiveRecord::Migration
       t.string  :description
       t.boolean :restricted
       t.boolean :finished 
-      t.boolean :hidden_stats
-      t.boolean :hidden_calendar
+      t.boolean :show_in_stats, :default => true
+      t.boolean :show_in_calendar, :default => true
+      t.integer :experiment_participations_count
       t.timestamps
     end
   end

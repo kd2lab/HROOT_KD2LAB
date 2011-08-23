@@ -52,13 +52,15 @@ class HomeController < ApplicationController
         @report << u.email+" "+u.errors.inspect
       end
     end
-    
+        
     # import experiments
     @report << "--------- EXPERIMENTS ------------"
     Session.delete_all
     Experiment.delete_all
     ExperimenterAssignment.delete_all
     ExperimentParticipation.delete_all
+    Location.delete_all
+    
     db[:or_experiments].each do |row|
       # load type string
       exp_type = db[:or_lang].first(:content_name => row[:experiment_class])
@@ -69,8 +71,8 @@ class HomeController < ApplicationController
         :typ => exp_type[:de],
         :restricted => row[:access_restricted] == 'y',
         :finished => row[:experiment_finished] == 'y',
-        :hidden_stats => row[:hide_in_stats] == 'y',
-        :hidden_calendar => row[:hide_in_cal] == 'y'
+        :show_in_stats => row[:hide_in_stats] != 'y',
+        :show_in_calendar => row[:hide_in_cal] != 'y'
       )
       
       if !e.valid?
@@ -86,7 +88,7 @@ class HomeController < ApplicationController
               assign = ExperimenterAssignment.new
               assign.user = u
               assign.experiment = e
-              assign.role = "experiment_admin"
+              assign.role = if u.admin? then "experiment_admin" else "experiment_helper" end
               assign.save
             else
               @report << "Error: "+adminname+" not found"
@@ -109,11 +111,27 @@ class HomeController < ApplicationController
           rescue
             startdate = nil
           end
-          s = Session.create(
+          
+          # import location of this session
+          location_name = db[:or_lang].first(:content_name => session[:laboratory_id])[:de]
+          
+          l = Location.find_or_create_by_name(location_name)
+          
+          s = Session.new(
             :experiment_id => e.id,
             :description => session[:session_remarks],
-            :start => startdate
+            :start => startdate,
+            :duration => session[:session_duration_hour]*60 + session[:session_duration_minute],
+            :finished => session[:session_finished] =='y',
+            :needed => session[:part_needed],
+            :reserve => session[:part_reserve],
+            :location => l
           )
+          s.save(false)
+          
+          unless s.valid?
+            puts s.errors.inspect
+          end
           
           # import session dependent participations
           db[:or_participate_at].filter(:experiment_id => row[:experiment_id], :session_id => session[:session_id]).each do |part|

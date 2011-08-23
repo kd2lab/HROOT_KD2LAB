@@ -1,0 +1,15 @@
+= content_for :breadcrumb do
+  &gt;
+  = link_to "Experimente", experiments_path
+  &gt;
+  = link_to @experiment.name, edit_experiment_path(@experiment)
+  &gt;
+  Allgemeine Daten
+  
+= render :partial => "tabs", :locals => {:selected => 0} 
+
+%br
+%br
+%br
+
+= render 'form' 

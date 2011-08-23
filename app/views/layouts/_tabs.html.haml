@@ -1,0 +1,7 @@
+#tabs.tabs
+  %ul
+    -links.each_with_index do |link, index|
+      - class_str = if index == selected then "current" else "" end
+      
+      %li{:class => class_str}= link_to link[:title], link[:url]
+      

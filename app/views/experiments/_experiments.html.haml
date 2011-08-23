@@ -1,18 +1,29 @@
-= hidden_field_tag :direction, params[:direction]
-= hidden_field_tag :sort, params[:sort]
+= will_paginate @experiments, :prev_label => "&lt;&lt;&nbsp;", :next_label => "&nbsp;&gt;&gt;"
+%br
 
-%table
-  %tr
-    %th= sortable 'name', 'Name'
-    %th= sortable 'typ', 'Typ'
-    %th
-
-  - @experiments.each do |experiment| 
-    %tr
-      %td= experiment.name
-      %td= experiment.typ
-      %td
-        = link_to 'Bearbeiten', edit_experiment_path(experiment)
-        = link_to 'Löschen', experiment, :confirm => 'Soll dieses Experiment wirklich gelöscht werden?', :method => :delete      
-        
-= will_paginate @experiments
+- @experiments.each do |experiment| 
+  .experimentline{:class => if experiment.sessions_finished? then "finished" else "" end}
+    .right
+      =button_to "Bearbeiten", edit_experiment_path(experiment), :method => :get
+    %h4= highlight(experiment.name, params[:search])
+    Typ:
+    = highlight(experiment.typ, params[:search])
+    %br
+    Experiment-Organisation:
+    = highlight(experiment.experimenters.collect{|u| u.firstname+" "+u.lastname}.join(', '), params[:search])
+    %br
+    = experiment.sessions.length
+    Sessions
+    - if experiment.sessions.length > 0
+      von
+      =experiment.sessions.collect{|d| d.start.to_date}.min
+      bis
+      =experiment.sessions.collect{|d| d.start.to_date}.max
+    
+    , zugeordnete Teilnehmer:
+    =experiment.experiment_participations_count
+    
+      
+          
+%br        
+= will_paginate @experiments, :prev_label => "&lt;&lt;&nbsp;", :next_label => "&nbsp;&gt;&gt;"

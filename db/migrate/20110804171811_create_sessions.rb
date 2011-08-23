@@ -2,9 +2,14 @@ class CreateSessions < ActiveRecord::Migration
   def self.up
     create_table :sessions do |t|
       t.datetime :start
+      t.datetime :registration
       t.string   :description
       t.integer  :duration
       t.integer  :experiment_id
+      t.boolean  :finished
+      t.integer  :needed
+      t.integer  :reserve
+      t.integer  :location_id
       t.timestamps
     end
   end

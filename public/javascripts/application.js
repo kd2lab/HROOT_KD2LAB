@@ -11,4 +11,19 @@ $(function () {
     $.get(this.action, $(this).serialize(), null, 'script');  
     return false;  
   });
+  
+  // activate chosen
+  $(".chzn-select").chosen()
+  
+  // form change detection
+  $(".guarded_form :input").change(function() {
+    $(this).closest('form').data('changed', true);
+    window.onbeforeunload = function () { return "Achtung: Die Änderungen wurden noch nicht gespeichert!" };
+  });
+  
+  $('.guarded_form_save').click(function() {
+    window.onbeforeunload = null
+  });
+  
+  
 })

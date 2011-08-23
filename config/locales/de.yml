@@ -9,18 +9,35 @@ de:
     models:
       user: User
       experiment: Experiment
+      session: Session
     attributes:
-     user: 
+      session:
+        start_date: Startdatum
+        start_time: Startzeit
+        registration_date: Anmeldedatum
+        registration_time: Anmeldezeit
+        description: Beschreibung
+        duration: Dauer in Minuten
+        needed: Nötige Teilnehmer
+        reserve: Reserve-Teilnehmer
+        location: Ort
+        finished: Session abgeschlossen
+      user: 
         firstname: Vorname
         lastname: Nachname
         matrikel: Matrikelnummer
         email: E-Mail
         password: Passwort
         password_confirmation: Passwort-Wiederholung
-     experiment:
+      experiment:
         description: Beschreibung
     errors:
       models:
+        experiment:
+          blank: muss angegeben werden
+        session:
+          blank: muss angegeben werden  
+          not_a_number: muss eine ganze Zahl sein
         user:
           blank: muss angegeben werden
           attributes:
@@ -34,3 +51,10 @@ de:
               too_short: ist zu kurz (mindestens 6 Zeichen)
             password_confirmation:
               too_short: ist zu kurz (mindestens 6 Zeichen) 
+  date:
+    formats:
+      default: "%d.%m.%Y"
+  will_paginate:
+    prev_label: "&lt; &lt;"
+    next_label: "&gt; &gt;"
+    page_gap: "&hellip;"
