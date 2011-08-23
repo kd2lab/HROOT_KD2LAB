@@ -13,7 +13,7 @@
         User.where("role = 'admin' OR role='experimenter'").order(:lastname, :firstname).collect do |u| [u.lastname+", "+u.firstname, u.id] end, |
         params[:experiment_leiter] |
       ), |
-      {:multiple => true, :class => "chzn-select", :'data-placeholder' => "Personen wählen...", :style=>"width:410px"} |
+      {:multiple => true, :class => "chzn-select", :'data-placeholder' => "Personen waehlen...", :style=>"width:410px"} |
     ) |
   
     
@@ -25,12 +25,12 @@
           User.where("role = 'admin' OR role='experimenter'").order(:lastname, :firstname).collect do |u| [u.lastname+", "+u.firstname, u.id] end, |
           params[:experiment_helper] |
         ), |
-        {:multiple => true, :class => "chzn-select", :'data-placeholder' => "Personen wählen...", :style=>"width:410px"} |
+        {:multiple => true, :class => "chzn-select", :'data-placeholder' => "Personen waehlen...", :style=>"width:410px"} |
       ) |
 
   
   = f.input :description, :as => :text
-  = f.input :show_in_stats, :label => "Dieses Experiment in der Statistik berücksichtigen" 
+  = f.input :show_in_stats, :label => "Dieses Experiment in der Statistik beruecksichtigen" 
   = f.input :show_in_calendar, :label => "Dieses Experiment im Kalender anzeigen" 
   %br
   = f.submit "Experiment speichern", :class => "guarded_form_save"
