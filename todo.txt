@@ -1,6 +1,7 @@
 - Session löschen: anmeldungen überprüfen
 - Experimentliste ordentlich
 - Menü nur als Admin sichtbar
+- fix utf issue experiment type
 - Rollen einbauen
 - Übersicht Experimente besser
 - Übersicht User besser

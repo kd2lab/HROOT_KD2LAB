@@ -12,7 +12,7 @@ class CreateSettings < ActiveRecord::Migration
     
     add_index :settings, [ :thing_type, :thing_id, :var ], :unique => true
     
-    Settings.experiment_classes = ['-', '3rd-Party-Punishment', 'Aktienmarkt', 'Alte', 'Auktionen', 'Bertrand', 'Budgetierung - Real Effort', 'Capital Budgeting  Antle/Eppen', 'Common Pool', 'Cournot', 'Diktator', 'Gift-exchange', 'Individ. (subjektives) Risiko', 'Individ. Intertemporalität', 'Individ. Unsicherheit', 'Investment', 'Koordination', 'LEN-Vertrag', 'Public Good', 'Signalspiel', 'Ultimatum', 'Verrechnungspreisverhandlung', 'Vertrauen', 'Werbemitteltest']
+    Settings.experiment_classes = ['-', '3rd-Party-Punishment', 'Aktienmarkt', 'Alte', 'Auktionen', 'Bertrand', 'Budgetierung - Real Effort', 'Capital Budgeting - Antle/Eppen', 'Common Pool', 'Cournot', 'Diktator', 'Gift-exchange', 'Individ. (subjektives) Risiko', 'Individ. Intertemporalität', 'Individ. Unsicherheit', 'Investment', 'Koordination', 'LEN-Vertrag', 'Public Good', 'Signalspiel', 'Ultimatum', 'Verrechnungspreisverhandlung', 'Vertrauen', 'Werbemitteltest']
   end
 
   def self.down
