@@ -18,7 +18,9 @@ class DeviseCreateUsers < ActiveRecord::Migration
       t.string :role
       t.string :phone
       t.string :gender
-
+      t.boolean :deleted, :default => false
+      t.integer :study_id
+      
       t.timestamps
     end
 

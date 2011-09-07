@@ -1,6 +1,25 @@
+# encoding:utf-8
+
 class HomeController < ApplicationController
   def index
 
+  end
+  
+  def import_test
+    require 'sequel'
+    @report = []
+    
+    
+    db = Sequel.connect(:adapter=>'mysql2', :host=>'localhost', :database=>'controlling_orsee', :user=>'root', :password=>'')
+    
+    db[:or_participants].each do |row|
+      field_of_studies = db[:or_lang].first(:content_type => "field_of_studies", :content_name => row[:field_of_studies])
+      @report << field_of_studies[:de]
+    end
+    
+    @report << "öäääüü"
+    
+    render :text => Study.all.map{ |s| s.name }.join('<br/>')
   end
   
   def import
@@ -10,7 +29,8 @@ class HomeController < ApplicationController
     db = Sequel.connect(:adapter=>'mysql2', :host=>'localhost', :database=>'controlling_orsee', :user=>'root', :password=>'')
    
     User.delete_all
-    
+    Study.delete_all
+     
     # import admins
     @report << "--------- ADMINS ------------"
     db[:or_admin].each do |row|
@@ -34,6 +54,9 @@ class HomeController < ApplicationController
     # import users
     @report << "--------- USERS ------------"
     db[:or_participants].each do |row|
+      field_of_studies = db[:or_lang].first(:content_type => "field_of_studies", :content_name => row[:field_of_studies])
+      study = Study.find_or_create_by_name(field_of_studies[:de])
+      
       u = User.new(
         :email => row[:email], 
         :firstname => row[:fname],
@@ -46,6 +69,8 @@ class HomeController < ApplicationController
         :role => 'user'
       )
       u.skip_confirmation!
+      u.deleted = row[:deleted] == 'y'
+      u.study_id = study.id
       u.save
       
       if !u.valid?
@@ -53,27 +78,31 @@ class HomeController < ApplicationController
       end
     end
         
+
     # import experiments
     @report << "--------- EXPERIMENTS ------------"
     Session.delete_all
     Experiment.delete_all
     ExperimenterAssignment.delete_all
-    ExperimentParticipation.delete_all
+    Participation.delete_all
     Location.delete_all
     
     db[:or_experiments].each do |row|
       # load type string
-      exp_type = db[:or_lang].first(:content_name => row[:experiment_class])
+      exp_class = db[:or_lang].first(:content_type => "experimentclass", :content_name => row[:experiment_class])
       
-      e = Experiment.create(
+      exp_type = ExperimentType.find_or_create_by_name(exp_class[:de])
+      
+      e = Experiment.new(
         :name => row[:experiment_name],
         :description => row[:experiment_description],
-        :typ => exp_type[:de],
         :restricted => row[:access_restricted] == 'y',
         :finished => row[:experiment_finished] == 'y',
         :show_in_stats => row[:hide_in_stats] != 'y',
         :show_in_calendar => row[:hide_in_cal] != 'y'
       )
+      e.experiment_type_id = exp_type.id
+      e.save
       
       if !e.valid?
         @report << e.name.to_s+" "+e.errors.inspect
@@ -141,7 +170,7 @@ class HomeController < ApplicationController
             unless user
               @report << or_user[:email]+" not found"
             else
-              ExperimentParticipation.create(
+              Participation.create(
                 :experiment_id => e.id,
                 :session_id => s.id,
                 :user_id => user.id,
@@ -162,7 +191,7 @@ class HomeController < ApplicationController
           unless user
             @report << or_user[:email]+" not found"
           else
-            ExperimentParticipation.create(
+            Participation.create(
               :experiment_id => e.id,
               :session_id => nil,
               :user_id => user.id,

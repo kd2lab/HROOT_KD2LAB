@@ -2,7 +2,6 @@ class CreateSessions < ActiveRecord::Migration
   def self.up
     create_table :sessions do |t|
       t.datetime :start
-      t.datetime :registration
       t.string   :description
       t.integer  :duration
       t.integer  :experiment_id

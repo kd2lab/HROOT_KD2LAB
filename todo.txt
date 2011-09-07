@@ -1,3 +1,15 @@
+- combobox verhalten bei session dauer
+
+- Teilnehmer zuordnen:
+
+   Nach nichterscheinen
+   nach anzahl registrierungen
+   geschlecht
+   semester
+   studienfach
+   experimentklassen
+   bisherige teilnahme mit mindestens einem / ausschluss
+
 - Session löschen: anmeldungen überprüfen
 - Experimentliste ordentlich
 - Menü nur als Admin sichtbar

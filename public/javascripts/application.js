@@ -1,6 +1,7 @@
 
-// ajax experiment list
+
 $(function () {  
+  // ajax experiment list
   $('#experiments th a, #experiments .pagination a, #users th a, #users .pagination a').live('click', function () {  
     $.getScript(this.href);  
     return false;  
@@ -23,6 +24,20 @@ $(function () {
   
   $('.guarded_form_save').click(function() {
     window.onbeforeunload = null
+  });
+  
+  // close button on filters and reopen
+  $('a.close-link').click(function() {
+    $($(this).attr('href')).fadeOut();
+    $("input[id=active_"+$(this).attr('href').substring(1)+"]").val("");
+    return false;
+  });
+  
+  $('a.open-link').click(function() {
+    $($(this).attr('href')).fadeIn();
+    $("input[id=active_"+$(this).attr('href').substring(1)+"]").val("1");
+    
+    return false;
   });
   
   

@@ -8,9 +8,13 @@ Hroot::Application.routes.draw do
       end
     end
     
-    member do
-      get :participants
+    resources :participants do
+      collection do
+        get :manage
+        post :manage
+      end
     end
+  
   end
   
   resources :users
@@ -20,6 +24,8 @@ Hroot::Application.routes.draw do
   get "admin/users"
 
   get "home/import"
+  get "home/import_test"
+  
   get "home/index"
   
   root :to => "home#index"

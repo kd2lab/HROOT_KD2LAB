@@ -11,8 +11,10 @@ class User < ActiveRecord::Base
   
   has_many :experimenter_assignments
   has_many :experiments, :through => :experimenter_assignments, :source => :experiment
-  has_many :experiment_participations
-  has_many :participations, :through => :experiment_participation, :source => :experiment
+  has_many :participations
+  has_many :participated_experiments, :through => :participations, :source => :experiment
+  
+  belongs_to :study
   
   validates_presence_of :firstname, :lastname, :matrikel
   

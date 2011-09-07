@@ -14,8 +14,6 @@ de:
       session:
         start_date: Startdatum
         start_time: Startzeit
-        registration_date: Anmeldedatum
-        registration_time: Anmeldezeit
         description: Beschreibung
         duration: Dauer in Minuten
         needed: Nötige Teilnehmer
@@ -31,6 +29,7 @@ de:
         password_confirmation: Passwort-Wiederholung
       experiment:
         description: Beschreibung
+        experiment_type_id: Experiment-Typ
     errors:
       models:
         experiment:

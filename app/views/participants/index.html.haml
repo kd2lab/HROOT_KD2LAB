@@ -6,13 +6,13 @@
   &gt;
   Teilnehmer
   
-= render :partial => "tabs", :locals => {:selected => 1} 
+= render :partial => "experiments/tabs", :locals => {:selected => 1} 
 
 %br
 %br
 %br
 
-= form_tag participants_experiment_path(@experiment), :method => 'get', :id => "participant_search" do
+= form_tag experiment_participants_path(@experiment), :method => 'get', :id => "participant_search" do
   %p  
     = text_field_tag :search, params[:search] 
     = submit_tag "Suche", :name => nil  

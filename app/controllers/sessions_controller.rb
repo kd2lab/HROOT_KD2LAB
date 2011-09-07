@@ -23,8 +23,6 @@ class SessionsController < ApplicationController
     @session = Session.new(params[:session])
     @session.start_date = params[:session][:start_date]
     @session.start_time = params[:session][:start_time]
-    @session.registration_date = params[:session][:registration_date]
-    @session.registration_time = params[:session][:registration_time]
     
     @session.experiment = @experiment
     

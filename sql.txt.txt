@@ -1,0 +1,39 @@
+- noshow sql:
+
+SELECT 
+  users.id, users.lastname, users.firstname,
+  (SELECT COUNT(participations.id) 
+   FROM participations, experiments
+   WHERE
+      participations.experiment_id = experiments.id AND 
+      user_id = users.id AND 
+      participations.registered = 1 AND
+      experiments.finished = 1 AND
+      experiments.show_in_stats = 1) AS participations_count,
+  (SELECT COUNT(participations.id) 
+   FROM participations, experiments
+   WHERE
+      participations.experiment_id = experiments.id AND 
+      user_id = users.id AND 
+      participations.registered = 1 AND
+      experiments.show_in_stats = 1 AND
+      experiments.finished = 1 AND
+      participations.showup = 0) AS noshow_count
+    
+FROM users
+
+
+
+
+-- finding noshows in old system
+
+
+select or_participants.`lname`, or_participants.fname, or_participate_at.*, count(or_participate_at.experiment_id) 
+  from or_participate_at, or_experiments, or_participants
+  WHERE
+    or_participants.`participant_id` = or_participate_at.`participant_id` AND
+    or_participate_at.experiment_id = or_experiments.experiment_id AND 
+    or_experiments.hide_in_stats = 'n' AND
+    or_experiments.experiment_finished = 'y' AND
+    registered='y' AND shownup='n'
+  group by participant_id;

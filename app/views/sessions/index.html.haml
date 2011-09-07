@@ -34,13 +34,13 @@
       
       %br
       zugeordnet
-      =session.experiment_participations.count
+      =session.participations.count
       | registriert
-      =session.experiment_participations.where(:registered => true).count
+      =session.participations.where(:registered => true).count
       | showup
-      =session.experiment_participations.where(:showup => true).count
+      =session.participations.where(:showup => true).count
       | teilgenommen
-      =session.experiment_participations.where(:participated => true).count
+      =session.participations.where(:participated => true).count
       %br
         
         

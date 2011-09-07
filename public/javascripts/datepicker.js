@@ -22,6 +22,5 @@ $(function () {
   $.datepicker.setDefaults($.datepicker.regional['de']);
   
   $('#session_start_date').datepicker( $.datepicker.regional[ 'de' ] );
-  $('#session_registration_date').datepicker( $.datepicker.regional[ 'de' ] );
   
 })

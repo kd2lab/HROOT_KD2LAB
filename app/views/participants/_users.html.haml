@@ -1,0 +1,108 @@
+= hidden_field_tag "active[f1]", params[:active][:f1]
+= hidden_field_tag "active[f2]", params[:active][:f2]
+= hidden_field_tag "active[f3]", params[:active][:f3]
+= hidden_field_tag "active[f4]", params[:active][:f4]
+= hidden_field_tag "active[f5]", params[:active][:f5]
+= hidden_field_tag "active[f6]", params[:active][:f6]
+= hidden_field_tag "active[f7]", params[:active][:f7]
+
+Filter: 
+
+%a.open-link{:href => '#f1'}="Geschlecht"
+|
+%a.open-link{:href => '#f2'}="Nichterscheinen"
+|
+%a.open-link{:href => '#f3'}="Anmeldungen"
+|
+%a.open-link{:href => '#f4'}="Semester"
+|
+%a.open-link{:href => '#f5'}="Fächer"
+|
+%a.open-link{:href => '#f6'}="Experimenttypen"
+|
+%a.open-link{:href => '#f7'}="Experimente"
+
+
+%br
+%br
+.filter
+  #f1.filter-block{:style => params[:active]['f1'] == "1" ? "" : "display:none"}
+    = render :partial => 'close_link', :locals => {:name => 'f1'} 
+    Geschlecht:
+    %br
+    = select_tag :gender, options_for_select({"männlich" => 'm', "weiblich" => 'f'}, params[:gender])
+   
+    
+  #f2.filter-block{:style => params[:active]['f2'] == "1" ? "" : "display:none"}
+    = render :partial => 'close_link', :locals => {:name => 'f2'} 
+    Anzahl Nichterscheinen
+    %br
+    = select_tag :noshow_op, options_for_select(["<=", ">"], params[:noshow_op])
+    = select_tag :noshow, options_for_select((0..10), params[:noshow])
+  
+  #f3.filter-block{:style => params[:active]['f3'] == "1" ? "" : "display:none"}
+    = render :partial => 'close_link', :locals => {:name => 'f3'} 
+    Anzahl Anmeldungen
+    %br
+    = select_tag :register_op, options_for_select(["<=", ">"], params[:register_op])
+    = select_tag :register, options_for_select((0..10), params[:register])
+  
+  #f4.filter-block{:style => params[:active]['f4'] == "1" ? "" : "display:none"}
+    = render :partial => 'close_link', :locals => {:name => 'f4'} 
+    Anzahl Semester
+    %br
+    = select_tag :semester_op, options_for_select(["<=", "=", ">="], params[:semester_op]), {:disabled => true}
+    = select_tag :semester, options_for_select((1..20), params[:semester]), {:disabled => true}
+  
+  #f5.filter-block{:style => params[:active]['f5'] == "1" ? "" : "display:none"}
+    = render :partial => 'close_link', :locals => {:name => 'f5'} 
+    = select_tag :study_op, options_for_select(["Nur", "Ohne"], params[:study_op])
+    Teilnehmer aus folgenden Studienfächern:
+    %br
+    = select_tag :study, options_for_select(Study.all.map{|s| [s.name, s.id]}, params[:study]), {:include_blank => true, :multiple => true, :class => "chzn-select", :'data-placeholder' => "Studienfächer...", :style=>"width:650px"}
+  
+  #f6.filter-block{:style => params[:active]['f6'] == "1" ? "" : "display:none"}
+    = render :partial => 'close_link', :locals => {:name => 'f6'} 
+    = select_tag :exp_typ_op, options_for_select(["Nur", "Ohne"], params[:exp_typ_op])
+    Teilnehmer, die an mindestens einem Experiment dieser Typen teilgenommen haben:
+    %br
+    = select_tag :experiment_type, options_for_select(ExperimentType.order(:name).map{|s| [s.name, s.id]}, params[:experiment_type]), {:include_blank => true, :multiple => true, :class => "chzn-select", :'data-placeholder' => "Experiment-Typen...", :style=>"width:650px"}
+
+  #f7.filter-block{:style => params[:active]['f7'] == "1" ? "" : "display:none"}
+    = render :partial => 'close_link', :locals => {:name => 'f7'} 
+    Teilnehmer, die  
+    = select_tag :exp_op, options_for_select(["zu einem der", "zu allen der", "zu keinem der"], params[:exp_op])
+    folgenden Experimente zugeordnet sind
+    = select_tag :exp_op2, options_for_select(["", "und teilgenommen haben"], params[:exp_op2])
+    %br
+    = select_tag :experiment, options_for_select(Experiment.order(:name).map{|s| [truncate(s.name), s.id]}, params[:experiment]), {:include_blank => true, :multiple => true, :class => "chzn-select", :'data-placeholder' => "Experimente...", :style=>"width:650px"}
+  
+%br
+
+-#= hidden_field_tag :direction, params[:direction]
+-#= hidden_field_tag :sort, params[:sort]
+
+= @users.length
+gefunden
+%br
+%br
+
+%table
+  %tr
+    %th Name
+    %th Vorname
+    %th E-Mail
+    %th Geschlecht
+    %th nicht erschienen
+
+  - @users.each do |user| 
+    %tr
+      %td= highlight(user.lastname, params[:search])
+      %td= highlight(user.firstname, params[:search])
+      %td= highlight(user.email, params[:search])
+      %td= user.gender
+      %td
+        = user.noshow_count
+        = '/'
+        = user.participations_count
+//= will_paginate @users

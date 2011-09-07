@@ -7,8 +7,6 @@
   = f.input :start_date, :required => false
   = f.input :start_time, :required => false, :collection => Session.session_times
   = f.input :duration, :required => false
-  = f.input :registration_date, :required => false
-  = f.input :registration_time, :required => false, :collection => Session.session_times
   = f.input :description, :as => :text
   = f.input :needed
   = f.input :reserve

@@ -1,7 +1,7 @@
 
 = simple_form_for @experiment, :html => {:class => "guarded_form"} do |f| 
   = f.input :name, :required => false
-  = f.input :typ, :collection => Settings.experiment_classes, :input_html => {:class => "chzn-select"}
+  = f.input :experiment_type_id, :collection => ExperimentType.order(:name), :input_html => {:class => "chzn-select", :'data-placeholder' => "Typ wählen...", :style=>"width:410px"}
   
   %br
 
@@ -27,9 +27,11 @@
         ), |
         {:multiple => true, :class => "chzn-select", :'data-placeholder' => "Personen wählen...", :style=>"width:410px"} |
       ) |
-
-  
   = f.input :description, :as => :text
+  %br
+  = f.input :registration_active, :label => "Die Anmeldung für dieses Experiment ist aktiv" 
+  = f.input :finished, :label => "Dieses Experiment ist beendet" 
+  %br
   = f.input :show_in_stats, :label => "Dieses Experiment in der Statistik berücksichtigen" 
   = f.input :show_in_calendar, :label => "Dieses Experiment im Kalender anzeigen" 
   %br

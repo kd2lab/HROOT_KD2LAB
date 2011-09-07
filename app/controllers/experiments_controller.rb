@@ -7,7 +7,7 @@ class ExperimentsController < ApplicationController
     @experiments = Experiment
       .search(params[:search])
       .includes(:experimenter_assignments, :experimenters, :sessions)
-      .order("COALESCE(sessions.start, experiments.created_at) DESC")
+      .order("experiments.finished, COALESCE(sessions.start, experiments.created_at) DESC")
       .paginate(:per_page => 30, :page => params[:page])  
   end
 
@@ -50,18 +50,4 @@ class ExperimentsController < ApplicationController
     redirect_to(experiments_url)
   end
   
-  def participants
-    if params[:search]
-      @participants = @experiment.participants
-                     .where('(firstname LIKE ? OR lastname LIKE ? OR email LIKE ?)',
-                       '%'+params[:search]+'%',  '%'+params[:search]+'%',  '%'+params[:search]+'%',
-                     )
-                     .order("lastname, firstname")
-                     .paginate(:per_page => 50, :page => params[:page])  
-    else
-      @participants = @experiment.participants
-                      .order("lastname, firstname")
-                      .paginate(:per_page => 50, :page => params[:page])
-    end
-  end
 end

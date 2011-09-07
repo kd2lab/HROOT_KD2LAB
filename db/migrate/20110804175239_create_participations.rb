@@ -1,6 +1,6 @@
-class CreateExperimentParticipations < ActiveRecord::Migration
+class CreateParticipations < ActiveRecord::Migration
   def self.up
-    create_table :experiment_participations do |t|
+    create_table :participations do |t|
       t.integer :experiment_id
       t.integer :session_id
       t.integer :user_id
@@ -11,9 +11,13 @@ class CreateExperimentParticipations < ActiveRecord::Migration
 
       t.timestamps
     end
+    
+    add_index :participations, :experiment_id
+    add_index :participations, :user_id
+    add_index :participations, :session_id
   end
 
   def self.down
-    drop_table :experiment_participations
+    drop_table :participations
   end
 end
