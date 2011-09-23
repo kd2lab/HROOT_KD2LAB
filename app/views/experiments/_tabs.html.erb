@@ -3,9 +3,9 @@
              :selected => selected,
              :links => [
                {:title => "Allgemeine Daten", :url=>edit_experiment_url(@experiment)}, 
-               {:title => "Teilnehmer", :url => experiment_participants_path(@experiment)},
+               {:title => "Zugeordnete", :url => experiment_participants_path(@experiment)},
                {:title => "Sessions", :url => experiment_sessions_path(@experiment)},
-               {:title => "Teilnehmer zuordnen", :url => manage_experiment_participants_path(@experiment)}
+               {:title => "Poolmitglieder zuordnen", :url => manage_experiment_participants_path(@experiment)}
              ]
            }
 %>
