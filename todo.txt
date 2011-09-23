@@ -1,23 +1,14 @@
-- userverwaltung
-  standardfilter + rolle
-  neuen nutzer anlegen
-  ajax raus
-  sortieren nach spalten
-  datum reparieren
-  
-  
 
-- redirect bei login auf account oder adminbereich (siehe application controller)
+
 - participations import verbessern, check auf existenten user
-- anmeldung von studierenden zu sessions
 - studienbeginn in registrierungsprozess, user-pflege und validierung
-- studienbeginn wird mit monat/jahr kodiert (oktober, april für hamburg)
-- filter für monat/jahr von/bis
+
 - session: fehlermeldungen abfangen für nichtnumerische eingaben (minuten, nötige, reserve) - anderer browser
 - zeitzonenunterstützung
 
-
-
+- sortieren nach geschlecht
+- teilnehmer identifizieren, die nicht an einem andern experiment teilgenommen haben
+- negativer experimentfilter
 
 
 

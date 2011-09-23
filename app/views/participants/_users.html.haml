@@ -8,7 +8,7 @@
   Filter: 
 
   - { 'gender' => 'Geschlecht', 'noshow' => 'Nichterscheinen', 'register' => 'Anmeldungen', 'begin' => 'Studienbeginn', |
-      'study' => 'Fächer', 'eperimenttype' => 'Experimenttypen', 'experiment' => 'Experimente'}.each do |key, value|
+      'study' => 'Fächer', 'experimenttype' => 'Experimenttypen', 'experiment' => 'Experimente'}.each do |key, value|
     %a.open-link{:href => '#f'+key}=value
     = '|' unless key == 'experiment'
     
