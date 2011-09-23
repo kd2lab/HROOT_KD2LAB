@@ -230,7 +230,7 @@ EOSQL
   end
   
   def self.roles
-    {"Benutzer" => "user", "Experimentator" => "experimenter", "Administrator" => "admin"}
+    {"Poolmitglied (P)" => "user", "Experimentator (E)" => "experimenter", "Administrator (A)" => "admin"}
   end
   
   def begin_date
