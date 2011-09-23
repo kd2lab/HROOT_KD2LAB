@@ -1,45 +1,24 @@
-= form_for(@user) do |form| 
+%br
+
+= simple_form_for @user, :html => {:class => "guarded_form"} do |f| 
+  = f.input :firstname, :required => false
+  = f.input :lastname, :required => false
+  = f.input :matrikel, :required => false
+  = f.input :email
+  = f.input :password
+  = f.input :password_confirmation
   
+  %br
+  = f.input :role, :collection => User.roles, :include_blank => false
+  %br
+  = f.input :study_id, :collection => Study.all.map{|s| [s.name, s.id]}, :include_blank => true
+  = f.input :begin_month, :collection => (1..12)
+  = f.input :begin_year, :collection => (Time.now.year-10..Time.now.year)
+  %br
+  = f.input :deleted, :label => "Benutzer ist als gelöscht markiert" 
   
-  = form.label :firstname
   %br
-  = form.text_field :firstname
-  %br
-  %br
-
-  = form.label :lastname
-  %br
-  = form.text_field :lastname
+  = f.submit "Benutzer speichern", :class => "guarded_form_save"
   %br
   %br
-
-  = form.label :matrikel
-  %br
-  = form.text_field :matrikel
-  %br
-  %br
-
-
-  = form.label :email
-  %br
-  = form.text_field :email
-  %br
-  %br
-
-  = form.label :password 
-  %br
-  = form.password_field :password
-  %br
-  %br
-
-  = form.label :password_confirmation
-  %br
-  = form.password_field :password_confirmation
-  %br
-  %br
-  
-  .actions
-    = form.submit "Speichern"
-
-
   

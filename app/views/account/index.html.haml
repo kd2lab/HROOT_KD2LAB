@@ -1,3 +1,14 @@
 %p
-  Login-Bereich...
+  Login-Bereich für User
+
+%br
+
+- if current_user.registered_sessions.count > 0
+  = render :partial => 'registered_sessions'
+  
+%hr  
+
+- if current_user.available_sessions.count > 0
+  = render :partial => 'open_sessions'
+
   

@@ -1,0 +1,6 @@
+#frole.filter-block{:style => filter_style('frole')}
+  = render :partial => 'shared/close_link', :locals => {:name => 'frole'} 
+  = hidden_field_tag "active[frole]", params[:active][:frole]
+  Rolle:
+  %br
+  = select_tag :role, options_for_select(User.roles, params[:role])

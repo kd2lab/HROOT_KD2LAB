@@ -1,0 +1,19 @@
+Sie haben sich zu folgenden Terminen angemeldet:
+
+%br
+%br
+
+
+/ todo: continue here - confirmation page, participation creation - nicer layout
+
+- current_user.registered_sessions.each do |s|
+  = s.start.to_date
+  = s.start.strftime("%H:%M")+"-"+(s.start+s.duration.minutes).strftime("%H:%M")
+  
+  = s.location.name
+  %br
+  Status: unbestätigt
+   
+  %br
+  %br
+  

@@ -1,0 +1,7 @@
+#fstudy.filter-block{:style => filter_style('fstudy')}
+  = render :partial => 'shared/close_link', :locals => {:name => 'fstudy'} 
+  = hidden_field_tag "active[fstudy]", params[:active][:fstudy]
+  = select_tag :study_op, options_for_select(["Nur", "Ohne"], params[:study_op])
+  Teilnehmer aus folgenden Studienfächern:
+  %br
+  = select_tag :study, options_for_select(Study.all.map{|s| [s.name, s.id]}, params[:study]), {:include_blank => true, :multiple => true, :class => "chzn-select", :'data-placeholder' => "Studienfächer...", :style=>"width:650px"}

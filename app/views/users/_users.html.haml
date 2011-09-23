@@ -1,20 +1,82 @@
 = hidden_field_tag :direction, params[:direction]
 = hidden_field_tag :sort, params[:sort]
 
-%table
-  %tr
-    %th= sortable 'firstname', 'Vorname'
-    %th= sortable 'lastname', 'Nachname'
-    %th= sortable 'email', 'E-Mail'
-    %th
+.filter
+  Suche in Name, Vorname, E-Mail-Adresse:
+  %br
+  = text_field_tag :search, params[:search] 
+  %br
+  %br
 
-  - @users.each do |user| 
+  Filter: 
+ 
+  - { 'gender' => 'Geschlecht', 'noshow' => 'Nichterscheinen', 'register' => 'Anmeldungen', 'role' => 'Rolle', 'begin' => 'Studienbeginn', |
+      'study' => 'Fächer', 'eperimenttype' => 'Experimenttypen', 'experiment' => 'Experimente'}.each do |key, value|
+    %a.open-link{:href => '#f'+key}=value
+    = '|' unless key == 'experiment'
+  
+ 
+  %br
+  %br
+
+
+  = render :partial => 'shared/filter_gender'
+  = render :partial => 'shared/filter_noshow' 
+  = render :partial => 'shared/filter_register' 
+  = render :partial => 'shared/filter_role'
+  = render :partial => 'shared/filter_begin' 
+  = render :partial => 'shared/filter_study' 
+  = render :partial => 'shared/filter_experiment_type' 
+  = render :partial => 'shared/filter_experiment' 
+  
+
+
+.searchinfo
+  .right
+    = submit_tag "Filter anwenden und Ergebnis aktualisieren", :name => 'submit_mode'
+  Zeige
+  %b= @users.length
+  von
+  %b= @user_count
+  
+%hr
+%br
+
+
+%br
+%br
+
+- if @users.count > 0
+  %table
     %tr
-      %td= user.firstname
-      %td= user.lastname
-      %td= user.email
-      %td
-        = link_to 'Bearbeiten', edit_user_path(user)
-        = link_to 'Löschen', user, :confirm => 'Sind Sie sicher?', :method => :delete      
+      %th= sortable_for_form 'lastname', 'Name'  
+      %th= sortable_for_form 'firstname', 'Vorname'
+      %th= sortable_for_form 'role', 'Rolle'
+      %th= sortable_for_form 'email', 'E-Mail'
+      %th= sortable_for_form 'study_name', 'Fach'
+      %th Gesch.
+      %th= sortable_for_form 'begin_date', 'Beginn'
+      %th= sortable_for_form 'noshow_count' , "nicht ersch."
+      %th
+
+    - @users.each do |user| 
+      %tr{:class => if user.deleted then "deleted" end}
+        %td= highlight(truncate(user.lastname, {:length => 15}), params[:search])
+        %td= highlight(truncate(user.firstname, {:length => 10}), params[:search])
+        %td= {'user' => 'User', 'experimenter' => 'Exp.', 'admin' => 'Admin'}[user.role]
+        %td= link_to highlight(truncate(user.email, {:length => 15}), params[:search]), "mailto:#{user.email}"
+        %td= truncate(user.study_name, {:length => 10})  
+        %td= user.gender
+        %td= user.begin_date 
+        %td= "#{user.noshow_count}/#{user.participations_count}" if user.user?
+        %td= link_to "Bearbeiten", edit_user_path(user)
         
-= will_paginate @experiments
+- else
+  %br
+  %b
+    Kein User gefunden
+  %br  
+  %br
+  %br
+  %br
+

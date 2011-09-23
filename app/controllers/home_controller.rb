@@ -2,7 +2,7 @@
 
 class HomeController < ApplicationController
   def index
-
+    
   end
   
   def import_test
@@ -13,13 +13,28 @@ class HomeController < ApplicationController
     db = Sequel.connect(:adapter=>'mysql2', :host=>'localhost', :database=>'controlling_orsee', :user=>'root', :password=>'')
     
     db[:or_participants].each do |row|
-      field_of_studies = db[:or_lang].first(:content_type => "field_of_studies", :content_name => row[:field_of_studies])
-      @report << field_of_studies[:de]
+      # calculate creation date minus 6 months per semester
+      start_reference = Date.new(1970,1,1)+row[:creation_time].seconds-(6.months*(row[:begin_of_studies].to_i-1))
+      m = start_reference.month
+      y = start_reference.year
+      
+      # todo import month, year...
+      
+      if m>=4
+        if m >= 10
+          m = 10
+        else
+          m = 4
+        end
+      else
+        m=10
+        y = y-1
+      end
+      
+      puts "#{m} #{y}\n"
     end
     
-    @report << "öäääüü"
-    
-    render :text => Study.all.map{ |s| s.name }.join('<br/>')
+    render :text => @report.inspect
   end
   
   def import
@@ -57,6 +72,24 @@ class HomeController < ApplicationController
       field_of_studies = db[:or_lang].first(:content_type => "field_of_studies", :content_name => row[:field_of_studies])
       study = Study.find_or_create_by_name(field_of_studies[:de])
       
+      # calculate creation date minus 6 months per semester
+      start_reference = Date.new(1970,1,1)+row[:creation_time].seconds-(6.months*(row[:begin_of_studies].to_i-1))
+      m = start_reference.month
+      y = start_reference.year
+      
+      # todo import month, year...
+      
+      if m>=4
+        if m >= 10
+          m = 10
+        else
+          m = 4
+        end
+      else
+        m=10
+        y = y-1
+      end
+      
       u = User.new(
         :email => row[:email], 
         :firstname => row[:fname],
@@ -66,11 +99,14 @@ class HomeController < ApplicationController
         :phone => row[:phone_number],
         :password => 'tester',
         :password_confirmation => "tester",
-        :role => 'user'
+        :role => 'user',
+        :begin_month => m,
+        :begin_year => y,
+        :deleted => row[:deleted] == 'y',
+        :study_id => study.id
       )
+      
       u.skip_confirmation!
-      u.deleted = row[:deleted] == 'y'
-      u.study_id = study.id
       u.save
       
       if !u.valid?

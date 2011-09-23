@@ -2,13 +2,13 @@
 
 $(function () {  
   // ajax experiment list
-  $('#experiments th a, #experiments .pagination a, #users th a, #users .pagination a').live('click', function () {  
+  $('#experiments th a, #experiments .pagination a').live('click', function () {  
     $.getScript(this.href);  
     return false;  
   });  
   
   // Search form.  
-  $('#experiment_search, #user_search').submit(function () {  
+  $('#experiment_search').submit(function () {  
     $.get(this.action, $(this).serialize(), null, 'script');  
     return false;  
   });
@@ -38,6 +38,31 @@ $(function () {
     $("input[id=active_"+$(this).attr('href').substring(1)+"]").val("1");
     
     return false;
+  });
+  
+  // sorting of participants list
+  $('a.sort-link').click(function() {
+    $('#sort').val($(this).attr('href'));
+    $('#direction').val($(this).attr('data-sort-direction'));
+    $('form').submit();
+    return false;
+  });
+  
+  // select and deselect all checkboxes
+  $('a.all-link').click(function() {
+    $('form input[type=checkbox]').attr('checked', true);
+    return false;
+  });
+  
+  $('a.none-link').click(function() {
+    $('form input[type=checkbox]').attr('checked', false);
+    return false;
+  });
+  
+  
+  // on submit of "all" check all boxes
+  $('.submit_all').click(function() {
+    $('form input[type=checkbox]').attr('checked', true);
   });
   
   

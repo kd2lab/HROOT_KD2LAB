@@ -1,8 +1,8 @@
 require 'test_helper'
 
 class ExperimentTest < ActiveSupport::TestCase
-  # Replace this with your real tests.
-  test "the truth" do
-    assert true
-  end
+  context "a valid experiment" do
+    should validate_presence_of :name
+  end 
+
 end

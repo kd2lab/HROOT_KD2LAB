@@ -1,0 +1,7 @@
+#fexperimenttype.filter-block{:style => filter_style('fexperimenttype')}
+  = render :partial => 'shared/close_link', :locals => {:name => 'fexperimenttype'} 
+  = hidden_field_tag "active[fexperimenttype]", params[:active][:fexperimenttype]
+  = select_tag :exp_typ_op, options_for_select(["Nur", "Ohne"], params[:exp_typ_op])
+  Teilnehmer, die an mindestens einem Experiment dieser Typen teilgenommen haben:
+  %br
+  = select_tag :experiment_type, options_for_select(ExperimentType.order(:name).map{|s| [s.name, s.id]}, params[:experiment_type]), {:include_blank => true, :multiple => true, :class => "chzn-select", :'data-placeholder' => "Experiment-Typen...", :style=>"width:650px"}

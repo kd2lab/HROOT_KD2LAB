@@ -1,0 +1,9 @@
+#fexperiment.filter-block{:style => filter_style('fexperiment')}
+  = render :partial => 'shared/close_link', :locals => {:name => 'fexperiment'} 
+  = hidden_field_tag "active[fexperiment]", params[:active][:fexperiment]
+  Teilnehmer, die  
+  = select_tag :exp_op, options_for_select(["zu einem der", "zu allen der", "zu keinem der"], params[:exp_op])
+  folgenden Experimente zugeordnet sind
+  = select_tag :exp_op2, options_for_select(["", "und teilgenommen haben"], params[:exp_op2])
+  %br
+  = select_tag :experiment, options_for_select(Experiment.order(:name).map{|s| [truncate(s.name), s.id]}, params[:experiment]), {:include_blank => true, :multiple => true, :class => "chzn-select", :'data-placeholder' => "Experimente...", :style=>"width:650px"}

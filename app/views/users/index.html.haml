@@ -1,0 +1,11 @@
+= content_for :breadcrumb do
+  &gt;
+  = link_to "Benutzer", users_path
+  
+= button_to 'Neuer Benutzer', new_user_path, :method => :get 
+
+%br
+
+= form_tag users_path, :method => 'get', :id => "user_search" do
+  #users
+    = render 'users'

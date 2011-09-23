@@ -2,9 +2,13 @@
   &gt;
   = link_to "Experimente", experiments_path
   &gt;
-  = link_to @experiment.name, edit_experiment_path(@experiment)
+  = link_to @experiment.name, experiment_path(@experiment)
   &gt;
   Teilnehmer
+  
+%h3
+  Experiment:
+  = @experiment.name  
   
 = render :partial => "experiments/tabs", :locals => {:selected => 1} 
 
@@ -12,11 +16,6 @@
 %br
 %br
 
-= form_tag experiment_participants_path(@experiment), :method => 'get', :id => "participant_search" do
-  %p  
-    = text_field_tag :search, params[:search] 
-    = submit_tag "Suche", :name => nil  
-
-
-#participants
-  = render 'participants'
+= form_tag experiment_participants_path(@experiment), :method => 'post', :id => "participant_search" do
+  #participants
+    = render 'participants'

@@ -1,0 +1,13 @@
+= content_for :breadcrumb do
+  &gt;
+  = link_to "Benutzer", users_path
+  &gt;
+  = link_to @user.firstname+' '+@user.lastname, edit_user_path(@user)
+  &gt;
+  bearbeiten
+  
+%h1
+  = @user.firstname+' '+@user.lastname
+  bearbeiten
+
+= render 'form'

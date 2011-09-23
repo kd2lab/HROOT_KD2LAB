@@ -8,7 +8,7 @@ class CreateParticipations < ActiveRecord::Migration
       t.boolean :registered
       t.boolean :showup
       t.boolean :participated
-
+      t.text :commitments
       t.timestamps
     end
     

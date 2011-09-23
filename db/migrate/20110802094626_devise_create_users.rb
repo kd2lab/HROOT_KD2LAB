@@ -20,6 +20,8 @@ class DeviseCreateUsers < ActiveRecord::Migration
       t.string :gender
       t.boolean :deleted, :default => false
       t.integer :study_id
+      t.integer :begin_month
+      t.integer :begin_year
       
       t.timestamps
     end

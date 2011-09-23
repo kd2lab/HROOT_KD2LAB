@@ -1,28 +1,40 @@
 Hroot::Application.routes.draw do
-  devise_for :users
-  
-  resources :experiments, :except => :show do
-    resources :sessions do
-      member do
-        post :duplicate
-      end
-    end
-    
-    resources :participants do
-      collection do
-        get :manage
-        post :manage
-      end
-    end
-  
+  devise_for :users, :path_names => { :sign_in => 'login', :sign_out => 'logout', :password => 'secret', :confirmation => 'confirmation', :sign_up => 'register' } do
+    get "/login" => "devise/sessions#new"
+    delete "/logout" => "devise/sessions#destroy"
+    get "/logout" => "devise/sessions#destroy"
+    get "/register" => "devise/registrations#new"
   end
   
-  resources :users
+  
+  scope '/admin' do
+    #get 'index'
+    #get 'options'
+  
+    resources :users
 
-  get "admin/index"
-  get "admin/options"
-  get "admin/users"
+    resources :experiments, :except => :show do
+      resources :sessions do
+        member do
+          post :duplicate
+        end
+      end
 
+      resources :participants do
+        collection do
+          get :manage
+          post :manage
+          post :index
+        end
+      end
+    end
+  end
+  
+
+  match 'account', :controller => 'account', :action => 'index'
+  match 'account/:action', :controller => 'account'
+    
+  
   get "home/import"
   get "home/import_test"
   

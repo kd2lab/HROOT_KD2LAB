@@ -1,108 +1,90 @@
-= hidden_field_tag "active[f1]", params[:active][:f1]
-= hidden_field_tag "active[f2]", params[:active][:f2]
-= hidden_field_tag "active[f3]", params[:active][:f3]
-= hidden_field_tag "active[f4]", params[:active][:f4]
-= hidden_field_tag "active[f5]", params[:active][:f5]
-= hidden_field_tag "active[f6]", params[:active][:f6]
-= hidden_field_tag "active[f7]", params[:active][:f7]
-
-Filter: 
-
-%a.open-link{:href => '#f1'}="Geschlecht"
-|
-%a.open-link{:href => '#f2'}="Nichterscheinen"
-|
-%a.open-link{:href => '#f3'}="Anmeldungen"
-|
-%a.open-link{:href => '#f4'}="Semester"
-|
-%a.open-link{:href => '#f5'}="Fächer"
-|
-%a.open-link{:href => '#f6'}="Experimenttypen"
-|
-%a.open-link{:href => '#f7'}="Experimente"
-
-
-%br
-%br
 .filter
-  #f1.filter-block{:style => params[:active]['f1'] == "1" ? "" : "display:none"}
-    = render :partial => 'close_link', :locals => {:name => 'f1'} 
-    Geschlecht:
-    %br
-    = select_tag :gender, options_for_select({"männlich" => 'm', "weiblich" => 'f'}, params[:gender])
-   
+  Suche in Name, Vorname, E-Mail-Adresse:
+  %br
+  = text_field_tag :search, params[:search] 
+  %br
+  %br
+
+  Filter: 
+
+  - { 'gender' => 'Geschlecht', 'noshow' => 'Nichterscheinen', 'register' => 'Anmeldungen', 'begin' => 'Studienbeginn', |
+      'study' => 'Fächer', 'eperimenttype' => 'Experimenttypen', 'experiment' => 'Experimente'}.each do |key, value|
+    %a.open-link{:href => '#f'+key}=value
+    = '|' unless key == 'experiment'
     
-  #f2.filter-block{:style => params[:active]['f2'] == "1" ? "" : "display:none"}
-    = render :partial => 'close_link', :locals => {:name => 'f2'} 
-    Anzahl Nichterscheinen
-    %br
-    = select_tag :noshow_op, options_for_select(["<=", ">"], params[:noshow_op])
-    = select_tag :noshow, options_for_select((0..10), params[:noshow])
+  %br
+  %br
   
-  #f3.filter-block{:style => params[:active]['f3'] == "1" ? "" : "display:none"}
-    = render :partial => 'close_link', :locals => {:name => 'f3'} 
-    Anzahl Anmeldungen
-    %br
-    = select_tag :register_op, options_for_select(["<=", ">"], params[:register_op])
-    = select_tag :register, options_for_select((0..10), params[:register])
-  
-  #f4.filter-block{:style => params[:active]['f4'] == "1" ? "" : "display:none"}
-    = render :partial => 'close_link', :locals => {:name => 'f4'} 
-    Anzahl Semester
-    %br
-    = select_tag :semester_op, options_for_select(["<=", "=", ">="], params[:semester_op]), {:disabled => true}
-    = select_tag :semester, options_for_select((1..20), params[:semester]), {:disabled => true}
-  
-  #f5.filter-block{:style => params[:active]['f5'] == "1" ? "" : "display:none"}
-    = render :partial => 'close_link', :locals => {:name => 'f5'} 
-    = select_tag :study_op, options_for_select(["Nur", "Ohne"], params[:study_op])
-    Teilnehmer aus folgenden Studienfächern:
-    %br
-    = select_tag :study, options_for_select(Study.all.map{|s| [s.name, s.id]}, params[:study]), {:include_blank => true, :multiple => true, :class => "chzn-select", :'data-placeholder' => "Studienfächer...", :style=>"width:650px"}
-  
-  #f6.filter-block{:style => params[:active]['f6'] == "1" ? "" : "display:none"}
-    = render :partial => 'close_link', :locals => {:name => 'f6'} 
-    = select_tag :exp_typ_op, options_for_select(["Nur", "Ohne"], params[:exp_typ_op])
-    Teilnehmer, die an mindestens einem Experiment dieser Typen teilgenommen haben:
-    %br
-    = select_tag :experiment_type, options_for_select(ExperimentType.order(:name).map{|s| [s.name, s.id]}, params[:experiment_type]), {:include_blank => true, :multiple => true, :class => "chzn-select", :'data-placeholder' => "Experiment-Typen...", :style=>"width:650px"}
+  = render :partial => 'shared/filter_gender'
+  = render :partial => 'shared/filter_noshow' 
+  = render :partial => 'shared/filter_register' 
+  = render :partial => 'shared/filter_begin' 
+  = render :partial => 'shared/filter_study' 
+  = render :partial => 'shared/filter_experiment_type' 
+  = render :partial => 'shared/filter_experiment' 
 
-  #f7.filter-block{:style => params[:active]['f7'] == "1" ? "" : "display:none"}
-    = render :partial => 'close_link', :locals => {:name => 'f7'} 
-    Teilnehmer, die  
-    = select_tag :exp_op, options_for_select(["zu einem der", "zu allen der", "zu keinem der"], params[:exp_op])
-    folgenden Experimente zugeordnet sind
-    = select_tag :exp_op2, options_for_select(["", "und teilgenommen haben"], params[:exp_op2])
-    %br
-    = select_tag :experiment, options_for_select(Experiment.order(:name).map{|s| [truncate(s.name), s.id]}, params[:experiment]), {:include_blank => true, :multiple => true, :class => "chzn-select", :'data-placeholder' => "Experimente...", :style=>"width:650px"}
-  
+= hidden_field_tag :sort, params[:sort]
+= hidden_field_tag :direction, params[:direction]
+
+.searchinfo
+  .right
+    = submit_tag "Filter anwenden und Ergebnis aktualisieren", :name => 'submit_mode'
+    
+  Zeige
+  %b= @users.length
+  von
+  %b= @user_count
+  Poolmitgliedern, bereits zugeordnet:
+  %b= @participants_count
+
+
+%hr
 %br
 
--#= hidden_field_tag :direction, params[:direction]
--#= hidden_field_tag :sort, params[:sort]
+.searchnav
+  = link_to 'Alle auswählen', '#all', {:class => 'all-link'}
+  |
+  = link_to 'Alle abwählen', '#none', {:class => 'none-link'}
+  |
+  = submit_tag "Markierte Poolmitglieder zuordnen", :name => 'submit_marked' 
+  |
+  = submit_tag "Alle angezeigten Poolmitglieder zuordnen", :name => 'submit_marked', :class => "submit_all" 
 
-= @users.length
-gefunden
 %br
-%br
 
-%table
-  %tr
-    %th Name
-    %th Vorname
-    %th E-Mail
-    %th Geschlecht
-    %th nicht erschienen
-
-  - @users.each do |user| 
+- if @users.count > 0
+  
+  %table
     %tr
-      %td= highlight(user.lastname, params[:search])
-      %td= highlight(user.firstname, params[:search])
-      %td= highlight(user.email, params[:search])
-      %td= user.gender
-      %td
-        = user.noshow_count
-        = '/'
-        = user.participations_count
-//= will_paginate @users
+      %th
+      %th= sortable_for_form 'lastname', 'Name'  
+      %th= sortable_for_form 'firstname', 'Vorname'
+      %th= sortable_for_form 'email', 'E-Mail'
+      %th= sortable_for_form 'study_name', 'Fach'
+      %th Gesch.
+      %th= sortable_for_form 'begin_date', 'Beginn'
+      %th= sortable_for_form 'noshow_count' , "nicht ersch."
+
+    - @users.each do |user| 
+      %tr
+        %td= check_box_tag "selected_users[#{user.id}]"
+        %td= highlight(user.lastname, params[:search])
+        %td= highlight(user.firstname, params[:search])
+        %td= link_to highlight(truncate(user.email, {:length => 20}), params[:search]), "mailto:#{user.email}"
+        %td= truncate(user.study_name, {:length => 20})  
+        %td= user.gender
+        %td= user.begin_date 
+        
+        %td
+          = user.noshow_count
+          = '/'
+          = user.participations_count
+- else
+  %br
+  %b
+    Kein Poolmitglied gefunden
+  %br  
+  Entweder wurden bereits alle Poolmitglieder zugeordnet, oder die Filtereinstellungen müssen geändert werden.
+  %br
+  %br
+  %br

@@ -1,0 +1,21 @@
+Bitte bestätigen Sie verbindlich, dass Sie an den folgenden Terminen teilnehmen können:
+
+%br
+%br
+
+
+= form_tag(:controller => "account", :action => "register") do
+  
+  - @sessions.each do |s|
+    = hidden_field_tag("session[#{s.id}]", params[:session]["#{s.id}"]) 
+    = s.start.to_date
+    = s.start.strftime("%H:%M")+"-"+(s.start+s.duration.minutes).strftime("%H:%M")
+    = s.location.name
+    %br
+    %br
+
+
+  %br
+  
+  = submit_tag('absenden')
+  
