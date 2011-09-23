@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   before_filter :redirect_to_https
   
   def redirect_to_https
-    redirect_to :protocol => "https://" unless (request.ssl? || request.local?)
+    redirect_to :protocol => "https" unless (request.ssl? || request.local?)
   end
   
   rescue_from CanCan::AccessDenied do |exception|
