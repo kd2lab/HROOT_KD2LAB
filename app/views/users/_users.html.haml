@@ -63,7 +63,7 @@
       %tr{:class => if user.deleted then "deleted" end}
         %td= highlight(truncate(user.lastname, {:length => 15}), params[:search])
         %td= highlight(truncate(user.firstname, {:length => 10}), params[:search])
-        %td= {'user' => 'U', 'experimenter' => 'E', 'admin' => 'A'}[user.role]
+        %td= {'user' => 'P', 'experimenter' => 'E', 'admin' => 'A'}[user.role]
         %td= link_to highlight(truncate(user.email, {:length => 15}), params[:search]), "mailto:#{user.email}"
         %td= truncate(user.study_name, {:length => 10})  
         %td= user.gender
