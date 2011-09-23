@@ -5,6 +5,7 @@ stdout_path "/var/www/rails/hroot/shared/log/unicorn.log"
 working_directory "/var/www/rails/hroot/current"
 listen 8090
 preload_app true
+HttpRequest::DEFAULTS["rack.url_scheme"] = "https"
 
 before_fork do |server, worker|
   ##
