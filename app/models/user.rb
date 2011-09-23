@@ -39,7 +39,7 @@ class User < ActiveRecord::Base
     # and the user has not defined his participation status
     exp_ids = self
       .participating_experiments
-      .where(:registration_active => true, 'Participations.commitments' => nil)
+      .where(:registration_active => true, 'participations.commitments' => nil)
       .map(&:id)
     
     #find all future sessions
