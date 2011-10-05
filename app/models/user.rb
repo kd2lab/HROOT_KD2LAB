@@ -18,6 +18,11 @@ class User < ActiveRecord::Base
   
   validates_presence_of :firstname, :lastname, :matrikel
   
+  # for devise: only allow non-deleted users
+  def self.find_for_authentication(conditions)
+    super(conditions.merge(:deleted => false))
+  end
+  
   def self.search(search)  
     if search  
       where('(firstname LIKE ? OR lastname LIKE ? OR email LIKE ?)', "%#{search}%", "%#{search}%", "%#{search}%")  
@@ -43,7 +48,7 @@ class User < ActiveRecord::Base
       .map(&:id)
     
     #find all future sessions
-    Session.where(:experiment_id => exp_ids).where('start > NOW()').order('start')
+    Session.where(:experiment_id => exp_ids).where('start_at > NOW()').order('start_at')
   end
   
   def registered_sessions
@@ -57,7 +62,7 @@ class User < ActiveRecord::Base
       end
     end
      
-    Session.where(:id => session_ids).where('start > NOW()').order('start') 
+    Session.where(:id => session_ids).where('start_at > NOW()').order('start_at') 
   end
   
   # load users and aggregate participation data
@@ -128,7 +133,7 @@ class User < ActiveRecord::Base
         end
         
         if params[:exp_typ_op] == "Ohne"
-          experiment_typ_subquery = ", (SELECT COUNT(participations.id) FROM participations, experiments WHERE user_id = users.id AND participations.participated=1 AND participations.experiment_id=experiments.id AND experiments.experiment_type_id IN (#{params[:experiment_type].map(&:to_i).join(',')})) AS forbidden_type_count "
+          experiment_typ_subquery = "(SELECT COUNT(participations.id) FROM participations, experiments WHERE user_id = users.id AND participations.participated=1 AND participations.experiment_id=experiments.id AND experiments.experiment_type_id IN (#{params[:experiment_type].map(&:to_i).join(',')})) AS forbidden_type_count, "
           having << "forbidden_type_count = 0"
         end
       end
@@ -142,7 +147,7 @@ class User < ActiveRecord::Base
         # at least one ...
         if params[:exp_op] == "zu einem der"
           experiment_join = "JOIN participations ON participations.user_id = users.id AND participations.experiment_id IN (#{params[:experiment].map(&:to_i).join(',')})"  
-          if params[:exp_op2] == "und teilgenommen haben"
+          if params[:exp_op2] == "teilgenommen haben"
             experiment_join += " AND participations.participated = 1"
           end
         end
@@ -152,7 +157,7 @@ class User < ActiveRecord::Base
           experiment_join = ''
           params[:experiment].map(&:to_i).each do |i|
             single_join = "JOIN participations as p#{i} ON p#{i}.user_id = users.id AND p#{i}.experiment_id = #{i} "
-            if params[:exp_op2] == "und teilgenommen haben"
+            if params[:exp_op2] == "teilgenommen haben"
               single_join += " AND p#{i}.participated = 1 "
             end
             experiment_join += single_join  
@@ -161,10 +166,10 @@ class User < ActiveRecord::Base
         
         # none of them...
         if params[:exp_op] == "zu keinem der"
-          if params[:exp_op2] == "und teilgenommen haben"
+          if params[:exp_op2] == "teilgenommen haben"
             and_add = " AND participations.participated = 1"
           end
-          experiment_subquery = ", (SELECT COUNT(participations.id) FROM participations WHERE user_id = users.id #{and_add} AND participations.experiment_id IN (#{params[:experiment].map(&:to_i).join(',')})) AS forbidden_count, "
+          experiment_subquery = "(SELECT COUNT(participations.id) FROM participations WHERE user_id = users.id #{and_add} AND participations.experiment_id IN (#{params[:experiment].map(&:to_i).join(',')})) AS forbidden_count, "
           having << "forbidden_count = 0"
         end
         
@@ -173,7 +178,7 @@ class User < ActiveRecord::Base
     
     # include / exclude participants in experiment
     if experiment 
-      participation_subquery = " (SELECT participations.id FROM participations"+
+      participation_subquery = "(SELECT participations.id FROM participations"+
           " WHERE participations.user_id = users.id AND participations.experiment_id = #{experiment.id}) as part_id,"
       
       # exclude members
@@ -209,8 +214,8 @@ class User < ActiveRecord::Base
              experiments.finished = 1 AND
              participations.showup = 0) AS noshow_count,
           (SELECT studies.name
-            FROM studies
-            WHERE studies.id = users.study_id
+              FROM studies
+              WHERE studies.id = users.study_id
           ) as study_name,
           #{participation_subquery}
           #{experiment_subquery}
@@ -234,6 +239,6 @@ EOSQL
   end
   
   def begin_date
-    "#{begin_month}/#{begin_year} " unless begin_month.blank? || begin_year.blank?
+    "#{"%02d" % begin_month}/#{begin_year} " unless begin_month.blank? || begin_year.blank?
   end
 end

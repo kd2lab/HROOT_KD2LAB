@@ -7,8 +7,8 @@ Sie haben sich zu folgenden Terminen angemeldet:
 / todo: continue here - confirmation page, participation creation - nicer layout
 
 - current_user.registered_sessions.each do |s|
-  = s.start.to_date
-  = s.start.strftime("%H:%M")+"-"+(s.start+s.duration.minutes).strftime("%H:%M")
+  = s.start_at.to_date
+  = s.start_at.strftime("%H:%M")+"-"+s.end_at.strftime("%H:%M")
   
   = s.location.name
   %br

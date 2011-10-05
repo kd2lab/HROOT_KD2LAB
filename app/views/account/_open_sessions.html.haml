@@ -9,8 +9,8 @@ Sie können sich für folgende Termine anmelden:
 = form_tag(:controller => "account", :action => "confirm")
 - current_user.available_sessions.each do |s|
   = check_box_tag("session[#{s.id}]", "1", params[:session]["#{s.id}"]) 
-  = s.start.to_date
-  = s.start.strftime("%H:%M")+"-"+(s.start+s.duration.minutes).strftime("%H:%M")
+  = s.start_at.to_date
+  = s.start_at.strftime("%H:%M")+"-"+s.end_at.strftime("%H:%M")
   
   = s.location.name
   %br

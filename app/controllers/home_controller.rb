@@ -70,10 +70,14 @@ class HomeController < ApplicationController
     @report << "--------- USERS ------------"
     db[:or_participants].each do |row|
       field_of_studies = db[:or_lang].first(:content_type => "field_of_studies", :content_name => row[:field_of_studies])
-      study = Study.find_or_create_by_name(field_of_studies[:de])
+      unless field_of_studies[:de] == '-'
+        study_id = Study.find_or_create_by_name(field_of_studies[:de]).id
+      else
+        study_id = nil
+      end
       
       # calculate creation date minus 6 months per semester
-      start_reference = Date.new(1970,1,1)+row[:creation_time].seconds-(6.months*(row[:begin_of_studies].to_i-1))
+      start_reference =   Date.new(1970,1,1)+row[:creation_time].seconds-(6.months*(row[:begin_of_studies].to_i-1))
       m = start_reference.month
       y = start_reference.year
       
@@ -103,17 +107,20 @@ class HomeController < ApplicationController
         :begin_month => m,
         :begin_year => y,
         :deleted => row[:deleted] == 'y',
-        :study_id => study.id
+        :study_id => study_id
       )
       
       u.skip_confirmation!
+      u.save
+      
+      # set correct creation date
+      u.created_at = Date.new(1970,1,1)+row[:creation_time].seconds
       u.save
       
       if !u.valid?
         @report << u.email+" "+u.errors.inspect
       end
     end
-        
 
     # import experiments
     @report << "--------- EXPERIMENTS ------------"
@@ -173,8 +180,12 @@ class HomeController < ApplicationController
               session[:session_start_hour].to_s+":"+
               session[:session_start_minute].to_s
             )
+            duration = session[:session_duration_hour]*60 + session[:session_duration_minute]
+            enddate = startdate+duration.minutes
           rescue
             startdate = nil
+            enddate = nil
+            duration = nil
           end
           
           # import location of this session
@@ -185,8 +196,8 @@ class HomeController < ApplicationController
           s = Session.new(
             :experiment_id => e.id,
             :description => session[:session_remarks],
-            :start => startdate,
-            :duration => session[:session_duration_hour]*60 + session[:session_duration_minute],
+            :start_at => startdate,
+            :end_at => enddate,
             :finished => session[:session_finished] =='y',
             :needed => session[:part_needed],
             :reserve => session[:part_reserve],

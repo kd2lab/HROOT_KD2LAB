@@ -1,39 +1,41 @@
 class Session < ActiveRecord::Base
+  has_event_calendar
+  
   belongs_to :experiment
   belongs_to :location
   has_many :participations
   
-  validates_presence_of :start
-  validates_presence_of :start_date
-  validates_presence_of :start_time
-  validates_presence_of :duration
+  validates_presence_of :start_at
+  validates_presence_of :end_at
+  
   validates_numericality_of :needed, :only_integer => true
   validates_numericality_of :reserve, :only_integer => true
   
-  # splitting of start date in date and time component
-  before_validation :set_date
-  attr_accessor :start_date
-  attr_accessor :start_time
-  
-
   def self.session_times
     (0..23).to_a.product(["00","15","30","45"]).collect{|t| ("%02d:%02d" % t)}
   end
   
-  def after_initialize
-    @start_date = if self.start then self.start.to_date else "" end
-    @start_time = if self.start then self.start.strftime("%H:%M") else "" end
+  def start_date
+    if start_at
+      start_at.to_date
+    else
+      Date.today
+    end
   end
   
-  protected
+  def start_time
+    if start_at
+      start_at.strftime("%H:%M")
+    else
+      "10:00"
+    end
+  end
   
-  
-  def set_date
+  def duration
     begin
-      self.start = DateTime.parse(@start_date+" "+@start_time)
+      (end_at - start_at).round / 60
     rescue
-      self.start = nil
-      self.start_date = ""
+      90
     end
   end
   

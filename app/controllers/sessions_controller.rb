@@ -4,7 +4,7 @@ class SessionsController < ApplicationController
   before_filter :load_experiment
   
   def index
-    @sessions = @experiment.sessions.order(:start)
+    @sessions = @experiment.sessions.order(:start_at)
   end
 
   def show
@@ -13,6 +13,8 @@ class SessionsController < ApplicationController
 
   def new
     @session = Session.new
+    @session.start_at = Time.zone.parse "#{Date.today} 10:00"
+    @session.end_at = @session.start_at + 90.minutes
   end
 
   def edit
@@ -20,10 +22,20 @@ class SessionsController < ApplicationController
   end
 
   def create
-    @session = Session.new(params[:session])
-    @session.start_date = params[:session][:start_date]
-    @session.start_time = params[:session][:start_time]
+    begin
+      params[:session][:start_at] = Time.zone.parse  "#{params[:session][:start_date]} #{params[:session][:start_time]}"
+      params[:session][:end_at] = params[:session][:start_at]+params[:session][:duration].to_i.abs.minutes
+    rescue
+      params[:session][:start_at] = nil
+      params[:session][:end_at] = nil
+    end
     
+    params[:session].delete :start_date
+    params[:session].delete :start_time
+    params[:session].delete :duration
+    
+    @session = Session.new(params[:session])
+     
     @session.experiment = @experiment
     
     if @session.save
@@ -35,6 +47,18 @@ class SessionsController < ApplicationController
 
   def update
     @session = Session.find(params[:id])
+    
+    begin
+      params[:session][:start_at] = Time.zone.parse  "#{params[:session][:start_date]} #{params[:session][:start_time]}"
+      params[:session][:end_at] = params[:session][:start_at]+params[:session][:duration].to_i.abs.minutes
+    rescue
+      params[:session][:start_at] = @session.start_at
+      params[:session][:end_at] = @session.end_at
+    end
+    
+    params[:session].delete :start_date
+    params[:session].delete :start_time
+    params[:session].delete :duration
     
     if @session.update_attributes(params[:session])
       redirect_to(experiment_sessions_path(@experiment), :notice => 'Die Session wurde geändert')

@@ -1,0 +1,7 @@
+= content_for :breadcrumb do
+  &gt;
+  =link_to "Administration", :controller => "admin", :action => "index"
+  &gt;
+  Einstellungen
+  
+= render :partial => "tabs", :locals => {:selected => 0} 

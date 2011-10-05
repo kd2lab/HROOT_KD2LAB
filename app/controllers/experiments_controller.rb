@@ -7,7 +7,7 @@ class ExperimentsController < ApplicationController
     @experiments = Experiment
       .search(params[:search])
       .includes(:experimenter_assignments, :experimenters, :sessions)
-      .order("experiments.finished, COALESCE(sessions.start, experiments.created_at) DESC")
+      .order("experiments.finished, COALESCE(sessions.start_at, experiments.created_at) DESC")
       .paginate(:per_page => 30, :page => params[:page])  
   end
 

@@ -31,8 +31,8 @@
       
     .left
       %b
-        =session.start.to_date
-        =session.start.strftime("%H:%M")+"-"+(session.start+session.duration.minutes).strftime("%H:%M")
+        =session.start_at.to_date
+        =session.start_at.strftime("%H:%M")+"-"+session.end_at.strftime("%H:%M")
       
       %br
       =truncate(session.location.name, :length => 40) if session.location

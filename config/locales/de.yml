@@ -49,6 +49,7 @@ de:
             matrikel:
             email:
               taken: ist bereits vergeben.
+              invalid: ist ungültig
             password: 
               confirmation: muss wiederholt werden
               too_short: ist zu kurz (mindestens 6 Zeichen)
@@ -57,6 +58,12 @@ de:
   date:
     formats:
       default: "%d.%m.%Y"
+    day_names: [Sonntag, Montag, Dienstag, Mittwoch, Donnerstag, Freitag, Samstag]
+    abbr_day_names: [So, Mo, Di, Mi, Do, Fr, Sa]
+
+    # Don't forget the nil at the beginning; there's no such thing as a 0th month
+    month_names: [~, Januar, Februar, März, April, Mai, Juni, Juli, August, September, Oktober, November, Dezember]
+    abbr_month_names: [~, Jan, Feb, Mär, Apr, Mai, Jun, Jul, Aug, Sep, Okt, Nov, Dez]
   will_paginate:
     prev_label: "&lt; &lt;"
     next_label: "&gt; &gt;"

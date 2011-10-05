@@ -5,7 +5,7 @@
   
 = simple_form_for @session, {:html => {:class => "guarded_form"}, :url => url} do |f| 
   = f.input :start_date, :required => false
-  = f.input :start_time, :required => false, :collection => Session.session_times
+  = f.input :start_time, :required => false, :collection => Session.session_times, :include_blank => false
   = f.input :duration, :required => false
   = f.input :description, :as => :text
   = f.input :needed

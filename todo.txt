@@ -6,12 +6,12 @@
 - session: fehlermeldungen abfangen für nichtnumerische eingaben (minuten, nötige, reserve) - anderer browser
 - zeitzonenunterstützung
 
-- sortieren nach geschlecht
-- teilnehmer identifizieren, die nicht an einem andern experiment teilgenommen haben
-- negativer experimentfilter
 
 
 
+
+
+- htaccess: guest dj!d38dFghj
 
 
 
@@ -38,15 +38,6 @@
 
 
 
-- Teilnehmer zuordnen:
-
-   Nach nichterscheinen
-   nach anzahl registrierungen
-   geschlecht
-   semester
-   studienfach
-   experimentklassen
-   bisherige teilnahme mit mindestens einem / ausschluss
 
 - Session löschen: anmeldungen überprüfen
 - Experimentliste ordentlich

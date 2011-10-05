@@ -61,9 +61,9 @@
       %th= sortable_for_form 'firstname', 'Vorname'
       %th= sortable_for_form 'email', 'E-Mail'
       %th= sortable_for_form 'study_name', 'Fach'
-      %th Gesch.
+      %th= sortable_for_form 'gender',  'Gesch.'
       %th= sortable_for_form 'begin_date', 'Beginn'
-      %th= sortable_for_form 'noshow_count' , "nicht ersch."
+      %th.qtip_ersch= sortable_for_form 'noshow_count' , "Showup"
 
     - @users.each do |user| 
       %tr
@@ -71,7 +71,8 @@
         %td= highlight(user.lastname, params[:search])
         %td= highlight(user.firstname, params[:search])
         %td= link_to highlight(truncate(user.email, {:length => 20}), params[:search]), "mailto:#{user.email}"
-        %td= truncate(user.study_name, {:length => 20})  
+        %td.study_name_popup{:'data-text' => user.study_name || 'keine Angabe' }
+          =user.study_name ? truncate(user.study_name, {:length => 10}) : 'k. A.'
         %td= user.gender
         %td= user.begin_date 
         

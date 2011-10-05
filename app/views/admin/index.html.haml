@@ -1,0 +1,15 @@
+= stylesheet_link_tag "event_calendar" 
+
+= content_for :breadcrumb do
+  &gt;
+  =link_to "Administration", :controller => "admin", :action => "index"
+  
+  
+  
+%br
+
+= raw(event_calendar)
+
+%br
+%br
+%br

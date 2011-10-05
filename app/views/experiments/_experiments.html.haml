@@ -16,9 +16,9 @@
     - if experiment.sessions.length > 0
       = experiment.sessions.length
       Sessions von
-      =experiment.sessions.collect{|d| d.start.to_date}.min
+      =experiment.sessions.collect{|d| d.start_at.to_date}.min
       bis
-      =experiment.sessions.collect{|d| d.start.to_date}.max.to_s+','
+      =experiment.sessions.collect{|d| d.start_at.to_date}.max.to_s+','
     - else
       keine Sessions,
       

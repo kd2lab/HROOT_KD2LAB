@@ -42,7 +42,6 @@
 %hr
 %br
 
-
 %br
 %br
 
@@ -54,9 +53,10 @@
       %th= sortable_for_form 'role', 'Rolle'
       %th= sortable_for_form 'email', 'E-Mail'
       %th= sortable_for_form 'study_name', 'Fach'
-      %th Gesch.
+      %th= sortable_for_form 'gender',  'G.'
       %th= sortable_for_form 'begin_date', 'Beginn'
-      %th= sortable_for_form 'noshow_count' , "nicht ersch."
+      %th= sortable_for_form 'created_at', 'Anmeld.'
+      %th.qtip_ersch= sortable_for_form 'noshow_count' , 'Show'
       %th
 
     - @users.each do |user| 
@@ -65,9 +65,11 @@
         %td= highlight(truncate(user.firstname, {:length => 10}), params[:search])
         %td= {'user' => 'P', 'experimenter' => 'E', 'admin' => 'A'}[user.role]
         %td= link_to highlight(truncate(user.email, {:length => 15}), params[:search]), "mailto:#{user.email}"
-        %td= truncate(user.study_name, {:length => 10})  
+        %td.study_name_popup{:'data-text' => user.study_name || 'keine Angabe' }
+          =user.study_name ? truncate(user.study_name, {:length => 10}) : 'k. A.'
         %td= user.gender
         %td= user.begin_date 
+        %td= user.created_at.strftime('%d.%m.%y')
         %td= "#{user.noshow_count}/#{user.participations_count}" if user.user?
         %td= link_to "Bearbeiten", edit_user_path(user)
         

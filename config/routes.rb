@@ -1,4 +1,7 @@
 Hroot::Application.routes.draw do
+
+  match '/calendar(/:year(/:month))' => 'calendar#index', :as => :calendar, :constraints => {:year => /\d{4}/, :month => /\d{1,2}/}
+
   devise_for :users, :path_names => { :sign_in => 'login', :sign_out => 'logout', :password => 'secret', :confirmation => 'confirmation', :sign_up => 'register' } do
     get "/login" => "devise/sessions#new"
     delete "/logout" => "devise/sessions#destroy"
@@ -7,10 +10,15 @@ Hroot::Application.routes.draw do
   end
   
   
-  scope '/admin' do
-    #get 'index'
-    #get 'options'
+  match 'admin', :controller => 'admin', :action => 'index'
+  match 'admin/index', :controller => 'admin', :action => 'index'
   
+  scope '/admin' do
+    match 'options', :controller => 'options', :action => 'index'
+    match 'options/index', :controller => 'options', :action => 'index'
+    match 'options/locations', :controller => 'options', :action => 'locations'
+    match 'options/emails', :controller => 'options', :action => 'emails'
+        
     resources :users
 
     resources :experiments, :except => :show do

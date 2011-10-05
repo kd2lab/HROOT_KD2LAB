@@ -8,6 +8,10 @@ class ApplicationController < ActionController::Base
   end
   
   def after_sign_in_path_for(resource)
-    account_url
+    if current_user.user?
+      account_url
+    else
+      admin_url
+    end
   end
 end

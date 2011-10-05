@@ -1,6 +1,6 @@
 #encoding: utf-8
 
-class Experiment < ActiveRecord::Base
+class Experiment < ActiveRecord::Base  
   has_many :experimenter_assignments
   has_many :experimenters, :through => :experimenter_assignments, :source => :user
   has_many :participations

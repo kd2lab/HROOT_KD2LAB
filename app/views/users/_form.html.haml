@@ -11,7 +11,7 @@
   %br
   = f.input :role, :collection => User.roles, :include_blank => false
   %br
-  = f.input :study_id, :collection => Study.all.map{|s| [s.name, s.id]}, :include_blank => true
+  = f.input :study_id, :collection => Study.all.map{|s| [s.name, s.id]}, :include_blank => "keine Angabe"
   = f.input :begin_month, :collection => (1..12)
   = f.input :begin_year, :collection => (Time.now.year-10..Time.now.year)
   %br
