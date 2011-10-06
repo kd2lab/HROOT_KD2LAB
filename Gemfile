@@ -25,6 +25,7 @@ gem 'will_paginate', '3.0.pre4'
 gem 'devise'
 gem 'simple_form'
 gem 'event-calendar', :require => 'event_calendar'
+gem 'exception_notification'
 
 gem 'cancan'
 
