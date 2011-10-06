@@ -52,7 +52,7 @@ Hroot::Application.configure do
   }
 end
 
-Whatever::Application.config.middleware.use ExceptionNotifier,
+Hroot::Application.config.middleware.use ExceptionNotifier,
   :email_prefix => "[hroot] ",
   :sender_address => %{"hroot notifier" <hroot@ingmar.net>},
   :exception_recipients => %w{mail@ingmar.net}
