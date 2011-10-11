@@ -47,6 +47,12 @@ Versendemail konfigurierbar?
 
 
 
+doppelte zuordnungen
+
+SELECT id, experiment_id, user_id, COUNT( user_id ) 
+FROM participations
+GROUP BY user_id, experiment_id;
+
 
 
 

@@ -11,27 +11,12 @@ class Experiment < ActiveRecord::Base
   
   validates_presence_of :name
   
-  
-  def self.search(search)  
-    if search  
-      where(
-        '(name LIKE ? OR experiments.description LIKE ? OR firstname LIKE ? OR lastname LIKE ?)',
-        "%#{search}%", "%#{search}%", "%#{search}%","%#{search}%"
-      )  
-    else  
-      scoped  
-    end  
-  end
-  
-  def participants_search(search)  
-    if search  
-      where(
-        '(firstname LIKE ? OR lastname LIKE ? OR email LIKE ?)',
-        "%#{search}%", "%#{search}%" , "%#{search}%"
-      )  
-    else  
-      scoped  
-    end  
+  # search for experiments, also in experimenters
+  def self.search(search='')  
+    includes(:experimenter_assignments, :experimenters).where(
+      '(experiments.name LIKE ? OR experiments.description LIKE ? OR users.firstname LIKE ? OR users.lastname LIKE ?)',
+      "%#{search}%", "%#{search}%", "%#{search}%","%#{search}%"
+    )  
   end
   
   def update_experiment_assignments ids, role

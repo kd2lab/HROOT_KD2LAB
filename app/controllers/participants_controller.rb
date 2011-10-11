@@ -52,7 +52,7 @@ class ParticipantsController < ApplicationController
   private
 
   def sort_column
-    (User.column_names+['noshow_count', 'study_name', 'begin_date']).include?(params[:sort]) ? params[:sort] : "lastname"
+    (User.column_names+['noshow_count', 'study_name', 'begin_date', 'participations_count']).include?(params[:sort]) ? params[:sort] : "lastname"
   end
 
   def sort_direction

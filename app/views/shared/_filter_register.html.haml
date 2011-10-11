@@ -1,7 +1,0 @@
-#fregister.filter-block{:style => filter_style('fregister')}
-  = render :partial => 'shared/close_link', :locals => {:name => 'fregister'} 
-  = hidden_field_tag "active[fregister]", params[:active][:fregister]
-  Anzahl Anmeldungen
-  %br
-  = select_tag :register_op, options_for_select(["<=", ">"], params[:register_op])
-  = select_tag :register, options_for_select((0..10), params[:register])

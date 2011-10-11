@@ -10,7 +10,7 @@
 
   Filter: 
  
-  - { 'gender' => 'Geschlecht', 'noshow' => 'Nichterscheinen', 'register' => 'Anmeldungen', 'begin' => 'Studienbeginn', |
+  - { 'gender' => 'Geschlecht', 'noshow' => 'Nichterscheinen', 'participated' => 'Teilnahmen', 'begin' => 'Studienbeginn', |
       'study' => 'Fächer', 'experimenttype' => 'Experimenttypen', 'experiment' => 'Experimente'}.each do |key, value|
     %a.open-link{:href => '#f'+key}=value
     = '|' unless key == 'experiment'
@@ -20,7 +20,7 @@
 
   = render :partial => 'shared/filter_gender'
   = render :partial => 'shared/filter_noshow' 
-  = render :partial => 'shared/filter_register' 
+  = render :partial => 'shared/filter_participated' 
   = render :partial => 'shared/filter_begin' 
   = render :partial => 'shared/filter_study' 
   = render :partial => 'shared/filter_experiment_type' 
@@ -57,7 +57,8 @@
       %th= sortable_for_form 'study_name', 'Fach'
       %th= sortable_for_form 'gender',  'Gesch.'
       %th= sortable_for_form 'begin_date', 'Beginn'
-      %th.qtip_ersch= sortable_for_form 'noshow_count' , "Showup"
+      %th.qtip_ersch= sortable_for_form 'noshow_count' , '#N'
+      %th.qtip_teil= sortable_for_form 'participations_count' , '#T'
       
     - @users.each do |user| 
       %tr
@@ -70,10 +71,8 @@
           =user.study_name ? truncate(user.study_name, {:length => 10}) : 'k. A.'
         %td= user.gender
         %td= user.begin_date 
-        %td
-          = user.noshow_count
-          = '/'
-          = user.participations_count
+        %td= "#{user.noshow_count}" if user.user?
+        %td= "#{user.participations_count}" if user.user?
 - else
   %br
   %b

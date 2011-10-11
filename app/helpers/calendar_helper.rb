@@ -14,8 +14,8 @@ module CalendarHelper
       :next_month_text => month_link(@shown_month.next_month) + " >>",
       :first_day_of_week => 1,
       :height => 400,
-      :event_height => 34,
-      :event_margin => 2,
+      :event_height => 20,
+      :event_margin => 1,
       :event_padding_top => 2,
       :day_names_height => 30
     }
@@ -25,7 +25,17 @@ module CalendarHelper
     # args is an argument hash containing :event, :day, and :options
     calendar(event_calendar_opts) do |args|
       session = args[:event]
-      %(<a href="/admin/experiments/#{session.experiment.id}/edit" title="#{h(session.experiment.name)}">#{session.start_at.strftime("%H:%M")}<br/>#{h(truncate(session.experiment.name, :length => 13))}</a>)
+      %(<div class="event-qtip"
+          data-title="#{session.experiment.name}"
+          data-exptype="#{session.experiment.experiment_type.name if session.experiment.experiment_type}"
+          data-location="#{session.location.name if session.location}"
+          data-expid="#{session.experiment.id}"
+          data-sessionid="#{session.id}"
+          data-count="#{session.participations.count} (#{session.needed},#{session.reserve})"
+          data-exp="#{session.experiment.experimenters.collect{|u| u.firstname[0]+". "+u.lastname}.join(' | ')}">
+          #{session.start_at.strftime("%H:%M")} #{h(truncate(session.experiment.name, :length => 10))}</div>)
+    
+    #<a href="/admin/experiments/#{session.experiment.id}/edit" title="#{h(session.experiment.name)}">  ...... </a>
     end
   end
 end

@@ -23,14 +23,6 @@ class User < ActiveRecord::Base
     super(conditions.merge(:deleted => false))
   end
   
-  def self.search(search)  
-    if search  
-      where('(firstname LIKE ? OR lastname LIKE ? OR email LIKE ?)', "%#{search}%", "%#{search}%", "%#{search}%")  
-    else  
-      scoped  
-    end  
-  end
-  
   def admin?
     role == "admin"
   end
@@ -57,8 +49,10 @@ class User < ActiveRecord::Base
     
     session_ids = []
     self.participations.where(:registered => true).each do |p|
-      p.commitments.each do |session_id|
-        session_ids << session_id
+      if p.commitments
+        p.commitments.each do |session_id|
+          session_ids << session_id
+        end
       end
     end
      
@@ -66,9 +60,12 @@ class User < ActiveRecord::Base
   end
   
   # load users and aggregate participation data
-  def self.load params, sort_column, sort_direction, experiment = nil, options = nil
+  def self.load params, sort_column='lastname', sort_direction='ASC', experiment = nil, options = nil
     where = []
     having = []
+    
+    #require :active param
+    params[:active] = {} unless params[:active]
     
     # search
     unless params[:search].blank?
@@ -81,22 +78,27 @@ class User < ActiveRecord::Base
     end
     
     # gender
-    if params[:active][:fgender] == '1' && ['f', 'm'].include?(params[:gender])
+    if params[:active][:fgender] && ['f', 'm'].include?(params[:gender])
       where << "users.gender='#{params[:gender]}'"
     end
     
     # role
-    if params[:active][:frole] == '1' && User.roles.values.include?(params[:role])
+    if params[:active][:frole] && User.roles.values.include?(params[:role])
       where << "users.role='#{params[:role]}'"
     end
     
     # noshow
-    if params[:active][:fnoshow] == '1' && ["<=", ">"].include?(params[:noshow_op])
+    if params[:active][:fnoshow] && ["<=", ">"].include?(params[:noshow_op])
       having << "noshow_count #{params[:noshow_op]} #{params[:noshow].to_i}"
     end
     
+    # successful participations
+    if params[:active][:fparticipated] && ["<=", ">"].include?(params[:participated_op])
+      having << "participations_count #{params[:participated_op]} #{params[:participated].to_i}"
+    end
+    
     #studienbeginn
-    if params[:active][:fbegin] == '1'
+    if params[:active][:fbegin] 
       if (1..12).include?(params[:begin_von_month].to_i) && params[:begin_von_year].to_i > 1990
         where << "((begin_month >= #{params[:begin_von_month].to_i} AND begin_year=#{params[:begin_von_year].to_i}) OR (begin_year>#{params[:begin_von_year].to_i}))"
       end
@@ -106,17 +108,12 @@ class User < ActiveRecord::Base
       end
     end
     
-    # register
-    if params[:active][:fregister] == '1'
-      having << "participations_count #{params[:register_op]} #{params[:register].to_i}"
-    end
-    
     # study 
-    if params[:active][:fstudy] == '1' && params[:study]
+    if params[:active][:fstudy]  && params[:study]
       s = "users.study_id IN (#{params[:study].map(&:to_i).join(', ')})"
       
       if params[:study_op] == "Ohne"
-        where << "NOT(#{s})"
+        where << "(NOT(#{s}) OR users.study_id IS NULL)"
       else
         where << s
       end
@@ -124,7 +121,7 @@ class User < ActiveRecord::Base
     
     #experiment types
     experiment_typ_subquery = ""
-    if params[:active][:fexperimenttype] == "1"
+    if params[:active][:fexperimenttype] 
       # if the user even has selected some experiments
       if params[:experiment_type]
         if params[:exp_typ_op] == "Nur"
@@ -140,10 +137,9 @@ class User < ActiveRecord::Base
     end
     
     #experiments
-    if params[:active][:fexperiment] == "1"
+    if params[:active][:fexperiment]
       # if the user even has selected some experiments
       if params[:experiment]
-        
         # at least one ...
         if params[:exp_op] == "zu einem der"
           experiment_join = "JOIN participations ON participations.user_id = users.id AND participations.experiment_id IN (#{params[:experiment].map(&:to_i).join(',')})"  
@@ -202,6 +198,8 @@ class User < ActiveRecord::Base
             participations.experiment_id = experiments.id AND 
             user_id = users.id AND 
             participations.registered = 1 AND
+            participations.showup = 1 AND
+            participations.participated = 1 AND
             experiments.finished = 1 AND
             experiments.show_in_stats = 1) AS participations_count,
           (SELECT COUNT(participations.id) 
@@ -212,7 +210,7 @@ class User < ActiveRecord::Base
              participations.registered = 1 AND
              experiments.show_in_stats = 1 AND
              experiments.finished = 1 AND
-             participations.showup = 0) AS noshow_count,
+             participations.showup != 1) AS noshow_count,
           (SELECT studies.name
               FROM studies
               WHERE studies.id = users.study_id

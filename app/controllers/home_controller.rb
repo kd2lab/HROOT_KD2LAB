@@ -82,7 +82,6 @@ class HomeController < ApplicationController
       y = start_reference.year
       
       # todo import month, year...
-      
       if m>=4
         if m >= 10
           m = 10
@@ -99,7 +98,7 @@ class HomeController < ApplicationController
         :firstname => row[:fname],
         :lastname => row[:lname],
         :matrikel => if row[:matrikelnummer].blank? then "0" else row[:matrikelnummer] end,
-        :gender => row[:gender],
+        :gender => row[:gender] == '?'? '' : row[:gender],
         :phone => row[:phone_number],
         :password => 'tester',
         :password_confirmation => "tester",
@@ -120,6 +119,13 @@ class HomeController < ApplicationController
       if !u.valid?
         @report << u.email+" "+u.errors.inspect
       end
+    end
+    
+    # todo fix jans account
+    j = User.find_by_email('jan.papmeier@wiso.uni-hamburg.de')
+    if j
+      j.role = 'admin'
+      j.save
     end
 
     # import experiments
@@ -217,15 +223,18 @@ class HomeController < ApplicationController
             unless user
               @report << or_user[:email]+" not found"
             else
-              Participation.create(
-                :experiment_id => e.id,
-                :session_id => s.id,
-                :user_id => user.id,
-                :invited => part[:invited] == 'y',
-                :registered => part[:registered] == 'y',
-                :showup => part[:shownup] == 'y',
-                :participated => part[:participated] == 'y'
-              )
+              # only allow onw Participation
+              unless Participation.find_by_user_id_and_experiment_id(user.id, e.id)
+                Participation.create(
+                  :experiment_id => e.id,
+                  :session_id => s.id,
+                  :user_id => user.id,
+                  :invited => part[:invited] == 'y',
+                  :registered => part[:registered] == 'y',
+                  :showup => part[:shownup] == 'y',
+                  :participated => part[:participated] == 'y'
+                )
+              end
             end
           end
         end 
@@ -238,15 +247,17 @@ class HomeController < ApplicationController
           unless user
             @report << or_user[:email]+" not found"
           else
-            Participation.create(
-              :experiment_id => e.id,
-              :session_id => nil,
-              :user_id => user.id,
-              :invited => part[:invited] == 'y',
-              :registered => part[:registered] == 'y',
-              :showup => part[:shownup] == 'y',
-              :participated => part[:participated] == 'y'
-            )
+            unless Participation.find_by_user_id_and_experiment_id(user.id, e.id)
+              Participation.create(
+                :experiment_id => e.id,
+                :session_id => nil,
+                :user_id => user.id,
+                :invited => part[:invited] == 'y',
+                :registered => part[:registered] == 'y',
+                :showup => part[:shownup] == 'y',
+                :participated => part[:participated] == 'y'
+              )
+            end
           end
         end 
       end

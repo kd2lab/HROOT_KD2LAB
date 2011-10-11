@@ -1,0 +1,12 @@
+- if @location.new_record?
+  - url = locations_path
+- else
+  - url = location_path(@location)
+  
+= simple_form_for @location, {:html => {:class => "guarded_form"}, :url => url} do |f| 
+  = f.input :name, :required => false
+  = f.input :description, :as => :text
+  = f.submit "Raum speichern", :class => "guarded_form_save"
+  %br
+  %br
+

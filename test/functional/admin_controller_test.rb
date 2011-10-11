@@ -14,20 +14,5 @@ class AdminControllerTest < ActionController::TestCase
     should respond_with :success
   end
   
-  context "A request with GET to options" do
-    setup do
-      get :options
-    end
-
-    should respond_with :success
-  end
-
-  context "A request with GET to users" do
-    setup do
-      get :users
-    end
-
-    should respond_with :success
-  end
   
 end

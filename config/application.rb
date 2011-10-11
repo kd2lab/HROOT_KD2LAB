@@ -32,7 +32,7 @@ module Hroot
     config.i18n.default_locale = :de
 
     # JavaScript files you want as :defaults (application.js is always included).
-    config.action_view.javascript_expansions[:defaults] = %w(jquery jquery_ujs jquery-ui.min chosen.jquery.min datepicker jquery.qtip-1.0.0-rc3.min)
+    config.action_view.javascript_expansions[:defaults] = %w(jquery jquery_ujs jquery-ui.min chosen.jquery.min datepicker jquery.qtip-1.0.0-rc3.min qtip)
 
     # Configure the default encoding used in templates for Ruby 1.9.
     config.encoding = "utf-8"

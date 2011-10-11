@@ -20,6 +20,9 @@ de:
         reserve: Reserve-Teilnehmer
         location: Ort
         finished: Session abgeschlossen
+      location:
+        description: Beschreibung
+        
       user: 
         firstname: Vorname
         lastname: Nachname
@@ -41,6 +44,8 @@ de:
         session:
           blank: muss angegeben werden  
           not_a_number: muss eine ganze Zahl sein
+        location:
+          blank: muss angegeben werden
         user:
           blank: muss angegeben werden
           attributes:

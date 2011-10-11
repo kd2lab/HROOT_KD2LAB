@@ -4,9 +4,7 @@ class ExperimentsController < ApplicationController
   load_and_authorize_resource
   
   def index
-    @experiments = Experiment
-      .search(params[:search])
-      .includes(:experimenter_assignments, :experimenters, :sessions)
+    @experiments = Experiment.search(params[:search]).includes(:sessions)
       .order("experiments.finished, COALESCE(sessions.start_at, experiments.created_at) DESC")
       .paginate(:per_page => 30, :page => params[:page])  
   end

@@ -28,6 +28,7 @@ class UsersController < ApplicationController
   def create
     @user = User.new(params[:user])
     @user.skip_confirmation!
+    
     if @user.save
       redirect_to(users_url, :notice => 'Der Benutzer wurde erfolgreich angelegt.') 
     else
@@ -57,7 +58,7 @@ class UsersController < ApplicationController
   private
 
   def sort_column
-    (User.column_names+['noshow_count', 'study_name', 'begin_date']).include?(params[:sort]) ? params[:sort] : "lastname"
+    (User.column_names+['noshow_count', 'study_name', 'begin_date', 'participations_count']).include?(params[:sort]) ? params[:sort] : "lastname"
   end
 
   def sort_direction

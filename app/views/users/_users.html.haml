@@ -10,7 +10,7 @@
 
   Filter: 
  
-  - { 'gender' => 'Geschlecht', 'noshow' => 'Nichterscheinen', 'register' => 'Anmeldungen', 'role' => 'Rolle', 'begin' => 'Studienbeginn', |
+  - { 'gender' => 'Geschlecht', 'noshow' => 'Nichterscheinen', 'participated' => 'Teilnahmen', 'role' => 'Rolle', 'begin' => 'Studienbeginn', |
       'study' => 'Fächer', 'experimenttype' => 'Experimenttypen', 'experiment' => 'Experimente'}.each do |key, value|
     %a.open-link{:href => '#f'+key}=value
     = '|' unless key == 'experiment'
@@ -22,7 +22,7 @@
 
   = render :partial => 'shared/filter_gender'
   = render :partial => 'shared/filter_noshow' 
-  = render :partial => 'shared/filter_register' 
+  = render :partial => 'shared/filter_participated' 
   = render :partial => 'shared/filter_role'
   = render :partial => 'shared/filter_begin' 
   = render :partial => 'shared/filter_study' 
@@ -56,7 +56,8 @@
       %th= sortable_for_form 'gender',  'G.'
       %th= sortable_for_form 'begin_date', 'Beginn'
       %th= sortable_for_form 'created_at', 'Anmeld.'
-      %th.qtip_ersch= sortable_for_form 'noshow_count' , 'Show'
+      %th.qtip_ersch= sortable_for_form 'noshow_count' , '#N'
+      %th.qtip_teil= sortable_for_form 'participations_count' , '#T'
       %th
 
     - @users.each do |user| 
@@ -70,7 +71,9 @@
         %td= user.gender
         %td= user.begin_date 
         %td= user.created_at.strftime('%d.%m.%y')
-        %td= "#{user.noshow_count}/#{user.participations_count}" if user.user?
+        %td= "#{user.noshow_count}" if user.user?
+        %td= "#{user.participations_count}" if user.user?
+        
         %td= link_to "Bearbeiten", edit_user_path(user)
         
 - else
