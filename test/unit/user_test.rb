@@ -85,8 +85,8 @@ class UserTest < ActiveSupport::TestCase
     end
     
     should "filter for gender" do
-        assert_same_elements [@u4, @u5], User.load({:gender => 'f', :active => {:fgender => true} })
-        assert_same_elements [@u6, @u7], User.load({:gender => 'm', :active => {:fgender => true} })    
+        assert_same_elements [@u4, @u5], User.load({:gender => 'f', :active => {:fgender => '1'} })
+        assert_same_elements [@u6, @u7], User.load({:gender => 'm', :active => {:fgender => '1'} })    
     end
     
     
@@ -97,50 +97,50 @@ class UserTest < ActiveSupport::TestCase
     end
     
     should "filter for role" do 
-      assert_equal [@admin], User.load({:role => 'admin', :active => {:frole => true} })
-      assert_equal [@experimenter], User.load({:role => 'experimenter', :active => {:frole => true} })
-      assert_same_elements User.where(:role => 'user', :deleted => false), User.load({:role => 'user', :active => {:frole => true} })
+      assert_equal [@admin], User.load({:role => 'admin', :active => {:frole => '1'} })
+      assert_equal [@experimenter], User.load({:role => 'experimenter', :active => {:frole => '1'} })
+      assert_same_elements User.where(:role => 'user', :deleted => false), User.load({:role => 'user', :active => {:frole => '1'} })
     end
     
     should "filter for showup correctly" do
-      assert_same_elements [@u3, @u4, @u5, @u6, @u7], User.load({:noshow => '0', :noshow_op => "<=", :role => 'user', :active => {:fnoshow => true, :frole => true} })
-      assert_same_elements [@u1, @u2], User.load({:noshow => '0', :noshow_op => ">", :active => {:fnoshow => true} })
+      assert_same_elements [@u3, @u4, @u5, @u6, @u7], User.load({:noshow => '0', :noshow_op => "<=", :role => 'user', :active => {:fnoshow => '1', :frole => '1'} })
+      assert_same_elements [@u1, @u2], User.load({:noshow => '0', :noshow_op => ">", :active => {:fnoshow => '1'} })
     end
     
     should "filter for participations correctly" do
-      assert_same_elements [@u5, @u6], User.load({:participated => '0', :participated_op => ">", :active => {:fparticipated => true} })
+      assert_same_elements [@u5, @u6], User.load({:participated => '0', :participated_op => ">", :active => {:fparticipated => '1'} })
     end
     
     should "filter for studybegin" do
-      assert_same_elements [@u6, @u7], User.load({:begin_von_month => 5, :begin_von_year => 2011, :active => {:fbegin => true} })
-      assert_same_elements [@u6, @u7], User.load({:begin_von_month => 6, :begin_von_year => 2011, :active => {:fbegin => true} })
-      assert_same_elements [@u4, @u5], User.load({:begin_bis_month => 5, :begin_bis_year => 2011, :active => {:fbegin => true} })
-      assert_same_elements [@u5, @u6], User.load({:begin_von_month => 1, :begin_von_year => 2011, :begin_bis_month => 8, :begin_bis_year => 2011, :active => {:fbegin => true} })
+      assert_same_elements [@u6, @u7], User.load({:begin_von_month => 5, :begin_von_year => 2011, :active => {:fbegin => '1'} })
+      assert_same_elements [@u6, @u7], User.load({:begin_von_month => 6, :begin_von_year => 2011, :active => {:fbegin => '1'} })
+      assert_same_elements [@u4, @u5], User.load({:begin_bis_month => 5, :begin_bis_year => 2011, :active => {:fbegin => '1'} })
+      assert_same_elements [@u5, @u6], User.load({:begin_von_month => 1, :begin_von_year => 2011, :begin_bis_month => 8, :begin_bis_year => 2011, :active => {:fbegin => '1'} })
     end
     
     should "filter for study" do
-      assert_same_elements [@u1, @u2, @u3, @u4], User.load({:study => [@s1.id, @s2.id], :active => {:fstudy => true} })
-      assert_same_elements [@u5, @u6, @u7], User.load({:study => [@s1.id, @s2.id], :study_op => "Ohne", :role => 'user', :active => {:fstudy => true, :frole => true} })
+      assert_same_elements [@u1, @u2, @u3, @u4], User.load({:study => [@s1.id, @s2.id], :active => {:fstudy => '1'} })
+      assert_same_elements [@u5, @u6, @u7], User.load({:study => [@s1.id, @s2.id], :study_op => "Ohne", :role => 'user', :active => {:fstudy => '1', :frole => '1'} })
     end
     
     should "filter for experiment type" do      
-      assert_same_elements [@u3, @u4, @u5, @u6], User.load({:experiment_type => [@et1.id, @et2.id], :exp_typ_op => "Nur", :active => {:fexperimenttype => true} })
-      assert_same_elements [@u1, @u2, @u7], User.load({:experiment_type => [@et1.id, @et2.id], :exp_typ_op => "Ohne", :role => 'user', :active => {:fexperimenttype => true, :frole => true} })
+      assert_same_elements [@u3, @u4, @u5, @u6], User.load({:experiment_type => [@et1.id, @et2.id], :exp_typ_op => "Nur", :active => {:fexperimenttype => '1'} })
+      assert_same_elements [@u1, @u2, @u7], User.load({:experiment_type => [@et1.id, @et2.id], :exp_typ_op => "Ohne", :role => 'user', :active => {:fexperimenttype => '1', :frole => '1'} })
     end
     
     should "filter for experiments" do
-      assert_same_elements [@u1, @u2, @u3, @u4, @u5, @u6], User.load({:experiment => [@e1.id, @e2.id], :exp_op => "zu einem der", :active => {:fexperiment => true} })
-      assert_same_elements [@u5], User.load({:experiment => [@e1.id, @e3.id], :exp_op => "zu allen der", :active => {:fexperiment => true} })
-      assert_same_elements [@u7], User.load({:experiment => [@e1.id, @e2.id], :exp_op => "zu keinem der", :role => "user", :active => {:fexperiment => true, :frole => true} })
+      assert_same_elements [@u1, @u2, @u3, @u4, @u5, @u6], User.load({:experiment => [@e1.id, @e2.id], :exp_op => "zu einem der", :active => {:fexperiment => '1'} })
+      assert_same_elements [@u5], User.load({:experiment => [@e1.id, @e3.id], :exp_op => "zu allen der", :active => {:fexperiment => '1'} })
+      assert_same_elements [@u7], User.load({:experiment => [@e1.id, @e2.id], :exp_op => "zu keinem der", :role => "user", :active => {:fexperiment => '1', :frole => '1'} })
       
-      assert_same_elements [@u3, @u4, @u5, @u6], User.load({:experiment => [@e1.id, @e2.id], :exp_op => "zu einem der", :exp_op2 => "teilgenommen haben", :active => {:fexperiment => true} })
-      assert_same_elements [@u5], User.load({:experiment => [@e1.id, @e3.id], :exp_op => "zu allen der", :exp_op2 => "teilgenommen haben",  :active => {:fexperiment => true} })
-      assert_same_elements [@u1, @u2, @u7], User.load({:experiment => [@e1.id, @e2.id], :exp_op => "zu keinem der", :exp_op2 => "teilgenommen haben", :role => "user", :active => {:fexperiment => true, :frole => true} })
+      assert_same_elements [@u3, @u4, @u5, @u6], User.load({:experiment => [@e1.id, @e2.id], :exp_op => "zu einem der", :exp_op2 => "teilgenommen haben", :active => {:fexperiment => '1'} })
+      assert_same_elements [@u5], User.load({:experiment => [@e1.id, @e3.id], :exp_op => "zu allen der", :exp_op2 => "teilgenommen haben",  :active => {:fexperiment => '1'} })
+      assert_same_elements [@u1, @u2, @u7], User.load({:experiment => [@e1.id, @e2.id], :exp_op => "zu keinem der", :exp_op2 => "teilgenommen haben", :role => "user", :active => {:fexperiment => '1', :frole => '1'} })
     end
     
     should "in- or exclude experiment members" do
       assert_same_elements [@u1, @u2, @u3, @u4, @u5, @u6], User.load({}, 'lastname', 'ASC', experiment = @e1, {:exclude_non_participants => true})
-      assert_same_elements [@u7], User.load({ :role => "user", :active => {:frole => true}}, 'lastname', 'ASC', experiment = @e1, {:exclude_experiment_participants => true})
+      assert_same_elements [@u7], User.load({ :role => "user", :active => {:frole => '1'}}, 'lastname', 'ASC', experiment = @e1, {:exclude_experiment_participants => true})
     end
     
     should "find available sessions" do

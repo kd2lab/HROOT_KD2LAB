@@ -78,27 +78,27 @@ class User < ActiveRecord::Base
     end
     
     # gender
-    if params[:active][:fgender] && ['f', 'm'].include?(params[:gender])
+    if params[:active][:fgender] == '1' && ['f', 'm'].include?(params[:gender])
       where << "users.gender='#{params[:gender]}'"
     end
     
     # role
-    if params[:active][:frole] && User.roles.values.include?(params[:role])
+    if params[:active][:frole] == '1' && User.roles.values.include?(params[:role])
       where << "users.role='#{params[:role]}'"
     end
     
     # noshow
-    if params[:active][:fnoshow] && ["<=", ">"].include?(params[:noshow_op])
+    if params[:active][:fnoshow] == '1' && ["<=", ">"].include?(params[:noshow_op])
       having << "noshow_count #{params[:noshow_op]} #{params[:noshow].to_i}"
     end
     
     # successful participations
-    if params[:active][:fparticipated] && ["<=", ">"].include?(params[:participated_op])
+    if params[:active][:fparticipated] == '1'&& ["<=", ">"].include?(params[:participated_op])
       having << "participations_count #{params[:participated_op]} #{params[:participated].to_i}"
     end
     
     #studienbeginn
-    if params[:active][:fbegin] 
+    if params[:active][:fbegin] == '1'
       if (1..12).include?(params[:begin_von_month].to_i) && params[:begin_von_year].to_i > 1990
         where << "((begin_month >= #{params[:begin_von_month].to_i} AND begin_year=#{params[:begin_von_year].to_i}) OR (begin_year>#{params[:begin_von_year].to_i}))"
       end
@@ -109,7 +109,7 @@ class User < ActiveRecord::Base
     end
     
     # study 
-    if params[:active][:fstudy]  && params[:study]
+    if params[:active][:fstudy] == '1' && params[:study]
       s = "users.study_id IN (#{params[:study].map(&:to_i).join(', ')})"
       
       if params[:study_op] == "Ohne"
@@ -121,7 +121,7 @@ class User < ActiveRecord::Base
     
     #experiment types
     experiment_typ_subquery = ""
-    if params[:active][:fexperimenttype] 
+    if params[:active][:fexperimenttype] == '1'
       # if the user even has selected some experiments
       if params[:experiment_type]
         if params[:exp_typ_op] == "Nur"
@@ -137,7 +137,7 @@ class User < ActiveRecord::Base
     end
     
     #experiments
-    if params[:active][:fexperiment]
+    if params[:active][:fexperiment] == '1'
       # if the user even has selected some experiments
       if params[:experiment]
         # at least one ...
