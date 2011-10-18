@@ -3,6 +3,7 @@ class CreateLocations < ActiveRecord::Migration
     create_table :locations do |t|
       t.string :name
       t.string :description
+      t.boolean :active, :default => true
       t.timestamps
     end
   end

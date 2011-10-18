@@ -10,7 +10,13 @@
   = f.input :description, :as => :text
   = f.input :needed
   = f.input :reserve
-  = f.association :location
+  
+  -# Wenn der aktuelle Raum nicht mehr aktiv ist, dann alle Räume anzeigen, sonst nur aktive
+  - if @session.location && !@session.location.active?
+    = f.association :location
+  - else
+    = f.association :location, :collection => Location.where(:active => true)
+    
   = f.input :finished
   %br
   = f.submit "Session speichern", :class => "guarded_form_save"
