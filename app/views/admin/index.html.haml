@@ -9,7 +9,7 @@
   
 - overlaps = Session.find_overlapping_sessions(@year, @month)
 
-- if overlaps
+- if overlaps.count > 0
   .overlaps
     In diesem Monat gibt es Terminkollisionen:
     %br
