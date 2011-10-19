@@ -1,9 +1,32 @@
 # encoding:utf-8
 
+require 'icalendar'
+require 'date'
+
+include Icalendar
+
 class HomeController < ApplicationController
   def index
     
   end
+  
+  def calendar
+    
+    
+    cal = Calendar.new
+    
+    Session.all.each do |session| 
+      event = Event.new
+      event.start = session.start_at.to_datetime
+      event.end = session.end_at.to_datetime
+      event.summary = session.experiment.name
+      event.location = session.location.name if session.location
+      cal.add_event(event)
+    end  
+    
+    render :text => cal.to_ical
+  end
+  
   
   def import_test
     require 'sequel'

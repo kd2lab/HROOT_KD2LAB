@@ -46,6 +46,7 @@ Hroot::Application.routes.draw do
   get "home/import_test"
   
   get "home/index"
+  get "home/calendar"
   
   root :to => "home#index"
   
