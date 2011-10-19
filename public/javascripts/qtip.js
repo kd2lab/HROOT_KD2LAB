@@ -11,9 +11,8 @@ $(function () {
                 
                 +"<i>"+$(this).attr('data-location')+"</i><br/><br/>"
                 +$(this).attr('data-exp')+"<br/><br/>"
-                +$(this).attr('data-count')+"<br/><br/>"
-                +'<a href="/admin/experiments/'+$(this).attr("data-expid")+'/edit">zum Experiment</a> | '
-                +'<a href="/admin/experiments/'+$(this).attr("data-expid")+'/sessions/'+$(this).attr("data-sessionid")+'/edit?">zur Session</a><br/>'
+                +"Teilnehmer: "+$(this).attr('data-count')+"<br/><br/>"
+                
        ,
        show: { when: 'mouseover', solo : 'true'},
        hide: { when: 'mouseout' },

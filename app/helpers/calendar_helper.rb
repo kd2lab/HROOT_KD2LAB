@@ -33,7 +33,12 @@ module CalendarHelper
           data-sessionid="#{session.id}"
           data-count="#{session.participations.count} (#{session.needed},#{session.reserve})"
           data-exp="#{session.experiment.experimenters.collect{|u| u.firstname[0]+". "+u.lastname}.join(' | ')}">
-          #{session.start_at.strftime("%H:%M")} #{h(truncate(session.experiment.name, :length => 10))}</div>)
+          <div style="float:right">
+            <a href="">#{image_tag("group.png")}</a>
+          </div>
+          <a href="#{edit_experiment_session_path(session.experiment, session)}">#{session.start_at.strftime("%H:%M")}</a>
+          <a href="#{edit_experiment_path(session.experiment)}">#{h(truncate(session.experiment.name, :length => 8))}</a>
+          </div>)
     
     #<a href="/admin/experiments/#{session.experiment.id}/edit" title="#{h(session.experiment.name)}">  ...... </a>
     end
