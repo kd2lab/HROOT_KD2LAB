@@ -12,7 +12,7 @@ development:
   database: hroot_development
   pool: 5
   username: root
-  password:
+  password: abc8765
   host: localhost
 
 # Warning: The database defined as "test" will be erased and
@@ -25,7 +25,7 @@ test:
   database: hroot_test
   pool: 5
   username: root
-  password:
+  password: abc8765
   host: localhost
 
 production:

@@ -15,8 +15,8 @@ $(function () {
                 +'<a href="/admin/experiments/'+$(this).attr("data-expid")+'/edit">zum Experiment</a> | '
                 +'<a href="/admin/experiments/'+$(this).attr("data-expid")+'/sessions/'+$(this).attr("data-sessionid")+'/edit?">zur Session</a><br/>'
        ,
-       show: { when: 'click', solo: true },
-       hide: { when: 'unfocus' },
+       show: { when: 'mouseover', solo : 'true'},
+       hide: { when: 'mouseout' },
        position: {
          corner: {
            target: 'rightMiddle',

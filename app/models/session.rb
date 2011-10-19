@@ -39,21 +39,21 @@ class Session < ActiveRecord::Base
     end
   end
   
-  #def self.find_overlapping_sessions(year, month)
-  #  sql = <<EOSQL
-  #    SELECT DISTINCT s.*, 
-  #    ( SELECT GROUP_CONCAT(s2.id) 
-  #      FROM sessions s2 
-  #      WHERE s2.end_at >= s.start_at 
-  #      AND s2.start_at <= s.end_at 
-  #      AND s.id < s2.id
-  #      AND s.location_id = s2.location_id)
-  #    AS overlap_ids
-  #    FROM sessions s
-  #    WHERE s.end_at IS NOT NULL  
-  #    AND MONTH(s.start_at) = #{month.to_i} AND YEAR(s.start_at) = #{year.to_i}
-  #    HAVING overlap_ids IS NOT NULL;
-#EOSQL
-  #  Session.find_by_sql(sql)
-  #end
+  def self.find_overlapping_sessions(year, month)
+    sql = <<EOSQL
+      SELECT DISTINCT s.*, 
+      ( SELECT GROUP_CONCAT(s2.id) 
+        FROM sessions s2 
+        WHERE s2.end_at >= s.start_at 
+        AND s2.start_at <= s.end_at 
+        AND s.id < s2.id
+        AND s.location_id = s2.location_id)
+      AS overlap_ids
+      FROM sessions s
+      WHERE s.end_at IS NOT NULL  
+      AND MONTH(s.start_at) = #{month.to_i} AND YEAR(s.start_at) = #{year.to_i}
+      HAVING overlap_ids IS NOT NULL;
+EOSQL
+    Session.find_by_sql(sql)
+  end
 end

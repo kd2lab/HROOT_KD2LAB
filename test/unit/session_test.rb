@@ -23,7 +23,36 @@ class SessionTest < ActiveSupport::TestCase
       assert_equal "10:00", @session.start_time
       assert_equal 90, @session.duration
     end
-
   end
+  
+  context "Overlapping Sessions" do
+    setup do
+      @e1 = Factory(:experiment)   
+      @l1 = Factory(:location)
+      @l2 = Factory(:location)
+    
+      @session1 = Session.create(:experiment => @e1, :start_at => Time.zone.parse("1.1.2011 14:00"), :end_at => Time.zone.parse("1.1.2011 16:00"), :needed => 20, :reserve => 4, :location => @l1)
+      @session2 = Session.create(:experiment => @e1, :start_at => Time.zone.parse("1.1.2011 15:00"), :end_at => Time.zone.parse("1.1.2011 17:00"), :needed => 20, :reserve => 4, :location => @l1)
+      @session3 = Session.create(:experiment => @e1, :start_at => Time.zone.parse("1.1.2011 12:00"), :end_at => Time.zone.parse("1.1.2011 14:15"), :needed => 20, :reserve => 4, :location => @l1)
+    
+      @session4 = Session.create(:experiment => @e1, :start_at => Time.zone.parse("1.1.2011 12:00"), :end_at => Time.zone.parse("1.1.2011 14:15"), :needed => 20, :reserve => 4, :location => @l2)
+      @session5 = Session.create(:experiment => @e1, :start_at => Time.zone.parse("1.1.2011 11:30"), :end_at => Time.zone.parse("1.1.2011 15:15"), :needed => 20, :reserve => 4, :location => @l2)
+      @session6 = Session.create(:experiment => @e1, :start_at => Time.zone.parse("1.1.2011 09:00"), :end_at => Time.zone.parse("1.1.2011 10:15"), :needed => 20, :reserve => 4, :location => @l2)
+    end
+    
+    should "be detected" do
+      assert_equal 0, Session.find_overlapping_sessions(2011,2).count
+      assert_equal 0, Session.find_overlapping_sessions(2010,1).count
+      assert_equal 2, Session.find_overlapping_sessions(2011,1).count
+      
+      assert_equal [@session1, @session4], Session.find_overlapping_sessions(2011,1)
+      
+      assert_same_elements [@session2.id, @session3.id], Session.find_overlapping_sessions(2011,1).first.overlap_ids.split(',').map(&:to_i)
+      assert_same_elements [@session5.id], Session.find_overlapping_sessions(2011,1).second.overlap_ids.split(',').map(&:to_i)
+    end
+      
+      
+  end
+  
   
 end

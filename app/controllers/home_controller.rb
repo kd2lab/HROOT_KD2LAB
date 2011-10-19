@@ -10,7 +10,7 @@ class HomeController < ApplicationController
     @report = []
     
     
-    db = Sequel.connect(:adapter=>'mysql2', :host=>'localhost', :database=>'controlling_orsee', :user=>'root', :password=>'')
+    db = Sequel.connect(:adapter=>'mysql2', :host=>'localhost', :database=>'controlling_orsee', :user=>'root', :password=>'abc8765')
     
     db[:or_participants].each do |row|
       # calculate creation date minus 6 months per semester
@@ -41,7 +41,7 @@ class HomeController < ApplicationController
     require 'sequel'
     @report = []
     
-    db = Sequel.connect(:adapter=>'mysql2', :host=>'localhost', :database=>'controlling_orsee', :user=>'root', :password=>'')
+    db = Sequel.connect(:adapter=>'mysql2', :host=>'localhost', :database=>'controlling_orsee', :user=>'root', :password=>'abc8765')
    
     User.delete_all
     Study.delete_all
@@ -121,13 +121,13 @@ class HomeController < ApplicationController
       end
     end
     
-    # todo fix jans account
+    # todo fix jans account, fix ricardos account
     j = User.find_by_email('jan.papmeier@wiso.uni-hamburg.de')
     if j
       j.role = 'admin'
       j.save
     end
-
+    
     # import experiments
     @report << "--------- EXPERIMENTS ------------"
     Session.delete_all

@@ -12,7 +12,7 @@
     %th 
         
   - @locations.each do |location| 
-    %tr
+    %tr{:class => if location.active? then "" else "inactive" end }
       %td= truncate(location.name, :maxlength => 30)
       %td= truncate(location.description, :maxlength => 100)
       %td
