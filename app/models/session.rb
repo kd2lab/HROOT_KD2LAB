@@ -39,6 +39,10 @@ class Session < ActiveRecord::Base
     end
   end
   
+  def full_name
+    experiment.name+' ('+start_at.to_date.to_s+', '+start_at.strftime("%H:%M")+"-"+end_at.strftime("%H:%M")+')'
+  end
+  
   def self.find_overlapping_sessions(year, month)
     sql = <<EOSQL
       SELECT DISTINCT s.*, 

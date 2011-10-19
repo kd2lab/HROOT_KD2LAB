@@ -16,12 +16,12 @@
     %br
     %ul
       - overlaps.each do |session|
-        %li
-          Die Session im Experiment
-          = session.experiment.name
-          
-          = '('+session.start_at.to_date.to_s+', '+session.start_at.strftime("%H:%M")+"-"+session.end_at.strftime("%H:%M")+')'
-          überschneidet sich mit anderen Sessions!
+        - session.overlap_ids.split(',').map(&:to_i).each_with_index do |id| 
+          - s = Session.find(id)
+          %li
+            = link_to session.full_name, edit_experiment_session_path(session.experiment, session)
+            überschneidet sich mit
+            = link_to s.full_name, edit_experiment_session_path(s.experiment, s)
 
 %br
 
