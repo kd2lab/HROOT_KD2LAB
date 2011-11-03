@@ -14,6 +14,9 @@
 - htaccess: guest dj!d38dFghj
 
 
+- calendar test
+
+https://guest:dj!d38dFghj@hroot.ingmar.net/home/calendar
 
 - coverage messung
 - unit tests

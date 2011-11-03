@@ -1,7 +1,28 @@
 #fexperimenttype.filter-block{:style => filter_style('fexperimenttype')}
   = render :partial => 'shared/close_link', :locals => {:name => 'fexperimenttype'} 
   = hidden_field_tag "active[fexperimenttype]", params[:active][:fexperimenttype]
-  = select_tag :exp_typ_op, options_for_select(["Nur", "Ohne"], params[:exp_typ_op])
-  Teilnehmer, die an mindestens einem Experiment dieser Typen teilgenommen haben:
+  
+  - count = (params[:exp_typ_count] || "1").to_i
+  = hidden_field_tag :exp_typ_count, count
+  
+  Nur Teilnehmer mit folgenden Teilnahmen an Experimenttypen:
   %br
-  = select_tag :experiment_type, options_for_select(ExperimentType.order(:name).map{|s| [s.name, s.id]}, params[:experiment_type]), {:include_blank => true, :multiple => true, :class => "chzn-select", :'data-placeholder' => "Experiment-Typen...", :style=>"width:650px"}
+  %br
+  
+  - 10.times do |i|
+    %div{:id => "exp_filter_#{i}", :style => i < count ? "" : "display:none"}
+      = select_tag "exp_typ_op1[]", options_for_select(["Mindestens", "Höchstens"], params[:exp_typ_op1][i])
+      = select_tag "exp_typ_op2[]", options_for_select((0..10), params["exp_typ_op2"][i])
+      mal an einem Experiment des Typs
+      = select_tag "exp_typ#{i}", options_for_select(ExperimentType.order(:name).map{|s| [s.name, s.id]}, params["exp_typ#{i}"]), {:include_blank => true, :class => "chzn-select", :'data-placeholder' => "Experiment-Typen...", :style=>"width:150px"}
+      teilgenommen
+      %br
+  
+  %br    
+  
+  %a.add-link{:href=>"#"}
+    = image_tag("add.png")
+  
+  %a.remove-link{:href=>"#"}
+    = image_tag("delete.png")
+  

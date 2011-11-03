@@ -1,46 +1,68 @@
 %h2 Registrierung
 
-= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |form| 
-  /= devise_error_messages! 
 
-  = form.label :firstname
-  %br
-  = form.text_field :firstname
-  %br
-  %br
+= simple_form_for resource, :as => resource_name, :url => registration_path(resource_name) do |f| 
+  = f.input :firstname, :required => false
+  = f.input :lastname, :required => false
+  = f.input :matrikel, :required => false
+  - if Settings.suffix.blank?
+    = f.input :email, :placeholder => 'name@domain.com'
+  - else
+    = f.label "&nbsp;"
+    = f.text_field :email_prefix
+    @
+    = f.select :email_suffix, options_for_select(Settings.suffix.split(';'))
+    = f.error :email
+  = f.input :secondary_email, :placeholder => 'name@domain.com'
+  = f.input :password
+  = f.input :password_confirmation
 
-  = form.label :lastname
-  %br
-  = form.text_field :lastname
-  %br
-  %br
-
-  = form.label :matrikel
-  %br
-  = form.text_field :matrikel
-  %br
-  %br
-
-
-  = form.label :email
-  %br
-  = form.text_field :email
-  %br
-  %br
-
-  = form.label :password 
-  %br
-  = form.password_field :password
-  %br
-  %br
-
-  = form.label :password_confirmation
-  %br
-  = form.password_field :password_confirmation
-  %br
-  %br
-
-
-  = form.submit "Registrieren" 
-
-/<%= render :partial => "devise/shared/links" %>
+  = f.submit "Registrieren"
+  
+  
+  
+/ = form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |form| 
+/   /= devise_error_messages! 
+/ 
+/   
+/   .test{:style => "float:left"}
+/     = form.label :firstname
+/     %br
+/     = form.text_field :firstname
+/   
+/   = form.label :lastname
+/   %br
+/   = form.text_field :lastname
+/   %br
+/   %br
+/ 
+/   = form.label :matrikel
+/   %br
+/   = form.text_field :matrikel
+/   %br
+/   %br
+/ 
+/   = form.label :email
+/   %br
+/   = form.text_field :email
+/   
+/   
+/   %br
+/   %br
+/ 
+/   = form.label :password 
+/   %br
+/   = form.password_field :password
+/   %br
+/   %br
+/ 
+/   = form.label :password_confirmation
+/   %br
+/   = form.password_field :password_confirmation
+/   %br
+/   %br
+/ 
+/ 
+/   = form.submit "Registrieren" 
+/ 
+/ /<%= render :partial => "devise/shared/links" %>

@@ -1,11 +1,16 @@
+# encoding:utf-8
+
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable, :confirmable,
          :recoverable, :rememberable, :trackable, :validatable
 
+  # for email check on registration
+  attr_accessor :email_prefix, :email_suffix
+
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :firstname, :lastname, :matrikel, :role, :phone, :gender, :begin_month, :begin_year, :study_id, :deleted
+  attr_accessible :email, :secondary_email, :password, :password_confirmation, :remember_me, :firstname, :lastname, :matrikel, :role, :phone, :gender, :begin_month, :begin_year, :study_id, :deleted, :email_prefix, :email_suffix
   
   ROLES = %w[user experimenter admin]
   
@@ -17,6 +22,15 @@ class User < ActiveRecord::Base
   belongs_to :study
   
   validates_presence_of :firstname, :lastname, :matrikel
+  validates_uniqueness_of :calendar_key
+  validates :secondary_email, :email => true, :allow_blank => true
+  
+  after_create :create_key
+  
+  def create_key
+    self.calendar_key = SecureRandom.hex(16)
+    self.save
+  end
   
   # for devise: only allow non-deleted users
   def self.find_for_authentication(conditions)
@@ -29,6 +43,10 @@ class User < ActiveRecord::Base
   
   def user?
     role == 'user'
+  end
+  
+  def experimenter?
+    role == 'experimenter'
   end
   
   def available_sessions
@@ -66,6 +84,9 @@ class User < ActiveRecord::Base
     
     #require :active param
     params[:active] = {} unless params[:active]
+    params[:exp_typ_op1] ||= []
+    params[:exp_typ_op2] ||= []
+    params[:exp_typ] ||= []
     
     # search
     unless params[:search].blank?
@@ -122,17 +143,17 @@ class User < ActiveRecord::Base
     #experiment types
     experiment_typ_subquery = ""
     if params[:active][:fexperimenttype] == '1'
-      # if the user even has selected some experiments
-      if params[:experiment_type]
-        if params[:exp_typ_op] == "Nur"
-          experiment_type_join  = "JOIN participations as tp ON tp.user_id = users.id AND tp.participated = 1 "
-          experiment_type_join += "JOIN experiments ON tp.experiment_id = experiments.id AND experiments.experiment_type_id IN (#{params[:experiment_type].map(&:to_i).join(',')})"
-        end
-        
-        if params[:exp_typ_op] == "Ohne"
-          experiment_typ_subquery = "(SELECT COUNT(participations.id) FROM participations, experiments WHERE user_id = users.id AND participations.participated=1 AND participations.experiment_id=experiments.id AND experiments.experiment_type_id IN (#{params[:experiment_type].map(&:to_i).join(',')})) AS forbidden_type_count, "
-          having << "forbidden_type_count = 0"
-        end
+      params[:exp_typ_count].to_i.times do |i|
+        if params["exp_typ#{i}"].to_i > 0
+          experiment_typ_subquery += "(SELECT COUNT(participations.id) FROM participations, experiments WHERE user_id = users.id AND participations.participated=1 AND participations.experiment_id=experiments.id AND experiments.experiment_type_id = #{params["exp_typ#{i}"].to_i}) AS exp_type_count#{i}, \n"
+          
+          if params['exp_typ_op1'][i] == "Mindestens"
+            having << "exp_type_count#{i} >= #{params["exp_typ_op2"][i].to_i}"
+          elsif params['exp_typ_op1'][i] == "Höchstens"
+            having << "exp_type_count#{i} <= #{params["exp_typ_op2"][i].to_i}"
+          end
+  
+        end    
       end
     end
     
@@ -221,14 +242,13 @@ class User < ActiveRecord::Base
           str_to_date(CONCAT_WS('-', COALESCE(begin_year, 1990), COALESCE(begin_month,1), '1'), '%Y-%m-%d') as begin_date
       FROM users
       #{experiment_join}
-      #{experiment_type_join}
       #{'WHERE' unless where.blank?} 
         #{where.join(' AND ')}
       #{'HAVING' unless having.blank?} 
         #{having.join(' AND ')}
       ORDER BY #{sort_column + ' ' + sort_direction}
 EOSQL
-     
+    
     User.find_by_sql(sql)
   end
   

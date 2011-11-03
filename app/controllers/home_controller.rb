@@ -11,20 +11,24 @@ class HomeController < ApplicationController
   end
   
   def calendar
+    u = User.find_by_calendar_key(params[:id])
     
+    if u && u.admin?
+      cal = Calendar.new
     
-    cal = Calendar.new
+      Session.all.each do |session| 
+        event = Event.new
+        event.start = session.start_at.to_datetime
+        event.end = session.end_at.to_datetime
+        event.summary = session.experiment.name
+        event.location = session.location.name if session.location
+        cal.add_event(event)
+      end  
     
-    Session.all.each do |session| 
-      event = Event.new
-      event.start = session.start_at.to_datetime
-      event.end = session.end_at.to_datetime
-      event.summary = session.experiment.name
-      event.location = session.location.name if session.location
-      cal.add_event(event)
-    end  
-    
-    render :text => cal.to_ical
+      render :text => cal.to_ical
+    else
+      redirect_to root_url
+    end
   end
   
   

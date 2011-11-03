@@ -18,10 +18,12 @@ class DeviseCreateUsers < ActiveRecord::Migration
       t.string :role
       t.string :phone
       t.string :gender
+      t.string :calendar_key
       t.boolean :deleted, :default => false
       t.integer :study_id
       t.integer :begin_month
       t.integer :begin_year
+      t.string :secondary_email
       
       t.timestamps
     end

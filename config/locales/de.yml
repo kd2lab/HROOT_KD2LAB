@@ -31,6 +31,7 @@ de:
         begin_month: Beginn Monat
         begin_year: Beginn Jahr
         email: E-Mail
+        secondary_email: Alternative E-Mail
         study_id: Studiengang
         password: Passwort
         password_confirmation: Passwort-Wiederholung

@@ -27,6 +27,13 @@
 
 = raw(event_calendar)
 
+- if current_user.admin?
+  .calendar_url
+    Diesen Kalender als ICS:
+    %span.url= calendar_url(current_user.calendar_key)
+   
 %br
+
+
 %br
 %br

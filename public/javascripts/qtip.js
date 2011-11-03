@@ -29,6 +29,24 @@ $(function () {
   });
   
   
+  // qtip generic
+  $('.qtip-generic').each(function() {
+    $(this).qtip({
+      content: $(this).attr('data-title'),
+      show: 'mouseover',
+      hide: 'mouseout',
+      position: {
+        corner: {
+          target: 'topMiddle',
+          tooltip: 'bottomMiddle'
+        }  
+      },
+      style: { 
+        tip: 'bottomMiddle' // Notice the corner value is identical to the previously mentioned positioning corners
+      }
+    })
+  });
+    
   // qtip for header
   $('.qtip_ersch').qtip({
      content: '#Nicht erschienen',

@@ -40,6 +40,27 @@ $(function () {
     return false;
   });
   
+  // add and remove buttons for experiment type
+  $('a.add-link').click(function() {
+    var i = parseInt($('#exp_typ_count').val());
+    if (i < 10) {
+       $('#exp_filter_'+i).fadeIn();
+       $('#exp_typ_count').val(i+1);
+    }
+    
+    return false;
+  });
+  
+  $('a.remove-link').click(function() {
+    var i = parseInt($('#exp_typ_count').val())-1;
+    if (i > 0) {
+       $('#exp_filter_'+i).fadeOut();
+       $('#exp_typ_count').val(i);
+    }
+    
+    return false;
+  });
+  
   // sorting of participants list
   $('a.sort-link').click(function() {
     $('#sort').val($(this).attr('href'));

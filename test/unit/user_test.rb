@@ -1,3 +1,5 @@
+# encoding:utf-8
+
 require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
@@ -15,6 +17,17 @@ class UserTest < ActiveSupport::TestCase
     should_not allow_value("baz@.zya").for(:email)
     should_not allow_value("foo.de").for(:email)
     
+    should allow_value("foo@bar.xyz").for(:secondary_email)
+    should allow_value("baz@foo.zya").for(:secondary_email)
+    
+    should_not allow_value("foo").for(:secondary_email)
+    should_not allow_value("baz@.zya").for(:secondary_email)
+    should_not allow_value("foo.de").for(:secondary_email)
+    
+    should_not allow_value("").for(:email)
+    should allow_value("").for(:secondary_email)
+    
+    
     should "require password_confirmation to match password" do
       @user.password = "foobar"
       @user.password_confirmation = "barfoo"
@@ -25,10 +38,15 @@ class UserTest < ActiveSupport::TestCase
       assert @user.valid?
     end
 
+    should "have a key" do
+      assert_equal 32, @user.calendar_key.length
+    end
+
     should "be valid" do
       assert @user.valid?
     end
   end
+
   
   context "filtering users" do
     setup do
@@ -49,7 +67,7 @@ class UserTest < ActiveSupport::TestCase
       
       @et1 = ExperimentType.create(:name => "Typ1")
       @et2 = ExperimentType.create(:name => "Typ2")
-      @et2 = ExperimentType.create(:name => "Typ3")
+      @et3 = ExperimentType.create(:name => "Typ3")
       
       @e1 = Factory(:experiment, :experiment_type => @et1, :finished => true, :registration_active => true)
       @e2 = Factory(:experiment, :experiment_type => @et2)
@@ -124,8 +142,9 @@ class UserTest < ActiveSupport::TestCase
     end
     
     should "filter for experiment type" do      
-      assert_same_elements [@u3, @u4, @u5, @u6], User.load({:experiment_type => [@et1.id, @et2.id], :exp_typ_op => "Nur", :active => {:fexperimenttype => '1'} })
-      assert_same_elements [@u1, @u2, @u7], User.load({:experiment_type => [@et1.id, @et2.id], :exp_typ_op => "Ohne", :role => 'user', :active => {:fexperimenttype => '1', :frole => '1'} })
+      assert_same_elements [], User.load({"exp_typ0" => @et1.id, "exp_typ_op1" => ["Mindestens"], "exp_typ_op2" => ["5"], :exp_typ_count => "1", :active => {:fexperimenttype => '1'} })
+      assert_same_elements [@u5, @u6], User.load({"exp_typ0" => @et1.id, "exp_typ1" => @et3.id, "exp_typ_op1" => ["Mindestens", "Mindestens"], "exp_typ_op2" => ["1", "1"], :exp_typ_count => "2", :active => {:fexperimenttype => '1'} })
+      assert_same_elements [@u1, @u2, @u3, @u4, @u7], User.load({"exp_typ0" => @et1.id, "exp_typ_op1" => ["Höchstens"], "exp_typ_op2" => ["0"], :exp_typ_count => "1", :role => 'user', :active => {:fexperimenttype => '1', :frole => '1'} })    
     end
     
     should "filter for experiments" do

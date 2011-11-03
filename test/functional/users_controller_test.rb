@@ -33,11 +33,29 @@ class UsersControllerTest < ActionController::TestCase
         
         assert_redirected_to users_path
       end
+      
+      should "create a user, when suffix validation is active" do
+        @user2 = Factory.build(:user)
+        Settings.suffix = "uni-hamburg.de"
+        
+        assert_difference('User.count') do
+          post :create, :user => @user2.attributes.merge(:password => "tester", :password_confirmation => "tester")
+        end
+        
+        assert_redirected_to users_path
+      end
     end    
     
     context "editing" do
       setup do
         get :edit, :id => @user.to_param
+      end
+      should respond_with :success
+    end
+    
+    context "viewing" do
+      setup do
+        get :show, :id => @user.to_param
       end
       should respond_with :success
     end

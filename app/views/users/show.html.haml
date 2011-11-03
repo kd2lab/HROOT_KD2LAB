@@ -1,0 +1,78 @@
+= content_for :breadcrumb do
+  &gt;
+  = link_to "Benutzer", users_path
+  &gt;
+  = link_to @user.firstname+' '+@user.lastname, user_path(@user)
+  
+%h1
+  = @user.firstname+' '+@user.lastname
+  
+%table
+  %tr
+    %td Matrikelnummer
+    %td= @user.matrikel
+  %tr
+    %td E-Mail
+    %td= link_to @user.email, "mailto:#{@user.email}"
+  %tr
+    %td Rolle
+    %td= User.roles.invert[@user.role]
+  %tr
+    %td Studiengang
+    %td= @user.study.name if @user.study
+  %tr
+    %td Studienbegin
+    %td= "#{@user.begin_month}/#{@user.begin_year}"
+
+- if @user.deleted?
+  .mark{:style=>"color:red"} 
+    Dieser Nutzer ist als gelöscht markiert!
+
+
+  %br
+
+.userinfo
+  Bisherige Experimentteilnahmen:
+  %table
+    %tr
+      %td
+      %td.qtip-generic{:'data-title' => 'Anmeldung'} A
+      %td.qtip-generic{:'data-title' => 'Showup'}  S
+      %td.qtip-generic{:'data-title' => 'Teilnahme'}  T
+      
+    - @user.participations.includes(:session).joins(:experiment).order("sessions.start_at DESC, name").each do |p|
+      %tr
+        %td
+          - if p.experiment.finished &&  p.experiment.show_in_stats && p.participated 
+            .plus-one
+              +1
+          
+          - if p.experiment.finished &&  p.experiment.show_in_stats && p.registered && !p.showup
+            .minus-one
+              ="-1"
+          
+              
+          = truncate(p.experiment.name, :length => 60)
+          %br
+          %small
+            = #truncate(p.experiment.experiment_type.name, :length => 40)
+            = p.session.time_str if p.session
+            
+        %td
+          - if p.registered
+            .green-button
+            
+        %td
+          - if p.registered
+            - if p.showup
+              .green-button
+            - else
+              .red-button
+          
+        %td 
+          - if p.registered && p.showup
+            - if p.participated
+              .green-button
+            - else
+              .red-button
+        

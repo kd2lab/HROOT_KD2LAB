@@ -5,3 +5,17 @@
   Einstellungen
   
 = render :partial => "tabs", :locals => {:selected => 0} 
+
+
+%br
+%br
+%br
+
+= form_tag(options_index_path, :method => "post") do 
+  = label_tag :suffix, "E-Mails müssen enden auf"
+  %br
+  = text_field_tag(:suffix, Settings.suffix)
+  
+  %br
+  %br
+  = submit_tag("Änderungen speichern") 
