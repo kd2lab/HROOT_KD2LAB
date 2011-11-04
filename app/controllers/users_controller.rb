@@ -43,7 +43,7 @@ class UsersController < ApplicationController
     end
       
     if @user.update_attributes(params[:user])
-      redirect_to(users_url, :notice => 'Der Benutzer wurde erfolgreich geändert') 
+      redirect_to(user_url(@user), :notice => 'Der Benutzer wurde erfolgreich geändert') 
     else
       render :action => "edit" 
     end

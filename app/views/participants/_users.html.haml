@@ -69,7 +69,7 @@
     - @users.each do |user| 
       %tr
         %td= check_box_tag "selected_users[#{user.id}]"
-        %td= highlight(truncate(user.lastname, {:length => 15}), params[:search])+', '+highlight(truncate(user.firstname, {:length => 10}), params[:search])
+        %td= link_to highlight(truncate(user.lastname, {:length => 15}), params[:search])+', '+highlight(truncate(user.firstname, {:length => 10}), params[:search]), user_path(user)
         %td= link_to highlight(truncate(user.email, {:length => 20}), params[:search]), "mailto:#{user.email}"
         %td.study_name_popup{:'data-text' => user.study_name || 'keine Angabe' }
           =user.study_name ? truncate(user.study_name, {:length => 10}) : 'k. A.'
