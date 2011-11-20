@@ -20,6 +20,6 @@
 # Learn more: http://github.com/javan/whenever
 
 
-every 5.minutes do
-  i = 5
+every 1.minutes do
+  runner "UserMailer.welcome_email().deliver"
 end
