@@ -24,7 +24,20 @@ namespace :deploy do
     run "(test -f #{current_path}/tmp/pids/unicorn.pid && kill -s USR2 `cat #{current_path}/tmp/pids/unicorn.pid`)"
   end
   
+  task :compile_assets do
+    run "cd #{release_path}; RAILS_ENV=production rake assets:precompile"
+  end
+  
 end
 
-#before "deploy", "deploy:restart"
+# whenever integration
+set :whenever_command, "bundle exec whenever"
+set :whenever_environment, defer { stage }
+require "whenever/capistrano"
+
+
+before "deploy", "deploy:restart"
 after "deploy", "deploy:migrate"
+after 'deploy:update_code', 'deploy:compile_assets'
+
+

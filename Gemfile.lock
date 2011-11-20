@@ -50,6 +50,7 @@ GEM
       net-sftp (>= 2.0.0)
       net-ssh (>= 2.0.14)
       net-ssh-gateway (>= 1.1.0)
+    chronic (0.6.5)
     coffee-script (2.2.0)
       coffee-script-source
       execjs
@@ -168,6 +169,9 @@ GEM
       raindrops (~> 0.6)
     warden (1.0.6)
       rack (>= 1.0)
+    whenever (0.7.0)
+      activesupport (>= 2.3.4)
+      chronic (~> 0.6.3)
     will_paginate (3.0.pre4)
 
 PLATFORMS
@@ -197,4 +201,5 @@ DEPENDENCIES
   simplecov
   therubyracer
   unicorn
+  whenever
   will_paginate (= 3.0.pre4)
