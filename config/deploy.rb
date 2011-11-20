@@ -24,11 +24,7 @@ namespace :deploy do
     run "(test -f #{current_path}/tmp/pids/unicorn.pid && kill -s USR2 `cat #{current_path}/tmp/pids/unicorn.pid`)"
   end
   
-  desc "Compile css"
-  task :compile, :roles => :app do
-    run "cd #{current_path} && compass compile"
-  end
 end
 
-before "deploy:restart", "deploy:compile"
+before "deploy", "deploy:restart"
 after "deploy", "deploy:migrate"
