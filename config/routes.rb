@@ -21,7 +21,12 @@ Hroot::Application.routes.draw do
       
       
         
-    resources :users
+    resources :users do
+      collection do
+        post :filter
+      end
+    end
+      
     resources :locations, :except => :show
 
     resources :experiments, :except => :show do

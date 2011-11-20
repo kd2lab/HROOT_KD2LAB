@@ -21,6 +21,7 @@ class DeviseCreateUsers < ActiveRecord::Migration
       t.string :calendar_key
       t.boolean :deleted, :default => false
       t.integer :study_id
+      t.string :degree
       t.integer :begin_month
       t.integer :begin_year
       t.string :secondary_email

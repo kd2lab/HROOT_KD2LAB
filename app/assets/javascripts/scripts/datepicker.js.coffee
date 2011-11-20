@@ -1,5 +1,5 @@
 
-$(function () {  
+$ ->  
   $.datepicker.regional['de'] = {
 		closeText: 'schließen',
 		prevText: '&#x3c;zurück',
@@ -17,10 +17,9 @@ $(function () {
 		firstDay: 1,
 		isRTL: false,
 		showMonthAfterYear: false,
-		yearSuffix: ''};
+		yearSuffix: ''}
   
-  $.datepicker.setDefaults($.datepicker.regional['de']);
+  $.datepicker.setDefaults $.datepicker.regional['de']
   
-  $('#session_start_date').datepicker( $.datepicker.regional[ 'de' ] );
+  $('#session_start_date').datepicker $.datepicker.regional[ 'de' ]
   
-})

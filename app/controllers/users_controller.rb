@@ -11,6 +11,17 @@ class UsersController < ApplicationController
     @users = User.load(params, sort_column, sort_direction, nil, {:include_deleted_users => 1})
     @user_count = User.count
   end
+  
+  def filter
+    # same as index but for posting
+    params[:active] = {} unless params[:active]
+
+    @users = User.load(params, sort_column, sort_direction, nil, {:include_deleted_users => 1})
+    @user_count = User.count
+    
+    render :action => :index
+  end
+    
 
   def show
    

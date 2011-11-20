@@ -78,20 +78,18 @@ class UserTest < ActiveSupport::TestCase
       @sess2 = Session.create(:experiment => @e1, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 20, :reserve => 4)
       @sess3 = Session.create(:experiment => @e2, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 20, :reserve => 4)
       
-      Participation.create(:user => @u1, :experiment => @e1, :registered => true, :showup => false)
-      Participation.create(:user => @u2, :experiment => @e1, :registered => true, :showup => false)
+      Participation.create(:user => @u1, :experiment => @e1, :registered => true, :showup => false, :noshow => true)
+      Participation.create(:user => @u2, :experiment => @e1, :registered => true, :showup => false, :noshow => true)
       Participation.create(:user => @u3, :experiment => @e1, :registered => true, :showup => true)
       Participation.create(:user => @u4, :experiment => @e1, :registered => true, :showup => true)
       Participation.create(:user => @u5, :experiment => @e1, :registered => true, :showup => true, :participated => true)
       Participation.create(:user => @u6, :experiment => @e1, :registered => true, :showup => true, :participated => true)
       
       Participation.create(:user => @u3, :experiment => @e2, :registered => true, :showup => true, :participated => true)
-      Participation.create(:user => @u4, :experiment => @e2, :registered => true, :showup => true, :participated => true, :commitments => [@sess3.id])
+      Participation.create(:user => @u4, :experiment => @e2, :registered => true, :showup => true, :participated => true)
       Participation.create(:user => @u5, :experiment => @e3, :registered => true, :showup => true, :participated => true)
       Participation.create(:user => @u6, :experiment => @e4, :registered => true, :showup => true, :participated => true)
       Participation.create(:user => @u7, :experiment => @e4, :registered => true, :showup => true, :participated => true)
-      
-      
     end
     
     should "return all non-deleted users with empty filtering" do
@@ -164,8 +162,6 @@ class UserTest < ActiveSupport::TestCase
     
     should "find available sessions" do
       assert_same_elements [@sess1, @sess2], @u3.available_sessions
-      assert_same_elements [@sess3], @u4.registered_sessions
-      assert_same_elements [], @u3.registered_sessions
     end
     
   end  

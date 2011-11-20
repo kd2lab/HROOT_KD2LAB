@@ -17,7 +17,6 @@
   - else
     = f.association :location, :collection => Location.where(:active => true)
     
-  = f.input :finished
   %br
   = f.submit "Session speichern", :class => "guarded_form_save"
   %br

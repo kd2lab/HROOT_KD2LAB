@@ -2,7 +2,9 @@ class CreateExperiments < ActiveRecord::Migration
   def self.up
     create_table :experiments do |t|
       t.string  :name
-      t.string  :description
+      t.text    :description
+      t.text    :contact
+      t.string  :sender_email
       t.boolean :registration_active, :default => false
       t.boolean :restricted
       t.boolean :finished 

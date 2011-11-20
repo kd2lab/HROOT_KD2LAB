@@ -18,6 +18,7 @@ class User < ActiveRecord::Base
   has_many :experiments, :through => :experimenter_assignments, :source => :experiment
   has_many :participations
   has_many :participating_experiments, :through => :participations, :source => :experiment
+  has_many :login_codes
   
   belongs_to :study
   
@@ -52,29 +53,14 @@ class User < ActiveRecord::Base
   def available_sessions
     # find all ids of experiments where the user is assigned and registration is open
     # and the user has not defined his participation status
+    
     exp_ids = self
       .participating_experiments
-      .where(:registration_active => true, 'participations.commitments' => nil)
+      .where(:registration_active => true, 'participations.session_id' => nil)
       .map(&:id)
-    
+      
     #find all future sessions
     Session.where(:experiment_id => exp_ids).where('start_at > NOW()').order('start_at')
-  end
-  
-  def registered_sessions
-    # find all ids of experiments where the user is assigned and registration is open
-    # and the user has not defined his participation status
-    
-    session_ids = []
-    self.participations.where(:registered => true).each do |p|
-      if p.commitments
-        p.commitments.each do |session_id|
-          session_ids << session_id
-        end
-      end
-    end
-     
-    Session.where(:id => session_ids).where('start_at > NOW()').order('start_at') 
   end
   
   # load users and aggregate participation data
@@ -230,8 +216,7 @@ class User < ActiveRecord::Base
              user_id = users.id AND 
              participations.registered = 1 AND
              experiments.show_in_stats = 1 AND
-             experiments.finished = 1 AND
-             participations.showup != 1) AS noshow_count,
+             participations.noshow = 1) AS noshow_count,
           (SELECT studies.name
               FROM studies
               WHERE studies.id = users.study_id

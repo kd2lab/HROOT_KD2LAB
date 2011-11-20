@@ -206,7 +206,7 @@ class HomeController < ApplicationController
         # import sessions of this experiment
         db[:or_sessions].filter(:experiment_id => row[:experiment_id]).each do |session| 
           begin
-            startdate = DateTime.parse(
+            startdate = Time.zone.parse(
               session[:session_start_day].to_s+"."+
               session[:session_start_month].to_s+'.'+
               session[:session_start_year].to_s+" "+
@@ -231,12 +231,11 @@ class HomeController < ApplicationController
             :description => session[:session_remarks],
             :start_at => startdate,
             :end_at => enddate,
-            :finished => session[:session_finished] =='y',
             :needed => session[:part_needed],
             :reserve => session[:part_reserve],
             :location => l
           )
-          s.save(false)
+          s.save(:validate => false)
           
           unless s.valid?
             puts s.errors.inspect
@@ -259,6 +258,7 @@ class HomeController < ApplicationController
                   :invited => part[:invited] == 'y',
                   :registered => part[:registered] == 'y',
                   :showup => part[:shownup] == 'y',
+                  :noshow => session[:session_finished] =='y' && part[:registered] == 'y' && part[:shownup] == 'n',                  
                   :participated => part[:participated] == 'y'
                 )
               end
@@ -280,9 +280,10 @@ class HomeController < ApplicationController
                 :session_id => nil,
                 :user_id => user.id,
                 :invited => part[:invited] == 'y',
-                :registered => part[:registered] == 'y',
-                :showup => part[:shownup] == 'y',
-                :participated => part[:participated] == 'y'
+                :registered => false,
+                :showup => false,
+                :noshow => false,
+                :participated => false
               )
             end
           end

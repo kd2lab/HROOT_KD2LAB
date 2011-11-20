@@ -6,7 +6,7 @@
   %br
 
   .input.string
-    %label.string Experimentleiter
+    %label.select Experimentleiter
     = select_tag( |
       :experiment_leiter, |
       options_for_select( |
@@ -18,7 +18,7 @@
   
     
   .input.string
-    %label.string Experimenthelfer
+    %label.select Experimenthelfer
     = select_tag( |
         :experiment_helper, |
         options_for_select( |
@@ -30,10 +30,10 @@
   = f.input :description, :as => :text
   %br
   = f.input :registration_active, :label => "Die Anmeldung für dieses Experiment ist aktiv" 
-  = f.input :finished, :label => "Dieses Experiment ist beendet" 
+  = f.input :finished, :label => "Dieses Experiment ist abgeschlossen" 
   %br
   = f.input :show_in_stats, :label => "Dieses Experiment in der Statistik berücksichtigen" 
-  = f.input :show_in_calendar, :label => "Dieses Experiment im Kalender anzeigen" 
+  = # f.input :show_in_calendar, :label => "Dieses Experiment im Kalender anzeigen" 
   %br
   = f.submit "Experiment speichern", :class => "guarded_form_save"
   %br

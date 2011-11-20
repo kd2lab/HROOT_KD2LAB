@@ -15,6 +15,14 @@ class UsersControllerTest < ActionController::TestCase
       should respond_with :success
     end
     
+    context "post on filter" do
+      setup do
+        post :filter
+      end
+    
+      should respond_with :success
+    end
+    
     context "get on new" do
       setup do
         get :new
@@ -65,7 +73,9 @@ class UsersControllerTest < ActionController::TestCase
         put :update, :id => @user.to_param, :user => @user.attributes
       end
       
-      should redirect_to :users
+      should "redirect to user show" do
+        assert_redirected_to user_path(@user)
+      end
     end
        
     context "deleting" do

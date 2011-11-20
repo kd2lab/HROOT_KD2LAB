@@ -49,7 +49,6 @@
   %table.user-table
     %tr
       %th= sortable_for_form 'lastname', 'Name'  
-      %th= sortable_for_form 'firstname', 'Vorname'
       %th= sortable_for_form 'role', 'Rolle'
       %th= sortable_for_form 'email', 'E-Mail'
       %th= sortable_for_form 'study_name', 'Fach'
@@ -62,8 +61,7 @@
 
     - @users.each do |user| 
       %tr{:class => if user.deleted then "deleted" end}
-        %td= highlight(truncate(user.lastname, {:length => 15}), params[:search])
-        %td= highlight(truncate(user.firstname, {:length => 10}), params[:search])
+        %td= link_to highlight(truncate(user.lastname, {:length => 15}), params[:search])+', '+highlight(truncate(user.firstname, {:length => 10}), params[:search]), user_path(user)
         %td= {'user' => 'P', 'experimenter' => 'E', 'admin' => 'A'}[user.role]
         %td= link_to highlight(truncate(user.email, {:length => 15}), params[:search]), "mailto:#{user.email}"
         %td.study_name_popup{:'data-text' => user.study_name || 'keine Angabe' }
