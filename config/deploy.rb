@@ -26,5 +26,5 @@ namespace :deploy do
   
 end
 
-before "deploy", "deploy:restart"
+#before "deploy", "deploy:restart"
 after "deploy", "deploy:migrate"
