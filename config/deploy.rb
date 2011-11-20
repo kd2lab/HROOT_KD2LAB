@@ -18,11 +18,38 @@ set :user, "root"
 
 server "root@lvps83-169-5-139.dedicated.hosteurope.de", :app, :web, :db, :primary => true
 
+
+# unicorn integration
+set :unicorn_binary, "/usr/local/rvm/gems/ruby-1.9.2-p0@hroot/bin/unicorn"
+set :unicorn_config, "#{current_path}/config/unicorn.rb"
+set :unicorn_pid, "#{current_path}/tmp/pids/unicorn.pid"
+
 namespace :deploy do
-  desc "Tell unicorn to restart the app."
-  task :restart, :roles => :app do
-    run "(test -f #{current_path}/tmp/pids/unicorn.pid && kill -s USR2 `cat #{current_path}/tmp/pids/unicorn.pid`)"
+  task :start, :roles => :app, :except => { :no_release => true } do 
+    run "cd #{current_path} && #{try_sudo} #{unicorn_binary} -c #{unicorn_config} -E #{rails_env} -D"
   end
+  task :stop, :roles => :app, :except => { :no_release => true } do 
+    run "#{try_sudo} kill `cat #{unicorn_pid}`"
+  end
+  task :graceful_stop, :roles => :app, :except => { :no_release => true } do
+    run "#{try_sudo} kill -s QUIT `cat #{unicorn_pid}`"
+  end
+  task :reload, :roles => :app, :except => { :no_release => true } do
+    run "#{try_sudo} kill -s USR2 `cat #{unicorn_pid}`"
+  end
+  task :restart, :roles => :app, :except => { :no_release => true } do
+    stop
+    start
+  end
+end
+
+
+
+namespace :deploy do
+  #desc "Tell unicorn to restart the app."
+  #task :restart, :roles => :app do
+  #  run "(test -f #{current_path}/tmp/pids/unicorn.pid && kill -s USR2 `cat #{current_path}/tmp/pids/unicorn.pid`)"
+  #end
   
   task :compile_assets do
     run "cd #{release_path}; RAILS_ENV=production rake assets:precompile"
@@ -36,8 +63,9 @@ set :whenever_command, "bundle exec whenever"
 require "whenever/capistrano"
 
 
-before "deploy", "deploy:restart"
+before "deploy", "deploy:stop"
 after "deploy", "deploy:migrate"
 after 'deploy:update_code', 'deploy:compile_assets'
+after "deploy", "deploy:start"
 
 
