@@ -97,13 +97,13 @@ class Experiment < ActiveRecord::Base
         log += "#{Time.zone.now}: Sende Mail an #{u.email}\n"
 
         if experiment.has_open_sessions?
-          # jeder 4. kriegt zufällig einen platz
-          if rand(4) == 0 
+          # jeder 2. kriegt zufällig einen platz
+          if rand(2) == 0 
             rs = experiment.sessions[rand(experiment.sessions.count)]
             
             if rs.space_left > 0
               participation.session_id = rs.id
-              log += "#{u.email}\n meldet sich an, freie Plätze: #{experiment.total_space}"
+              log += "#{Time.zone.now}: #{u.email}\n meldet sich an, freie Plätze: #{experiment.total_space}\n"
             end
           end
           UserMailer.invitation_email(u, experiment).deliver
