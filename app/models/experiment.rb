@@ -103,7 +103,7 @@ class Experiment < ActiveRecord::Base
             
             if rs.space_left > 0
               participation.session_id = rs.id
-              log += "#{u.email}\n meldet sich an, freie Plätze: #{e.total_space}"
+              log += "#{u.email}\n meldet sich an, freie Plätze: #{experiment.total_space}"
             end
           end
           UserMailer.invitation_email(u, experiment).deliver
