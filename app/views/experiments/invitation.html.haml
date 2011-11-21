@@ -45,8 +45,11 @@
     
     .info{:style => "float:right; width:300px"}
       Derzeit sind 
-      %span#count= @experiment.participants.count
-      Teilnehmer zugeordnet.
+      = @experiment.participants.count
+      Teilnehmer zugeordnet, davon wurden
+      %span#count= @experiment.participants.where("invited_at IS NULL").count
+      noch nicht eingeladen.
+      
       %br
       %br
       %span#info_text 
@@ -64,4 +67,7 @@
     
     %br
     %br
-    = f.submit "Versand starten und Experiment zur Anmeldung freigeben", :confirm => "Sind Sie sich sicher?"
+    = f.submit "Versand starten und Experiment zur Anmeldung freigeben", :confirm => "Sind Sie sich sicher?", :class => "guarded_form_save"
+    
+    %br
+    %br

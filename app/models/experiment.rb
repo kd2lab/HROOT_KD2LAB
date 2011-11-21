@@ -6,7 +6,7 @@ class Experiment < ActiveRecord::Base
   has_many :participations
   has_many :participants, :through => :participations, :source => :user
   
-  has_many :sessions
+  has_many :sessions, :order => "start_at"
   belongs_to :experiment_type
   
   validates_presence_of :name
@@ -32,8 +32,15 @@ class Experiment < ActiveRecord::Base
     end
   end
   
-  def session_mail_text
-    "11.11.2011 13.00\n11.11.2011 15.00 TODO"
+  def has_open_sessions?
+    return sessions.select{ |s| s.needed + s.reserve - s.participations.count > 0}.count > 0
+  end
+  
+  def session_time_text
+    sessions
+      .select{ |s| s.needed + s.reserve - s.participations.count > 0}
+      .map{|s| s.start_at.strftime("%d.%m.%Y, %H:%M Uhr") }
+      .join("\n")
   end
   
   # einladungstext generieren
@@ -43,7 +50,7 @@ class Experiment < ActiveRecord::Base
     {
       "#firstname" => user.firstname, 
       "#lastname"  => user.lastname,
-      "#sessions"  => session_mail_text,
+      "#sessions"  => session_time_text,
       "#link"      => user.create_code
     }.each do |k,v| text.gsub!(k,v) end
     
@@ -80,15 +87,16 @@ class Experiment < ActiveRecord::Base
       log += "#{Time.zone.now}: Noch versendbar: #{message_count_left}\n"
       log += "#{Time.zone.now}: Versand von #{p.count} Einladungen\n"
       
-      
-      
+      # maximal 50 Personen anschreiben, aber nur, so lange es noch Pläze gibt      
       p.each do |participation|
         u = participation.user
         log += "#{Time.zone.now}: Sende Mail an #{u.email}\n"
 
-        UserMailer.invitation_email(u, experiment).deliver
-        participation.invited_at = Time.zone.now
-        participation.save
+        if experiment.has_open_sessions?
+          # UserMailer.invitation_email(u, experiment).deliver
+          participation.invited_at = Time.zone.now
+          participation.save
+        end
       end
       
       if p.count > 0
@@ -99,9 +107,15 @@ class Experiment < ActiveRecord::Base
       if experiment.participants.where("participations.invited_at IS NULL").count == 0
         experiment.invitation_start = nil
         experiment.save
-        UserMailer.log_mail("Einladungsversand für #{experiment.name} abgeschlossen", "").deliver
+        UserMailer.log_mail("Einladungsversand für #{experiment.name} abgeschlossen (alle Personen eingeladen)", "Es wurden alle zugeordnete Personen eingeladen.").deliver
       end
-      
+
+      # keine freien Plätze mehr?
+      unless experiment.has_open_sessions?
+        experiment.invitation_start = nil
+        experiment.save
+        UserMailer.log_mail("Einladungsversand für #{experiment.name} abgeschlossen (keine freien Plätze mehr)", "In diesem Experiment gibt es keine freien Plätze mehr").deliver
+      end
       
     end
     
