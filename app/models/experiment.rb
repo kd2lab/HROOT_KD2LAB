@@ -73,7 +73,6 @@ class Experiment < ActiveRecord::Base
       # get up to 50 random participants
       p = experiment.participations.where(:invited_at => nil).order("rand()").includes(:user).limit([[message_count_left, 50].min, 0].max)
       
-      
       # log this message
       log = ""
       log += "#{Time.zone.now}: Versendet seit #{experiment.invitation_start}: #{messaged_count}\n"
@@ -87,12 +86,20 @@ class Experiment < ActiveRecord::Base
         u = participation.user
         log += "#{Time.zone.now}: Sende Mail an #{u.email}\n"
 
-        UserMailer.invitation_email(u, experiment) #.deliver
+        UserMailer.invitation_email(u, experiment).deliver
         participation.invited_at = Time.zone.now
         participation.save
       end
       
-      UserMailer.log_mail("Versand", log).deliver
+      if p.count > 0
+        UserMailer.log_mail("Einladungsversand für #{experiment.name}", log).deliver
+      end
+      
+      # alle eingeladen?
+      if experiment.participants.where("participations.invited_at IS NULL").count == 0
+        experiment.invitation_start = nil
+        experiment.save
+      end
       
       
     end
