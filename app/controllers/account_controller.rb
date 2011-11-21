@@ -3,10 +3,12 @@
 class AccountController < ApplicationController
   authorize_resource :class => false
     
+  # todo remove
   def index
     params[:session] = {} unless params[:session]
   end
   
+  # todo remove
   def confirm
     # sanitize params
     params[:session] = {} unless params[:session]
@@ -14,6 +16,7 @@ class AccountController < ApplicationController
     @sessions = current_user.available_sessions.select{|s| keys.include?(s.id)}
   end
   
+  # todo remove
   def register
     # sanitize params
     params[:session] = {} unless params[:session]

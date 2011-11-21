@@ -30,40 +30,7 @@ class HomeController < ApplicationController
       redirect_to root_url
     end
   end
-  
-  
-  def import_test
-    require 'sequel'
-    @report = []
     
-    
-    db = Sequel.connect(:adapter=>'mysql2', :host=>'localhost', :database=>'controlling_orsee', :user=>'root', :password=>'abc8765')
-    
-    db[:or_participants].each do |row|
-      # calculate creation date minus 6 months per semester
-      start_reference = Date.new(1970,1,1)+row[:creation_time].seconds-(6.months*(row[:begin_of_studies].to_i-1))
-      m = start_reference.month
-      y = start_reference.year
-      
-      # todo import month, year...
-      
-      if m>=4
-        if m >= 10
-          m = 10
-        else
-          m = 4
-        end
-      else
-        m=10
-        y = y-1
-      end
-      
-      puts "#{m} #{y}\n"
-    end
-    
-    render :text => @report.inspect
-  end
-  
   def import
     require 'sequel'
     @report = []
@@ -108,7 +75,6 @@ class HomeController < ApplicationController
       m = start_reference.month
       y = start_reference.year
       
-      # todo import month, year...
       if m>=4
         if m >= 10
           m = 10

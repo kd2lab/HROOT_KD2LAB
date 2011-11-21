@@ -1,4 +1,13 @@
 .menu
+  - if @user
+    = link_to "Meine Anmeldungen", enroll_path(params[:code])
+    
+    
+  - if current_user
+    %br
+    %br
+    = link_to "Startseite", account_path
+  
   - if can? :manage, :all
     Admin-Menü
     %br
@@ -11,4 +20,4 @@
     %br
     = link_to "Einstellungen", options_path
   - else
-    Menü
+    

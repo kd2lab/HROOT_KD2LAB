@@ -11,6 +11,10 @@ class Session < ActiveRecord::Base
   validates_numericality_of :needed, :only_integer => true
   validates_numericality_of :reserve, :only_integer => true
   
+  scope :in_the_future, lambda { 
+    where("start_at > NOW()")
+  }
+  
   def self.session_times
     (0..23).to_a.product(["00","15","30","45"]).collect{|t| ("%02d:%02d" % t)}
   end

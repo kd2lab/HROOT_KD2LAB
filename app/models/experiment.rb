@@ -33,18 +33,19 @@ class Experiment < ActiveRecord::Base
   end
   
   def has_open_sessions?
-    total_space > 0
+    space_left > 0
   end
   
-  def total_space
-    sessions.map { |s| s.space_left }.sum
+  def space_left
+    sessions.in_the_future.map { |s| s.space_left }.sum
   end
   
   def session_time_text
-    sessions
-      .select{ |s| s.space_left > 0}
-      .map{|s| s.start_at.strftime("%d.%m.%Y, %H:%M Uhr") }
-      .join("\n")
+    open_sessions.map{|s| s.start_at.strftime("%d.%m.%Y, %H:%M Uhr") }.join("\n")
+  end
+  
+  def open_sessions
+    sessions.in_the_future.select{ |s| s.space_left > 0}
   end
   
   # einladungstext generieren
@@ -55,7 +56,7 @@ class Experiment < ActiveRecord::Base
       "#firstname" => user.firstname, 
       "#lastname"  => user.lastname,
       "#sessions"  => session_time_text,
-      "#link"      => user.create_code
+      "#link"      => Rails.application.routes.url_helpers.enroll_url(user.create_code)
     }.each do |k,v| text.gsub!(k,v) end
     
     text
@@ -103,7 +104,7 @@ class Experiment < ActiveRecord::Base
             
             if rs.space_left > 0
               participation.session_id = rs.id
-              log += "#{Time.zone.now}: #{u.email}\n meldet sich an, freie Plätze: #{experiment.total_space}\n"
+              log += "#{Time.zone.now}: #{u.email}\n meldet sich an, freie Plätze: #{experiment.space_left}\n"
             end
           end
           UserMailer.invitation_email(u, experiment).deliver

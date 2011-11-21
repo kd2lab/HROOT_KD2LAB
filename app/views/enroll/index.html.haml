@@ -1,0 +1,19 @@
+Sie können sich für folgende Termine anmelden:
+
+%br
+%br
+
+
+/ todo: continue here - confirmation page, participation creation - nicer layout
+
+= form_tag(:controller => "account", :action => "confirm")
+- @user.available_sessions.each do |s|
+  = radio_button_tag "session", "#{s.id}" 
+  = s.start_at.to_date
+  = s.start_at.strftime("%H:%M")+"-"+s.end_at.strftime("%H:%M")
+  
+  = s.location.name
+  %br
+  %br
+  
+= submit_tag('absenden')

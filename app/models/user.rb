@@ -53,14 +53,10 @@ class User < ActiveRecord::Base
   def available_sessions
     # find all ids of experiments where the user is assigned and registration is open
     # and the user has not defined his participation status
-    
-    exp_ids = self
-      .participating_experiments
-      .where(:registration_active => true, 'participations.session_id' => nil)
-      .map(&:id)
+    ids = participating_experiments.where(:registration_active => true, 'participations.session_id' => nil).map(&:id)
       
-    #find all future sessions
-    Session.where(:experiment_id => exp_ids).where('start_at > NOW()').order('start_at')
+    #find all future sessions, which still have soace and are open
+    Session.in_the_future.where(:experiment_id => ids).order('start_at').select{ |s| s.space_left > 0}
   end
   
   # load users and aggregate participation data
@@ -246,6 +242,12 @@ EOSQL
   end
   
   def create_code
-    "asdfsjadhfkasjdhf TODO"
+    begin 
+      l = LoginCode.create(:user => self, :code => rand(36**10).to_s(36))
+    end while !l.valid?
+    
+    return l.code
   end  
+  
+   
 end

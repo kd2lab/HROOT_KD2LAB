@@ -14,4 +14,8 @@ class ApplicationController < ActionController::Base
       admin_url
     end
   end
+  
+  def default_url_options(opts={})
+     opts.merge({:host => 'hroot.ingmar.net'})
+  end
 end

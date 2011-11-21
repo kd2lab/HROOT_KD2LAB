@@ -52,6 +52,8 @@ Hroot::Application.configure do
   }
 end
 
+Rails.application.routes.default_url_options[:host] =  'hroot.ingmar.net'
+
 Hroot::Application.config.middleware.use ExceptionNotifier,
   :email_prefix => "[hroot] ",
   :sender_address => %{"hroot notifier" <hroot@ingmar.net>},
