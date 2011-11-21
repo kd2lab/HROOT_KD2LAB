@@ -99,7 +99,7 @@ class Experiment < ActiveRecord::Base
         if experiment.has_open_sessions?
           # jeder 4. kriegt zufällig einen platz
           if rand(4) == 0 
-            rs = sessions[rand(sessions.count)]
+            rs = experiment.sessions[rand(experiment.sessions.count)]
             
             if rs.space_left > 0
               participation.session_id = rs.id
