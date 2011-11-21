@@ -28,8 +28,8 @@ Hroot::Application.configure do
   }
 end
 
-ActionMailer::Base.delivery_method = :test
-ActionMailer::Base.perform_deliveries = false
+ActionMailer::Base.delivery_method = :smtp
+ActionMailer::Base.perform_deliveries = true
 
 ActionMailer::Base.smtp_settings = {
   :address              => "smtp.gmail.com",

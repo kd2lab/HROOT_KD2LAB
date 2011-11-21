@@ -29,7 +29,12 @@ Hroot::Application.routes.draw do
       
     resources :locations, :except => :show
 
-    resources :experiments, :except => :show do
+    resources :experiments do
+      member do
+        get :invitation
+        post :invitation
+      end
+      
       resources :sessions do
         member do
           post :duplicate

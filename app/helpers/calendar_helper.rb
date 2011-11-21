@@ -37,7 +37,7 @@ module CalendarHelper
             <a href="">#{image_tag("group.png")}</a>
           </div>
           <a href="#{edit_experiment_session_path(session.experiment, session)}">#{session.start_at.strftime("%H:%M")}</a>
-          <a href="#{edit_experiment_path(session.experiment)}">#{h(truncate(session.experiment.name, :length => 8))}</a>
+          <a href="#{experiment_path(session.experiment)}">#{h(truncate(session.experiment.name, :length => 8))}</a>
           </div>)
     
     #<a href="/admin/experiments/#{session.experiment.id}/edit" title="#{h(session.experiment.name)}">  ...... </a>

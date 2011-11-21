@@ -2,7 +2,7 @@
   &gt;
   = link_to "Experimente", experiments_path
   &gt;
-  = link_to @experiment.name, edit_experiment_path(@experiment)
+  = link_to @experiment.name, experiment_path(@experiment)
   &gt;
   =link_to "Sessions", experiment_sessions_path(@experiment )
   &gt;
@@ -12,7 +12,7 @@
   = @experiment.name  
 
 
-= render :partial => "experiments/tabs", :locals => {:selected => 2}
+= render :partial => "experiments/tabs", :locals => {:selected => "Sessions"}
 %br
 %br
 %br

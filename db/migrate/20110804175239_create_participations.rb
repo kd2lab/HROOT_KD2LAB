@@ -4,7 +4,8 @@ class CreateParticipations < ActiveRecord::Migration
       t.integer :experiment_id
       t.integer :session_id
       t.integer :user_id
-      t.boolean :invited, :null => false, :default => false
+
+      t.datetime :invited_at, :null => true, :default => nil
       t.boolean :registered, :null => false, :default => false
       t.boolean :showup, :null => false, :default => false
       t.boolean :participated, :null => false, :default => false

@@ -37,6 +37,7 @@ de:
         password_confirmation: Passwort wdh.
       experiment:
         description: Beschreibung
+        contact: Kontaktinfos
         experiment_type_id: Experiment-Typ
     errors:
       models:

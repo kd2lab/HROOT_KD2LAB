@@ -63,9 +63,9 @@ set :whenever_command, "bundle exec whenever"
 require "whenever/capistrano"
 
 
-before "deploy", "deploy:stop"
+#before "deploy", "deploy:stop"
 after "deploy", "deploy:migrate"
 after 'deploy:update_code', 'deploy:compile_assets'
-after "deploy", "deploy:start"
+#after "deploy", "deploy:start"
 
 

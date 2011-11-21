@@ -21,5 +21,5 @@
 
 
 every 1.minutes do
-  #runner "UserMailer.welcome_email().deliver"
+  runner "Experiment.send_invitations"
 end

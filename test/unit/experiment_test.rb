@@ -48,7 +48,14 @@ class ExperimentTest < ActiveSupport::TestCase
       
       assert_equal [@user3, @user4], @e.experimenter_assignments.where(:role => "experiment_admin").collect(&:user)
       assert_equal [@user1, @user2], @e.experimenter_assignments.where(:role => "experiment_helper").collect(&:user)
+    end
+    
+    should "work with sinlge ids" do
+      @e.update_experiment_assignments @user1.id, "experiment_helper"
+      @e.update_experiment_assignments @user3.id, "experiment_admin"
       
+      assert_equal [@user3], @e.experimenter_assignments.where(:role => "experiment_admin").collect(&:user)
+      assert_equal [@user1], @e.experimenter_assignments.where(:role => "experiment_helper").collect(&:user)
     end
   end
   

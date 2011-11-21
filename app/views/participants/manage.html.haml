@@ -2,14 +2,14 @@
   &gt;
   = link_to "Experimente", experiments_path
   &gt;
-  = link_to @experiment.name, edit_experiment_path(@experiment)
+  = link_to @experiment.name, experiment_path(@experiment)
   &gt;
   Teilnehmer zuordnen
   
 %h3
   = @experiment.name  
 
-= render :partial => "experiments/tabs", :locals => {:selected => 3} 
+= render :partial => "experiments/tabs", :locals => {:selected => "Poolmitglieder zuordnen"} 
 
 %br
 %br

@@ -244,4 +244,8 @@ EOSQL
   def begin_date
     "#{"%02d" % begin_month}/#{begin_year} " unless begin_month.blank? || begin_year.blank?
   end
+  
+  def create_code
+    "asdfsjadhfkasjdhf TODO"
+  end  
 end

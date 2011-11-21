@@ -1,0 +1,67 @@
+= content_for :breadcrumb do
+  &gt;
+  = link_to "Experimente", experiments_path
+  &gt;
+  = link_to @experiment.name, experiment_path(@experiment)
+  &gt;
+  Übersicht
+  
+%h3
+  = @experiment.name
+
+= render :partial => "tabs", :locals => {:selected => "Einladungen"} 
+
+%br
+%br
+%br
+
+- if @experiment.registration_active?
+  Einladungen werden gerade versandt! Anmeldung ist aktiv...
+- else 
+
+
+  %h3
+    Einladungen versenden
+  
+      
+  = form_for @experiment, :url => {:action => "invitation"}, :html => {:method => :post, :class => "guarded_form"} do |f|
+    Betreff
+    %br
+    = f.text_field :invitation_subject, :value => "Einladung zum Experiment"  
+    
+    #invitationmenu
+      .title
+        = link_to "Textvorlagen", "", :class => "invitation_menu"
+
+      Einladungstext
+
+      .items
+        = render :partial => 'invitation_links'
+  
+    = f.text_area :invitation_text, :id => "invitation_text"
+    
+    %br
+    %br
+    
+    .info{:style => "float:right; width:300px"}
+      Derzeit sind 
+      %span#count= @experiment.participants.count
+      Teilnehmer zugeordnet.
+      %br
+      %br
+      %span#info_text 
+    
+    Bitte wählen Sie die Anzahl der E-Mails pro Zeitintervall:
+    %br
+    = f.select :invitation_size, options_for_select([50, 100, 150, 200, 300, 400, 500, 1000, 2000].map{|u| ["#{u} E-Mails",u]}, 200)
+    
+    %br
+    %br
+    
+    Bitte wählen Sie die Länge eines Zeitintervalls:
+    %br
+    = f.select :invitation_hours, options_for_select((1..24).map{|u| [if u==1 then "1 Stunde" else "#{u} Stunden" end, u]}, 4)
+    
+    %br
+    %br
+    = f.submit "Versand starten und Experiment zur Anmeldung freigeben", :confirm => "Sind Sie sich sicher?"

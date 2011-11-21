@@ -4,7 +4,7 @@
 - @experiments.each do |experiment| 
   .experimentline{:class => if experiment.finished? then "finished" else "" end}
     .right
-      =button_to "Bearbeiten", edit_experiment_path(experiment), :method => :get
+      =button_to "Details", experiment_path(experiment), :method => :get
     %h4= highlight(experiment.name, params[:search])
     Typ:
     = highlight(experiment.experiment_type.name, params[:search]) if experiment.experiment_type

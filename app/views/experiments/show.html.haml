@@ -4,15 +4,16 @@
   &gt;
   = link_to @experiment.name, experiment_path(@experiment)
   &gt;
-  Allgemeine Daten
+  Übersicht
   
 %h3
   = @experiment.name
 
-= render :partial => "tabs", :locals => {:selected => "Allgemeine Daten"} 
+= render :partial => "tabs", :locals => {:selected => "Übersicht"} 
 
 %br
 %br
 %br
 
-= render 'form' 
+
+Infos

@@ -30,7 +30,7 @@ class ExperimentsControllerTest < ActionController::TestCase
           post :create, :experiment => @exp.attributes
         end
         
-        assert_redirected_to edit_experiment_path(Experiment.last)
+        assert_redirected_to experiment_path(Experiment.last)
       end
     end    
     
@@ -41,12 +41,19 @@ class ExperimentsControllerTest < ActionController::TestCase
       should respond_with :success
     end
       
+    context "showing" do
+      setup do
+        get :show, :id => @experiment.to_param
+      end
+      should respond_with :success
+    end
+      
     context "updating" do
       setup do
         put :update, :id => @experiment.to_param, :experiment => @experiment.attributes
       end
       
-      should redirect_to :edit_experiment
+      should redirect_to :experiment
     end
        
     context "deleting" do

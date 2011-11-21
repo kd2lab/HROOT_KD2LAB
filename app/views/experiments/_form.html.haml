@@ -13,12 +13,12 @@
         User.where("role = 'admin' OR role='experimenter'").order(:lastname, :firstname).collect do |u| [u.lastname+", "+u.firstname, u.id] end, |
         params[:experiment_leiter] |
       ), |
-      {:multiple => true, :class => "chzn-select", :'data-placeholder' => "Personen wählen...", :style=>"width:410px"} |
+      {:class => "chzn-select", :'data-placeholder' => "Personen wählen...", :style=>"width:410px", :include_blank => true} |
     ) |
   
     
   .input.string
-    %label.select Experimenthelfer
+    %label.select weitere Exp.
     = select_tag( |
         :experiment_helper, |
         options_for_select( |
@@ -27,14 +27,19 @@
         ), |
         {:multiple => true, :class => "chzn-select", :'data-placeholder' => "Personen wählen...", :style=>"width:410px"} |
       ) |
+      
   = f.input :description, :as => :text
-  %br
-  = f.input :registration_active, :label => "Die Anmeldung für dieses Experiment ist aktiv" 
-  = f.input :finished, :label => "Dieses Experiment ist abgeschlossen" 
-  %br
+  = f.input :contact, :as => :text
+  
+  - unless @experiment.new_record?
+    = f.input :finished, :label => "Dieses Experiment ist abgeschlossen" 
   = f.input :show_in_stats, :label => "Dieses Experiment in der Statistik berücksichtigen" 
-  = # f.input :show_in_calendar, :label => "Dieses Experiment im Kalender anzeigen" 
   %br
-  = f.submit "Experiment speichern", :class => "guarded_form_save"
+  - if @experiment.new_record?
+    = f.submit "Experiment anlegen", :class => "guarded_form_save"
+  - else
+    = f.submit "Experiment speichern", :class => "guarded_form_save"
+  
+  %br
   %br
   %br
