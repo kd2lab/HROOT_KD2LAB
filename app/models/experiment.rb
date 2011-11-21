@@ -95,8 +95,7 @@ class Experiment < ActiveRecord::Base
       # maximal 50 Personen anschreiben, aber nur, so lange es noch Plätze gibt      
       p.each do |participation|
         u = participation.user
-        log += "#{Time.zone.now}: Sende Mail an #{u.email}\n"
-
+        
         if experiment.has_open_sessions?
           # jeder 2. kriegt zufällig einen platz
           if rand(2) == 0 
@@ -104,12 +103,17 @@ class Experiment < ActiveRecord::Base
             
             if rs.space_left > 0
               participation.session_id = rs.id
-              log += "#{Time.zone.now}: #{u.email}\n meldet sich an, freie Plätze: #{experiment.space_left}\n"
+              log += "#{Time.zone.now}: #{u.email}\n meldet sich an, freie Plätze: #{experiment.space_left-1}\n"
             end
           end
+          
+          log += "#{Time.zone.now}: Sende Mail an #{u.email}\n"
           UserMailer.invitation_email(u, experiment).deliver
           participation.invited_at = Time.zone.now
           participation.save
+        else
+          log += "#{Time.zone.now}: Versand beendet, keine Plätze mehr"
+          break
         end
       end
       
