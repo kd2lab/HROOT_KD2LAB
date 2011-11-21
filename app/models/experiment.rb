@@ -33,12 +33,16 @@ class Experiment < ActiveRecord::Base
   end
   
   def has_open_sessions?
-    return sessions.select{ |s| s.needed + s.reserve - s.participations.count > 0}.count > 0
+    total_space > 0
+  end
+  
+  def total_space
+    sessions.map { |s| s.space_left }.sum
   end
   
   def session_time_text
     sessions
-      .select{ |s| s.needed + s.reserve - s.participations.count > 0}
+      .select{ |s| s.space_left > 0}
       .map{|s| s.start_at.strftime("%d.%m.%Y, %H:%M Uhr") }
       .join("\n")
   end
@@ -78,7 +82,7 @@ class Experiment < ActiveRecord::Base
       message_count_left = max_messages - messaged_count
       
       # get up to 50 random participants
-      p = experiment.participations.where(:invited_at => nil).order("rand()").includes(:user).limit([[message_count_left, 50].min, 0].max)
+      p = experiment.participations.where(:invited_at => nil).order("rand()").includes(:user).limit([[message_count_left, 50].min, 0].max).all
       
       # log this message
       log = ""
@@ -87,13 +91,22 @@ class Experiment < ActiveRecord::Base
       log += "#{Time.zone.now}: Noch versendbar: #{message_count_left}\n"
       log += "#{Time.zone.now}: Versand von #{p.count} Einladungen\n"
       
-      # maximal 50 Personen anschreiben, aber nur, so lange es noch Pläze gibt      
+      # maximal 50 Personen anschreiben, aber nur, so lange es noch Plätze gibt      
       p.each do |participation|
         u = participation.user
         log += "#{Time.zone.now}: Sende Mail an #{u.email}\n"
 
         if experiment.has_open_sessions?
-          # UserMailer.invitation_email(u, experiment).deliver
+          # jeder 4. kriegt zufällig einen platz
+          if rand(4) == 0 
+            rs = sessions[rand(sessions.count)]
+            
+            if rs.space_left > 0
+              participation.session_id = rs.id
+              log += "#{u.email}\n meldet sich an, freie Plätze: #{e.total_space}"
+            end
+          end
+          UserMailer.invitation_email(u, experiment).deliver
           participation.invited_at = Time.zone.now
           participation.save
         end

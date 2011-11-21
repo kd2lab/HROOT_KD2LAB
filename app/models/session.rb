@@ -65,4 +65,8 @@ class Session < ActiveRecord::Base
 EOSQL
     Session.find_by_sql(sql)
   end
+  
+  def space_left
+    needed + reserve - participations.count
+  end
 end
