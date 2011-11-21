@@ -99,6 +99,7 @@ class Experiment < ActiveRecord::Base
       if experiment.participants.where("participations.invited_at IS NULL").count == 0
         experiment.invitation_start = nil
         experiment.save
+        UserMailer.log_mail("Einladungsversand für #{experiment.name} abgeschlossen", "").deliver
       end
       
       
