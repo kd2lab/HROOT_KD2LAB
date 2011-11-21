@@ -35,7 +35,9 @@ Hroot::Application.configure do
   # config.action_controller.asset_host = "http://assets.example.com"
 
   # Disable delivery errors, bad email addresses will be ignored
-  # config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.delivery_method = :sendmail
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.raise_delivery_errors = true
 
   # Enable threaded mode
   # config.threadsafe!
@@ -61,14 +63,5 @@ Hroot::Application.config.middleware.use ExceptionNotifier,
 
 
 
-ActionMailer::Base.delivery_method = :smtp
-ActionMailer::Base.smtp_settings[:enable_starttls_auto] = false
-# {
-#   :address              => "smtp.gmail.com",
-#   :port                 => "587",
-#   :domain               => "googlemail.com",
-#   :user_name            => "ingmar.baetge@googlemail.com",
-#   :password             => "v1rtua11nsan1ty",
-#   :authentication       => "plain",
-#   :enable_starttls_auto => true
-# }
+#ActionMailer::Base.delivery_method = :sendmail
+#ActionMailer::Base.smtp_settings[:enable_starttls_auto] = false
