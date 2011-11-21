@@ -64,7 +64,7 @@ class ExperimentsController < ApplicationController
       end
     
     else
-      if @experiment.update_attributes(params[:experiment])
+      if params[:experiment] && @experiment.update_attributes(params[:experiment])
         @experiment.registration_active = true
         @experiment.invitation_start = Time.zone.now
         @experiment.save
