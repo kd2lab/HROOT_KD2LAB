@@ -38,6 +38,7 @@ de:
       experiment:
         description: Beschreibung
         contact: Kontaktinfos
+        sender_email: E-Mail-Absender
         experiment_type_id: Experiment-Typ
     errors:
       models:

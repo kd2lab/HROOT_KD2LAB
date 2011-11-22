@@ -188,6 +188,10 @@ class User < ActiveRecord::Base
       # only members
       if options && options[:exclude_non_participants]
         having << "part_id IS NOT NULL"
+        
+        # in this case, also load invitation date
+        invitation_subquery = "(SELECT participations.invited_at FROM participations"+
+            " WHERE participations.user_id = users.id AND participations.experiment_id = #{experiment.id}) as invited_at,"
       end
     end  
       
@@ -220,6 +224,7 @@ class User < ActiveRecord::Base
           #{participation_subquery}
           #{experiment_subquery}
           #{experiment_typ_subquery}
+          #{invitation_subquery}
           str_to_date(CONCAT_WS('-', COALESCE(begin_year, 1990), COALESCE(begin_month,1), '1'), '%Y-%m-%d') as begin_date
       FROM users
       #{experiment_join}

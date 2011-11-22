@@ -30,6 +30,9 @@
       
   = f.input :description, :as => :text
   = f.input :contact, :as => :text
+  = f.input :sender_email, :hint => "(Standardadresse ist #{UserMailer.default[:from]})"
+
+  %br
   
   - unless @experiment.new_record?
     = f.input :finished, :label => "Dieses Experiment ist abgeschlossen" 

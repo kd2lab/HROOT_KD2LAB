@@ -63,6 +63,7 @@
       %tr
         %td
           = check_box_tag "selected_users[#{user.id}]"
+          = image_tag("email_go.png", :alt => "Dieser User wurde bereits eingeladen") unless user.invited_at.nil?
         %td= link_to highlight(truncate(user.lastname, {:length => 15}), params[:search])+', '+highlight(truncate(user.firstname, {:length => 10}), params[:search]), user_path(user)
         %td= link_to highlight(truncate(user.email, {:length => 20}), params[:search]), "mailto:#{user.email}"
         %td.study_name_popup{:'data-text' => user.study_name || 'keine Angabe' }

@@ -50,7 +50,8 @@ class Experiment < ActiveRecord::Base
   
   # einladungstext generieren
   def invitation_text_for(user) 
-    text = invitation_text.dup
+    text = invitation_text || ""
+    text = text.dup
     
     {
       "#firstname" => user.firstname, 
@@ -82,8 +83,8 @@ class Experiment < ActiveRecord::Base
       # how many messages may still be sent?
       message_count_left = max_messages - messaged_count
       
-      # get up to 50 random participants
-      p = experiment.participations.where(:invited_at => nil).order("rand()").includes(:user).limit([[message_count_left, 50].min, 0].max).all
+      # get up to 50 random uninvited and not enrolled participants
+      p = experiment.participations.where(:invited_at => nil, :session_id => nil).order("rand()").includes(:user).limit([[message_count_left, 50].min, 0].max).all
       
       # log this message
       log = ""
@@ -97,13 +98,15 @@ class Experiment < ActiveRecord::Base
         u = participation.user
         
         if experiment.has_open_sessions?
-          # jeder 2. kriegt zufällig einen platz
-          if rand(2) == 0 
-            rs = experiment.sessions[rand(experiment.sessions.count)]
+          unless Settings.testnr.blank?
+            # jeder 2. kriegt zufällig einen platz
+            if rand(Settings.testnr.to_i) == 0 
+              rs = experiment.sessions[rand(experiment.sessions.count)]
             
-            if rs.space_left > 0
-              participation.session_id = rs.id
-              log += "#{Time.zone.now}: #{u.email}\n meldet sich an, freie Plätze: #{experiment.space_left-1}\n"
+              if rs.space_left > 0
+                participation.session_id = rs.id
+                log += "#{Time.zone.now}: #{u.email}\n meldet sich an, freie Plätze: #{experiment.space_left-1}\n"
+              end
             end
           end
           

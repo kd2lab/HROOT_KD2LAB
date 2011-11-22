@@ -18,4 +18,14 @@
   
   %br
   %br
+  
+  = label_tag :testnr, "Test der Einladung: Jeder n-te Teilnehmer meldet sich an; n = "
+  %br
+  = text_field_tag(:testnr, Settings.testnr)
+  
+  - unless Settings.testnr.blank?
+    Hallo
+  
+  %br
+  %br
   = submit_tag("Änderungen speichern") 
