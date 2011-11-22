@@ -62,11 +62,7 @@ class Experiment < ActiveRecord::Base
     
     text
   end
-  
-  def sender_email
-    "mail@ingmar.net"
-  end
-  
+
   def self.send_invitations
     experiments = Experiment.where("invitation_start IS NOT NULL").all
     
