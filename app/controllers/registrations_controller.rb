@@ -4,10 +4,19 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
   def create
-    unless Settings.suffix.blank?
-      params[:user][:email] = params[:user][:email_prefix]+"@"+params[:user][:email_suffix]
-    end
-
+    if Settings.mail_restrictions && Settings.mail_restrictions.count > 0
+      prefix = ""
+      Settings.mail_restrictions.each do |r|
+        unless r['suffix'].blank?
+          if params[:user][:email_prefix].include?(r['prefix']) && r['suffix'] == params[:user][:email_suffix]
+            prefix = params[:user][:email_prefix]  
+          end
+        end
+      end
+      
+      params[:user][:email] = prefix+"@"+params[:user][:email_suffix]
+    end      
+  
     super
   end
 

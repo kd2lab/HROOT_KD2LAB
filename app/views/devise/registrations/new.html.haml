@@ -5,14 +5,17 @@
   = f.input :firstname, :required => false
   = f.input :lastname, :required => false
   = f.input :matrikel, :required => false
-  - if Settings.suffix.blank?
-    = f.input :email, :placeholder => 'name@domain.com'
-  - else
+  
+  - if Settings.mail_restrictions && Settings.mail_restrictions.map{|r| r['suffix']}.select{|r| !r.blank?}.count > 0
     = f.label "&nbsp;"
     = f.text_field :email_prefix
     @
-    = f.select :email_suffix, options_for_select(Settings.suffix.split(';'))
+    = f.select :email_suffix, options_for_select(Settings.mail_restrictions.map{|r| r['suffix']}.select{|r| !r.blank?}, params[:user][:email_suffix])
     = f.error :email
+  - else
+    = f.input :email, :placeholder => 'name@domain.com'
+  
+  
   = f.input :secondary_email, :placeholder => 'name@domain.com'
   = f.input :password
   = f.input :password_confirmation

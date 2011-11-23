@@ -67,4 +67,12 @@ $ =>
   # on submit of "all" check all boxes
   $('.submit_all').click ->
     $('form input[type=checkbox]').attr 'checked', true
-  
+    
+    
+  # add and remove url lines for settings
+  $('a.add-url-link').click ->
+    $('#url-tags').append('<span> ... <input id="mail_restrictions__prefix" name="mail_restrictions[][prefix]" type="text" value="" /> ... @ '+
+                          '<input id="mail_restrictions__suffix" name="mail_restrictions[][suffix]" type="text" value="" /><br/></span>')
+                
+  $('a.remove-url-link').click ->
+    $('#url-tags span:last-child').remove()

@@ -1,7 +1,7 @@
 class OptionsController < ApplicationController
   def index
-    if params[:suffix]
-      Settings.suffix = params[:suffix]
+    if params[:mail_restrictions]
+      Settings.mail_restrictions = params[:mail_restrictions]
     end
     
     if params[:testnr]

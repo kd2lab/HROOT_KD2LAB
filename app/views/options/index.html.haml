@@ -12,9 +12,29 @@
 %br
 
 = form_tag(options_index_path, :method => "post") do 
-  = label_tag :suffix, "E-Mails müssen enden auf"
+  = label_tag :mail_restrictions, "Gültige E-Mail-Formate (z.B. ...student...@uni-musterhausen.de)"
   %br
-  = text_field_tag(:suffix, Settings.suffix)
+  #url-tags
+    - if Settings.mail_restrictions
+      - Settings.mail_restrictions.each do |r|
+        %span
+          = " ... "
+          = text_field_tag("mail_restrictions[][prefix]", r['prefix'])
+          = " ... "
+          @
+          = text_field_tag('mail_restrictions[][suffix]', r['suffix'])
+          %br
+    - else
+      %span
+        = text_field_tag("mail_restrictions[][prefix]")
+        @
+        = text_field_tag('mail_restrictions[][suffix]')
+        %br
+  %a.add-url-link{:href=>"#"}
+    = image_tag("add.png")
+  
+  %a.remove-url-link{:href=>"#"}
+    = image_tag("delete.png")
   
   %br
   %br
@@ -23,9 +43,9 @@
   %br
   = text_field_tag(:testnr, Settings.testnr)
   
-  - unless Settings.testnr.blank?
-    Hallo
-  
   %br
   %br
   = submit_tag("Änderungen speichern") 
+  
+  %br
+  %br
