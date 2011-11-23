@@ -12,7 +12,7 @@ class UserMailer < ActionMailer::Base
   
   def invitation_email(user, experiment)
     @text = experiment.invitation_text_for(user)
-    from = if experiment.sender_email.blank? then default[:from] else experiment.sender_email end
+    from = if experiment.sender_email.blank? then UserMailer.default[:from] else experiment.sender_email end
     mail(:to => "ingmar.baetge@googlemail.com", :subject => experiment.invitation_subject, :from => from)
   end
 end
