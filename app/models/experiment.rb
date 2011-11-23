@@ -97,7 +97,7 @@ class Experiment < ActiveRecord::Base
             p.participated = 1 AND
             e.finished = 1 AND
             e.show_in_stats = 1
-          ) DESC,
+          ) ASC,
           rand()
 EOSQL
       else
