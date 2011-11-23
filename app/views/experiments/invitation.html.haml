@@ -59,7 +59,8 @@
   = form_for @experiment, :url => {:action => "invitation"}, :html => {:method => :post, :class => "guarded_form"} do |f|
     Betreff
     %br
-    = f.text_field :invitation_subject, :value => "Einladung zum Experiment"  
+    = f.text_field :invitation_subject
+    %br
     
     #invitationmenu
       .title
@@ -96,7 +97,10 @@
     Bitte wählen Sie die Länge eines Zeitintervalls:
     %br
     = f.select :invitation_hours, options_for_select((1..24).map{|u| [if u==1 then "1 Stunde" else "#{u} Stunden" end, u]}, 4)
-    
+    %br
+    %br
+    = f.check_box :invitation_prefer_new_users
+    Teilnehmer mit wenig Teilnahmen bevorzugen
     %br
     %br
     = f.submit "Versand starten und Experiment zur Anmeldung freigeben", :confirm => "Sind Sie sich sicher?", :class => "guarded_form_save"

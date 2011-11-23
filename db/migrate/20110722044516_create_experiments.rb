@@ -13,12 +13,12 @@ class CreateExperiments < ActiveRecord::Migration
       t.integer :experiment_type_id
       t.boolean :registration_active, :default => false
       
-      t.string  :invitation_subject
-      t.text    :invitation_text
+      t.string   :invitation_subject, :default => "Einladung zum Experiment"
+      t.text     :invitation_text
       t.datetime :invitation_start
-      t.integer :invitation_size
-      t.integer :invitation_hours
-      t.text :mailing_log
+      t.integer  :invitation_size
+      t.integer  :invitation_hours
+      t.boolean  :invitation_prefer_new_users, :default => false
       
       t.timestamps
     end

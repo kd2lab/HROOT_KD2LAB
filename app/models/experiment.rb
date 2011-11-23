@@ -87,14 +87,31 @@ class Experiment < ActiveRecord::Base
     experiments = Experiment.where("invitation_start IS NOT NULL").all
     
     experiments.each do |experiment|
+      if experiment.invitation_prefer_new_users
+        order = <<EOSQL
+          (SELECT COUNT(p.id) FROM Participations p, experiments e WHERE
+            participations.user_id = p.user_id AND
+            p.experiment_id = e.id AND 
+            p.registered = 1 AND
+            p.showup = 1 AND
+            p.participated = 1 AND
+            e.finished = 1 AND
+            e.show_in_stats = 1
+          ) DESC,
+          rand()
+EOSQL
+      else
+        order = "rand()"
+      end
+      
       # get up to 50 random uninvited and not enrolled participants
       p = experiment.participations
            .where(:invited_at => nil, :session_id => nil)
-           .order("rand()")
+           .order(order)
            .includes(:user)
            .limit([experiment.count_remaining_messages, 50].min)
            .all
-      
+       
       # log this message
       log = ""
       log += "#{Time.zone.now}: Versendet seit #{experiment.invitation_start}: #{experiment.count_sent_invitation_messages}\n"

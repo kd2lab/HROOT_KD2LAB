@@ -15,20 +15,13 @@
   = label_tag :mail_restrictions, "Gültige E-Mail-Formate (z.B. ...student...@uni-musterhausen.de)"
   %br
   #url-tags
-    - if Settings.mail_restrictions
-      - Settings.mail_restrictions.each do |r|
-        %span
-          = " ... "
-          = text_field_tag("mail_restrictions[][prefix]", r['prefix'])
-          = " ... "
-          @
-          = text_field_tag('mail_restrictions[][suffix]', r['suffix'])
-          %br
-    - else
+    - Settings.mail_restrictions.each do |r|
       %span
-        = text_field_tag("mail_restrictions[][prefix]")
+        = " ... "
+        = text_field_tag("mail_restrictions[][prefix]", r['prefix'])
+        = " ... "
         @
-        = text_field_tag('mail_restrictions[][suffix]')
+        = text_field_tag('mail_restrictions[][suffix]', r['suffix'])
         %br
   %a.add-url-link{:href=>"#"}
     = image_tag("add.png")
