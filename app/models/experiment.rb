@@ -89,7 +89,7 @@ class Experiment < ActiveRecord::Base
     experiments.each do |experiment|
       if experiment.invitation_prefer_new_users
         order = <<EOSQL
-          (SELECT COUNT(p.id) FROM Participations p, experiments e WHERE
+          (SELECT COUNT(p.id) FROM participations p, experiments e WHERE
             participations.user_id = p.user_id AND
             p.experiment_id = e.id AND 
             p.registered = 1 AND
