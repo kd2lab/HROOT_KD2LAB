@@ -64,10 +64,19 @@ class ExperimentsController < ApplicationController
       end
     
     else
+      # stop invitation
+      if params[:stop]
+        @experiment.invitation_start = nil
+        @experiment.save
+      end
+      
+      # start invitation
       if params[:experiment] && @experiment.update_attributes(params[:experiment])
         @experiment.registration_active = true
         @experiment.invitation_start = Time.zone.now
         @experiment.save
+        
+        redirect_to invitation_experiment_path
       end
     end
     

@@ -16,7 +16,39 @@
 %br
 
 - if @experiment.invitation_start
-  Einladungen werden gerade versandt! Anmeldung ist aktiv...
+  Der Einladungsversand ist im Moment aktiv.
+  %br
+  %br
+  
+  %table
+    %tr
+      %td Start dieses Einladungsversands
+      %td= @experiment.invitation_start.strftime("%d.%m.%Y, %H:%M Uhr") 
+
+    %tr
+      %td Einladungsmodus
+      %td= "#{@experiment.invitation_size} / #{@experiment.invitation_hours} Stunden"
+    %tr
+      %td Zugeordnete Personen (Gesamt)
+      %td= @experiment.participants.count
+    %tr
+      %td davon vor dem Start dieses Einladungsversands bereits eingeladen
+      %td= @experiment.participants.where(["participations.invited_at < ?", @experiment.invitation_start]).count
+    %tr
+      %td Maximalgrenze zu versendender Einladungen bis jetzt 
+      %td= @experiment.count_max_invitation_messages_until_now
+    %tr
+      %td Bereits versendete Einladungen 
+      %td= @experiment.count_sent_invitation_messages
+    %tr
+      %td Noch nicht eingeladene Zugeordnete
+      %td= @experiment.participants.where("participations.invited_at IS NULL").count 
+    %tr
+      %td Derzeit noch freie Plätze
+      %td= @experiment.space_left
+      
+  = button_to "Einladungsversand stoppen", invitation_experiment_path(:stop => true), :confirm => "Sind Sie sich sicher?"
+  
 - else 
 
 
@@ -69,5 +101,5 @@
     %br
     = f.submit "Versand starten und Experiment zur Anmeldung freigeben", :confirm => "Sind Sie sich sicher?", :class => "guarded_form_save"
     
-    %br
-    %br
+%br
+%br
