@@ -1,7 +1,8 @@
 Hroot::Application.routes.draw do
   
   match 'enroll(/:code)', :controller => 'enroll', :action => 'index', :as => "enroll"
-  get "enroll/save"
+  post 'enroll_confirm(/:code)', :controller => 'enroll', :action => 'confirm', :as => 'enroll_confirm'
+  post "enroll_register(/:code)", :controller => 'enroll', :action => 'register', :as => 'enroll_register'
 
   match '/calendar(/:year(/:month))' => 'calendar#index', :as => :calendar, :constraints => {:year => /\d{4}/, :month => /\d{1,2}/}
 

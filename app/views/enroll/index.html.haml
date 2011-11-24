@@ -1,19 +1,40 @@
-Sie können sich für folgende Termine anmelden:
+= content_for :breadcrumb do
+  &gt;
+  = link_to "Startseite", root_path
+  &gt;
+  Experiment-Anmeldung
 
-%br
-%br
+#enrollment
+
+  - if @session_participations_in_the_future.count > 0
+    %h3 Sie sind zu folgenden Experimenten verbindlich angemeldet:
+    - @session_participations_in_the_future.each do |p|
+      .line
+        = p.session.time_str
+        %br
+        %small= p.session.location.name if p.session.location
+    %br
+    %br  
 
 
-/ todo: continue here - confirmation page, participation creation - nicer layout
-
-= form_tag(:controller => "account", :action => "confirm")
-- @user.available_sessions.each do |s|
-  = radio_button_tag "session", "#{s.id}" 
-  = s.start_at.to_date
-  = s.start_at.strftime("%H:%M")+"-"+s.end_at.strftime("%H:%M")
+  - if @availabe_sessions.count > 0
+    %h3 Anmeldungen zu Experimenten
+    Sie können sich für folgende Termine anmelden:
+    %br
+    %br
   
-  = s.location.name
-  %br
-  %br
-  
-= submit_tag('absenden')
+    = form_tag enroll_confirm_path(params[:code]) do
+      - @availabe_sessions.each do |s|
+        .line
+          .button
+            = radio_button_tag "session", "#{s.id}" 
+          .text
+            = s.time_str
+            %br
+            %small= s.location.name if s.location
+      %br
+      = submit_tag('Zum gewählten Experiment anmelden')
+
+    %br
+    %br
+    %br

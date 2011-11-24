@@ -1,0 +1,25 @@
+= content_for :breadcrumb do
+  &gt;
+  = link_to "Startseite", root_path
+  &gt;
+  Experiment-Anmeldung bestätigen
+
+%h3 Anmeldungen zu Experimenten
+Möchten Sie sich hiermit verbindlich zu folgendem Experiment anmelden?
+%br
+%br
+#enrollment
+  = form_tag enroll_register_path(params[:code]) do
+    = hidden_field_tag("session", @session.id)
+    = @session.time_str
+    %br
+    %small= @session.location.name if @session.location
+    %br
+    %br
+    = submit_tag('VERBINDLICH ANMELDEN')
+    oder
+    = link_to "zurück", enroll_path(params[:code])
+
+%br
+%br
+%br
