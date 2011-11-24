@@ -57,14 +57,19 @@ protected
 
   def load_session_and_participation
     @session = Session.find_by_id(params[:session])
-    unless @session && @user.available_sessions.include?(@session)
-      redirect_to enroll_path(params[:code]), :alert => "Die Anmeldung wurde abgebrochen, da diese Session bereits voll ist."
+    unless @session
+      redirect_to enroll_path(params[:code])
       return
     end
-          
+    
     @participation = Participation.find_by_user_id_and_experiment_id(@user.id, @session.experiment_id)
     unless @participation
       redirect_to enroll_path(params[:code])
+      return
+    end
+    
+    unless @user.available_sessions.include?(@session)
+      redirect_to enroll_path(params[:code]), :alert => "Die Anmeldung wurde abgebrochen, da diese Session bereits voll ist."
       return
     end
   end
