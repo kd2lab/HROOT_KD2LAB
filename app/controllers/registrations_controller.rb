@@ -14,6 +14,8 @@ class RegistrationsController < Devise::RegistrationsController
         end
       end
       
+      prefix ||= ""
+      
       params[:user][:email] = prefix+"@"+params[:user][:email_suffix]
     end      
   
