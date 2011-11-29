@@ -26,9 +26,10 @@ class User < ActiveRecord::Base
   validates_uniqueness_of :calendar_key
   validates :secondary_email, :email => true, :allow_blank => true
   
-  after_create :create_key
+  after_create :set_defaults
   
-  def create_key
+  def set_defaults
+    self.role = 'user'
     self.calendar_key = SecureRandom.hex(16)
     self.save
   end
