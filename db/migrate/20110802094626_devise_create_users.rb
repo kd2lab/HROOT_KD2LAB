@@ -15,7 +15,7 @@ class DeviseCreateUsers < ActiveRecord::Migration
       t.string :firstname
       t.string :lastname
       t.string :matrikel
-      t.string :role
+      t.string :role, :default => "user"
       t.string :phone
       t.string :gender
       t.string :calendar_key

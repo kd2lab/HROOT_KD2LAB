@@ -44,7 +44,7 @@ class UsersControllerTest < ActionController::TestCase
       
       should "create a user, when suffix validation is active" do
         @user2 = Factory.build(:user)
-        Settings.suffix = "uni-hamburg.de"
+        Settings.mail_restrictions = [{"prefix"=>"test", "suffix"=>"uni-hamburg.de"}, {"prefix"=>"test2", "suffix"=>"uni-magdeburg.de"}]
         
         assert_difference('User.count') do
           post :create, :user => @user2.attributes.merge(:password => "tester", :password_confirmation => "tester")
