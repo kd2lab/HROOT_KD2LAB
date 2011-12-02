@@ -157,5 +157,35 @@ class ExperimentTest < ActiveSupport::TestCase
     end
   end
   
-  
+  context "loading of users prefering new users" do
+    setup do
+      @e1 = Factory(:experiment, :invitation_prefer_new_users => true, :invitation_start => Time.zone.now - 1.hour, :invitation_size => 7)
+      @s1 = Factory(:future_session, :experiment => @e1)
+      
+      4.times do |i|
+        u = Factory(:user, :firstname => i.to_s)
+        Participation.create(:user => u, :experiment => @e1)
+      end
+      
+      # a user already registered for a session
+      @u6 = Factory(:user)
+      Participation.create(:user => @u6, :experiment => @e1, :session => @s1)
+      
+      @e2 = Factory(:experiment)
+      @s2 = Factory(:past_session, :experiment => @e2)
+      
+      # a user with participations_count > 0 
+      @u5 = Factory(:user, :firstname => "XXXXX")
+      Participation.create(:user => @u5, :experiment => @e1)
+      Participation.create(:user => @u5, :experiment => @e2, :session => @s2)
+      SessionParticipation.create(:user => @u5, :session => @s2, :participated => true)    
+      
+      @p = @e1.load_random_participations
+    end
+    
+    should "load 5 users and not contain u6 and u5 should be last" do
+      assert_equal 5, @p.count
+      assert_equal @u5, @p.last.user
+    end
+  end
 end

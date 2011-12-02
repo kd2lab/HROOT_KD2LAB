@@ -1,3 +1,5 @@
+#encoding: utf-8
+
 class CreateExperiments < ActiveRecord::Migration
   def self.up
     create_table :experiments do |t|
@@ -5,8 +7,8 @@ class CreateExperiments < ActiveRecord::Migration
       t.text    :description
       t.text    :contact
       t.string  :sender_email
-      t.boolean :restricted
       t.boolean :finished 
+      t.string  :auto_participation_key
       t.boolean :show_in_stats, :default => true
       t.boolean :show_in_calendar, :default => true
       t.integer :participations_count
@@ -20,6 +22,8 @@ class CreateExperiments < ActiveRecord::Migration
       t.integer  :invitation_hours
       t.boolean  :invitation_prefer_new_users, :default => false
       
+      t.string   :confirmation_subject, :default => "Anmeldebestätigung"
+      t.text     :confirmation_text
       t.timestamps
     end
   end

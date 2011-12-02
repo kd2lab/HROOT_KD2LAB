@@ -11,6 +11,12 @@ class Experiment < ActiveRecord::Base
   
   validates_presence_of :name
   
+  after_create :set_defaults
+  def set_defaults
+    auto_participation_key = SecureRandom.hex(16)
+    save
+  end
+  
   # search for experiments, also in experimenters
   def self.search(search='')  
     includes(:experimenter_assignments, :experimenters).where(
@@ -50,19 +56,23 @@ class Experiment < ActiveRecord::Base
   
   # einladungstext generieren
   def invitation_text_for(user) 
-    text = invitation_text || ""
-    text = text.dup
-    
-    {
-      "#firstname" => user.firstname, 
-      "#lastname"  => user.lastname,
-      "#sessions"  => session_time_text,
-      "#link"      => Rails.application.routes.url_helpers.enroll_url(user.create_code)
-    }.each do |k,v| text.gsub!(k,v) end
-    
-    text
+    (invitation_text.to_s).mreplace({
+        "#firstname" => user.firstname, 
+        "#lastname"  => user.lastname,
+        "#sessions"  => session_time_text,
+        "#link"      => Rails.application.routes.url_helpers.enroll_url(user.create_code)
+    })
   end
-
+  
+  # einladungstext generieren
+  def confirmation_text_for(user, session) 
+    (confirmation_text.to_s).mreplace({
+        "#firstname" => user.firstname, 
+        "#lastname"  => user.lastname,
+        "#session"  => session.mail_string
+    })
+  end
+  
   def count_max_invitation_messages_until_now
     # hours since start, divided by length, floor of the result
     elapsed_periods = ((Time.zone.now - invitation_start) / invitation_hours.hours).floor
@@ -83,34 +93,49 @@ class Experiment < ActiveRecord::Base
     return [count_max_invitation_messages_until_now - count_sent_invitation_messages, 0].max
   end
   
+  def load_random_participations
+    if invitation_prefer_new_users
+      order = <<EOSQL
+        (SELECT count(sessions.id)
+         FROM sessions, participations p, experiments e
+         WHERE
+           sessions.id = sessions.reference_session_id AND
+           p.session_id = sessions.id AND
+           p.user_id = participations.user_id AND
+           e.id = sessions.experiment_id AND
+           (SELECT count(s.id) FROM sessions s WHERE s.reference_session_id = sessions.id) 
+           =
+           (SELECT count(s.id) FROM session_participations s, sessions s2 WHERE 
+              s.session_id = s2.id AND 
+              s.user_id = participations.user_id AND 
+              s2.reference_session_id = sessions.id AND
+              s.participated = 1
+           ) 
+           AND
+           (SELECT count(s.id)  FROM sessions s WHERE s.reference_session_id = sessions.id) > 0
+           AND
+           e.show_in_stats = 1
+        ) ASC,
+        rand()
+EOSQL
+    else
+      order = "rand()"
+    end
+    
+    # get up to 50 random uninvited and not enrolled participants
+    participations
+      .where(:invited_at => nil, :session_id => nil)
+      .order(order)
+      .includes(:user)
+      .limit([count_remaining_messages, 50].min)
+      .all
+  end
+  
   def self.send_invitations
     experiments = Experiment.where("invitation_start IS NOT NULL").all
     
     experiments.each do |experiment|
-      if experiment.invitation_prefer_new_users
-        order = <<EOSQL
-          (SELECT COUNT(p.id) FROM participations p, experiments e WHERE
-            participations.user_id = p.user_id AND
-            p.experiment_id = e.id AND 
-            p.registered = 1 AND
-            p.showup = 1 AND
-            p.participated = 1 AND
-            e.finished = 1 AND
-            e.show_in_stats = 1
-          ) ASC,
-          rand()
-EOSQL
-      else
-        order = "rand()"
-      end
-      
-      # get up to 50 random uninvited and not enrolled participants
-      p = experiment.participations
-           .where(:invited_at => nil, :session_id => nil)
-           .order(order)
-           .includes(:user)
-           .limit([experiment.count_remaining_messages, 50].min)
-           .all
+      p = experiment.load_random_participations
        
       # log this message
       log = ""

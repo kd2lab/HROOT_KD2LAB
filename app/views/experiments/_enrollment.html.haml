@@ -1,0 +1,14 @@
+- if @experiment.registration_active?
+  .stategreen
+    .button
+      = button_tag "Anmeldung deaktivieren", :id => "state_button_disable", :'data-id' => @experiment.id
+    
+    Zugeordnete Poolteilnehmer können sich aktuell bei diesem Experiment anmelden
+    
+- else
+  .statered
+    .button
+      = button_tag "Anmeldung aktivieren", :id => "state_button_enable", :'data-id' => @experiment.id
+    
+    Zugeordnete Poolteilnehmer können sich aktuell nicht bei diesem Experiment anmelden
+    

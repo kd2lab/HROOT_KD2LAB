@@ -121,12 +121,18 @@ class HomeController < ApplicationController
       j.save
     end
     
+    # create account for harald
+    #u = User.new :firstname => 'Harald', :lastname => 'Wypior', :email => "harald.wypior@ovgu.de", :role => "admin", :password => 'tester', :password_confirmation => 'tester', :matrikel => '1'
+    #u.skip_confirmation!
+    #u.save
+    
     # import experiments
     @report << "--------- EXPERIMENTS ------------"
     Session.delete_all
     Experiment.delete_all
     ExperimenterAssignment.delete_all
     Participation.delete_all
+    SessionParticipation.delete_all
     Location.delete_all
     
     db[:or_experiments].each do |row|
@@ -138,7 +144,7 @@ class HomeController < ApplicationController
       e = Experiment.new(
         :name => row[:experiment_name],
         :description => row[:experiment_description],
-        :restricted => row[:access_restricted] == 'y',
+        #:restricted => row[:access_restricted] == 'y',
         :finished => row[:experiment_finished] == 'y',
         :show_in_stats => row[:hide_in_stats] != 'y',
         :show_in_calendar => row[:hide_in_cal] != 'y'
@@ -221,18 +227,21 @@ class HomeController < ApplicationController
                   :experiment_id => e.id,
                   :session_id => s.id,
                   :user_id => user.id,
-                  :invited_at => part[:invited] == 'y' ? Time.zone.now : nil,
-                  :registered => part[:registered] == 'y',
+                  :invited_at => part[:invited] == 'y' ? Time.zone.now : nil
+                )
+                SessionParticipation.create(
+                  :session_id => s.id,
+                  :user_id => user.id,
                   :showup => part[:shownup] == 'y',
                   :noshow => session[:session_finished] =='y' && part[:registered] == 'y' && part[:shownup] == 'n',                  
                   :participated => part[:participated] == 'y'
-                )
+                ) 
               end
             end
           end
         end 
         
-        # import session dependent participations
+        # import session independent participations
         db[:or_participate_at].filter(:experiment_id => row[:experiment_id], :session_id => 0).each do |part|
           or_user = db[:or_participants].first(:participant_id => part[:participant_id])
           user = User.find_by_email(or_user[:email])
@@ -246,11 +255,8 @@ class HomeController < ApplicationController
                 :session_id => nil,
                 :user_id => user.id,
                 :invited_at => part[:invited] == 'y' ? Time.zone.now : nil,
-                :registered => false,
-                :showup => false,
-                :noshow => false,
-                :participated => false
               )
+              
             end
           end
         end 

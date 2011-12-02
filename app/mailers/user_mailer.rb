@@ -1,3 +1,5 @@
+#encoding: utf-8
+
 class UserMailer < ActionMailer::Base
   default from: "hroot@ingmar.net"
   
@@ -15,4 +17,13 @@ class UserMailer < ActionMailer::Base
     from = if experiment.sender_email.blank? then UserMailer.default[:from] else experiment.sender_email end
     mail(:to => "ingmar.baetge@googlemail.com", :subject => experiment.invitation_subject, :from => from)
   end
+  
+  def confirmation_email(user, session)
+    experiment = session.experiment
+    @text = experiment.confirmation_text_for(user, session)
+    from = if experiment.sender_email.blank? then UserMailer.default[:from] else experiment.sender_email end
+    mail(:to => "ingmar.baetge@googlemail.com", :subject => experiment.confirmation_subject, :from => from)
+  end
+      
+  
 end

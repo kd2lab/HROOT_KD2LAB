@@ -3,6 +3,7 @@ class CreateSessions < ActiveRecord::Migration
     create_table :sessions do |t|
       t.integer  :experiment_id
       t.integer  :location_id
+      t.integer  :reference_session_id
       
       t.datetime :start_at
       t.datetime :end_at
@@ -16,6 +17,9 @@ class CreateSessions < ActiveRecord::Migration
       
       t.timestamps
     end
+    
+    add_index :sessions, :experiment_id
+    add_index :sessions, :reference_session_id
   end
 
   def self.down

@@ -15,7 +15,7 @@ class DeviseCreateUsers < ActiveRecord::Migration
       t.string :firstname
       t.string :lastname
       t.string :matrikel
-      t.string :role, :default => "user"
+      t.string :role, :null => false, :default => "user"
       t.string :phone
       t.string :gender
       t.string :calendar_key
@@ -24,7 +24,11 @@ class DeviseCreateUsers < ActiveRecord::Migration
       t.string :degree
       t.integer :begin_month
       t.integer :begin_year
-      t.string :secondary_email
+      
+      
+      t.string   :secondary_email
+      t.datetime :secondary_email_confirmed_at
+      t.string   :secondary_email_confirmation_token
       
       t.timestamps
     end

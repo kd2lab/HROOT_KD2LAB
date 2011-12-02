@@ -1,0 +1,14 @@
+- @session_participations_in_the_future = user.participations |
+    .includes(:session)                                        |
+    .where("session_id IS NOT NULL AND sessions.start_at > NOW()") |
+    .all                                                            |
+  
+- if @session_participations_in_the_future.count > 0
+  %h3 Sie sind zu folgenden Experimenten verbindlich angemeldet:
+  - @session_participations_in_the_future.each do |p|
+    .line
+      = p.session.time_str
+      %br
+      %small= p.session.location.name if p.session.location
+  %br
+  %br

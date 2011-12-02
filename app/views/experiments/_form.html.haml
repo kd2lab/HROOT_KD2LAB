@@ -6,7 +6,7 @@
   %br
 
   .input.string
-    %label.select Experimentleiter
+    %label.select Verantwortlicher
     = select_tag( |
       :experiment_leiter, |
       options_for_select( |
@@ -32,11 +32,26 @@
   = f.input :contact, :as => :text
   = f.input :sender_email, :hint => "(Standardadresse ist #{UserMailer.default[:from]})"
 
+  /%br
+  /= link_to "Bestätigungsemail bearbeiten", "",:id => "confirmation_mail_link"
+  
+  
   %br
   
   - unless @experiment.new_record?
     = f.input :finished, :label => "Dieses Experiment ist abgeschlossen" 
   = f.input :show_in_stats, :label => "Dieses Experiment in der Statistik berücksichtigen" 
+  
+  %br
+  
+  Bestätigungsemail:
+  %hr
+  
+  = f.input :confirmation_subject
+  = f.input :confirmation_text, :as => :text
+  
+  
+  
   %br
   - if @experiment.new_record?
     = f.submit "Experiment anlegen", :class => "guarded_form_save"

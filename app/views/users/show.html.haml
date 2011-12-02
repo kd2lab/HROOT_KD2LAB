@@ -43,39 +43,40 @@
       %td.qtip-generic{:'data-title' => 'Showup'}  S
       %td.qtip-generic{:'data-title' => 'Teilnahme'}  T
       
-    - @user.participations.includes(:session).joins(:experiment).order("sessions.start_at DESC, name").each do |p|
-      %tr
-        %td
-          - if p.experiment.finished &&  p.experiment.show_in_stats && p.participated 
-            .plus-one
-              +1
-          
-          - if p.experiment.finished &&  p.experiment.show_in_stats && p.registered && !p.showup
-            .minus-one
-              ="-1"
-          
-              
-          = truncate(p.experiment.name, :length => 60)
-          %br
-          %small
-            = #truncate(p.experiment.experiment_type.name, :length => 40)
-            = p.session.time_str if p.session
-            
-        %td
-          - if p.registered
-            .green-button
-            
-        %td
-          - if p.registered
-            - if p.showup
-              .green-button
-            - else
-              .red-button
-          
-        %td 
-          - if p.registered && p.showup
-            - if p.participated
-              .green-button
-            - else
-              .red-button
-        
+      
+    / todo - @user.participations.includes(:session).joins(:experiment).order("sessions.start_at DESC, name").each do |p|
+    /   %tr
+    /     %td
+    /       - if p.experiment.finished &&  p.experiment.show_in_stats && p.participated 
+    /         .plus-one
+    /           +1
+    /       
+    /       - if p.experiment.finished &&  p.experiment.show_in_stats && p.session_id && !p.showup
+    /         .minus-one
+    /           ="-1"
+    /       
+    /           
+    /       = truncate(p.experiment.name, :length => 60)
+    /       %br
+    /       %small
+    /         = #truncate(p.experiment.experiment_type.name, :length => 40)
+    /         = p.session.time_str if p.session
+    /         
+    /     %td
+    /       - if p.session_id
+    /         .green-button
+    /         
+    /     %td
+    /       - if p.session_id
+    /         - if p.showup
+    /           .green-button
+    /         - else
+    /           .red-button
+    /       
+    /     %td 
+    /       - if p.session_id && p.showup
+    /         - if p.participated
+    /           .green-button
+    /         - else
+    /           .red-button
+    /     

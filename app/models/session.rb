@@ -1,9 +1,12 @@
+#encoding: utf-8
+
 class Session < ActiveRecord::Base
   has_event_calendar
   
   belongs_to :experiment
   belongs_to :location
   has_many :participations
+  has_many :session_participations
   
   validates_presence_of :start_at
   validates_presence_of :end_at
@@ -14,6 +17,14 @@ class Session < ActiveRecord::Base
   scope :in_the_future, lambda { 
     where("start_at > NOW()")
   }
+  
+  after_create :set_defaults
+  def set_defaults
+    unless reference_session_id
+      self.reference_session_id = self.id
+      self.save
+    end
+  end
   
   def self.session_times
     (0..23).to_a.product(["00","15","30","45"]).collect{|t| ("%02d:%02d" % t)}
@@ -49,6 +60,10 @@ class Session < ActiveRecord::Base
   
   def time_str
     start_at.to_date.to_s+', '+start_at.strftime("%H:%M")+"-"+end_at.strftime("%H:%M")
+  end
+  
+  def mail_string
+    "todo: session repräsentation"
   end
     
   

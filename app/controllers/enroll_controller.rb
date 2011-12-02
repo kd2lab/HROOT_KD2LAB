@@ -5,11 +5,6 @@ class EnrollController < ApplicationController
   before_filter :load_session_and_participation, :only => [:confirm, :register]
   
   def index
-    @session_participations_in_the_future = @user.participations
-      .includes(:session)
-      .where("session_id IS NOT NULL AND sessions.start_at > NOW()")
-      .all
-      
     @availabe_sessions = @user.available_sessions
   end
 
@@ -34,6 +29,9 @@ EOSQL
     @participation.reload
     
     if @participation.session_id.to_i > 0
+      # successful registration - send confirmation mail
+      UserMailer.confirmation_email(@user, @session).deliver
+      
       redirect_to enroll_path(params[:code]), :notice => "Sie wurden verbindlich angemeldet."
     else
       redirect_to enroll_path(params[:code]), :alert => "Die Anmeldung war NICHT erfolgreich, da keine Plätze mehr frei waren."

@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class SessionsControllerTest < ActionController::TestCase
-  context "the experiments controller" do
+  context "the sessions controller" do
     setup do
       @experiment = Factory(:experiment)
       @session = Session.create(:experiment => @experiment, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 20, :reserve => 4)

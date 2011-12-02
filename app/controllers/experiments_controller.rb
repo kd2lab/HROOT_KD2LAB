@@ -11,6 +11,7 @@ class ExperimentsController < ApplicationController
 
   def new
     @experiment = Experiment.new
+    @experiment.confirmation_text = "Hallo,\n\nSie haben sich erfolgreich zu folgender Experiment-Session angemeldet:\n\n#session\n\nViele Grüße,\nIhr Laborteam"
   end
 
   def show
@@ -50,16 +51,28 @@ class ExperimentsController < ApplicationController
     redirect_to(experiments_url)
   end
   
+  def enable
+    @experiment.registration_active = true
+    @experiment.save
+    render :partial => "enrollment"
+  end
+  
+  def disable
+    @experiment.registration_active = false
+    @experiment.save
+    render :partial => "enrollment"
+  end
+  
   def invitation
-    Settings.invitations = {} unless Settings.invitations
+    current_user.settings.invitations = {} unless current_user.settings.invitations
     if request.xhr?
       if params['mode'] == 'create'
-        Settings.invitations = Settings.invitations.merge({params['templatename'] => params['value']})
+        current_user.settings.invitations = current_user.settings.invitations.merge({params['templatename'] => params['value']})
         render :partial => "invitation_links"
       elsif params['mode'] == 'load'
-        render :text => Settings.invitations[params['templatename']]
+        render :text => current_user.settings.invitations[params['templatename']]
       elsif params['mode'] == 'delete'
-        Settings.invitations = Settings.invitations.reject{|key| key == params['templatename']}
+        current_user.settings.invitations = current_user.settings.invitations.reject{|key| key == params['templatename']}
         render :partial => "invitation_links"
       end
     
@@ -76,6 +89,12 @@ class ExperimentsController < ApplicationController
         @experiment.invitation_start = Time.zone.now
         @experiment.save
         
+        if params[:commit].include?("AN ALLE TEILNEHMER")
+          @experiment.participations.where("invited_at IS NOT NULL").each do |p|
+            p.invited_at = nil
+            p.save
+          end
+        end
         redirect_to invitation_experiment_path
       end
     end

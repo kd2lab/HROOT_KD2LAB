@@ -15,6 +15,36 @@ class ExperimentsControllerTest < ActionController::TestCase
       should respond_with :success
     end
     
+    context "get on enable" do
+      setup do
+        @experiment.registration_active = false
+        @experiment.save
+        get :enable, :id => @experiment.to_param
+      end
+      
+      should "set enabled" do
+        @experiment.reload
+        assert @experiment.registration_active?
+      end
+      
+      should respond_with :success
+    end
+
+    context "get on disable" do
+      setup do
+        @experiment.registration_active = true
+        @experiment.save
+        get :disable, :id => @experiment.to_param
+      end
+      
+      should "set disabled" do
+        @experiment.reload
+        assert !@experiment.registration_active?
+      end
+      
+      should respond_with :success
+    end
+    
     context "get on new" do
       setup do
         get :new

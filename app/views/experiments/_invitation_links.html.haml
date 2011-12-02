@@ -1,24 +1,24 @@
 Aktuellen Text speichern
 %br
-- Settings.invitations.keys.sort.each do |name|
+- current_user.settings.invitations.keys.sort.each do |name|
   =  link_to name, "", :class => 'save_invitation', :'data-name' => name
   %br
   
 = link_to "Neu...", "", :class => 'save_invitation'
 %br
 
-- if Settings.invitations.count > 0
+- if current_user.settings.invitations.count > 0
   %br
   Einfügen
   %br
-  - Settings.invitations.keys.sort.each do |name|
+  - current_user.settings.invitations.keys.sort.each do |name|
     = link_to name, "", :class => 'load_invitation', :'data-name' => name
     %br
 
   %br
   Löschen
   %br
-  - Settings.invitations.keys.sort.each do |name|
+  - current_user.settings.invitations.keys.sort.each do |name|
     = link_to name, "", :class => 'delete_invitation', :'data-name' => name
     %br
   

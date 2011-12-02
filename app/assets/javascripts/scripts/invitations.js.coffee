@@ -1,11 +1,10 @@
-update_calculations = () ->
-  anzahl = $("#count").text()
-  size = $('#experiment_invitation_size').val()
-  hours = $('#experiment_invitation_hours').val() 
 
+
+calc_times = (anzahl, size, hours) ->
   blocks = 0
   minutes = 0
   paket = size  
+  
   
   #versand simulieren
   while anzahl > 0
@@ -22,14 +21,28 @@ update_calculations = () ->
       paket += size
       minutes = 0
       blocks += 1
-      
+  
+  if minutes > 0 
+    minutes -= 5    
   stunden = parseInt(blocks*hours + minutes/60)
   minuten = minutes % 60    
-      
-  $("#info_text").text("Das Versenden aller E-Mails bei diesen Einstellungen dauert ca. "+ 
-    stunden+ " Stunden und "+minuten+" Minuten.")     
-  
-  
+  return {stunden: stunden, minuten:minuten}
+
+update_calculations = () ->
+  anzahl1 = $("#count").text()
+  anzahl2 = $("#count_total").text()
+  size = $('#experiment_invitation_size').val()
+  hours = $('#experiment_invitation_hours').val() 
+
+  s = calc_times(anzahl1, size, hours)
+  s.minuten = "0"+s.minuten if s.minuten < 10  
+
+  s2 = calc_times(anzahl2, size, hours)
+  s2.minuten = "0"+s2.minuten if s2.minuten < 10  
+    
+  $("#info_text").text("Geschätzte Dauer des Versands: "+s.stunden+ ":"+s.minuten+ " Stunden")     
+  $("#info_text2").text("(Dauer: "+s2.stunden+ ":"+s2.minuten+" Stunden)")     
+    
 $ ->
   $('#experiment_invitation_size').change ->
     update_calculations()

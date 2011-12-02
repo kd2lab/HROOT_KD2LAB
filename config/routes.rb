@@ -36,6 +36,8 @@ Hroot::Application.routes.draw do
 
     resources :experiments do
       member do
+        get :enable
+        get :disable
         get :invitation
         post :invitation
       end

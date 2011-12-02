@@ -23,3 +23,7 @@
 every 2.minutes do
   runner "Experiment.send_invitations"
 end
+
+every 1.days do
+  runner "LoginCode.cleanup"  
+end

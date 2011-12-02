@@ -40,11 +40,9 @@
       zugeordnet
       =session.participations.count
       | registriert
-      =session.participations.where(:registered => true).count
-      | showup
-      =session.participations.where(:showup => true).count
-      | teilgenommen
-      =session.participations.where(:participated => true).count
+      =session.participations.where("participations.session_id IS NOT NULL").count
+      | showup todo
+      | teilgenommen todo
       %br
         
         

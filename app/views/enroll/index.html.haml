@@ -6,15 +6,7 @@
 
 #enrollment
 
-  - if @session_participations_in_the_future.count > 0
-    %h3 Sie sind zu folgenden Experimenten verbindlich angemeldet:
-    - @session_participations_in_the_future.each do |p|
-      .line
-        = p.session.time_str
-        %br
-        %small= p.session.location.name if p.session.location
-    %br
-    %br  
+  = render :partial => "shared/future_sessions", :locals => {:user => @user}
 
 
   - if @availabe_sessions.count > 0

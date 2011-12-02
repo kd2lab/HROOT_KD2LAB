@@ -40,6 +40,8 @@ de:
         contact: Kontaktinfos
         sender_email: E-Mail-Absender
         experiment_type_id: Experiment-Typ
+        confirmation_subject: Betreff
+        confirmation_text: Text
     errors:
       models:
         experiment:

@@ -69,8 +69,8 @@
         %td= user.gender
         %td= user.begin_date 
         %td= user.created_at.strftime('%d.%m.%y')
-        %td= "#{user.noshow_count}" if user.user?
-        %td= "#{user.participations_count}" if user.user?
+        %td= "#{user.noshow_count}" 
+        %td= "#{user.participations_count}"
         
         %td= link_to "Details", user_path(user)
         

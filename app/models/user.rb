@@ -18,8 +18,10 @@ class User < ActiveRecord::Base
   has_many :experiments, :through => :experimenter_assignments, :source => :experiment
   has_many :participations
   has_many :participating_experiments, :through => :participations, :source => :experiment
+  has_many :session_participations
   has_many :login_codes
-  
+  has_settings
+
   belongs_to :study
   
   validates_presence_of :firstname, :lastname, :matrikel
@@ -56,8 +58,12 @@ class User < ActiveRecord::Base
     # and the user has not defined his participation status
     ids = participating_experiments.where(:registration_active => true, 'participations.session_id' => nil).map(&:id)
       
-    #find all future sessions, which still have soace and are open
-    Session.in_the_future.where(:experiment_id => ids).order('start_at').select{ |s| s.space_left > 0}
+    #find all future sessions, which still have space and are open
+    Session.in_the_future
+      .where(:experiment_id => ids)
+      .where("sessions.reference_session_id = sessions.id")
+      .order('start_at')
+      .select{ |s| s.space_left > 0}
   end
   
   # load users and aggregate participation data
@@ -128,8 +134,15 @@ class User < ActiveRecord::Base
     if params[:active][:fexperimenttype] == '1'
       params[:exp_typ_count].to_i.times do |i|
         if params["exp_typ#{i}"].to_i > 0
-          experiment_typ_subquery += "(SELECT COUNT(participations.id) FROM participations, experiments WHERE user_id = users.id AND participations.participated=1 AND participations.experiment_id=experiments.id AND experiments.experiment_type_id = #{params["exp_typ#{i}"].to_i}) AS exp_type_count#{i}, \n"
-          
+          experiment_typ_subquery += t =  "(SELECT COUNT(participations.id) FROM participations, experiments WHERE user_id = users.id AND 
+          (SELECT count(s.id)  FROM sessions s WHERE s.reference_session_id = participations.session_id) =
+          (SELECT count(s.id)  FROM session_participations s, sessions s2 WHERE  
+             s.user_id = users.id AND
+             s.session_id = s2.id AND 
+             s2.reference_session_id = participations.session_id AND s.participated = 1)
+          AND (SELECT count(s.id)  FROM sessions s WHERE s.reference_session_id = participations.session_id) > 0
+          AND participations.experiment_id=experiments.id AND experiments.experiment_type_id = #{params["exp_typ#{i}"].to_i}) AS exp_type_count#{i}, \n"
+               
           if params['exp_typ_op1'][i] == "Mindestens"
             having << "exp_type_count#{i} >= #{params["exp_typ_op2"][i].to_i}"
           elsif params['exp_typ_op1'][i] == "Höchstens"
@@ -148,7 +161,11 @@ class User < ActiveRecord::Base
         if params[:exp_op] == "zu einem der"
           experiment_join = "JOIN participations ON participations.user_id = users.id AND participations.experiment_id IN (#{params[:experiment].map(&:to_i).join(',')})"  
           if params[:exp_op2] == "teilgenommen haben"
-            experiment_join += " AND participations.participated = 1"
+            experiment_join += " AND (SELECT count(s.id)  FROM sessions s WHERE s.reference_session_id = participations.session_id) =
+            (SELECT count(s.id)  FROM session_participations s, sessions s2 WHERE  
+               s.user_id = users.id AND
+               s.session_id = s2.id AND 
+               s2.reference_session_id = participations.session_id AND s.participated = 1) AND (SELECT count(s.id)  FROM sessions s WHERE s.reference_session_id = participations.session_id) > 0"
           end
         end
         
@@ -158,7 +175,13 @@ class User < ActiveRecord::Base
           params[:experiment].map(&:to_i).each do |i|
             single_join = "JOIN participations as p#{i} ON p#{i}.user_id = users.id AND p#{i}.experiment_id = #{i} "
             if params[:exp_op2] == "teilgenommen haben"
-              single_join += " AND p#{i}.participated = 1 "
+              single_join += " AND (SELECT count(s.id)  FROM sessions s WHERE s.reference_session_id = p#{i}.session_id) =
+              (SELECT count(s.id)  FROM session_participations s, sessions s2 WHERE  
+                 s.user_id = users.id AND
+                 s.session_id = s2.id AND 
+                 s2.reference_session_id = p#{i}.session_id AND s.participated = 1)
+              AND 
+              (SELECT count(s.id) FROM sessions s WHERE s.reference_session_id = p#{i}.session_id) > 0 "              
             end
             experiment_join += single_join  
           end
@@ -167,7 +190,11 @@ class User < ActiveRecord::Base
         # none of them...
         if params[:exp_op] == "zu keinem der"
           if params[:exp_op2] == "teilgenommen haben"
-            and_add = " AND participations.participated = 1"
+            and_add = " AND (SELECT count(s.id)  FROM sessions s WHERE s.reference_session_id = participations.session_id) =
+            (SELECT count(s.id)  FROM session_participations s, sessions s2 WHERE  
+               s.user_id = users.id AND
+               s.session_id = s2.id AND 
+               s2.reference_session_id = participations.session_id AND s.participated = 1) AND (SELECT count(s.id)  FROM sessions s WHERE s.reference_session_id = participations.session_id) > 0"
           end
           experiment_subquery = "(SELECT COUNT(participations.id) FROM participations WHERE user_id = users.id #{and_add} AND participations.experiment_id IN (#{params[:experiment].map(&:to_i).join(',')})) AS forbidden_count, "
           having << "forbidden_count = 0"
@@ -200,24 +227,38 @@ class User < ActiveRecord::Base
     sql = <<EOSQL
       SELECT 
         DISTINCT users.*, 
-          (SELECT COUNT(participations.id) 
-          FROM participations, experiments
-          WHERE
-            participations.experiment_id = experiments.id AND 
-            user_id = users.id AND 
-            participations.registered = 1 AND
-            participations.showup = 1 AND
-            participations.participated = 1 AND
-            experiments.finished = 1 AND
-            experiments.show_in_stats = 1) AS participations_count,
-          (SELECT COUNT(participations.id) 
-          FROM participations, experiments
-          WHERE
-             participations.experiment_id = experiments.id AND 
-             user_id = users.id AND 
-             participations.registered = 1 AND
-             experiments.show_in_stats = 1 AND
-             participations.noshow = 1) AS noshow_count,
+          COALESCE(
+            (SELECT
+              count(sessions.id)
+            FROM sessions, participations, experiments
+            WHERE
+              sessions.id = sessions.reference_session_id AND
+              participations.session_id = sessions.id AND
+              participations.user_id = users.id AND
+              experiments.id = sessions.experiment_id AND
+              (SELECT count(s.id)  FROM sessions s WHERE s.reference_session_id = sessions.id) =
+              (SELECT count(s.id)  FROM session_participations s, sessions s2 WHERE  s.session_id = s2.id AND s.user_id = users.id AND s2.reference_session_id = sessions.id AND s.participated = 1) 
+              AND
+              (SELECT count(s.id)  FROM sessions s WHERE s.reference_session_id = sessions.id) > 0
+              AND
+              experiments.show_in_stats = 1
+            ), 
+            0
+          ) AS participations_count,
+          COALESCE(
+            (SELECT
+              count(sessions.id)
+            FROM sessions, participations, experiments
+            WHERE
+              sessions.id = sessions.reference_session_id AND
+              participations.session_id = sessions.id AND
+              participations.user_id = users.id AND
+              experiments.id = sessions.experiment_id AND
+              experiments.show_in_stats = 1 AND
+              (SELECT count(s.id)  FROM session_participations s, sessions s2 WHERE  s.session_id = s2.id AND s.user_id=users.id AND s2.reference_session_id = sessions.id AND s.noshow = 1) >0
+            ),
+            0
+          ) AS noshow_count,
           (SELECT studies.name
               FROM studies
               WHERE studies.id = users.study_id
