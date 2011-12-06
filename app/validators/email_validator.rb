@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require 'mail'
 
 class EmailValidator < ActiveModel::EachValidator
@@ -17,6 +19,6 @@ class EmailValidator < ActiveModel::EachValidator
     rescue Exception => e   
       r = false
     end
-    record.errors[attribute] << (options[:message] || "is invalid") unless r
+    record.errors[attribute] << (options[:message] || "ist ungültig") unless r
   end
 end

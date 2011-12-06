@@ -2,6 +2,10 @@ class AdminController < ApplicationController
   authorize_resource :class => false
   
   def index
+    
+  end
+  
+  def calendar
     @month = (params[:month] || (Time.zone || Time).now.month).to_i
     @year = (params[:year] || (Time.zone || Time).now.year).to_i
     @shown_month = Date.civil(@year, @month)

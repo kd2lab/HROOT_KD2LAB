@@ -1,39 +1,6 @@
-= stylesheet_link_tag "event_calendar" 
-
 = content_for :breadcrumb do
   &gt;
   =link_to "Administration", :controller => "admin", :action => "index"
-  
-  
-  
-  
-- overlaps = Session.find_overlapping_sessions(@year, @month)
+  &gt;
+  Dashboard
 
-- if overlaps.count > 0
-  .overlaps
-    In diesem Monat gibt es Terminkollisionen:
-    %br
-    %br
-    %ul
-      - overlaps.each do |session|
-        - session.overlap_ids.split(',').map(&:to_i).each_with_index do |id| 
-          - s = Session.find(id)
-          %li
-            = link_to session.full_name, edit_experiment_session_path(session.experiment, session)
-            überschneidet sich mit
-            = link_to s.full_name, edit_experiment_session_path(s.experiment, s)
-
-%br
-
-= raw(event_calendar)
-
-- if current_user.admin?
-  .calendar_url
-    Diesen Kalender als ICS:
-    %span.url= calendar_url(current_user.calendar_key)
-   
-%br
-
-
-%br
-%br

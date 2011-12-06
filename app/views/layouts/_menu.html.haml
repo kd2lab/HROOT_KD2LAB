@@ -1,10 +1,18 @@
 .menu
   - if current_user
+    = link_to "Home", account_path
+    %br
+    = link_to "Account-Optionen", :controller => "account", :action => "options"
+    %br
+    %br
     - if can? :manage, :all
+      
       Admin-Menü
       %br
       %br
-      = link_to "Startseite", admin_path
+      = link_to "Dashboard", dashboard_path
+      %br
+      = link_to "Kalender", calendar_path
       %br
       = link_to "Experimente", experiments_path
       %br

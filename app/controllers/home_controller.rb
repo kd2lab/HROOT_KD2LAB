@@ -10,6 +10,19 @@ class HomeController < ApplicationController
     
   end
   
+  def confirm
+    u = User.find_by_secondary_email_confirmation_token(params[:confirmation_token])
+    if u
+      u.secondary_email_confirmation_token = nil
+      u.secondary_email_confirmed_at = Time.zone.now
+      u.save
+      redirect_to root_url, :notice => "Ihre alternative E-Mail-Adresse wurde bestätigt."
+    else
+      redirect_to root_url
+    end
+        
+  end
+  
   def calendar
     u = User.find_by_calendar_key(params[:id])
     

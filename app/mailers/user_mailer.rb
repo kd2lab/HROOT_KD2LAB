@@ -24,6 +24,10 @@ class UserMailer < ActionMailer::Base
     from = if experiment.sender_email.blank? then UserMailer.default[:from] else experiment.sender_email end
     mail(:to => "ingmar.baetge@googlemail.com", :subject => experiment.confirmation_subject, :from => from)
   end
-      
+  
+  def secondary_email_confirmation(user)
+    @user = user
+    mail(:to => user.secondary_email, :subject => "Bestätigung eine alternativen E-Mail-Adresse")
+  end    
   
 end

@@ -60,6 +60,8 @@ de:
             email:
               taken: ist bereits vergeben.
               invalid: ist ungültig
+            secondary_email:
+              invalid: ist ungültig
             password: 
               confirmation: muss wiederholt werden
               too_short: ist zu kurz (mindestens 6 Zeichen)

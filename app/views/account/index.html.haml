@@ -1,9 +1,10 @@
-%p
-  Login-Bereich für User
+= content_for :breadcrumb do
+  &gt;
+  =link_to "Login-Bereich", :controller => "account", :action => "index"
+  &gt;
+  Willkommen
 
 = render :partial => "shared/future_sessions", :locals => {:user => current_user}
-  
-%hr  
 
 
   
