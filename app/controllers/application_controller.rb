@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
     if current_user.user?
       account_url
     else
-      admin_url
+      dashboard_url
     end
   end
 end

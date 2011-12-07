@@ -4,7 +4,7 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
   def create
-    if Settings.mail_restrictions && Settings.mail_restrictions.count > 0
+    if Settings.mail_restrictions && Settings.mail_restrictions.select{|r| !r["suffix"].blank?}.count > 0
       params[:user][:email] = nil
     end  
     

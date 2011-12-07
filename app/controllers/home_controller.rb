@@ -135,9 +135,9 @@ class HomeController < ApplicationController
     end
     
     # create account for harald
-    #u = User.new :firstname => 'Harald', :lastname => 'Wypior', :email => "harald.wypior@ovgu.de", :role => "admin", :password => 'tester', :password_confirmation => 'tester', :matrikel => '1'
-    #u.skip_confirmation!
-    #u.save
+    h = User.new :firstname => 'Harald', :lastname => 'Wypior', :email => "harald.wypior@ovgu.de", :role => "admin", :password => 'tester', :password_confirmation => 'tester', :matrikel => '1'
+    h.skip_confirmation!
+    h.save
     
     # import experiments
     @report << "--------- EXPERIMENTS ------------"
