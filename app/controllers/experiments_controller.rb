@@ -25,6 +25,7 @@ class ExperimentsController < ApplicationController
 
   def create
     @experiment = Experiment.new(params[:experiment])
+    @experiment.set_default_mail_texts
     
     if @experiment.save
       @experiment.update_experiment_assignments(params[:experiment_helper], "experiment_helper")
