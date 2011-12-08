@@ -70,7 +70,7 @@ class SessionsController < ApplicationController
   def duplicate
     @session = Session.find(params[:id])
     @new_session = Session.new(@session.attributes)
-    @new_session.save(false)
+    @new_session.save(:validate => false)
     redirect_to(experiment_sessions_path(@experiment), :notice => 'Die Session wurde kopiert')
   end
   
