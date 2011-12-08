@@ -27,7 +27,7 @@ class UserMailer < ActionMailer::Base
   
   def secondary_email_confirmation(user)
     @user = user
-    mail(:to => user.secondary_email, :subject => "Bestätigung eine alternativen E-Mail-Adresse")
+    mail(:to => user.secondary_email, :subject => "Bestätigung der alternativen E-Mail-Adresse")
   end    
   
 end

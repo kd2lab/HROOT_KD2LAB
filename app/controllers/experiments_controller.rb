@@ -11,7 +11,7 @@ class ExperimentsController < ApplicationController
 
   def new
     @experiment = Experiment.new
-    @experiment.confirmation_text = "Hallo,\n\nSie haben sich erfolgreich zu folgender Experiment-Session angemeldet:\n\n#session\n\nViele Grüße,\nIhr Laborteam"
+    @experiment.set_default_mail_texts
   end
 
   def show
