@@ -61,7 +61,7 @@ class User < ActiveRecord::Base
     #find all future sessions, which still have space and are open
     Session.in_the_future
       .where(:experiment_id => ids)
-      .where("sessions.reference_session_id = sessions.id")
+      # todo reenable .where("sessions.reference_session_id = sessions.id")
       .order('start_at')
       .select{ |s| s.space_left > 0}
   end
