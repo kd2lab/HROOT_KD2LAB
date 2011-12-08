@@ -61,9 +61,10 @@ class User < ActiveRecord::Base
     #find all future sessions, which still have space and are open
     Session.in_the_future
       .where(:experiment_id => ids)
-      # todo reenable .where("sessions.reference_session_id = sessions.id")
       .order('start_at')
       .select{ |s| s.space_left > 0}
+      
+      # todo reenable .where("sessions.reference_session_id = sessions.id")
   end
   
   # load users and aggregate participation data
