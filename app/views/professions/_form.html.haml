@@ -1,0 +1,11 @@
+- if @profession.new_record?
+  - url = professions_path
+- else
+  - url = profession_path(@profession)
+  
+= simple_form_for @profession, {:html => {:class => "guarded_form"}, :url => url} do |f| 
+  = f.input :name, :required => false
+  = f.submit "Beruf speichern", :class => "guarded_form_save"
+  %br
+  %br
+

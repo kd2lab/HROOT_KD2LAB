@@ -65,42 +65,43 @@ class ExperimentsController < ApplicationController
   end
   
   def invitation
-    current_user.settings.invitations = {} unless current_user.settings.invitations
-    if request.xhr?
-      if params['mode'] == 'create'
-        current_user.settings.invitations = current_user.settings.invitations.merge({params['templatename'] => params['value']})
-        render :partial => "invitation_links"
-      elsif params['mode'] == 'load'
-        render :text => current_user.settings.invitations[params['templatename']]
-      elsif params['mode'] == 'delete'
-        current_user.settings.invitations = current_user.settings.invitations.reject{|key| key == params['templatename']}
-        render :partial => "invitation_links"
-      end
-    
-    else
-      # stop invitation
-      if params[:stop]
-        @experiment.invitation_start = nil
-        @experiment.save
-      end
+    current_user.settings.templates = {} unless current_user.settings.templates
+
+    # stop invitation
+    if params[:stop]
+      @experiment.invitation_start = nil
+      @experiment.save
+    end
       
-      # start invitation
-      if params[:experiment] && @experiment.update_attributes(params[:experiment])
-        @experiment.registration_active = true
-        @experiment.invitation_start = Time.zone.now
-        @experiment.save
-        
-        if params[:commit].include?("AN ALLE TEILNEHMER")
-          @experiment.participations.where("invited_at IS NOT NULL").each do |p|
-            p.invited_at = nil
-            p.save
-          end
+    # start invitation
+    if params[:experiment] && @experiment.update_attributes(params[:experiment])
+      @experiment.registration_active = true
+      @experiment.invitation_start = Time.zone.now
+      @experiment.save
+      
+      if params[:commit].include?("AN ALLE TEILNEHMER")
+        @experiment.participations.where("invited_at IS NOT NULL").each do |p|
+          p.invited_at = nil
+          p.save
         end
-        redirect_to invitation_experiment_path
       end
+      redirect_to invitation_experiment_path
+    end
+  end
+  
+  def save_mail_text
+    if params['invitation_subject']
+      @experiment.invitation_subject = params['invitation_subject']
+      @experiment.invitation_text = params['invitation_text']
     end
     
-          
+    if params['confirmation_subject']
+      @experiment.confirmation_subject = params['confirmation_subject']
+      @experiment.confirmation_text = params['confirmation_text']
+    end
+    
+    @experiment.save
+    render :text => "Der Text wurde erfolgreich gespeichert."
   end
   
   def start

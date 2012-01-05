@@ -1,0 +1,33 @@
+- if edit
+  = render :partial => 'form', :locals => {:session => session, :subsession => subsession}  
+-else
+  %div{:id => "session"+session.id.to_s, :class => 'sessionline '+(subsession ? 'subsession' : '')}
+  
+    .right-col{:style => "display:xnone"}
+      - unless subsession
+        = link_to 'Folgesession', new_experiment_session_path(:experiment_id => @experiment, :reference_session_id => session.id), :class => "session_new_subsession"
+        |
+      = link_to "Bearbeiten", edit_experiment_session_path(@experiment, session), :class => 'session_edit'
+      |
+      = link_to "Duplizieren", duplicate_experiment_session_path(@experiment, session), :class => 'session_duplicate'
+      |
+      = link_to "Löschen", experiment_session_path(@experiment, session), :class => 'session_delete', :confirm => "Soll diese Session wirklich gelöscht werden?"
+    
+      - if session.end_at < Time.zone.now then
+        %br
+        .session-warning
+          Session ist noch nicht abgeschlossen!
+      
+    %span.time{:class => if session.end_at < Time.zone.now then "past" end}
+       
+      = '+' if subsession
+      = session.time_str
+  
+    .room
+      =truncate(session.location.name, :length => 30) if session.location
+      
+    - r = subsession ? session.reference_session : session
+    
+    .participants
+      = link_to "Teilnehmer: #{r.participations.count} (#{r.needed},#{r.reserve})", participants_experiment_session_path(@experiment, session), :class => r.css_class
+      

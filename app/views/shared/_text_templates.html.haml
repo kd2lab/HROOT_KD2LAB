@@ -1,0 +1,7 @@
+.text-templates
+  .title
+    = link_to "Textvorlagen", "", :class => "templates-link"
+    
+    .items{:'data-element-id' => element_id}
+      = render :partial => 'shared/text_templates_items', :locals => { :data => data, :element_id => element_id}
+  

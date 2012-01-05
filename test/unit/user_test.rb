@@ -120,7 +120,7 @@ class UserTest < ActiveSupport::TestCase
     
     should "filter for gender" do
         assert_same_elements [@u4, @u5], User.load({:gender => 'f', :active => {:fgender => '1'} })
-        assert_same_elements [@u6, @u7], User.load({:gender => 'm', :active => {:fgender => '1'} })    
+        assert_same_elements [@admin, @experimenter, @u1, @u2, @u3, @u6, @u7, @u9], User.load({:gender => 'm', :active => {:fgender => '1'} })
     end
     
     

@@ -29,6 +29,7 @@ gem 'icalendar'
 gem 'coffee-script'
 gem 'cancan'
 gem 'blueprint-rails'
+gem 'country-select'
 
 # js runtime for server
 gem "therubyracer", :require => 'v8'

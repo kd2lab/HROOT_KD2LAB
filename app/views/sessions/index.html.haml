@@ -15,37 +15,8 @@
 %br
 %br
 %br
-= button_to 'Neue Session anlegen', new_experiment_session_path(@experiment), :method => :get
+= button_to 'Neue Session anlegen', new_experiment_session_path(@experiment), :method => :get, :form_class => "session_new"
 %br
 
-- @sessions.each do |session| 
-  .sessionline
-    /%a{:href=>edit_experiment_session_path(@experiment, session)}
-    .right
-      =button_to "Duplizieren", duplicate_experiment_session_path(@experiment, session)
-      =button_to "Bearbeiten", edit_experiment_session_path(@experiment, session), :method => :get
-      =button_to "Löschen", experiment_session_path(@experiment, session), :method => :delete
-      %br
-      
-      
-    .left
-      %b
-        =session.start_at.to_date
-        =session.start_at.strftime("%H:%M")+"-"+session.end_at.strftime("%H:%M")
-      
-      %br
-      =truncate(session.location.name, :length => 40) if session.location
-      
-      %br
-      zugeordnet
-      =session.participations.count
-      | registriert
-      =session.participations.where("participations.session_id IS NOT NULL").count
-      | showup todo
-      | teilgenommen todo
-      %br
-        
-        
-      
-    
-%br
+#sessions
+  = render :partial => 'list', :locals => {:sessions => @sessions, :edit_session => nil}

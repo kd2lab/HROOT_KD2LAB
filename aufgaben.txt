@@ -1,0 +1,35 @@
+Über Weihnachten:
+
+
+Nutzer
+  Anzeige vervollständigen
+  Bearbeiten vervollständigen
+
+Anmeldung:
+  Passwortsicherheit prüfen
+
+Experimentansicht
+  Bessermachen,
+  Sessioncount, 
+  sortieren, 
+  pagination weg
+
+Sessionverwaltung:
+  Cronjob sessionabschluss
+  
+
+Filter für 
+  Sprachfähigkeiten
+  Nationalität
+  Beruf
+  Abschluss
+
+Generell:
+  Javascript Warnung
+  
+  
+Benachrichtigungsssite
+  jQuery-Tabs für Messages einführen
+  Standard-Text für Einladung
+  Textvorlagen für Einladungen
+

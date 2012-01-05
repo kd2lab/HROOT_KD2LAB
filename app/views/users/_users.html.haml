@@ -11,7 +11,7 @@
   Filter: 
  
   - { 'gender' => 'Geschlecht', 'noshow' => 'Nichterscheinen', 'participated' => 'Teilnahmen', 'role' => 'Rolle', 'begin' => 'Studienbeginn', |
-      'study' => 'Fächer', 'experimenttype' => 'Experimenttypen', 'experiment' => 'Experimente'}.each do |key, value|
+      'study' => 'Fächer', 'language' => 'Sprachen', 'experimenttype' => 'Experimenttypen', 'experiment' => 'Experimente'}.each do |key, value|
     %a.open-link{:href => '#f'+key}=value
     = '|' unless key == 'experiment'
   
@@ -26,6 +26,7 @@
   = render :partial => 'shared/filter_role'
   = render :partial => 'shared/filter_begin' 
   = render :partial => 'shared/filter_study' 
+  = render :partial => 'shared/filter_language' 
   = render :partial => 'shared/filter_experiment_type' 
   = render :partial => 'shared/filter_experiment' 
   
@@ -57,7 +58,6 @@
       %th= sortable_for_form 'created_at', 'Anmeld.'
       %th.qtip_ersch= sortable_for_form 'noshow_count' , '#N'
       %th.qtip_teil= sortable_for_form 'participations_count' , '#T'
-      %th
 
     - @users.each do |user| 
       %tr{:class => if user.deleted then "deleted" end}
@@ -72,7 +72,6 @@
         %td= "#{user.noshow_count}" 
         %td= "#{user.participations_count}"
         
-        %td= link_to "Details", user_path(user)
         
 - else
   %br

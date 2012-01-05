@@ -52,38 +52,25 @@ $ ->
   
   update_calculations()
   
-$ ->
-  $('#invitationmenu').mouseleave ->
-    $('.items').slideUp('fast')
+  $("#text-tabs").tabs();
   
-  $('.invitation_menu').click -> $('.items').slideToggle('fast'); false
+  $('#invitation_text, #invitation_subject').keydown ->
+    $('.save_invitation').attr("disabled", null)
+
+  $('#confirmation_text, #confirmation_subject').keydown ->
+    $('.save_confirmation').attr("disabled", null)
+
   
   $('.save_invitation').live 'click', ->
-    if $(this).attr('data-name') && !confirm "Achtung: Die bisher gespeicherten Daten werden dadurch überschrieben! Wollen Sie fortfahren?"
-        return false
-      
-    name = $(this).attr('data-name') || prompt "Bitte geben Sie einen Namen für die Vorlage an:", "Vorlagenname"
-    
-    if name != null && name.length > 0
-      $(".items").load "", 
-        { mode: 'create', templatename: name, value: $('#invitation_text').val()}
-    
-    $('.items').slideToggle('fast')
+    $('.save_invitation').attr("disabled", "true")
+    $('.invitation_result').load "save_mail_text", { invitation_subject : $('#invitation_subject').val(), invitation_text : $('#invitation_text').val()}, ->
+      $('.invitation_result').show().delay(3000).fadeOut(400)
     false
-    
-  $('.load_invitation').live 'click', ->
-    if confirm("Soll die Vorlage geladen und der aktuelle Text ersetzt werden?")
-      $.post "", { mode: 'load', templatename: $(this).attr('data-name') }, (data) ->
-        $('#invitation_text').val(data)
-      
-    $('.items').slideToggle('fast')
+
+  $('.save_confirmation').live 'click', ->
+    $('.save_confirmation').attr("disabled", "true")
+    $('.confirmation_result').load "save_mail_text", { confirmation_subject : $('#confirmation_subject').val(), confirmation_text : $('#confirmation_text').val()}, ->
+      $('.confirmation_result').show().delay(3000).fadeOut(400)
     false
-    
-  $('.delete_invitation').live 'click', ->
-    if confirm "Soll die Vorlage wirklich gelöscht werden?"
-      $(".items").load "", 
-        { mode: 'delete', templatename: $(this).attr('data-name') }
   
-    $('.items').slideToggle('fast')
-    false
-      
+  

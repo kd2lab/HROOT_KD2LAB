@@ -5,6 +5,8 @@ Factory.define :user do |u|
   u.firstname "john"
   u.lastname "smith"
   u.matrikel "1234"
+  u.gender 'm'
+  u.birthday Date.today
   u.role "user"
   u.after_create { |user| user.confirm!}
 end

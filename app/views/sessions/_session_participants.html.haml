@@ -1,0 +1,66 @@
+= hidden_field_tag :sort, params[:sort]
+= hidden_field_tag :direction, params[:direction]
+%br
+
+%h1
+  Session am
+  = @session.time_str
+
+- if @session.location
+  = @session.location.name 
+  %br
+  
+%br
+ 
+.move-menu 
+  Gewählte Teilnehmer
+
+  - h = {'aus dieser Session austragen' => 0}
+  - @session.alternative_sessions.each  do |s|
+    - h["in Session #{s.time_str} verschieben"] = s.id  
+  = select_tag "move-member", options_for_select(h), :include_blank => true
+
+  %br
+  
+- if @users.count > 0
+  %br
+  %table.user-table
+    %tr
+      %th 
+      %th
+      %th= sortable_for_form 'lastname', 'Name'  
+      %th= sortable_for_form 'email', 'E-Mail'
+      %th= sortable_for_form 'study_name', 'Fach'
+      %th= sortable_for_form 'gender',  'Gesch.'
+      %th= sortable_for_form 'begin_date', 'Beginn'
+      %th E
+      %th T
+      %th{:style => "color:red"} N
+      
+    - @users.each_with_index do |user, index| 
+      %tr
+        %td= check_box_tag "selected_users[#{user.id}]", '1', false, :class => 'selected_users'
+        %td= index + 1
+      
+        %td= link_to highlight(truncate(user.lastname, {:length => 15}), params[:search])+', '+highlight(truncate(user.firstname, {:length => 10}), params[:search]), user_path(user)
+        %td= link_to highlight(truncate(user.email, {:length => 20}), params[:search]), "mailto:#{user.email}"
+        %td.study_name_popup{:'data-text' => user.study_name || 'keine Angabe' }
+          =user.study_name ? truncate(user.study_name, {:length => 10}) : 'k. A.'
+        %td= user.gender
+        %td= user.begin_date 
+        %td= check_box_tag "showups[#{user.id}]", "1", user.session_showup == 1, :class => "show_checkbox", :'data-id' => user.id
+        %td= check_box_tag "participations[#{user.id}]", "1", user.session_participated == 1, :class => "participation_checkbox", :'data-id' => user.id
+        %td
+          = check_box_tag "noshows[#{user.id}]", "1", user.session_noshow == 1, :class => "noshow_checkbox", :'data-id' => user.id
+          = hidden_field_tag "ids[#{user.id}]", "1"
+                
+              
+  = button_tag "Änderungen jetzt speichern", :name => "save"
+        
+- else
+  %b
+    Diese Session hat keine Teilnehmer
+  %br  
+  %br
+%br
+%br

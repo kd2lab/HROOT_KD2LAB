@@ -1,0 +1,23 @@
+= render :partial => "language_tab"
+
+
+= button_to "Neue Sprache anlegen", new_language_path, :method => :get
+%br
+%br
+
+%table
+  %tr
+    %th Name  
+    %th 
+        
+  - @languages.each do |language| 
+    %tr
+      %td= truncate(language.name, :maxlength => 30)
+      %td
+        = link_to 'Bearbeiten', edit_language_path(language) 
+        |
+        = link_to 'Löschen', language, :confirm => 'Sind Sie sich sicher, dass Sie diese Sprache entfernen möchten?', :method => :delete
+  
+%br
+
+%br

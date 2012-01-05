@@ -12,6 +12,13 @@
   
 %table
   %tr
+    %td Telefon
+    %td= @user.phone
+  %tr
+    %td Geschlecht
+    %td= {'m' => 'männlich', 'f' => 'weiblich', '?' => "keine Angabe" }[@user.gender]
+  
+  %tr
     %td Matrikelnummer
     %td= @user.matrikel
   %tr
@@ -24,8 +31,20 @@
     %td Studiengang
     %td= @user.study.name if @user.study
   %tr
+    %td Abschluss(-ziel)
+    %td= @user.degree  
+  %tr
     %td Studienbegin
     %td= "#{@user.begin_month}/#{@user.begin_year}"
+  %tr
+    %td Land
+    %td= @user.country_name
+  %tr
+    %td Sprachkenntnisse
+    %td= @user.languages.join(',')
+  %tr
+    %td Beruf
+    %td=  @user.profession.name if @user.profession
 
 - if @user.deleted?
   .mark{:style=>"color:red"} 
@@ -35,48 +54,36 @@
   %br
 
 .userinfo
+  - ptable = {}; @user.session_participations.each do |sp| ptable[sp.session_id] = sp end
+  
   Bisherige Experimentteilnahmen:
   %table
     %tr
       %td
-      %td.qtip-generic{:'data-title' => 'Anmeldung'} A
       %td.qtip-generic{:'data-title' => 'Showup'}  S
       %td.qtip-generic{:'data-title' => 'Teilnahme'}  T
       
       
-    / todo - @user.participations.includes(:session).joins(:experiment).order("sessions.start_at DESC, name").each do |p|
-    /   %tr
-    /     %td
-    /       - if p.experiment.finished &&  p.experiment.show_in_stats && p.participated 
-    /         .plus-one
-    /           +1
-    /       
-    /       - if p.experiment.finished &&  p.experiment.show_in_stats && p.session_id && !p.showup
-    /         .minus-one
-    /           ="-1"
-    /       
-    /           
-    /       = truncate(p.experiment.name, :length => 60)
-    /       %br
-    /       %small
-    /         = #truncate(p.experiment.experiment_type.name, :length => 40)
-    /         = p.session.time_str if p.session
-    /         
-    /     %td
-    /       - if p.session_id
-    /         .green-button
-    /         
-    /     %td
-    /       - if p.session_id
-    /         - if p.showup
-    /           .green-button
-    /         - else
-    /           .red-button
-    /       
-    /     %td 
-    /       - if p.session_id && p.showup
-    /         - if p.participated
-    /           .green-button
-    /         - else
-    /           .red-button
-    /     
+    - @user.participations.includes(:session).joins(:experiment).where("sessions.id = sessions.reference_session_id").order("sessions.start_at").each do |p|
+      
+      %tr
+        %td
+          = truncate(p.experiment.name, :length => 60)
+          %br
+          - ([p.session] + p.session.following_sessions).each do |s|
+            = link_to s.time_str, participants_experiment_session_path(p.experiment, s)
+            %br
+        %td
+          %br
+          - ([p.session] + p.session.following_sessions).each do |s|
+            - if ptable[s.id] && ptable[s.id].showup
+              .green-button
+            - if ptable[s.id] && ptable[s.id].noshow
+              .red-button
+            %br
+        %td
+          %br
+          - ([p.session] + p.session.following_sessions).each do |s|
+            - if ptable[s.id] && ptable[s.id].participated
+              .green-button
+            %br

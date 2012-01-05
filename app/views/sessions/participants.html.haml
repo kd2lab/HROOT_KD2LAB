@@ -1,0 +1,23 @@
+= content_for :breadcrumb do
+  &gt;
+  = link_to "Experimente", experiments_path
+  &gt;
+  = link_to @experiment.name, experiment_path(@experiment)
+  &gt;
+  Sessions
+
+%h3
+  = @experiment.name  
+
+
+= render :partial => "experiments/tabs", :locals => {:selected => "Sessions"}
+
+%br
+%br
+%br
+= link_to "<< Zurück zur Session-Übersicht", experiment_sessions_path(@experiment)
+%br
+
+= form_tag participants_experiment_session_path(@experiment, @session), :method => 'post', :id => "participant_search" do
+  #session_participants
+    = render 'session_participants'

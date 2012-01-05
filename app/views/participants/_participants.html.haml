@@ -11,7 +11,7 @@
   Filter: 
  
   - { 'gender' => 'Geschlecht', 'noshow' => 'Nichterscheinen', 'participated' => 'Teilnahmen', 'begin' => 'Studienbeginn', |
-      'study' => 'Fächer', 'experimenttype' => 'Experimenttypen', 'experiment' => 'Experimente'}.each do |key, value|
+      'study' => 'Fächer', 'language' => 'Sprachen', 'experimenttype' => 'Experimenttypen', 'experiment' => 'Experimente'}.each do |key, value|
     %a.open-link{:href => '#f'+key}=value
     = '|' unless key == 'experiment'
  
@@ -22,7 +22,8 @@
   = render :partial => 'shared/filter_noshow' 
   = render :partial => 'shared/filter_participated' 
   = render :partial => 'shared/filter_begin' 
-  = render :partial => 'shared/filter_study' 
+  = render :partial => 'shared/filter_study'
+  = render :partial => 'shared/filter_language'  
   = render :partial => 'shared/filter_experiment_type' 
   = render :partial => 'shared/filter_experiment'
 
@@ -43,7 +44,15 @@
   |
   = link_to 'Alle abwählen', '#none', {:class => 'none-link'}
   |
-  = submit_tag "Markierte Teilnehmer entfernen", :name => 'submit_marked', :confirm => "Sind Sie sicher, dass die markierten Teilnehmer aus dem Experiment entfernt werden sollen?"
+  Markierte Teilnehmer
+  = # submit_tag "entfernen", :name => 'submit_marked', :confirm => "Sind Sie sicher, dass die markierten Teilnehmer aus dem Experiment entfernt werden sollen?"
+  
+  = # params.inspect
+  
+  - h = {"aus diesem Experiment entfernen" => 0}
+  - @experiment.sessions.main_sessions.each do |s|
+    - h["in Session #{s.time_str} eintragen"] = s.id  
+  = select_tag "move-member", options_for_select(h), :include_blank => true
 
 %br
 

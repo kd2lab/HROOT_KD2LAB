@@ -67,22 +67,49 @@
   
       
   = form_for @experiment, :url => {:action => "invitation"}, :html => {:method => :post, :class => "guarded_form"} do |f|
-    Betreff
-    %br
-    = f.text_field :invitation_subject
-    %br
-    %br
     
-    #invitationmenu
-      .title
-        = link_to "Textvorlagen", "", :class => "invitation_menu"
+    #text-tabs
+      %ul
+        %li
+          %a{:href=>"#tabs-1"} Einladungstext
+        %li
+          %a{:href=>"#tabs-2"} Bestätigungstext
+    
+      #tabs-1
+        Betreff
+        %br
+        = f.text_field :invitation_subject, :id => "invitation_subject"
+        %br
+        %br
+        
+        = render :partial => 'shared/text_templates', :locals => {:data => current_user.settings.templates, :element_id => 'invitation_text' }
+        Einladungstext
+          
+        = f.text_area :invitation_text, :id => "invitation_text"
+        %br
+        = f.submit "Mailtext speichern", :name => "test", :class => "save_invitation", :disabled => true
+        %span.invitation_result
+        
+      #tabs-2
+        Betreff
+        %br
+        = f.text_field :confirmation_subject, :id => 'confirmation_subject'
+        %br
+        %br
 
-      Einladungstext
+        = render :partial => 'shared/text_templates', :locals => {:data => current_user.settings.templates, :element_id => 'confirmation_text' }
+        Bestätigungstext
 
-      .items
-        = render :partial => 'invitation_links'
-  
-    = f.text_area :invitation_text, :id => "invitation_text"
+        
+        = f.text_area :confirmation_text, :id => "confirmation_text"
+        %br
+        = f.submit "Mailtext speichern", :name => "test", :class => "save_confirmation", :disabled => true
+        %span.confirmation_result
+        
+        
+    	
+    
+    
     
     
     

@@ -1,24 +1,43 @@
-- if @session.new_record?
+- if session.new_record?
   - url = experiment_sessions_path(@experiment)
+  - id = ""
+  - button_text = "Session anlegen"
 - else
-  - url = experiment_session_path(@experiment, @session)
-  
-= simple_form_for @session, {:html => {:class => "guarded_form"}, :url => url} do |f| 
-  = f.input :start_date, :required => false
-  = f.input :start_time, :required => false, :collection => Session.session_times, :include_blank => false
-  = f.input :duration, :required => false
-  = f.input :description, :as => :text
-  = f.input :needed
-  = f.input :reserve
-  
-  -# Wenn der aktuelle Raum nicht mehr aktiv ist, dann alle Räume anzeigen, sonst nur aktive
-  - if @session.location && !@session.location.active?
-    = f.association :location
-  - else
-    = f.association :location, :collection => Location.where(:active => true)
-    
-  %br
-  = f.submit "Session speichern", :class => "guarded_form_save"
-  %br
-  %br
-  
+  - url = experiment_session_path(@experiment, session)
+  - id = session.id.to_s
+  - button_text = "Session speichern"
+
+%div{:id => "session"+session.id.to_s, :class => 'sessionline form-highlight '+(subsession ? 'subsession' : '')}
+  = simple_form_for @session, {:html => {:class => "guarded_form session_update"}, :url => url } do |f|   
+    .right-col
+      = f.submit button_text, :class => "guarded_form_save", :style => "margin-left: 0px"
+      oder 
+      = link_to "schliessen", experiment_sessions_path, :class => "session_close"
+
+    - if session.new_record?
+      %h4 
+        Neue 
+        = (subsession ? "Folgesession" : "Session")
+        anlegen
+    - else
+      %h4 
+        = (subsession ? "Folgesession" : "Session")
+        bearbeiten
+
+    = f.input :reference_session_id, :as => :hidden
+    = f.input :start_date, :required => false
+    = f.input :duration, :collection => (1..16).map{|x| x*15}, :default => 15
+    = f.input :group_size, :collection => (1..20), :include_blank => true
+    = f.input :description, :as => :text
+   
+    - unless subsession
+      = f.input :needed, :default => 20
+      = f.input :reserve, :default => 3
+
+    / Wenn der aktuelle Raum nicht mehr aktiv ist, dann alle Räume anzeigen, sonst nur aktive
+    - if session.location && !session.location.active?
+      = f.association :location
+    - else
+      = f.association :location, :collection => Location.where(:active => true)
+
+    %br

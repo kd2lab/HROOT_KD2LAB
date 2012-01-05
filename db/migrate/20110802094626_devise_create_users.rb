@@ -14,6 +14,7 @@ class DeviseCreateUsers < ActiveRecord::Migration
       # user specific fields
       t.string :firstname
       t.string :lastname
+      t.date :birthday
       t.string :matrikel
       t.string :role, :null => false, :default => "user"
       t.string :phone
@@ -22,9 +23,13 @@ class DeviseCreateUsers < ActiveRecord::Migration
       t.boolean :deleted, :default => false
       t.integer :study_id
       t.string :degree
+      t.string :country_name
       t.integer :begin_month
       t.integer :begin_year
-      
+      t.integer :lang1
+      t.integer :lang2
+      t.integer :lang3
+      t.integer :profession_id
       
       t.string   :secondary_email
       t.datetime :secondary_email_confirmed_at

@@ -1,5 +1,5 @@
 Hroot::Application.routes.draw do
-  
+
   match 'enroll(/:code)', :controller => 'enroll', :action => 'index', :as => "enroll"
   post 'enroll_confirm(/:code)', :controller => 'enroll', :action => 'confirm', :as => 'enroll_confirm'
   post "enroll_register(/:code)", :controller => 'enroll', :action => 'register', :as => 'enroll_register'
@@ -16,15 +16,14 @@ Hroot::Application.routes.draw do
   match 'admin', :controller => 'admin', :action => 'index', :as => "dashboard"
   match 'admin/index', :controller => 'admin', :action => 'index'
   match 'admin/calendar(/:year(/:month))' => 'admin#calendar', :as => :calendar, :constraints => {:year => /\d{4}/, :month => /\d{1,2}/} 
-  
+  match 'admin/templates', :controller => 'admin', :action => 'templates'
+
   scope '/admin' do
     match 'options', :controller => 'options', :action => 'index'
     match 'options/index', :controller => 'options', :action => 'index'
     post 'options/index'
     
     match 'options/emails', :controller => 'options', :action => 'emails'
-      
-      
         
     resources :users do
       collection do
@@ -33,6 +32,8 @@ Hroot::Application.routes.draw do
     end
       
     resources :locations, :except => :show
+    resources :languages, :except => :show    
+    resources :professions, :except => :show
 
     resources :experiments do
       member do
@@ -40,11 +41,14 @@ Hroot::Application.routes.draw do
         get :disable
         get :invitation
         post :invitation
+        post :save_mail_text
       end
       
-      resources :sessions do
+      resources :sessions, :except => :show do
         member do
           post :duplicate
+          get :participants
+          post :participants
         end
       end
 

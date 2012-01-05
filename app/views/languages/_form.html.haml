@@ -1,0 +1,10 @@
+- if @language.new_record?
+  - url = languages_path
+- else
+  - url = language_path(@language)
+  
+= simple_form_for @language, {:html => {:class => "guarded_form"}, :url => url} do |f| 
+  = f.input :name, :required => false
+  = f.submit "Sprache speichern", :class => "guarded_form_save"
+  %br
+  %br

@@ -40,13 +40,6 @@ $ ->
        $('#exp_typ_count').val i
     false
 
-  # sorting of participants list
-  $('a.sort-link').click ->
-    $('#sort').val($(this).attr('href'))
-    $('#direction').val($(this).attr 'data-sort-direction')
-    $('form').submit()
-    false
-
   # ajax for enabling and disabling of experiment enrollment
   $('#state_button_enable').live 'click', ->
     $("#state").load "/admin/experiments/"+$(this).attr("data-id")+"/enable"

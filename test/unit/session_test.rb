@@ -14,13 +14,11 @@ class SessionTest < ActiveSupport::TestCase
     end
     
     should "return correct start date and end date" do
-      assert_equal Date.parse("1.1.2011"), @session.start_date
-      assert_equal "14:00", @session.start_time
+      assert_equal "01.01.2011 14:00", @session.start_date
       assert_equal 120, @session.duration
       
       @session.start_at = nil
-      assert_equal Date.today, @session.start_date
-      assert_equal "10:00", @session.start_time
+      assert_equal Time.now.strftime("%d.%m.%Y %H:%M"), @session.start_date
       assert_equal 90, @session.duration
     end
   end

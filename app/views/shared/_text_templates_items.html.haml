@@ -1,0 +1,23 @@
+Aktuellen Text speichern
+%br
+- data.keys.sort.each do |name|
+  =  link_to name, "", :class => 'save_template', :'data-name' => name, :'data-element-id' => element_id
+  %br
+
+= link_to "Neu...", "", :class => 'save_template', :'data-element-id' => element_id
+%br
+
+- if data.count > 0
+  %br
+  Einfügen
+  %br
+  - data.keys.sort.each do |name|
+    = link_to name, "", :class => 'load_template', :'data-name' => name, :'data-element-id' => element_id
+    %br
+
+  %br
+  Löschen
+  %br
+  - data.keys.sort.each do |name|
+    = link_to name, "", :class => 'delete_template', :'data-name' => name, :'data-element-id' => element_id
+    %br

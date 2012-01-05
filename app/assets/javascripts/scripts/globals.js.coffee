@@ -10,6 +10,15 @@ $ =>
   $('.guarded_form_save').click ->
     window.onbeforeunload = null
   
+  
+  # sorting ajax list
+  $('a.sort-link').click ->
+    $('#sort').val($(this).attr('href'))
+    $('#direction').val($(this).attr 'data-sort-direction')
+    $('form').submit()
+    false
+    
+  
   # select and deselect all checkboxes
   $('a.all-link').click ->
     $('form input[type=checkbox]').attr 'checked', true

@@ -10,7 +10,10 @@ class User < ActiveRecord::Base
   attr_accessor :email_prefix, :email_suffix
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :secondary_email, :password, :password_confirmation, :remember_me, :firstname, :lastname, :matrikel, :role, :phone, :gender, :begin_month, :begin_year, :study_id, :deleted, :email_prefix, :email_suffix
+  attr_accessible :email, :secondary_email, :password, :password_confirmation, :remember_me, :firstname, :lastname, 
+                  :matrikel, :role, :phone, :gender, :begin_month, :begin_year, :study_id, :deleted, 
+                  :email_prefix, :email_suffix, 
+                  :country_name, :terms_and_conditions, :lang1, :lang2, :lang3, :profession_id, :degree, :birthday
   
   ROLES = %w[user experimenter admin]
   
@@ -23,11 +26,13 @@ class User < ActiveRecord::Base
   has_settings
 
   belongs_to :study
+  belongs_to :profession
   
-  validates_presence_of :firstname, :lastname, :matrikel
+  validates_presence_of :firstname, :lastname, :matrikel, :gender, :birthday
   validates_uniqueness_of :calendar_key
+  validates_acceptance_of :terms_and_conditions
   validates :secondary_email, :email => true, :allow_blank => true
-  
+    
   after_create :set_defaults
   
   def set_defaults
@@ -51,6 +56,14 @@ class User < ActiveRecord::Base
   
   def experimenter?
     role == 'experimenter'
+  end
+  
+  def language_ids
+    ([lang1] + [lang2] + [lang3]).compact.uniq
+  end
+  
+  def languages
+    langs = Language.find(language_ids).map &:name
   end
   
   def available_sessions
@@ -88,8 +101,20 @@ class User < ActiveRecord::Base
       where << "users.deleted=0"
     end
     
+    # limit to users of a certain session
+    session_join = ""
+    session_select = ""
+    if params[:session]
+      session_join = "JOIN participations ps ON ps.user_id = users.id AND ps.session_id = #{params[:session].to_i} "
+    end
+    
+    if params[:participating_session]
+      session_select = "sps.showup as session_showup, sps.noshow as session_noshow, sps.participated as session_participated, "
+      session_join += "LEFT JOIN session_participations sps ON sps.user_id = users.id AND sps.session_id = #{params[:participating_session].to_i}"
+    end
+    
     # gender
-    if params[:active][:fgender] == '1' && ['f', 'm'].include?(params[:gender])
+    if params[:active][:fgender] == '1' && ['f', 'm', '?'].include?(params[:gender])
       where << "users.gender='#{params[:gender]}'"
     end
     
@@ -128,6 +153,13 @@ class User < ActiveRecord::Base
       else
         where << s
       end
+    end
+    
+    # languages
+    if params[:active][:flanguage] == '1' && params[:language]
+      where << "(users.lang1 IN (#{params[:language].map(&:to_i).join(', ')}) OR "+
+               " users.lang2 IN (#{params[:language].map(&:to_i).join(', ')}) OR "+
+               " users.lang3 IN (#{params[:language].map(&:to_i).join(', ')})) "
     end
     
     #experiment types
@@ -228,6 +260,7 @@ class User < ActiveRecord::Base
     sql = <<EOSQL
       SELECT 
         DISTINCT users.*, 
+          #{session_select}
           COALESCE(
             (SELECT
               count(sessions.id)
@@ -271,6 +304,7 @@ class User < ActiveRecord::Base
           str_to_date(CONCAT_WS('-', COALESCE(begin_year, 1990), COALESCE(begin_month,1), '1'), '%Y-%m-%d') as begin_date
       FROM users
       #{experiment_join}
+      #{session_join}
       #{'WHERE' unless where.blank?} 
         #{where.join(' AND ')}
       #{'HAVING' unless having.blank?} 

@@ -21,5 +21,21 @@ $ ->
   
   $.datepicker.setDefaults $.datepicker.regional['de']
   
-  $('#session_start_date').datepicker $.datepicker.regional[ 'de' ]
+  $.timepicker.regional['de'] = {
+  	timeOnlyTitle: 'timeonlytitle',
+  	timeText: 'Zeit',
+  	hourText: 'Stunden',
+  	minuteText: 'Minuten',
+  	secondText: 'Sekunden',
+  	millisecText: 'Millisekunden',
+  	currentText: 'Jetzt',
+  	closeText: 'Schliessen',
+  	ampm: false
+  };
+  $.timepicker.setDefaults($.timepicker.regional['de']);
   
+  #$('#session_start_date').datepicker $.datepicker.regional[ 'de' ]
+  $('#session_start_date').datetimepicker {
+    	hour: 12,
+    	minute: 0
+  };

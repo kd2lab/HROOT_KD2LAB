@@ -63,11 +63,13 @@ class HomeController < ApplicationController
         :password => "tester",
         :password_confirmation => "tester",
         :matrikel => "admin",
+        :birthday => '1.1.1900',
+        :gender => '?',
         :role => if (row[:admin_type] == 'admin' || row[:admin_type] == 'developer') then "admin" else "experimenter" end
       )
       u.skip_confirmation!
       u.save
-           
+      
       if !u.valid?
         @report << u.email+" "+u.errors.inspect
       end
@@ -104,13 +106,14 @@ class HomeController < ApplicationController
         :firstname => row[:fname],
         :lastname => row[:lname],
         :matrikel => if row[:matrikelnummer].blank? then "0" else row[:matrikelnummer] end,
-        :gender => row[:gender] == '?'? '' : row[:gender],
+        :gender => row[:gender] == '?'? '?' : row[:gender],
         :phone => row[:phone_number],
         :password => 'tester',
         :password_confirmation => "tester",
         :role => 'user',
         :begin_month => m,
         :begin_year => y,
+        :birthday => '1.1.1900',
         :deleted => row[:deleted] == 'y',
         :study_id => study_id
       )
@@ -242,13 +245,19 @@ class HomeController < ApplicationController
                   :user_id => user.id,
                   :invited_at => part[:invited] == 'y' ? Time.zone.now : nil
                 )
-                SessionParticipation.create(
+                
+                sp = SessionParticipation.new(
                   :session_id => s.id,
                   :user_id => user.id,
                   :showup => part[:shownup] == 'y',
                   :noshow => session[:session_finished] =='y' && part[:registered] == 'y' && part[:shownup] == 'n',                  
                   :participated => part[:participated] == 'y'
                 ) 
+                
+                # only build session participations with interesting information
+                if sp.showup || sp.noshow
+                  sp.save
+                end
               end
             end
           end

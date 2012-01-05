@@ -24,15 +24,25 @@ de:
         description: Beschreibung
         
       user: 
+        
         firstname: Vorname
         lastname: Nachname
         matrikel: Matrikelnummer
+        country_name: Land
         role: Rolle
-        begin_month: Beginn Monat
-        begin_year: Beginn Jahr
+        phone: Mobilnummer
+        begin_month: Studienbeginn Monat
+        begin_year: Studienbeginn Jahr
         email: E-Mail
         secondary_email: Alternative E-Mail
+        lang1: Sprachkenntnisse
+        lang2: weitere Sprache
+        lang3: weitere Sprache
         study_id: Studiengang
+        profession_id: Beruf
+        degree: Abschluss(-ziel)
+        gender: Geschlecht
+        birthday: Geburtstag
         password: Passwort
         password_confirmation: Passwort wdh.
       experiment:
@@ -44,6 +54,10 @@ de:
         confirmation_text: Text
     errors:
       models:
+        profession:
+          blank: muss angegeben werden
+        language:
+          blank: muss angegeben werden
         experiment:
           blank: muss angegeben werden
         session:
@@ -67,12 +81,19 @@ de:
               too_short: ist zu kurz (mindestens 6 Zeichen)
             password_confirmation:
               too_short: ist zu kurz (mindestens 6 Zeichen) 
+            terms_and_conditions:
+              accepted: Bitte bestätigen Sie die Nutzungsbedingungen
+            
   date:
     formats:
       default: "%d.%m.%Y"
     day_names: [Sonntag, Montag, Dienstag, Mittwoch, Donnerstag, Freitag, Samstag]
     abbr_day_names: [So, Mo, Di, Mi, Do, Fr, Sa]
-
+    order:
+      - :year
+      - :month
+      - :day
+    
     # Don't forget the nil at the beginning; there's no such thing as a 0th month
     month_names: [~, Januar, Februar, März, April, Mai, Juni, Juli, August, September, Oktober, November, Dezember]
     abbr_month_names: [~, Jan, Feb, Mär, Apr, Mai, Jun, Jul, Aug, Sep, Okt, Nov, Dez]

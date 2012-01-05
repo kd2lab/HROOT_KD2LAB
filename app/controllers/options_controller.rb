@@ -13,6 +13,11 @@ class OptionsController < ApplicationController
       flash[:notice] = "Die Änderungen wurden gespeichert"  
     end
     
+    if params[:terms_and_conditions]
+      Settings.terms_and_conditions = params[:terms_and_conditions]
+      flash[:notice] = "Die Änderungen wurden gespeichert"  
+    end
+    
     # set default for mail restriction array
     unless Settings.mail_restrictions
       Settings.mail_restrictions = [{"prefix" => "", "suffix" => ""}]

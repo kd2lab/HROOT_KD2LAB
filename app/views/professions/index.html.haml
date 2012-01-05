@@ -1,0 +1,24 @@
+= render :partial => "profession_tab"
+
+
+= button_to "Neuen Beruf anlegen", new_profession_path, :method => :get
+%br
+%br
+
+%table
+  %tr
+    %th Name  
+    %th 
+        
+  - @professions.each do |profession| 
+    %tr
+      %td= truncate(profession.name, :maxlength => 30)
+      %td
+        = link_to 'Bearbeiten', edit_profession_path(profession) 
+        |
+        = link_to 'Löschen', profession, :confirm => 'Sind Sie sich sicher, dass Sie diesen Beruf entfernen möchten?', :method => :delete
+  
+%br
+
+%br
+%br

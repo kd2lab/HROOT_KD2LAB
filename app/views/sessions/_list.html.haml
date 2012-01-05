@@ -1,0 +1,12 @@
+- if edit_session && edit_session.new_record? && params["reference_session_id"].nil?
+  = render :partial => 'line', :locals => {:session => edit_session, :edit => true, :subsession => false }
+
+- sessions.each do |session| 
+  = render :partial => 'line', :locals => {:session => session, :edit => edit_session == session, :subsession => false}        
+  
+  - if edit_session && edit_session.new_record? && params["reference_session_id"] == session.id.to_s
+    = render :partial => 'line', :locals => {:session => edit_session, :edit => true, :subsession => true }
+  
+  - session.following_sessions.each do |subsession|
+    = render :partial => 'line', :locals => {:session => subsession, :edit => edit_session == subsession, :subsession => true}    
+%br

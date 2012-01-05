@@ -4,13 +4,16 @@ class CreateSessions < ActiveRecord::Migration
       t.integer  :experiment_id
       t.integer  :location_id
       t.integer  :reference_session_id
+      t.integer  :participations_count
+      t.integer  :session_participations_count
       
       t.datetime :start_at
       t.datetime :end_at
       
       t.text     :description
-      t.integer  :needed
-      t.integer  :reserve
+      t.integer  :needed, :default => 20
+      t.integer  :reserve, :default => 3
+      t.integer  :group_size
       
       t.integer :time_before
       t.integer :time_after

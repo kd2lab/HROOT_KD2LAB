@@ -43,15 +43,6 @@
   = f.input :show_in_stats, :label => "Dieses Experiment in der Statistik berücksichtigen" 
   
   %br
-  
-  Bestätigungsemail:
-  %hr
-  
-  = f.input :confirmation_subject
-  = f.input :confirmation_text, :as => :text
-  
-  
-  
   %br
   - if @experiment.new_record?
     = f.submit "Experiment anlegen", :class => "guarded_form_save"

@@ -1,23 +1,37 @@
+# encoding: utf-8
+
 class ParticipantsController < ApplicationController
   before_filter :load_experiment
-  
   helper_method :sort_column, :sort_direction
   
   def index
     # destroy participation relation
-    if (params[:submit_marked]) && params[:selected_users]
-      params[:selected_users].keys.each do |id|
-        p = Participation.find_by_user_id_and_experiment_id(id, @experiment.id)
-        p.destroy if p
+    if !params['move-member'].blank? && params['selected_users']
+      if params['move-member'] == "0"
+        # aus allen sessions austragen, session participations löschen
+        
+        Session.move_members(params['selected_users'].keys.map(&:to_i), @experiment)
+        
+        # participation auch löschen
+        params['selected_users'].keys.map(&:to_i).each do |id|
+          p = Participation.find_by_user_id_and_experiment_id(id, @experiment.id)
+          p.destroy if p
+        end
+        
+        flash[:notice] = "Die Poolmitglieder wurden entfernt"
+      else
+        target = Session.find(params['move-member'].to_i)
+        
+        if target
+          Session.move_members(params['selected_users'].keys.map(&:to_i), @experiment, target)
+          flash[:notice] = "Die gewählen Teilnehmer wurden in die Session #{target.time_str} eingetragen"
+        end
       end
-      flash[:notice] = "Die Poolmitglieder wurden entfernt"
     end
     
     params[:active] = {} unless params[:active]
-    params[:active][:frole] = '1'
-    params[:role] = 'user' 
-    @users = User.load(params, sort_column, sort_direction, @experiment, {:exclude_non_participants => 1})
-    @user_count = @experiment.participants.where(:deleted => false, :role => 'user').count
+    @users = User.load(params, sort_column, sort_direction, @experiment, {:exclude_non_participants => 1, :include_deleted_users => true})
+    @user_count = @experiment.participants.count
   end
   
   def manage

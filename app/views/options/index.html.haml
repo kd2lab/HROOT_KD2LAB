@@ -36,6 +36,16 @@
   %br
   = text_field_tag(:testnr, Settings.testnr)
   
+  
+  %br
+  %br
+  
+  = label_tag :terms_and_conditions, "Text Datenschutzvereinbarung"
+  %br
+  = text_area_tag(:terms_and_conditions, Settings.terms_and_conditions)
+  
+  
+  
   %br
   %br
   = submit_tag("Änderungen speichern") 

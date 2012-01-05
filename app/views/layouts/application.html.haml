@@ -38,14 +38,17 @@
           hroot - Rekrutierungssystem für ökonomische Experimente
           
 
-
-        -if notice  
-          %p.notice= notice
-        -else
+        .flash
+          -if notice  
+            %p.notice= notice
+          -else
+            %p.notice{:style => 'display:none'}
+        
           -if alert
             %p.alert= alert
           -else
-            %p.no-feedback &nbsp;
+            %p.alert{:style => 'display:none'}
+          
           
         %hr
         

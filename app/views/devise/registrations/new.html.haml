@@ -2,17 +2,18 @@
   &gt;
   = link_to "Startseite", root_path
   &gt;
-  Registieren
+  Registrieren
 
 %h2 Registrierung
 
 
+
 = simple_form_for resource, :as => resource_name, :url => registration_path(resource_name) do |f| 
-  = f.input :firstname, :required => false
-  = f.input :lastname, :required => false
-  = f.input :matrikel, :required => false
-    
-  - if Settings.mail_restrictions && Settings.mail_restrictions.map{|r| r['suffix']}.select{|r| !r.blank?}.count > 0
+  
+  Bitte geben Sie Ihre E-Mail-Adresse und ein Passwort an - diese Daten dienen als Zugangsdaten. Das Passwort muss mindestens 8 Zeichen lang sein und einen Buchstaben, eine Zahl und ein Sonderzeichen enthalten.
+  %br
+  %br
+  - if Settings.mail_restrictions && Settings.mail_restrictions.map{|r| r['suffix']}.select{|r| !r.blank?}.count > 0  
     = f.label "&nbsp;"
     = f.text_field :email_prefix
     @
@@ -20,9 +21,63 @@
     = f.error :email
   - else
     = f.input :email, :placeholder => 'name@domain.com'
-    
+
   = f.input :password
   = f.input :password_confirmation
+  
 
-  = f.submit "Registrieren"
+  %br
+  %hr
+  Bitte geben Sie folgende Daten an:
+  %br
+  %br
+
+  = f.input :gender, :collection => {'männlich' => 'm', 'weiblich' => 'w' }, :as => :select, :required => false
+  = f.input :birthday, :order => [:day, :month, :year], :start_year => Date.today.year-16, :end_year => 1900
+  = f.input :firstname, :required => false
+  = f.input :lastname, :required => false
+  = f.input :matrikel, :required => false
+  = f.input :phone, :hint => "Eine Angabe erlaubt es uns, Sie schnell zu erreichen, wenn z.B. ein Experiment abgesagt werden muss."
+  = f.input :country_name, :priority => [ "Germany" ], :blank => true
+
+  %br
+  %hr
+  Die folgenden Felder sind optional. Je mehr dieser Felder Sie jedoch ausfüllen, umso höher ist die Wahrscheinlichkeit, dass wir Sie zu bestimmten Experimenten einladen.
+  %br
+  %br
+
+  = f.input :lang1, :collection => Language.all.map{|s| [s.name, s.id]}, :as => :select, :required => false
+  = f.input :lang2, :collection => Language.all.map{|s| [s.name, s.id]}, :as => :select, :required => false, :wrapper_html => {:style => "display:none", :id => "lang2"}
+  = f.input :lang3, :collection => Language.all.map{|s| [s.name, s.id]}, :as => :select, :required => false, :wrapper_html => {:style => "display:none", :id => 'lang3'}
+
+  %br
+
+  = f.input :study_id, :collection => Study.all.map{|s| [s.name, s.id]}
+  = f.input :degree, :collection => ['Bachelor', 'Master', 'Diplom', 'Magister', 'Staatsexamen']
+  = f.input :begin_month, :collection => 1..12, :as => :select, :required => false
+  = f.input :begin_year, :collection => (Date.today.year-10 .. Date.today.year), :as => :select, :required => false
+  %br
+  %br
+  = f.input :profession_id, :collection => Profession.all.map{|s| [s.name, s.id]}
+  
+  %br
+  %hr
+  
+  = f.error :terms_and_conditions
+  %br
+  %br
+  = f.check_box :terms_and_conditions
+  Ich habe die Nutzerbedingungen gelesen und bin damit einverstanden.
+  %br
+  %br
+  = text_area_tag "terms_conditions_text", Settings.terms_and_conditions, :disabled => true, :cols => 100
+  
+  %br
+  %br
+  
+  = f.submit "Anmeldung absenden", :id => 'register_button'
+  
+  %br
+  %br
+  %br
   

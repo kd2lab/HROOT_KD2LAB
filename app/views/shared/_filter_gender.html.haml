@@ -3,4 +3,4 @@
   = hidden_field_tag "active[fgender]", params[:active][:fgender]
   Geschlecht:
   %br
-  = select_tag :gender, options_for_select({"männlich" => 'm', "weiblich" => 'f'}, params[:gender])
+  = select_tag :gender, options_for_select({"männlich" => 'm', "weiblich" => 'f', 'keine Angabe' => '?'}, params[:gender])

@@ -1,0 +1,52 @@
+$('#sessions').html(
+  '<%= escape_javascript(render :partial => "list", :locals => {:edit_session => @session, :sessions => @sessions}) %>'
+);
+
+<% if flash[:message]  %>
+  $('p.notice').html("<%= flash[:message]%>").show()
+<% else %>
+  $('p.notice').hide()
+<% end %>
+
+<% if @session %>
+  // initialize datetime picker
+  $('#session_start_date').datetimepicker({
+    	hour: 12,
+    	minute: 0
+  });
+
+  // add form element for end time
+  $("#session_duration").after(' <span id="end_time"></span>');
+
+  // run once on load
+  update_end_time();
+
+  // update on change of session duration or time
+  $('#session_duration, #session_start_date').change(function() {
+    update_end_time();  
+  });
+
+  // update end time
+  function update_end_time() {
+    $("#end_time").html("test");
+    res = $('#session_start_date').val().match(/(\d\d):(\d\d)/);
+
+    if (res) {
+      newminutes = res[1]*60 + res[2]*1 + $("#session_duration").val()*1;
+      minutes = newminutes % 60;
+      hours = Math.floor(newminutes / 60) % 24;
+    
+      if (minutes < 10) minutes = "0"+minutes;
+      if (hours < 10) hours = "0"+hours;
+    
+      target_time = hours+":"+minutes;
+    
+      $("#end_time").html(" (Sessionende "+target_time+")");
+    }
+  } 
+<% end %>
+
+
+<% if flash[:id]  %>
+  $('#session<%= flash[:id] %>').effect("highlight", {}, 3000);
+<% end %> 
