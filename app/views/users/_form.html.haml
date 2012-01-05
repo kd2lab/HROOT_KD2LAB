@@ -4,7 +4,7 @@
   = f.input :firstname, :required => false
   = f.input :lastname, :required => false
   = f.input :gender, :collection => {'männlich' => 'm', 'weiblich' => 'f', "keine Angabe" => '?' }, :as => :select, :required => false
-  = f.input :birthday, :order => [:day, :month, :year], :start_year => Date.today.year-16, :end_year => 1900
+  = f.input :birthday, :include_blank => "true", :order => [:day, :month, :year], :required => false, :start_year => Date.today.year-16, :end_year => 1900
   = f.input :phone
   = f.input :matrikel, :required => false
   = f.input :email
