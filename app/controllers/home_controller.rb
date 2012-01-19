@@ -138,7 +138,7 @@ class HomeController < ApplicationController
     end
     
     # create account for harald
-    h = User.new :firstname => 'Harald', :lastname => 'Wypior', :email => "harald.wypior@ovgu.de", :role => "admin", :password => 'tester', :password_confirmation => 'tester', :matrikel => '1'
+    h = User.new :firstname => 'Harald', :lastname => 'Wypior', :email => "harald.wypior@ovgu.de", :role => "admin", :password => 'tester_1', :password_confirmation => 'tester_1', :matrikel => '1'
     h.skip_confirmation!
     h.save
     
