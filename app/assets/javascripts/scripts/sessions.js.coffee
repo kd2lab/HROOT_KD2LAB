@@ -28,4 +28,3 @@ $ ->
     $.get(this.action, null, null, "script")
     false
       
-  

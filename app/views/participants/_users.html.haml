@@ -6,11 +6,12 @@
   %br
 
   Filter: 
-
-  - { 'gender' => 'Geschlecht', 'noshow' => 'Nichterscheinen', 'participated' => 'Teilnahmen', 'begin' => 'Studienbeginn', |
-      'study' => 'Fächer', 'language' => 'Sprachen', 'experimenttype' => 'Experimenttypen', 'experiment' => 'Experimente'}.each do |key, value|
+  %br
+  - { 'gender' => 'Geschlecht', 'noshow' => 'Nichterscheinen', 'participated' => 'Teilnahmen', 'begin' => 'Studienbeginn', 'birthday' => "Alter", |
+      'study' => 'Fächer', 'language' => 'Sprachen', 'experimenttype' => 'Experimenttypen', 'experiment' => 'Experimente', |  
+      'preference' => 'Experiment-Präferenz'}.each do |key, value|
     %a.open-link{:href => '#f'+key}=value
-    = '|' unless key == 'experiment'
+    = '|' unless key == 'preference'
     
   %br
   %br
@@ -19,10 +20,13 @@
   = render :partial => 'shared/filter_noshow' 
   = render :partial => 'shared/filter_participated' 
   = render :partial => 'shared/filter_begin' 
+  = render :partial => 'shared/filter_birthday' 
   = render :partial => 'shared/filter_study' 
   = render :partial => 'shared/filter_language' 
   = render :partial => 'shared/filter_experiment_type' 
   = render :partial => 'shared/filter_experiment' 
+  = render :partial => 'shared/filter_preference'
+
 
 = hidden_field_tag :sort, params[:sort]
 = hidden_field_tag :direction, params[:direction]
@@ -62,8 +66,8 @@
       -#%th= sortable_for_form 'firstname', 'Vorname'
       %th= sortable_for_form 'email', 'E-Mail'
       %th= sortable_for_form 'study_name', 'Fach'
-      %th= sortable_for_form 'gender',  'Gesch.'
-      %th= sortable_for_form 'begin_date', 'Beginn' 
+      //%th= sortable_for_form 'gender',  'Gesch.'
+      //%th= sortable_for_form 'begin_date', 'Beginn' 
       %th.qtip_ersch= sortable_for_form 'noshow_count' , '#N'
       %th.qtip_teil= sortable_for_form 'participations_count' , '#T'
 
@@ -74,8 +78,8 @@
         %td= link_to highlight(truncate(user.email, {:length => 20}), params[:search]), "mailto:#{user.email}"
         %td.study_name_popup{:'data-text' => user.study_name || 'keine Angabe' }
           =user.study_name ? truncate(user.study_name, {:length => 10}) : 'k. A.'
-        %td= user.gender
-        %td= user.begin_date 
+        //%td= user.gender
+        //%td= user.begin_date 
         %td= "#{user.noshow_count}" if user.user?
         %td= "#{user.participations_count}" if user.user?
 - else

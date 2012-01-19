@@ -1,6 +1,8 @@
 Factory.define :session do |s|
   s.sequence(:description) {|n| "Session #{n}"}
   s.needed 3
+  s.time_before 0
+  s.time_after 0
   s.reserve 2
 end
 

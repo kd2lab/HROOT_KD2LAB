@@ -20,6 +20,7 @@
         = (subsession ? "Folgesession" : "Session")
         anlegen
     - else
+      = hidden_field_tag "session_id", id
       %h4 
         = (subsession ? "Folgesession" : "Session")
         bearbeiten
@@ -29,10 +30,15 @@
     = f.input :duration, :collection => (1..16).map{|x| x*15}, :default => 15
     = f.input :group_size, :collection => (1..20), :include_blank => true
     = f.input :description, :as => :text
+    
    
     - unless subsession
       = f.input :needed, :default => 20
       = f.input :reserve, :default => 3
+
+    = f.input :time_before, :collection =>  (0..12).map{|x| [(x*5).to_s+" Minuten", x*5]}, :include_blank => false
+    = f.input :time_after, :collection =>  (0..12).map{|x| [(x*5).to_s+" Minuten", x*5]}, :include_blank => false
+
 
     / Wenn der aktuelle Raum nicht mehr aktiv ist, dann alle Räume anzeigen, sonst nur aktive
     - if session.location && !session.location.active?

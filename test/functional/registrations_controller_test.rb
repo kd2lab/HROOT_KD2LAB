@@ -10,7 +10,7 @@ class RegistrationsControllerTest < ActionController::TestCase
       @user = Factory.build(:user)
       
       assert_difference('User.count') do
-        post :create, :user => @user.attributes.merge(:password => "tester", :password_confirmation => "tester")
+        post :create, :user => @user.attributes.merge(:password => "testtest_8", :password_confirmation => "testtest_8")
       end
       
       assert respond_with :success        
@@ -22,9 +22,9 @@ class RegistrationsControllerTest < ActionController::TestCase
       @user = Factory.build(:user)
       Settings.mail_restrictions = [{"prefix"=>"test", "suffix"=>"uni-hamburg.de"}, {"prefix"=>"", "suffix"=>"uni-magdeburg.de"}]
       
-      post :create, :user => @user.attributes.merge(:password => "tester", :password_confirmation => "tester")
-      post :create, :user => @user.attributes.merge(:password => "tester", :password_confirmation => "tester", :email_prefix => "blabla", :email_suffix => "uni-hamburg.de")
-      post :create, :user => @user.attributes.merge(:password => "tester", :password_confirmation => "tester", :email_prefix => "", :email_suffix => "uni-magdeburg.de")
+      post :create, :user => @user.attributes.merge(:password => "testtest_8", :password_confirmation => "testtest_8")
+      post :create, :user => @user.attributes.merge(:password => "testtest_8", :password_confirmation => "testtest_8", :email_prefix => "blabla", :email_suffix => "uni-hamburg.de")
+      post :create, :user => @user.attributes.merge(:password => "testtest_8", :password_confirmation => "testtest_8", :email_prefix => "", :email_suffix => "uni-magdeburg.de")
       
       assert_equal 0, User.count
     end
@@ -36,8 +36,8 @@ class RegistrationsControllerTest < ActionController::TestCase
       
       Settings.mail_restrictions = [{"prefix"=>"test", "suffix"=>"uni-hamburg.de"}, {"prefix"=>"", "suffix"=>"uni-magdeburg.de"}]
       
-      post :create, :user => @user1.attributes.merge(:password => "tester", :password_confirmation => "tester", :email_prefix => "blatestbla", :email_suffix => "uni-hamburg.de")
-      post :create, :user => @user2.attributes.merge(:password => "tester", :password_confirmation => "tester", :email_prefix => "irgendwas", :email_suffix => "uni-magdeburg.de")
+      post :create, :user => @user1.attributes.merge(:password => "testtest_8", :password_confirmation => "testtest_8", :email_prefix => "blatestbla", :email_suffix => "uni-hamburg.de")
+      post :create, :user => @user2.attributes.merge(:password => "testtest_8", :password_confirmation => "testtest_8", :email_prefix => "irgendwas", :email_suffix => "uni-magdeburg.de")
       
       assert_equal 2, User.count
     end

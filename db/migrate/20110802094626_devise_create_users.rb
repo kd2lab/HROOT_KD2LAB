@@ -26,6 +26,8 @@ class DeviseCreateUsers < ActiveRecord::Migration
       t.string :country_name
       t.integer :begin_month
       t.integer :begin_year
+      t.integer :preference
+      
       t.integer :lang1
       t.integer :lang2
       t.integer :lang3

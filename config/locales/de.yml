@@ -12,6 +12,7 @@ de:
       session: Session
     attributes:
       session:
+        group_size: Gruppengröße
         start_date: Startdatum
         start_time: Startzeit
         description: Beschreibung
@@ -20,6 +21,8 @@ de:
         reserve: Reserve-Teilnehmer
         location: Ort
         finished: Session abgeschlossen
+        time_before: Vorbereitungszeit
+        time_after: Nachbereitungszeit
       location:
         description: Beschreibung
         
@@ -45,6 +48,7 @@ de:
         birthday: Geburtstag
         password: Passwort
         password_confirmation: Passwort wdh.
+        preference: Interesse an
       experiment:
         description: Beschreibung
         contact: Kontaktinfos
@@ -78,9 +82,10 @@ de:
               invalid: ist ungültig
             password: 
               confirmation: muss wiederholt werden
-              too_short: ist zu kurz (mindestens 6 Zeichen)
+              too_short: ist zu kurz (mind. 8 Zeichen)
+              invalid: Sonderzeichen fehlen!
             password_confirmation:
-              too_short: ist zu kurz (mindestens 6 Zeichen) 
+              too_short: ist zu kurz (mind. 8 Zeichen) 
             terms_and_conditions:
               accepted: Bitte bestätigen Sie die Nutzungsbedingungen
             

@@ -33,9 +33,19 @@
       %th= sortable_for_form 'study_name', 'Fach'
       %th= sortable_for_form 'gender',  'Gesch.'
       %th= sortable_for_form 'begin_date', 'Beginn'
-      %th E
-      %th T
-      %th{:style => "color:red"} N
+      %th 
+        E
+        %br
+        = check_box_tag "", "", false, :id => "all_show"
+      %th 
+        T
+        %br
+        = check_box_tag "", "", false, :id => "all_participation"
+      
+      %th{:style => "color:red"}
+        N
+        %br
+        = check_box_tag "", "", false, :id => "all_noshow"
       
     - @users.each_with_index do |user, index| 
       %tr

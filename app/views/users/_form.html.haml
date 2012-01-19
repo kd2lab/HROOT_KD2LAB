@@ -19,6 +19,7 @@
   = f.input :begin_month, :collection => (1..12)
   = f.input :begin_year, :collection => (Time.now.year-10..Time.now.year)
   %br
+    = f.input :preference, :collection => {'Präsenz- und Online-Experimenten' => 0, 'nur Präsenz-Experimente' => 1, 'nur Online-Experimente' => 2}
   = f.input :lang1, :collection => Language.all.map{|s| [s.name, s.id]}, :as => :select, :required => false
   = f.input :lang2, :collection => Language.all.map{|s| [s.name, s.id]}, :as => :select, :required => false, :wrapper_html => {:style => "display:none", :id => "lang2"}
   = f.input :lang3, :collection => Language.all.map{|s| [s.name, s.id]}, :as => :select, :required => false, :wrapper_html => {:style => "display:none", :id => 'lang3'}

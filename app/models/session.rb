@@ -51,14 +51,20 @@ class Session < ActiveRecord::Base
   end
   
   def self.move_members(members, experiment, target = nil)
-    members.each do |id|
-      u = User.find(id)
-      if u
-        SessionParticipation.where(:user_id => u.id, :session_id => experiment.sessions).delete_all
-        p = Participation.find_by_user_id_and_experiment_id(u, experiment)
-        p.session_id = target ? target.id : nil
-        p.save
+    if target && members.size > target.space_left 
+      return false
+    else
+      members.each do |id|
+        u = User.find(id)
+        if u
+          SessionParticipation.where(:user_id => u.id, :session_id => experiment.sessions).delete_all
+          p = Participation.find_by_user_id_and_experiment_id(u, experiment)
+          p.session_id = target ? target.id : nil
+          p.save
+        end
       end
+      
+      return true
     end
   end
     
@@ -88,30 +94,24 @@ class Session < ActiveRecord::Base
       .order(:start_at)
   end
   
-  def self.load(experiment_id)
+  def self.find_overlapping_sessions_by_date(date, duration, location_id, session_id, time_before, time_after)
     sql = <<EOSQL
-      SELECT 
-        sessions.*,
-        (SELECT count(participations.id) FROM participations WHERE participations.session_id = sessions.id) as participations_count,
-        (SELECT count(session_participations.id) FROM session_participations WHERE session_participations.session_id = sessions.id) as session_participations_count
-
-
-      FROM sessions
-      WHERE
-        sessions.experiment_id = # AND
-        sessions.reference_session_id = sessions.id
-      ORDER BY start_at;
+      SELECT * FROM sessions
+      WHERE DATE_ADD(end_at,   INTERVAL time_after  MINUTE) > DATE_SUB('#{date.strftime("%Y-%m-%d %H:%M:%S")}', INTERVAL #{time_before.to_i} MINUTE) 
+      AND   DATE_SUB(start_at, INTERVAL time_before MINUTE) < DATE_ADD('#{(date+duration.to_i.minutes).strftime("%Y-%m-%d %H:%M:%S")}', INTERVAL #{time_after.to_i} MINUTE)
+      AND location_id = #{location_id.to_i}
 EOSQL
-
-  end
-  
+    sql += " AND id<>#{session_id.to_i}" if session_id.to_i > 0
+    Session.find_by_sql(sql)
+  end        
+    
   def self.find_overlapping_sessions(year, month)
     sql = <<EOSQL
       SELECT DISTINCT s.*, 
       ( SELECT GROUP_CONCAT(s2.id) 
         FROM sessions s2 
-        WHERE s2.end_at >= s.start_at 
-        AND s2.start_at <= s.end_at 
+        WHERE DATE_ADD(s2.end_at,   INTERVAL s2.time_after  MINUTE) > DATE_SUB(s.start_at, INTERVAL s.time_before MINUTE) 
+        AND   DATE_SUB(s2.start_at, INTERVAL s2.time_before MINUTE) < DATE_ADD(s.end_at,   INTERVAL s.time_after  MINUTE)
         AND s.id < s2.id
         AND s.location_id = s2.location_id)
       AS overlap_ids
@@ -127,15 +127,4 @@ EOSQL
     needed + reserve - participations.count
   end
   
-  def css_class
-    surplus = participations.count - needed
-
-    if surplus < 0
-      "participants-red"
-    elsif surplus < reserve
-      "participants-yellow"
-    else
-      "participants-green"
-    end
-  end
 end

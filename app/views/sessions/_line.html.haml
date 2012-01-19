@@ -15,8 +15,9 @@
     
       - if session.end_at < Time.zone.now then
         %br
-        .session-warning
-          Session ist noch nicht abgeschlossen!
+        - if session.participations.count != session.session_participations.count
+          .session-warning
+            Teilnahmeliste noch nicht vollständig
       
     %span.time{:class => if session.end_at < Time.zone.now then "past" end}
        
@@ -29,5 +30,14 @@
     - r = subsession ? session.reference_session : session
     
     .participants
-      = link_to "Teilnehmer: #{r.participations.count} (#{r.needed},#{r.reserve})", participants_experiment_session_path(@experiment, session), :class => r.css_class
+      - surplus = r.participations.count - r.needed
+
+      - css_class = if surplus < 0 then |
+          "participants-red"            |
+        elsif surplus < r.reserve then  |
+          "participants-yellow"         |
+        else                            |
+          "participants-green"          |
+        end                             |
+      = link_to "Teilnehmer: #{r.participations.count} (#{r.needed},#{r.reserve})#{", Gruppengröße: "+session.group_size.to_s if session.group_size}", participants_experiment_session_path(@experiment, session), :class => css_class
       

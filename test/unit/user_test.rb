@@ -29,12 +29,12 @@ class UserTest < ActiveSupport::TestCase
     
     
     should "require password_confirmation to match password" do
-      @user.password = "foobar"
+      @user.password = "foobar_1"
       @user.password_confirmation = "barfoo"
       assert !@user.valid?
 
-      @user.password = "foobar"
-      @user.password_confirmation = "foobar"
+      @user.password = "foobar_1"
+      @user.password_confirmation = "foobar_1"
       assert @user.valid?
     end
 

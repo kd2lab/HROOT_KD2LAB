@@ -4,8 +4,6 @@ class CreateSessions < ActiveRecord::Migration
       t.integer  :experiment_id
       t.integer  :location_id
       t.integer  :reference_session_id
-      t.integer  :participations_count
-      t.integer  :session_participations_count
       
       t.datetime :start_at
       t.datetime :end_at
@@ -15,8 +13,8 @@ class CreateSessions < ActiveRecord::Migration
       t.integer  :reserve, :default => 3
       t.integer  :group_size
       
-      t.integer :time_before
-      t.integer :time_after
+      t.integer :time_before, :default => 0
+      t.integer :time_after, :default => 0
       
       t.timestamps
     end

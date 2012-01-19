@@ -16,15 +16,16 @@ class ParticipantsController < ApplicationController
         params['selected_users'].keys.map(&:to_i).each do |id|
           p = Participation.find_by_user_id_and_experiment_id(id, @experiment.id)
           p.destroy if p
-        end
-        
-        flash[:notice] = "Die Poolmitglieder wurden entfernt"
+        end  
       else
         target = Session.find(params['move-member'].to_i)
         
         if target
-          Session.move_members(params['selected_users'].keys.map(&:to_i), @experiment, target)
-          flash[:notice] = "Die gewählen Teilnehmer wurden in die Session #{target.time_str} eingetragen"
+          if Session.move_members(params['selected_users'].keys.map(&:to_i), @experiment, target)
+            flash[:notice] = "Die gewählen Teilnehmer wurden in die Session #{target.time_str} eingetragen"
+          else
+            flash[:alert] = "Die Mitglieder konnten nicht verschoben werden, da nicht mehr genug freie Plätze in der Session sind."
+          end    
         end
       end
     end
@@ -66,7 +67,7 @@ class ParticipantsController < ApplicationController
   private
 
   def sort_column
-    (User.column_names+['noshow_count', 'study_name', 'begin_date', 'participations_count']).include?(params[:sort]) ? params[:sort] : "lastname"
+    (User.column_names+['noshow_count', 'study_name', 'begin_date', 'participations_count', 'session_start_at']).include?(params[:sort]) ? params[:sort] : "lastname"
   end
 
   def sort_direction

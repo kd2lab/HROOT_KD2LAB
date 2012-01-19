@@ -17,13 +17,16 @@ $('#sessions').html(
 
   // add form element for end time
   $("#session_duration").after(' <span id="end_time"></span>');
+  $("#session_start_date").after(' <div id="overlap_info"></div>');
 
   // run once on load
   update_end_time();
+  load_overlaps();
 
   // update on change of session duration or time
-  $('#session_duration, #session_start_date').change(function() {
+  $('#session_duration, #session_start_date, #session_location_id, #session_time_before, #session_time_after').change(function() {
     update_end_time();  
+    load_overlaps();
   });
 
   // update end time
@@ -44,6 +47,21 @@ $('#sessions').html(
       $("#end_time").html(" (Sessionende "+target_time+")");
     }
   } 
+  
+  // load overlap information
+  function load_overlaps() {
+    $("#overlap_info").load(
+      "sessions/overlaps",
+      {
+        start_date:  $("#session_start_date").val(),
+        duration:    $("#session_duration").val(), 
+        id:  $("#session_id").val(),
+        location_id: $("#session_location_id").val(),
+        time_before: $("#session_time_before").val(),
+        time_after:  $("#session_time_after").val()
+      }
+    );
+  }
 <% end %>
 
 

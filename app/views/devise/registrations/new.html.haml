@@ -22,8 +22,8 @@
   - else
     = f.input :email, :placeholder => 'name@domain.com'
 
-  = f.input :password
-  = f.input :password_confirmation
+  = f.input :password  
+  = f.input :password_confirmation, :hint => "mindestens 8 Zeichen, enthält eine Zahl und ein Sonderzeichen"
   
 
   %br
@@ -51,6 +51,7 @@
   = f.input :lang3, :collection => Language.all.map{|s| [s.name, s.id]}, :as => :select, :required => false, :wrapper_html => {:style => "display:none", :id => 'lang3'}
 
   %br
+  = f.input :preference, :collection => {'Präsenz- und Online-Experimenten' => 0, 'nur Präsenz-Experimente' => 1, 'nur Online-Experimente' => 2}, :default => 0
 
   = f.input :study_id, :collection => Study.all.map{|s| [s.name, s.id]}
   = f.input :degree, :collection => ['Bachelor', 'Master', 'Diplom', 'Magister', 'Staatsexamen']

@@ -1,7 +1,7 @@
 Factory.define :user do |u|
   u.sequence(:email) {|n| "test#{n}@hroot.com"}
-  u.password 'test123'
-  u.password_confirmation 'test123'
+  u.password '_1abcdefg'
+  u.password_confirmation '_1abcdefg'
   u.firstname "john"
   u.lastname "smith"
   u.matrikel "1234"

@@ -9,11 +9,12 @@
   %br
 
   Filter: 
- 
-  - { 'gender' => 'Geschlecht', 'noshow' => 'Nichterscheinen', 'participated' => 'Teilnahmen', 'role' => 'Rolle', 'begin' => 'Studienbeginn', |
-      'study' => 'Fächer', 'language' => 'Sprachen', 'experimenttype' => 'Experimenttypen', 'experiment' => 'Experimente'}.each do |key, value|
+  %br
+  - { 'gender' => 'Geschlecht', 'noshow' => 'Nichterscheinen', 'participated' => 'Teilnahmen', 'role' => 'Rolle', 'begin' => 'Studienbeginn', 'birthday' => "Alter", |
+      'study' => 'Fächer', 'language' => 'Sprachen', 'experimenttype' => 'Experimenttypen', 'experiment' => 'Experimente', |        
+      'preference' => 'Experiment-Präferenz'}.each do |key, value|
     %a.open-link{:href => '#f'+key}=value
-    = '|' unless key == 'experiment'
+    = '|' unless key == 'preference'
   
  
   %br
@@ -24,12 +25,14 @@
   = render :partial => 'shared/filter_noshow' 
   = render :partial => 'shared/filter_participated' 
   = render :partial => 'shared/filter_role'
-  = render :partial => 'shared/filter_begin' 
+  = render :partial => 'shared/filter_begin'
+  = render :partial => 'shared/filter_birthday' 
   = render :partial => 'shared/filter_study' 
   = render :partial => 'shared/filter_language' 
   = render :partial => 'shared/filter_experiment_type' 
   = render :partial => 'shared/filter_experiment' 
-  
+  = render :partial => 'shared/filter_preference'
+
 
 
 .searchinfo

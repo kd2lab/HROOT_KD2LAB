@@ -90,7 +90,7 @@ class SessionsController < ApplicationController
     if @s
       if @s.following_sessions.count > 0 
         flash[:message] = "Sessions mit Folgesessions können nicht gelöscht werden."
-      elsif @s.participations_count.to_i > 0 || @s.session_participations_count.to_i > 0
+      elsif @s.participations.count.to_i > 0 || @s.session_participations.count.to_i > 0
         flash[:message] = "Sessions mit Teilnehmern können nicht gelöscht werden."
       else  
         @s.destroy
@@ -104,7 +104,6 @@ class SessionsController < ApplicationController
   def participants
     @session = Session.find(params[:id])
     changes = 0
-    flash[:notice] = ""
     
     # move session members
     if !params['move-member'].blank?
@@ -115,8 +114,11 @@ class SessionsController < ApplicationController
         target = Session.find(params['move-member'].to_i)
         
         if target
-          Session.move_members(params['selected_users'].keys.map(&:to_i), @experiment, target)
-          flash[:notice] = "Die gewählen Teilnehmer wurden in die Session #{target.time_str} verschoben"
+          if Session.move_members(params['selected_users'].keys.map(&:to_i), @experiment, target)
+            flash[:notice] = "Die gewählen Teilnehmer wurden in die Session #{target.time_str} verschoben"
+          else
+            flash[:alert] = "Die Mitglieder konnten nicht verschoben werden, da nicht mehr genug freie Plätze in der Session sind."
+          end
         end
       end
     else
@@ -164,9 +166,21 @@ class SessionsController < ApplicationController
     params[:active][:frole] = '1'
     params[:role] = 'user' 
     params[:session] = @session.reference_session_id
-    params[:participating_session] = @session.id
+    params[:following_session] = @session.id
     
     @users = User.load(params, sort_column, sort_direction, @experiment, {:exclude_non_participants => 1})
+  end
+  
+  def overlaps
+    @overlaps = Session.find_overlapping_sessions_by_date(
+      Time.zone.parse(params[:start_date]),
+      params[:duration],
+      params[:location_id],
+      params[:id],
+      params[:time_before], 
+      params[:time_after]
+    )
+    render :partial => 'overlaps'
   end
   
   private

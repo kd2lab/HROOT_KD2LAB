@@ -13,7 +13,8 @@ class User < ActiveRecord::Base
   attr_accessible :email, :secondary_email, :password, :password_confirmation, :remember_me, :firstname, :lastname, 
                   :matrikel, :role, :phone, :gender, :begin_month, :begin_year, :study_id, :deleted, 
                   :email_prefix, :email_suffix, 
-                  :country_name, :terms_and_conditions, :lang1, :lang2, :lang3, :profession_id, :degree, :birthday
+                  :country_name, :terms_and_conditions, :lang1, :lang2, :lang3, :profession_id, :degree, :birthday,
+                  :preference
   
   ROLES = %w[user experimenter admin]
   
@@ -32,6 +33,10 @@ class User < ActiveRecord::Base
   validates_uniqueness_of :calendar_key
   validates_acceptance_of :terms_and_conditions
   validates :secondary_email, :email => true, :allow_blank => true
+    
+                                          
+  validates_format_of :password, :with => /^(?=.*\d)(?=.*([a-z]|[A-Z]))([\x20-\x7E]){8,128}$/, :on => :create
+  
     
   after_create :set_defaults
   
@@ -74,10 +79,9 @@ class User < ActiveRecord::Base
     #find all future sessions, which still have space and are open
     Session.in_the_future
       .where(:experiment_id => ids)
+      .where("sessions.reference_session_id = sessions.id")
       .order('start_at')
       .select{ |s| s.space_left > 0}
-      
-      # todo reenable .where("sessions.reference_session_id = sessions.id")
   end
   
   # load users and aggregate participation data
@@ -101,21 +105,14 @@ class User < ActiveRecord::Base
       where << "users.deleted=0"
     end
     
-    # limit to users of a certain session
-    session_join = ""
-    session_select = ""
-    if params[:session]
-      session_join = "JOIN participations ps ON ps.user_id = users.id AND ps.session_id = #{params[:session].to_i} "
-    end
-    
-    if params[:participating_session]
-      session_select = "sps.showup as session_showup, sps.noshow as session_noshow, sps.participated as session_participated, "
-      session_join += "LEFT JOIN session_participations sps ON sps.user_id = users.id AND sps.session_id = #{params[:participating_session].to_i}"
-    end
-    
     # gender
     if params[:active][:fgender] == '1' && ['f', 'm', '?'].include?(params[:gender])
       where << "users.gender='#{params[:gender]}'"
+    end
+    
+    # preference
+    if params[:active][:fpreference] == '1' && [1,2].include?(params[:preference].to_i)
+      where << "(users.preference=0 OR users.preference=#{params[:preference].to_i})"
     end
     
     # role
@@ -141,6 +138,17 @@ class User < ActiveRecord::Base
 
       if (1..12).include?(params[:begin_bis_month].to_i) && params[:begin_bis_year].to_i > 1990
         where << "((begin_month <= #{params[:begin_bis_month].to_i} AND begin_year=#{params[:begin_bis_year].to_i}) OR (begin_year<#{params[:begin_bis_year].to_i}))"
+      end
+    end
+
+    # birthday
+    if params[:active][:fbirthday] == '1'
+      if (1..12).include?(params[:birthday_von_month].to_i) && params[:birthday_von_year].to_i >= 1900 && params[:birthday_von_year].to_i <= Time.now.year
+        where << "birthday >= '#{params[:birthday_von_year].to_i}-#{params[:birthday_von_month].to_i}-01'"
+      end
+
+      if (1..12).include?(params[:birthday_bis_month].to_i) && params[:birthday_bis_year].to_i >= 1900 && params[:birthday_bis_year].to_i <= Time.now.year
+        where << "birthday <= '#{params[:birthday_bis_year].to_i}-#{params[:birthday_bis_month].to_i}-31'"
       end
     end
     
@@ -238,21 +246,40 @@ class User < ActiveRecord::Base
     
     # include / exclude participants in experiment
     if experiment 
-      participation_subquery = "(SELECT participations.id FROM participations"+
-          " WHERE participations.user_id = users.id AND participations.experiment_id = #{experiment.id}) as part_id,"
-      
+      participation_join = "LEFT JOIN participations p ON p.user_id = users.id AND p.experiment_id = #{experiment.id} "+
+                           "LEFT JOIN sessions s ON p.session_id = s.id "
+
       # exclude members
       if options && options[:exclude_experiment_participants]
-        having << "part_id IS NULL"
+        where << "p.id IS NULL"
       end
 
       # only members
       if options && options[:exclude_non_participants]
-        having << "part_id IS NOT NULL"
+        where << "p.id IS NOT NULL"
         
-        # in this case, also load invitation date
-        invitation_subquery = "(SELECT participations.invited_at FROM participations"+
-            " WHERE participations.user_id = users.id AND participations.experiment_id = #{experiment.id}) as invited_at,"
+        # load session_participation
+        session_participation_join = "LEFT JOIN session_participations sps ON sps.user_id = users.id AND sps.session_id = p.session_id"
+                            
+        session_select = "s.start_at as session_start_at, p.session_id, p.invited_at, sps.showup as session_showup, sps.noshow as session_noshow, sps.participated as session_participated, "
+
+        # limit to users of a certain session
+        if params[:session]
+          where << "p.session_id = #{params[:session].to_i}"
+        end
+
+        # load participation data of a following session instead of the main session?
+        if params[:following_session]
+          session_participation_join = "LEFT JOIN session_participations sps ON sps.user_id = users.id AND sps.session_id = #{params[:following_session].to_i}"
+        end
+              
+        # only select users with a successful participation
+        # this filter only makes sense, when we select participants of an experiment
+        if params[:active][:fparticipation] == '1' 
+          where << "sps.participated = 1" if params[:participation] == '1'
+          where << "p.session_id > 0" if params[:participation] == '2'
+          where << "(p.session_id = 0 OR p.session_id IS NULL)" if params[:participation] == '3'
+        end  
       end
     end  
       
@@ -297,14 +324,15 @@ class User < ActiveRecord::Base
               FROM studies
               WHERE studies.id = users.study_id
           ) as study_name,
-          #{participation_subquery}
+          
           #{experiment_subquery}
           #{experiment_typ_subquery}
-          #{invitation_subquery}
+          
           str_to_date(CONCAT_WS('-', COALESCE(begin_year, 1990), COALESCE(begin_month,1), '1'), '%Y-%m-%d') as begin_date
       FROM users
       #{experiment_join}
-      #{session_join}
+      #{participation_join}
+      #{session_participation_join}
       #{'WHERE' unless where.blank?} 
         #{where.join(' AND ')}
       #{'HAVING' unless having.blank?} 

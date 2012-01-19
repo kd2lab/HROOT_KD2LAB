@@ -45,6 +45,10 @@ Hroot::Application.routes.draw do
       end
       
       resources :sessions, :except => :show do
+        collection do
+          post :overlaps
+        end
+        
         member do
           post :duplicate
           get :participants

@@ -36,7 +36,7 @@ class UsersControllerTest < ActionController::TestCase
         @user2 = Factory.build(:user)
         
         assert_difference('User.count') do
-          post :create, :user => @user2.attributes.merge(:password => "tester", :password_confirmation => "tester")
+          post :create, :user => @user2.attributes.merge(:password => "testtest_8", :password_confirmation => "testtest_8")
         end
         
         assert_redirected_to users_path
@@ -47,7 +47,7 @@ class UsersControllerTest < ActionController::TestCase
         Settings.mail_restrictions = [{"prefix"=>"test", "suffix"=>"uni-hamburg.de"}, {"prefix"=>"test2", "suffix"=>"uni-magdeburg.de"}]
         
         assert_difference('User.count') do
-          post :create, :user => @user2.attributes.merge(:password => "tester", :password_confirmation => "tester")
+          post :create, :user => @user2.attributes.merge(:password => "testtest_8", :password_confirmation => "testtest_8")
         end
         
         assert_redirected_to users_path
