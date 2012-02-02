@@ -36,11 +36,14 @@ class UserTest < ActiveSupport::TestCase
       @user.password = "f$1"
       @user.password_confirmation = "f$1"
       assert !@user.valid?
-      
+    end
+    
+    should "require password_confirmation to match password2" do
+      @user = Factory.build(:user)
       @user.password = "foobar12"
       @user.password_confirmation = "foobar12"
       assert !@user.valid?
-
+      
       @user.password = "foobar_1"
       @user.password_confirmation = "foobar_1"
       assert @user.valid?
