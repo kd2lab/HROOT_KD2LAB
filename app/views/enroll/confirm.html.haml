@@ -13,8 +13,37 @@ Möchten Sie sich hiermit verbindlich zu folgendem Experiment anmelden?
     = hidden_field_tag("session", @session.id)
     = @session.time_str
     %br
-    %small= @session.location.name if @session.location
+    
+    - @session.following_sessions.each do |f|  
+      = f.time_str 
+      (Folgesession)
+      %br
     %br
+            
+    - unless @session.limitations.blank?
+      .limitations
+        %b
+          Teilnahmehinweise: 
+        %br
+        = @session.limitations
+            
+    - if @session.location
+      %small= "Raum: "+@session.location.name
+      %br
+            
+    - if @session.following_sessions.count > 0
+      %small
+        Achtung: Dies ist ein Experiment mit Folgesessions, bitte überprüfen Sie, ob Sie an 
+        %b
+          allen
+        angezeigten Terminen Zeit haben
+        %br
+            
+    %br
+    
+    
+    
+    
     %br
     = submit_tag('VERBINDLICH ANMELDEN')
     oder

@@ -32,6 +32,14 @@ class UserTest < ActiveSupport::TestCase
       @user.password = "foobar_1"
       @user.password_confirmation = "barfoo"
       assert !@user.valid?
+      
+      @user.password = "f$1"
+      @user.password_confirmation = "f$1"
+      assert !@user.valid?
+      
+      @user.password = "foobar12"
+      @user.password_confirmation = "foobar12"
+      assert !@user.valid?
 
       @user.password = "foobar_1"
       @user.password_confirmation = "foobar_1"

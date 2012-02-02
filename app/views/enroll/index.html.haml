@@ -10,7 +10,7 @@
 
 
   - if @availabe_sessions.count > 0
-    %h3 Anmeldungen zu Experimenten
+    %h3 Anmeldungen zu Experiment-Sessions
     Sie können sich für folgende Termine anmelden:
     %br
     %br
@@ -23,9 +23,37 @@
           .text
             = s.time_str
             %br
-            %small= s.location.name if s.location
+            
+            - s.following_sessions.each do |f|  
+              = f.time_str 
+              (Folgesession)
+              %br
+            
+            - unless s.limitations.blank?
+              .limitations
+                %b
+                  Teilnahmehinweise: 
+                %br
+                = s.limitations
+            
+            %small= "Raum: "+s.location.name if s.location
+            %br
+            
+            - if s.following_sessions.count > 0
+              %small
+                Achtung: Dies ist ein Experiment mit Folgesessions, bitte überprüfen Sie, ob Sie an 
+                %b
+                  allen
+                angezeigten Terminen Zeit haben
+              %br
+            
+            %br
       %br
-      = submit_tag('Zum gewählten Experiment anmelden')
+      = submit_tag('Zu den gewählten Sessions anmelden')
+      %br
+      
+      %small
+        
 
     %br
     %br

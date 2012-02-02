@@ -34,8 +34,8 @@ class User < ActiveRecord::Base
   validates_acceptance_of :terms_and_conditions
   validates :secondary_email, :email => true, :allow_blank => true
     
-                                          
-  validates_format_of :password, :with => /^(?=.*\d)(?=.*([a-z]|[A-Z]))([\x20-\x7E]){8,128}$/, :on => :create
+  # http://www.zorched.net/2009/05/08/password-strength-validation-with-regular-expressions/                                        
+  validates_format_of :password, :with => /^.*(?=.{8,})(?=.*[a-zA-Z])(?=.*[\W_]).*$/, :on => :create
   
     
   after_create :set_defaults
@@ -286,7 +286,7 @@ class User < ActiveRecord::Base
           
     sql = <<EOSQL
       SELECT 
-        DISTINCT users.*, 
+          DISTINCT users.*, 
           #{session_select}
           COALESCE(
             (SELECT

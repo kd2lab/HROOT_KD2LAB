@@ -16,6 +16,7 @@ de:
         start_date: Startdatum
         start_time: Startzeit
         description: Beschreibung
+        limitations: Teilnahmehinweise
         duration: Dauer in Minuten
         needed: Nötige Teilnehmer
         reserve: Reserve-Teilnehmer

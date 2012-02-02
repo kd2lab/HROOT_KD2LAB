@@ -13,6 +13,8 @@ class CreateSessions < ActiveRecord::Migration
       t.integer  :reserve, :default => 3
       t.integer  :group_size
       
+      t.text :limitations
+      
       t.integer :time_before, :default => 0
       t.integer :time_after, :default => 0
       
