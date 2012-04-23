@@ -1,28 +1,25 @@
-# capistrano integration
+# rvm capistrano integration
 $:.unshift(File.expand_path('./lib', ENV['rvm_path']))
 require "rvm/capistrano"
 set :rvm_ruby_string, "1.9.2@hroot"
 set :use_sudo, false
 
+#rvm bundler integration
 set :bundle_dir, ""
 set :bundle_flags, ""
 require "bundler/capistrano"
 
+# multistage integration
+set :stages, %w(production staging)
+set :default_stage, "staging"
+require 'capistrano/ext/multistage'
+
+
 set :application, "hroot"
 set :repository,  "git@ingmar.net:hroot.git"
-
 set :scm, :git
 
-set :deploy_to, "/var/www/rails/#{application}"
-set :user, "root"
 
-server "root@lvps83-169-5-139.dedicated.hosteurope.de", :app, :web, :db, :primary => true
-
-
-# unicorn integration
-set :unicorn_binary, "/usr/local/rvm/gems/ruby-1.9.2-p0@hroot/bin/unicorn"
-set :unicorn_config, "#{current_path}/config/unicorn.rb"
-set :unicorn_pid, "#{current_path}/tmp/pids/unicorn.pid"
 
 namespace :deploy do
   task :start, :roles => :app, :except => { :no_release => true } do 
@@ -42,8 +39,6 @@ namespace :deploy do
     start
   end
 end
-
-
 
 namespace :deploy do
   #desc "Tell unicorn to restart the app."
