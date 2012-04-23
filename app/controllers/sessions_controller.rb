@@ -106,12 +106,12 @@ class SessionsController < ApplicationController
     changes = 0
     
     # move session members
-    if !params['move-member'].blank?
-      if params['move-member'] == "0"
+    if !params['move_member'].blank?
+      if params['movemember'] == "0"
         Session.move_members(params['selected_users'].keys.map(&:to_i), @experiment)
         flash[:notice] = "Die gewählen Teilnehmer wurden aus der Session ausgetragen"
       else
-        target = Session.find(params['move-member'].to_i)
+        target = Session.find(params[:move_member].to_i)
         
         if target
           if Session.move_members(params['selected_users'].keys.map(&:to_i), @experiment, target)

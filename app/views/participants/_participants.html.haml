@@ -55,7 +55,7 @@
   - h = {"aus diesem Experiment entfernen" => 0}
   - @experiment.sessions.main_sessions.each do |s|
     - h["in Session #{s.time_str} eintragen"] = s.id  
-  = select_tag "move-member", options_for_select(h), :include_blank => true
+  = select_tag "move_member", options_for_select(h), :include_blank => true
 
 %br
 

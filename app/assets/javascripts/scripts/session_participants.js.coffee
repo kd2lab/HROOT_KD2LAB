@@ -31,7 +31,7 @@ $ ->
       $('.noshow_checkbox[data-id='+$(this).attr('data-id')+']').attr('checked', false)
     update_checkboxes()
 
-  $('#move-member').change ->
+  $('#move_member').change ->
     $('form').submit()
     
   update_menu()

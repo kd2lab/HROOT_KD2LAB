@@ -6,22 +6,22 @@ class ParticipantsController < ApplicationController
   
   def index
     # destroy participation relation
-    if !params['move-member'].blank? && params['selected_users']
-      if params['move-member'] == "0"
+    if !params[:move_member].blank? && params[:selected_users]
+      if params[:move_member] == "0"
         # aus allen sessions austragen, session participations löschen
         
-        Session.move_members(params['selected_users'].keys.map(&:to_i), @experiment)
+        Session.move_members(params[:selected_users].keys.map(&:to_i), @experiment)
         
         # participation auch löschen
-        params['selected_users'].keys.map(&:to_i).each do |id|
+        params[:selected_users].keys.map(&:to_i).each do |id|
           p = Participation.find_by_user_id_and_experiment_id(id, @experiment.id)
           p.destroy if p
         end  
       else
-        target = Session.find(params['move-member'].to_i)
+        target = Session.find(params[:move_member].to_i)
         
         if target
-          if Session.move_members(params['selected_users'].keys.map(&:to_i), @experiment, target)
+          if Session.move_members(params[:selected_users].keys.map(&:to_i), @experiment, target)
             flash[:notice] = "Die gewählen Teilnehmer wurden in die Session #{target.time_str} eingetragen"
           else
             flash[:alert] = "Die Mitglieder konnten nicht verschoben werden, da nicht mehr genug freie Plätze in der Session sind."
