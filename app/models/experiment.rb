@@ -1,13 +1,14 @@
 #encoding: utf-8
 
 class Experiment < ActiveRecord::Base  
+  acts_as_taggable_on :tags
+  
   has_many :experimenter_assignments
   has_many :experimenters, :through => :experimenter_assignments, :source => :user
   has_many :participations
   has_many :participants, :through => :participations, :source => :user
   
   has_many :sessions, :order => "start_at"
-  belongs_to :experiment_type
   
   validates_presence_of :name
   

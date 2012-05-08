@@ -52,7 +52,9 @@ $ ->
   
   update_calculations()
   
-  $("#text-tabs").tabs();
+  $("#text-tabs").tabs()
+  
+  $( "#text-accordion" ).accordion()
   
   $('#invitation_text, #invitation_subject').keydown ->
     $('.save_invitation').attr("disabled", null)

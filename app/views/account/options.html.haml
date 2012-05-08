@@ -1,8 +1,11 @@
 = content_for :breadcrumb do
-  &gt;
-  =link_to "Login-Bereich", :controller => "account", :action => "index"
-  &gt;
-  Account-Optionen
+  %ul.breadcrumb
+    %li
+      =link_to "Login-Bereich", :controller => "account", :action => "index"
+      %span.divider
+        &gt;
+    %li.active
+      Account-Optionen
 
 
 %h3 Alternative E-Mail-Adresse

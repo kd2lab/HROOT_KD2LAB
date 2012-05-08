@@ -3,5 +3,5 @@
   = hidden_field_tag "active[fnoshow]", params[:active][:fnoshow]
   Anzahl Nichterscheinen
   %br
-  = select_tag :noshow_op, options_for_select(["<=", ">"], params[:noshow_op])
-  = select_tag :noshow, options_for_select((0..10), params[:noshow])
+  = select_tag :noshow_op, options_for_select(["<=", ">"], params[:noshow_op]), :class => "span1"
+  = select_tag :noshow, options_for_select((0..10), params[:noshow]), :class => "span1"

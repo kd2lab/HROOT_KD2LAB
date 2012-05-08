@@ -1,0 +1,7 @@
+%ul.breadcrumb
+  - crumb.each_with_index do |c,i|
+    %li
+      = c
+      - if i< crumb.length-1
+        %span.divider
+          &gt;

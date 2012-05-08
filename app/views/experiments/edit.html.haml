@@ -1,18 +1,23 @@
 = content_for :breadcrumb do
-  &gt;
-  = link_to "Experimente", experiments_path
-  &gt;
-  = link_to @experiment.name, experiment_path(@experiment)
-  &gt;
-  Allgemeine Daten
+  %ul.breadcrumb
+    %li
+      = link_to "Experimente", experiments_path
+      %span.divider
+        &gt;
+    %li
+      = link_to @experiment.name, experiment_path(@experiment)
+      %span.divider
+        &gt;
+    %li.active
+      Allgemeine Daten
+
+= render :partial => "experiments/enrollment"
   
-%h3
+%h1
   = @experiment.name
 
 = render :partial => "tabs", :locals => {:selected => "Allgemeine Daten"} 
 
-%br
-%br
 %br
 
 = render 'form' 

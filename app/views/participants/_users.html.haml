@@ -8,7 +8,7 @@
   Filter: 
   %br
   - { 'gender' => 'Geschlecht', 'noshow' => 'Nichterscheinen', 'participated' => 'Teilnahmen', 'begin' => 'Studienbeginn', 'birthday' => "Alter", |
-      'study' => 'Fächer', 'language' => 'Sprachen', 'experimenttype' => 'Experimenttypen', 'experiment' => 'Experimente', |  
+      'study' => 'Fächer', 'language' => 'Sprachen', 'tags' => 'Tags', 'experiment' => 'Experimente', |  
       'preference' => 'Experiment-Präferenz'}.each do |key, value|
     %a.open-link{:href => '#f'+key}=value
     = '|' unless key == 'preference'
@@ -23,7 +23,7 @@
   = render :partial => 'shared/filter_birthday' 
   = render :partial => 'shared/filter_study' 
   = render :partial => 'shared/filter_language' 
-  = render :partial => 'shared/filter_experiment_type' 
+  = render :partial => 'shared/filter_tags' 
   = render :partial => 'shared/filter_experiment' 
   = render :partial => 'shared/filter_preference'
 
@@ -32,8 +32,7 @@
 = hidden_field_tag :direction, params[:direction]
 
 .searchinfo
-  .right
-    = submit_tag "Filter anwenden und Ergebnis aktualisieren", :name => 'submit_mode'
+  = submit_tag "Filter anwenden und Ergebnis aktualisieren", :name => 'submit_mode', :class => "btn btn-primary"
     
   Zeige
   %b= @users.length
@@ -51,37 +50,39 @@
   |
   = link_to 'Alle abwählen', '#none', {:class => 'none-link'}
   |
-  = submit_tag "Markierte Poolmitglieder zuordnen", :name => 'submit_marked' 
+  = submit_tag "Markierte Poolmitglieder zuordnen", :name => 'submit_marked', :class => "btn"
   |
-  = submit_tag "Alle angezeigten Poolmitglieder zuordnen", :name => 'submit_marked', :class => "submit_all" 
+  = submit_tag "Alle angezeigten Poolmitglieder zuordnen", :name => 'submit_marked', :class => "btn submit_all" 
 
 %br
 
 - if @users.count > 0
   
-  %table.user-table
-    %tr
-      %th
-      %th= sortable_for_form 'lastname', 'Name'  
-      -#%th= sortable_for_form 'firstname', 'Vorname'
-      %th= sortable_for_form 'email', 'E-Mail'
-      %th= sortable_for_form 'study_name', 'Fach'
-      //%th= sortable_for_form 'gender',  'Gesch.'
-      //%th= sortable_for_form 'begin_date', 'Beginn' 
-      %th.qtip_ersch= sortable_for_form 'noshow_count' , '#N'
-      %th.qtip_teil= sortable_for_form 'participations_count' , '#T'
-
-    - @users.each do |user| 
+  %table.table
+    %thead
       %tr
-        %td= check_box_tag "selected_users[#{user.id}]"
-        %td= link_to highlight(truncate(user.lastname, {:length => 15}), params[:search])+', '+highlight(truncate(user.firstname, {:length => 10}), params[:search]), user_path(user)
-        %td= link_to highlight(truncate(user.email, {:length => 20}), params[:search]), "mailto:#{user.email}"
-        %td.study_name_popup{:'data-text' => user.study_name || 'keine Angabe' }
-          =user.study_name ? truncate(user.study_name, {:length => 10}) : 'k. A.'
-        //%td= user.gender
-        //%td= user.begin_date 
-        %td= "#{user.noshow_count}" if user.user?
-        %td= "#{user.participations_count}" if user.user?
+        %th
+        %th= sortable_for_form 'lastname', 'Name'  
+        -#%th= sortable_for_form 'firstname', 'Vorname'
+        %th= sortable_for_form 'email', 'E-Mail'
+        %th= sortable_for_form 'study_name', 'Fach'
+        //%th= sortable_for_form 'gender',  'Gesch.'
+        //%th= sortable_for_form 'begin_date', 'Beginn' 
+        %th.qtip_ersch= sortable_for_form 'noshow_count' , '#N'
+        %th.qtip_teil= sortable_for_form 'participations_count' , '#T'
+
+    %tbody
+      - @users.each do |user| 
+        %tr
+          %td= check_box_tag "selected_users[#{user.id}]"
+          %td= link_to highlight(truncate(user.lastname, {:length => 15}), params[:search])+', '+highlight(truncate(user.firstname, {:length => 10}), params[:search]), user_path(user)
+          %td= link_to highlight(truncate(user.email, {:length => 20}), params[:search]), "mailto:#{user.email}"
+          %td.study_name_popup{:'data-text' => user.study_name || 'keine Angabe' }
+            =user.study_name ? truncate(user.study_name, {:length => 10}) : 'k. A.'
+          //%td= user.gender
+          //%td= user.begin_date 
+          %td= "#{user.noshow_count}" if user.user?
+          %td= "#{user.participations_count}" if user.user?
 - else
   %br
   %b

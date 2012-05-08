@@ -9,6 +9,15 @@ class ExperimentsController < ApplicationController
       .paginate(:per_page => 30, :page => params[:page])  
   end
 
+  def tag
+    @tag = ActsAsTaggableOn::Tag.find(params[:tag])
+    @experiments = Experiment.tagged_with(@tag.name).search(params[:search]).includes(:sessions)
+      .order("experiments.finished, COALESCE(sessions.start_at, experiments.created_at) DESC")
+      .paginate(:per_page => 30, :page => params[:page])  
+    
+    render :action => "index"
+  end
+
   def new
     @experiment = Experiment.new
     @experiment.set_default_mail_texts
@@ -35,8 +44,26 @@ class ExperimentsController < ApplicationController
       render :action => "new"
     end
   end
+  
+  def autocomplete_tags
+    #list = [params.inspect, "anton", "andnwer", "antsdfsf", "berta", "ceasar", "dana"]
+    #render :json => list.find_all{|e| e.index(params[:query])==0}
+    
+    l = User.where(["firstname LIKE ?", params[:query]+"%"]).limit(20).collect{|e|e.firstname}
+    
+    
+    l = Experiment.tag_counts_on('tags').where(["name LIKE ?", params[:query]+'%'])
+    
+    render :json => l.collect{|e| e.name}
+  end
 
   def update
+    if params[:experiment][:tag_list]
+      params[:experiment][:tag_list] = params[:experiment][:tag_list].join(", ")
+    else
+      params[:experiment][:tag_list] = ""
+    end  
+    
     if @experiment.update_attributes(params[:experiment])
       @experiment.update_experiment_assignments(params[:experiment_helper], "experiment_helper")
       @experiment.update_experiment_assignments(params[:experiment_leiter], "experiment_admin")

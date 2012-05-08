@@ -10,55 +10,24 @@
     
     = yield :head
     
-    /= stylesheet_link_tag 'chosen.css'
-    /= stylesheet_link_tag 'jquery-ui.css'
+    
     
     
   %body
     .container
-      .span-24
-        .logo
-          .logo-uni
-            != image_tag("logo-uni-hh.png")
-          .logo-fakultaet
-            != image_tag("logo_fakultaet.jpg")
-          
-        .header-line
-          .header-menu
-            -if user_signed_in? 
-              Eingeloggt als
-              = current_user.email
-              |
-              = link_to "Logout", logout_path, :method => :delete, :id => "logout"
-            -else 
-              = link_to "Registrieren", register_path 
-              oder 
-              = link_to "Login", login_path
-          
-          hroot - Rekrutierungssystem für ökonomische Experimente
-          
+      = render :partial => 'layouts/topbar'
+      .row
+        .span12
+          = yield :breadcrumb
+      .row
+        .span12
+          = render :partial => 'layouts/flash'
 
-        .flash
-          -if notice  
-            %p.notice= notice
-          -else
-            %p.notice{:style => 'display:none'}
-        
-          -if alert
-            %p.alert= alert
-          -else
-            %p.alert{:style => 'display:none'}
-          
-          
-        %hr
-        
-      .span-4
-        = render :partial => 'layouts/menu' 
-      .span-20.last
-        .breadcrumb
-          =yield :breadcrumb
-        = yield
-      .span-24
-        %hr
-        &copy; 2011 Universität Hamburg
+      .row  
+        .span2
+          = render :partial => 'layouts/menu' 
+        .span10
+          = yield
+      
+      = render :partial => "layouts/footer"
         

@@ -7,7 +7,7 @@ include Icalendar
 
 class HomeController < ApplicationController
   def index
-    
+    render :layout => 'landing'
   end
   
   def confirm
@@ -150,12 +150,13 @@ class HomeController < ApplicationController
     Participation.delete_all
     SessionParticipation.delete_all
     Location.delete_all
+    ActsAsTaggableOn::Tag.delete_all
+    ActsAsTaggableOn::Tagging.delete_all
     
     db[:or_experiments].each do |row|
       # load type string
       exp_class = db[:or_lang].first(:content_type => "experimentclass", :content_name => row[:experiment_class])
       
-      exp_type = ExperimentType.find_or_create_by_name(exp_class[:de])
       
       e = Experiment.new(
         :name => row[:experiment_name],
@@ -165,7 +166,12 @@ class HomeController < ApplicationController
         :show_in_stats => row[:hide_in_stats] != 'y',
         :show_in_calendar => row[:hide_in_cal] != 'y'
       )
-      e.experiment_type_id = exp_type.id
+      
+      # only import tags with more than one letter
+      if exp_class[:de].length > 1
+        e.tag_list = [exp_class[:de]]
+      end
+  
       e.save
       
       if !e.valid?

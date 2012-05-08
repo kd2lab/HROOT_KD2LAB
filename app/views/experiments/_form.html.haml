@@ -1,9 +1,9 @@
 
-= simple_form_for @experiment, :html => {:class => "guarded_form"} do |f| 
-  = f.input :name, :required => false
-  = f.input :experiment_type_id, :collection => ExperimentType.order(:name), :input_html => {:class => "chzn-select", :'data-placeholder' => "Typ wählen...", :style=>"width:410px"}
+= simple_form_for @experiment, :html => {:class => "guarded_form form-horizontal"} do |f| 
+  = f.input :name, :required => false, :input_html => {:class => "span5"}
   
-  %br
+  = f.input :tag_list
+    
 
   .input.string
     %label.select Verantwortlicher
@@ -28,26 +28,34 @@
         {:multiple => true, :class => "chzn-select", :'data-placeholder' => "Personen wählen...", :style=>"width:410px"} |
       ) |
       
-  = f.input :description, :as => :text
-  = f.input :contact, :as => :text
-  = f.input :sender_email, :hint => "(Standardadresse ist #{UserMailer.default[:from]})"
-
-  /%br
-  /= link_to "Bestätigungsemail bearbeiten", "",:id => "confirmation_mail_link"
+  = f.input :description, :as => :text, :input_html => {:class => "span5", :rows => 4} 
   
+  = f.input :contact, :as => :text, :input_html => {:class => "span5", :rows => 4} 
+  = f.input :sender_email, :hint => "(Standardadresse ist #{UserMailer.default[:from]})", :input_html => {:class => "span5"} 
+
   
   %br
+  
   
   - unless @experiment.new_record?
-    = f.input :finished, :label => "Dieses Experiment ist abgeschlossen" 
-  = f.input :show_in_stats, :label => "Dieses Experiment in der Statistik berücksichtigen" 
+    .checkbox-wrapper
+      = f.input :finished, :wrapper => :none, :as => :boolean, :label => false, :boolean_style => :inline
+      Dieses Experiment ist abgeschlossen
+    %br
+  .checkbox-wrapper
+    = f.input :show_in_stats, :wrapper => :none, :label => false, :boolean_style => :inline 
+    Dieses Experiment in der Statistik berücksichtigen
+  
+
+    
   
   %br
   %br
-  - if @experiment.new_record?
-    = f.submit "Experiment anlegen", :class => "guarded_form_save"
-  - else
-    = f.submit "Experiment speichern", :class => "guarded_form_save"
+  .checkbox-wrapper
+    - if @experiment.new_record?
+      = f.submit "Experiment anlegen", :class => "guarded_form_save btn btn-primary"
+    - else
+      = f.submit "Experiment speichern", :class => "guarded_form_save btn btn-primary"
   
   %br
   %br

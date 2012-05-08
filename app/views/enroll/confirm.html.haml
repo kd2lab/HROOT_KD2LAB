@@ -1,8 +1,11 @@
 = content_for :breadcrumb do
-  &gt;
-  = link_to "Startseite", root_path
-  &gt;
-  Experiment-Anmeldung bestätigen
+  %ul.breadcrumb
+    %li
+      = link_to "Startseite", root_path
+      %span.divider
+        >
+    %li.active
+      Experiment-Anmeldung bestätigen
 
 %h3 Anmeldungen zu Experimenten
 Möchten Sie sich hiermit verbindlich zu folgendem Experiment anmelden?

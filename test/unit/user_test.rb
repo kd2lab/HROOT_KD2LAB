@@ -77,15 +77,15 @@ class UserTest < ActiveSupport::TestCase
       @admin = Factory(:admin)
       @experimenter = Factory(:experimenter)
       
-      @et1 = ExperimentType.create(:name => "Typ1")
-      @et2 = ExperimentType.create(:name => "Typ2")
-      @et3 = ExperimentType.create(:name => "Typ3")
+      @tag1= "Tag1"
+      @tag2= "Tag2"
+      @tag3= "Tag3"
       
-      @e1 = Factory(:experiment, :experiment_type => @et1, :finished => true, :registration_active => true)
-      @e2 = Factory(:experiment, :experiment_type => @et2)
-      @e3 = Factory(:experiment, :experiment_type => @et3)
-      @e4 = Factory(:experiment, :experiment_type => @et3)
-      @e5 = Factory(:experiment, :experiment_type => @et3)
+      @e1 = Factory(:experiment, :tag_list => @tag1, :finished => true, :registration_active => true)
+      @e2 = Factory(:experiment, :tag_list => @tag2)
+      @e3 = Factory(:experiment, :tag_list => @tag3)
+      @e4 = Factory(:experiment, :tag_list => @tag3)
+      @e5 = Factory(:experiment, :tag_list => @tag3)
 
       @sess1 = Session.create(:experiment => @e1, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 20, :reserve => 4)
       @sess2 = Session.create(:experiment => @e1, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 20, :reserve => 4)
@@ -168,10 +168,10 @@ class UserTest < ActiveSupport::TestCase
       assert_same_elements [@u5, @u6, @u7, @u9], User.load({:study => [@s1.id, @s2.id], :study_op => "Ohne", :role => 'user', :active => {:fstudy => '1', :frole => '1'} })
     end
     
-    should "filter for experiment type" do      
-      assert_same_elements [], User.load({"exp_typ0" => @et1.id, "exp_typ_op1" => ["Mindestens"], "exp_typ_op2" => ["5"], :exp_typ_count => "1", :active => {:fexperimenttype => '1'} })
-      assert_same_elements [@u5, @u6], User.load({"exp_typ0" => @et1.id, "exp_typ1" => @et3.id, "exp_typ_op1" => ["Mindestens", "Mindestens"], "exp_typ_op2" => ["1", "1"], :exp_typ_count => "2", :active => {:fexperimenttype => '1'} })
-      assert_same_elements [@u1, @u2, @u3, @u4, @u7, @u9], User.load({"exp_typ0" => @et1.id, "exp_typ_op1" => ["Höchstens"], "exp_typ_op2" => ["0"], :exp_typ_count => "1", :role => 'user', :active => {:fexperimenttype => '1', :frole => '1'} })    
+    should "filter tags" do      
+      assert_same_elements [], User.load({"exp_tag0" => @tag1, "exp_tag_op1" => ["Mindestens"], "exp_tag_op2" => ["5"], :exp_tag_count => "1", :active => {:ftag => '1'} })
+      assert_same_elements [@u5, @u6], User.load({"exp_tag0" => @tag1, "exp_tag1" => @tag3, "exp_tag_op1" => ["Mindestens", "Mindestens"], "exp_tag_op2" => ["1", "1"], :exp_tag_count => "2", :active => {:ftag => '1'} })
+      assert_same_elements [@u1, @u2, @u3, @u4, @u7, @u9], User.load({"exp_tag0" => @tag1, "exp_tag_op1" => ["Höchstens"], "exp_tag_op2" => ["0"], :exp_tag_count => "1", :role => 'user', :active => {:ftag => '1', :frole => '1'} })    
     end
     
     should "filter for experiments" do

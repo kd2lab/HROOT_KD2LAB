@@ -1,50 +1,54 @@
 = content_for :breadcrumb do
-  &gt;
-  = link_to "Benutzer", users_path
-  &gt;
-  = link_to @user.firstname+' '+@user.lastname, user_path(@user)
+  = render :partial => "layouts/crumb", :object => [           |
+      link_to("Benutzer", users_path),                         |
+      link_to(@user.firstname+' '+@user.lastname, user_path(@user)) ]
+
   
 .edit_button{:style => "float: right"}
-  = button_to "Bearbeiten", edit_user_path(@user), :method => :get
+  = link_to "Bearbeiten", edit_user_path(@user), :class => "btn btn-primary"
   
 %h1
   = @user.firstname+' '+@user.lastname
   
-%table
-  %tr
-    %td Telefon
-    %td= @user.phone
-  %tr
-    %td Geschlecht
-    %td= {'m' => 'männlich', 'f' => 'weiblich', '?' => "keine Angabe" }[@user.gender]
+%br
+
+%table.table
+  %thead
+    %tr
+      %td Telefon
+      %td= @user.phone
+  %tbody
+    %tr
+      %td Geschlecht
+      %td= {'m' => 'männlich', 'f' => 'weiblich', '?' => "keine Angabe" }[@user.gender]
   
-  %tr
-    %td Matrikelnummer
-    %td= @user.matrikel
-  %tr
-    %td E-Mail
-    %td= link_to @user.email, "mailto:#{@user.email}"
-  %tr
-    %td Rolle
-    %td= User.roles.invert[@user.role]
-  %tr
-    %td Studiengang
-    %td= @user.study.name if @user.study
-  %tr
-    %td Abschluss(-ziel)
-    %td= @user.degree  
-  %tr
-    %td Studienbegin
-    %td= "#{@user.begin_month}/#{@user.begin_year}"
-  %tr
-    %td Land
-    %td= @user.country_name
-  %tr
-    %td Sprachkenntnisse
-    %td= @user.languages.join(',')
-  %tr
-    %td Beruf
-    %td=  @user.profession.name if @user.profession
+    %tr
+      %td Matrikelnummer
+      %td= @user.matrikel
+    %tr
+      %td E-Mail
+      %td= link_to @user.email, "mailto:#{@user.email}"
+    %tr
+      %td Rolle
+      %td= User.roles.invert[@user.role]
+    %tr
+      %td Studiengang
+      %td= @user.study.name if @user.study
+    %tr
+      %td Abschluss(-ziel)
+      %td= @user.degree  
+    %tr
+      %td Studienbegin
+      %td= "#{@user.begin_month}/#{@user.begin_year}"
+    %tr
+      %td Land
+      %td= @user.country_name
+    %tr
+      %td Sprachkenntnisse
+      %td= @user.languages.join(',')
+    %tr
+      %td Beruf
+      %td=  @user.profession.name if @user.profession
 
 - if @user.deleted?
   .mark{:style=>"color:red"} 
@@ -57,33 +61,34 @@
   - ptable = {}; @user.session_participations.each do |sp| ptable[sp.session_id] = sp end
   
   Bisherige Experimentteilnahmen:
-  %table
-    %tr
-      %td
-      %td.qtip-generic{:'data-title' => 'Showup'}  S
-      %td.qtip-generic{:'data-title' => 'Teilnahme'}  T
+  %br
+  %br
+  
+  %table.table
+    %tbody  
+      - @user.participations.includes(:session).joins(:experiment).where("sessions.id = sessions.reference_session_id").order("sessions.start_at").each do |p|
       
-      
-    - @user.participations.includes(:session).joins(:experiment).where("sessions.id = sessions.reference_session_id").order("sessions.start_at").each do |p|
-      
-      %tr
-        %td
-          = truncate(p.experiment.name, :length => 60)
-          %br
-          - ([p.session] + p.session.following_sessions).each do |s|
-            = link_to s.time_str, participants_experiment_session_path(p.experiment, s)
+        %tr
+          %td
+            = truncate(p.experiment.name, :length => 60)
             %br
-        %td
-          %br
-          - ([p.session] + p.session.following_sessions).each do |s|
-            - if ptable[s.id] && ptable[s.id].showup
-              .green-button
-            - if ptable[s.id] && ptable[s.id].noshow
-              .red-button
+            - ([p.session] + p.session.following_sessions).each do |s|
+              = link_to s.time_str, participants_experiment_session_path(p.experiment, s)
+              %br
+          %td
             %br
-        %td
-          %br
-          - ([p.session] + p.session.following_sessions).each do |s|
-            - if ptable[s.id] && ptable[s.id].participated
-              .green-button
+            - ([p.session] + p.session.following_sessions).each do |s|
+              - if ptable[s.id] && ptable[s.id].showup
+                %span.label.label-success
+                  Erschienen
+              - if ptable[s.id] && ptable[s.id].noshow
+                %span.label.label-important
+                  Nicht erschienen
+              %br
+          %td
             %br
+            - ([p.session] + p.session.following_sessions).each do |s|
+              - if ptable[s.id] && ptable[s.id].participated
+                %span.label.label-success
+                  Teilgenommen
+              %br

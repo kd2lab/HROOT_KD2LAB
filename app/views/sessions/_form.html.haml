@@ -8,9 +8,9 @@
   - button_text = "Session speichern"
 
 %div{:id => "session"+session.id.to_s, :class => 'sessionline form-highlight '+(subsession ? 'subsession' : '')}
-  = simple_form_for @session, {:html => {:class => "guarded_form session_update"}, :url => url } do |f|   
+  = simple_form_for @session, {:html => {:class => "guarded_form session_update form-horizontal"}, :url => url } do |f|   
     .right-col
-      = f.submit button_text, :class => "guarded_form_save", :style => "margin-left: 0px"
+      = f.submit button_text, :class => "guarded_form_save btn btn-primary", :style => "margin-left: 0px"
       oder 
       = link_to "schliessen", experiment_sessions_path, :class => "session_close"
 

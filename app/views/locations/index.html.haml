@@ -1,29 +1,30 @@
 = render :partial => "location_tab"
 
-
-= button_to "Neuen Raum anlegen", new_location_path, :method => :get
+%br
+= link_to "Neuen Raum anlegen", new_location_path, :class => "btn btn-primary"
 %br
 %br
 
-%table
-  %tr
-    %th Name  
-    %th Beschreibung
-    %th 
-        
-  - @locations.each do |location| 
-    %tr{:class => if location.active? then "" else "inactive" end }
-      %td= truncate(location.name, :maxlength => 30)
-      %td= truncate(location.description, :maxlength => 100)
-      %td
-        = link_to 'Bearbeiten', edit_location_path(location) 
-        - if location.sessions.count == 0 
-          |
-          = link_to 'Löschen', location, :confirm => 'Sind Sie sich sicher, dass Sie diesen Raum entfernen möchten?', :method => :delete
+%table.table
+  %thead
+    %tr
+      %th Name  
+      %th Beschreibung
+      %th 
+  
+  %tbody      
+    - @locations.each do |location| 
+      %tr{:class => if location.active? then "" else "inactive" end }
+        %td= truncate(location.name, :maxlength => 30)
+        %td= truncate(location.description, :maxlength => 100)
+        %td
+          = link_to 'Bearbeiten', edit_location_path(location), :class => "btn btn-primary"
+          - if location.sessions.count == 0 
+            = link_to 'Löschen', location, :confirm => 'Sind Sie sich sicher, dass Sie diesen Raum entfernen möchten?', :method => :delete, :class => "btn"
   
 %br
 
-%small
+.alert.alert-info
   Hinweis: Es können nur Räume gelöscht werden, die nicht belegt wurden.
   
 %br

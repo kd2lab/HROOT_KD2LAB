@@ -3,16 +3,24 @@
 -else
   %div{:id => "session"+session.id.to_s, :class => 'sessionline '+(subsession ? 'subsession' : '')}
   
-    .right-col{:style => "display:xnone"}
-      - unless subsession
-        = link_to 'Folgesession', new_experiment_session_path(:experiment_id => @experiment, :reference_session_id => session.id), :class => "session_new_subsession"
-        |
-      = link_to "Bearbeiten", edit_experiment_session_path(@experiment, session), :class => 'session_edit'
-      |
-      = link_to "Duplizieren", duplicate_experiment_session_path(@experiment, session), :class => 'session_duplicate'
-      |
-      = link_to "Löschen", experiment_session_path(@experiment, session), :class => 'session_delete', :confirm => "Soll diese Session wirklich gelöscht werden?"
     
+
+    
+    .right-col
+
+      .btn-group
+        =link_to "Bearbeiten", edit_experiment_session_path(@experiment, session), :class => 'session_edit btn btn-primary'
+        %a.btn.dropdown-toggle{:'data-toggle' => "dropdown", :href => "#"}
+          Aktionen
+          %b.caret
+        %ul.dropdown-menu
+          - unless subsession
+            %li= link_to 'Folgesession', new_experiment_session_path(:experiment_id => @experiment, :reference_session_id => session.id), :class => "session_new_subsession"
+          %li= link_to "Duplizieren", duplicate_experiment_session_path(@experiment, session), :class => 'session_duplicate'
+          %li= link_to "Löschen", experiment_session_path(@experiment, session), :class => 'session_delete', :confirm => "Soll diese Session wirklich gelöscht werden?"
+
+  
+          
       - if session.end_at < Time.zone.now then
         %br
         - if session.participations.count != session.session_participations.count

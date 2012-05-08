@@ -1,6 +1,6 @@
 %br
 
-= simple_form_for @user, :html => {:class => "guarded_form"} do |f| 
+= simple_form_for @user, :html => {:class => "guarded_form form-horizontal"} do |f| 
   = f.input :firstname, :required => false
   = f.input :lastname, :required => false
   = f.input :gender, :collection => {'männlich' => 'm', 'weiblich' => 'f', "keine Angabe" => '?' }, :as => :select, :required => false
@@ -29,7 +29,7 @@
   = f.input :deleted, :label => "Benutzer ist als gelöscht markiert" 
   
   %br
-  = f.submit "Benutzer speichern", :class => "guarded_form_save"
+  = f.submit "Benutzer speichern", :class => "guarded_form_save btn btn-primary"
   %br
   %br
   

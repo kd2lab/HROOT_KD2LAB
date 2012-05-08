@@ -1,4 +1,6 @@
 class RegistrationsController < Devise::RegistrationsController
+  layout "plain"
+
   def new
     super
   end

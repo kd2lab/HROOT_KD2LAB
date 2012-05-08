@@ -1,28 +1,20 @@
-.menu
+%ul.nav.nav-list
   - if current_user
-    = link_to "Home", account_path
-    %br
-    = link_to "Account-Optionen", :controller => "account", :action => "options"
-    %br
-    %br
+    %li.nav-header Allgemein
+    %li= link_to "Home", account_path
+    %li= link_to "Account-Optionen", :controller => "account", :action => "options"
+    
+    
     - if can? :manage, :all
-      
-      Admin-Menü
-      %br
-      %br
-      = link_to "Dashboard", dashboard_path
-      %br
-      = link_to "Kalender", calendar_path
-      %br
-      = link_to "Experimente", experiments_path
-      %br
-      = link_to "Benutzer", users_path
-      %br
-      = link_to "Einstellungen", options_path
+      %li.nav-header Admin-Menü
+      %li= link_to "Dashboard", dashboard_path
+      %li= link_to "Kalender", calendar_path
+      %li= link_to "Experimente", experiments_path
+      %li= link_to "Benutzer", users_path
+      %li= link_to "Einstellungen", options_path
   - else
-    = link_to "Home", root_path
-    %br
-    = link_to "Login", login_path
-    %br
-    = link_to "Registrieren", register_path 
+    %li.nav-header Allgemein
+    %li= link_to "Home", root_path
+    %li= link_to "Login", login_path
+    %li= link_to "Registrieren", register_path 
     

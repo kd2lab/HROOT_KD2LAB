@@ -3,8 +3,7 @@
 - else
   - url = language_path(@language)
   
-= simple_form_for @language, {:html => {:class => "guarded_form"}, :url => url} do |f| 
-  = f.input :name, :required => false
-  = f.submit "Sprache speichern", :class => "guarded_form_save"
+= simple_form_for @language, {:html => {:class => "guarded_form form-horizontal"}, :url => url} do |f| 
+  = f.input :name, :required => false, :input_html => { :class => 'span4' }
   %br
-  %br
+  = f.submit "Sprache speichern", :class => "guarded_form_save btn btn-primary"

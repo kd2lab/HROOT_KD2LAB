@@ -1,22 +1,23 @@
 = content_for :breadcrumb do
-  &gt;
-  = link_to "Experimente", experiments_path
-  &gt;
-  = link_to @experiment.name, experiment_path(@experiment)
-  &gt;
-  Sessions
+  = render :partial => "layouts/crumb", :object => [           |
+      link_to("Experimente", experiments_path),                |
+      link_to(@experiment.name, experiment_path(@experiment)), |
+      "Sessions"]
+      
 
-%h3
-  = @experiment.name  
+= render :partial => "experiments/enrollment"
+  
+%h1
+  = @experiment.name
 
 
 = render :partial => "experiments/tabs", :locals => {:selected => "Sessions"}
 
+
+= button_to 'Neue Session anlegen', new_experiment_session_path(@experiment), :method => :get, :form_class => "session_new",  :class => "btn btn-primary"
+
 %br
-%br
-%br
-= button_to 'Neue Session anlegen', new_experiment_session_path(@experiment), :method => :get, :form_class => "session_new"
-%br
+
 
 #sessions
   = render :partial => 'list', :locals => {:sessions => @sessions, :edit_session => nil}

@@ -16,6 +16,106 @@ class SessionsControllerTest < ActionController::TestCase
       should respond_with :success
     end
     
+    context "get on participants to remove users" do
+      setup do
+        @user1 = Factory(:user)
+        @user2 = Factory(:user)
+        @user3 = Factory(:user)
+        
+        Participation.create(:user => @user1, :experiment => @experiment, :session => @session)
+        SessionParticipation.create(:user => @user1, :session => @session)
+        Participation.create(:user => @user2, :experiment => @experiment, :session => @session)
+        SessionParticipation.create(:user => @user2, :session => @session)
+        Participation.create(:user => @user3, :experiment => @experiment, :session => @session)
+        SessionParticipation.create(:user => @user3, :session => @session)
+        
+        get :participants, :experiment_id => @experiment.id, :move_member => "0", :selected_users => {@user1.id => "1", @user2.id => "1"}, :id => @session.id
+      end
+      
+      should "remove selected participations" do
+        assert_equal 1, SessionParticipation.count
+      end
+    end
+  
+    context "get on participants to move users" do
+      setup do
+        @user1 = Factory(:user)
+        @user2 = Factory(:user)
+        @user3 = Factory(:user)
+        
+        @p1 = Participation.create(:user => @user1, :experiment => @experiment, :session => @session)
+        SessionParticipation.create(:user => @user1, :session => @session)
+        @p2 = Participation.create(:user => @user2, :experiment => @experiment, :session => @session)
+        SessionParticipation.create(:user => @user2, :session => @session)
+        @p3 = Participation.create(:user => @user3, :experiment => @experiment, :session => @session)
+        SessionParticipation.create(:user => @user3, :session => @session)
+        
+        @session2 = Session.create(:experiment => @experiment, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 20, :reserve => 4)
+        
+        get :participants, :experiment_id => @experiment.id, :move_member => @session2.id, :selected_users => {@user1.id => "1", @user2.id => "1"}, :id => @session.id
+      end
+      
+      should "move selected participations" do
+        @p1.reload
+        @p2.reload
+        @p3.reload
+        assert_equal @session2.id, @p1.session_id
+        assert_equal @session2.id, @p2.session_id
+        assert_equal @session.id,  @p3.session_id
+
+        assert_equal 3, Participation.count
+        assert_equal 1, SessionParticipation.count
+      end
+    end    
+    
+    context "get on participants to save participation info" do
+      setup do
+        @u1 = Factory(:user)
+        @u2 = Factory(:user)
+        @u3 = Factory(:user)
+        
+        Participation.create(:user => @u1, :experiment => @experiment, :session => @session)
+        Participation.create(:user => @u2, :experiment => @experiment, :session => @session)
+        Participation.create(:user => @u3, :experiment => @experiment, :session => @session)
+        
+        get :participants, :experiment_id => @experiment.id, :id => @session.id, :save => true, :ids => {@u1.id => "1", @u2.id => "1", @u3.id => "1"}, 
+            :showups => {@u1.id => "1", @u2.id => "1"}, :participations => {@u2.id => "1"}, :noshows => {@u3.id => "1"}
+      end
+      
+      should "create some session participations" do
+        assert_equal 3, SessionParticipation.count
+        s1 = SessionParticipation.where(:user_id => @u1.id).first
+        s2 = SessionParticipation.where(:user_id => @u2.id).first
+        s3 = SessionParticipation.where(:user_id => @u3.id).first
+        
+        assert s1.showup
+        assert s2.showup
+        assert !s3.showup
+        
+        assert !s1.participated
+        assert s2.participated
+        assert !s3.participated
+        
+        assert !s1.noshow
+        assert !s2.noshow
+        assert s3.noshow
+        
+        
+      end
+    end
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     context "get on new" do
       setup do
         get :new, :experiment_id => @experiment.id

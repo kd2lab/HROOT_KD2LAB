@@ -11,7 +11,7 @@
   Filter: 
   %br
   - { 'gender' => 'Geschlecht', 'noshow' => 'Nichterscheinen', 'participated' => 'Teilnahmen', 'begin' => 'Studienbeginn', 'birthday' => "Alter", |
-      'study' => 'Fächer', 'language' => 'Sprachen', 'experimenttype' => 'Experimenttypen', 'experiment' => 'Experimente', |
+      'study' => 'Fächer', 'language' => 'Sprachen', 'tags' => 'Tags', 'experiment' => 'Experimente', |
       'participation' => 'Sessionteilnahme', 'preference' => 'Experiment-Präferenz'}.each do |key, value|
     %a.open-link{:href => '#f'+key}=value
     = '|' unless key == 'preference'
@@ -26,14 +26,13 @@
   = render :partial => 'shared/filter_birthday' 
   = render :partial => 'shared/filter_study'
   = render :partial => 'shared/filter_language'  
-  = render :partial => 'shared/filter_experiment_type' 
+  = render :partial => 'shared/filter_tags' 
   = render :partial => 'shared/filter_experiment'
   = render :partial => 'shared/filter_participation'
   = render :partial => 'shared/filter_preference'
 
 .searchinfo
-  .right
-    = submit_tag "Filter anwenden und Ergebnis aktualisieren", :name => 'submit_mode'
+  = submit_tag "Filter anwenden und Ergebnis aktualisieren", :name => 'submit_mode', :class => "btn btn-primary"
   Zeige
   %b= @users.length
   von
@@ -60,32 +59,34 @@
 %br
 
 - if @users.count > 0
-  %table.user-table
-    %tr
-      %th  
-      %th= sortable_for_form 'lastname', 'Name'  
-      %th= sortable_for_form 'email', 'E-Mail'
-      %th= sortable_for_form 'study_name', 'Fach'
-      //%th= sortable_for_form 'gender',  'Gesch.'
-      //%th= sortable_for_form 'begin_date', 'Beginn'
-      %th.qtip_ersch= sortable_for_form 'noshow_count' , '#N'
-      %th.qtip_teil= sortable_for_form 'participations_count' , '#T'
-      %th= sortable_for_form 'session_start_at' , 'Session'
-      
-    - @users.each do |user| 
+  %table.table
+    %thead
       %tr
-        %td
-          = check_box_tag "selected_users[#{user.id}]"
-          = image_tag("email_go.png", :alt => "Dieser User wurde bereits eingeladen") unless user.invited_at.nil?
-        %td= link_to highlight(truncate(user.lastname, {:length => 15}), params[:search])+', '+highlight(truncate(user.firstname, {:length => 10}), params[:search]), user_path(user)
-        %td= link_to highlight(truncate(user.email, {:length => 20}), params[:search]), "mailto:#{user.email}"
-        %td.study_name_popup{:'data-text' => user.study_name || 'keine Angabe' }
-          =user.study_name ? truncate(user.study_name, {:length => 10}) : 'k. A.'
-        //%td= user.gender
-        //%td= user.begin_date 
-        %td= "#{user.noshow_count}" if user.user?
-        %td= "#{user.participations_count}" if user.user?
-        %td= "#{user.session_start_at.strftime("%d.%m.%Y %H:%M") if user.session_start_at}" 
+        %th  
+        %th= sortable_for_form 'lastname', 'Name'  
+        %th= sortable_for_form 'email', 'E-Mail'
+        %th= sortable_for_form 'study_name', 'Fach'
+        //%th= sortable_for_form 'gender',  'Gesch.'
+        //%th= sortable_for_form 'begin_date', 'Beginn'
+        %th.qtip_ersch= sortable_for_form 'noshow_count' , '#N'
+        %th.qtip_teil= sortable_for_form 'participations_count' , '#T'
+        %th= sortable_for_form 'session_start_at' , 'Session'
+    
+    %tbody  
+      - @users.each do |user| 
+        %tr
+          %td
+            = check_box_tag "selected_users[#{user.id}]"
+            = image_tag("email_go.png", :alt => "Dieser User wurde bereits eingeladen") unless user.invited_at.nil?
+          %td= link_to highlight(truncate(user.lastname, {:length => 15}), params[:search])+', '+highlight(truncate(user.firstname, {:length => 10}), params[:search]), user_path(user)
+          %td= link_to highlight(truncate(user.email, {:length => 20}), params[:search]), "mailto:#{user.email}"
+          %td.study_name_popup{:'data-text' => user.study_name || 'keine Angabe' }
+            =user.study_name ? truncate(user.study_name, {:length => 10}) : 'k. A.'
+          //%td= user.gender
+          //%td= user.begin_date 
+          %td= "#{user.noshow_count}" if user.user?
+          %td= "#{user.participations_count}" if user.user?
+          %td= "#{user.session_start_at.strftime("%d.%m.%Y %H:%M") if user.session_start_at}" 
 - else
   %br
   %b

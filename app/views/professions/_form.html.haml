@@ -3,9 +3,9 @@
 - else
   - url = profession_path(@profession)
   
-= simple_form_for @profession, {:html => {:class => "guarded_form"}, :url => url} do |f| 
-  = f.input :name, :required => false
-  = f.submit "Beruf speichern", :class => "guarded_form_save"
+= simple_form_for @profession, {:html => {:class => "guarded_form form-horizontal"}, :url => url} do |f| 
+  = f.input :name, :required => false, :input_html => { :class => 'span4' }
   %br
-  %br
+  = f.submit "Beruf speichern", :class => "guarded_form_save btn btn-primary"
+
 

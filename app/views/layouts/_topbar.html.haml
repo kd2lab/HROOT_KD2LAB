@@ -1,0 +1,25 @@
+.navbar.navbar-fixed-top
+  .navbar-inner
+    .container
+      - if user_signed_in? 
+        = link_to "Logout", logout_path, :method => :delete, :id => "logout", :class => "btn btn-small pull-right"
+        
+        %ul.nav.pull-right
+          %li
+            %p.navbar-text
+              Eingeloggt als
+              = current_user.email
+          %li.divider-vertical
+      - else
+        = link_to "Login", login_path, :class => "btn btn-small pull-right"
+        %ul.nav.pull-right
+          %li= link_to "Jetzt registrieren", register_path 
+          %li.divider-vertical
+          
+      %a.brand{:href => root_url}
+        hroot
+      %p.navbar-text
+        Rekrutierungssystem für ökonomische Experimente
+      
+     
+        

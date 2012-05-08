@@ -11,7 +11,7 @@
   Filter: 
   %br
   - { 'gender' => 'Geschlecht', 'noshow' => 'Nichterscheinen', 'participated' => 'Teilnahmen', 'role' => 'Rolle', 'begin' => 'Studienbeginn', 'birthday' => "Alter", |
-      'study' => 'Fächer', 'language' => 'Sprachen', 'experimenttype' => 'Experimenttypen', 'experiment' => 'Experimente', |        
+      'study' => 'Fächer', 'language' => 'Sprachen', 'tags' => 'Tags', 'experiment' => 'Experimente', |        
       'preference' => 'Experiment-Präferenz'}.each do |key, value|
     %a.open-link{:href => '#f'+key}=value
     = '|' unless key == 'preference'
@@ -29,15 +29,14 @@
   = render :partial => 'shared/filter_birthday' 
   = render :partial => 'shared/filter_study' 
   = render :partial => 'shared/filter_language' 
-  = render :partial => 'shared/filter_experiment_type' 
+  = render :partial => 'shared/filter_tags' 
   = render :partial => 'shared/filter_experiment' 
   = render :partial => 'shared/filter_preference'
 
 
 
 .searchinfo
-  .right
-    = submit_tag "Filter anwenden und Ergebnis aktualisieren", :name => 'submit_mode'
+  = submit_tag "Filter anwenden und Ergebnis aktualisieren", :name => 'submit_mode', :class => "btn btn-primary"
   Zeige
   %b= @users.length
   von
@@ -50,30 +49,32 @@
 %br
 
 - if @users.count > 0
-  %table.user-table
-    %tr
-      %th= sortable_for_form 'lastname', 'Name'  
-      %th= sortable_for_form 'role', 'Rolle'
-      %th= sortable_for_form 'email', 'E-Mail'
-      %th= sortable_for_form 'study_name', 'Fach'
-      %th= sortable_for_form 'gender',  'G.'
-      %th= sortable_for_form 'begin_date', 'Beginn'
-      %th= sortable_for_form 'created_at', 'Anmeld.'
-      %th.qtip_ersch= sortable_for_form 'noshow_count' , '#N'
-      %th.qtip_teil= sortable_for_form 'participations_count' , '#T'
+  %table.table
+    %thead
+      %tr
+        %th= sortable_for_form 'lastname', 'Name'  
+        %th= sortable_for_form 'role', 'Rolle'
+        %th= sortable_for_form 'email', 'E-Mail'
+        %th= sortable_for_form 'study_name', 'Fach'
+        %th= sortable_for_form 'gender',  'G.'
+        %th= sortable_for_form 'begin_date', 'Beginn'
+        %th= sortable_for_form 'created_at', 'Anmeld.'
+        %th.qtip_ersch= sortable_for_form 'noshow_count' , '#N'
+        %th.qtip_teil= sortable_for_form 'participations_count' , '#T'
 
-    - @users.each do |user| 
-      %tr{:class => if user.deleted then "deleted" end}
-        %td= link_to highlight(truncate(user.lastname, {:length => 15}), params[:search])+', '+highlight(truncate(user.firstname, {:length => 10}), params[:search]), user_path(user)
-        %td= {'user' => 'P', 'experimenter' => 'E', 'admin' => 'A'}[user.role]
-        %td= link_to highlight(truncate(user.email, {:length => 15}), params[:search]), "mailto:#{user.email}"
-        %td.study_name_popup{:'data-text' => user.study_name || 'keine Angabe' }
-          =user.study_name ? truncate(user.study_name, {:length => 10}) : 'k. A.'
-        %td= user.gender
-        %td= user.begin_date 
-        %td= user.created_at.strftime('%d.%m.%y')
-        %td= "#{user.noshow_count}" 
-        %td= "#{user.participations_count}"
+    %tbody    
+      - @users.each do |user| 
+        %tr{:class => if user.deleted then "deleted" end}
+          %td= link_to highlight(truncate(user.lastname, {:length => 15}), params[:search])+', '+highlight(truncate(user.firstname, {:length => 10}), params[:search]), user_path(user)
+          %td= {'user' => 'P', 'experimenter' => 'E', 'admin' => 'A'}[user.role]
+          %td= link_to highlight(truncate(user.email, {:length => 15}), params[:search]), "mailto:#{user.email}"
+          %td.study_name_popup{:'data-text' => user.study_name || 'keine Angabe' }
+            =user.study_name ? truncate(user.study_name, {:length => 10}) : 'k. A.'
+          %td= user.gender
+          %td= user.begin_date 
+          %td= user.created_at.strftime('%d.%m.%y')
+          %td= "#{user.noshow_count}" 
+          %td= "#{user.participations_count}"
         
         
 - else

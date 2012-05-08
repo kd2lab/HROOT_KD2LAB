@@ -1,17 +1,23 @@
 = stylesheet_link_tag "event_calendar" 
 
 = content_for :breadcrumb do
-  &gt;
-  =link_to "Administration", :controller => "admin", :action => "index"
-  &gt;
+  %ul.breadcrumb
+    %li
+      =link_to "Administration", :controller => "admin", :action => "index"
+      %span.divider
+        &gt;
+    %li.active
+      Kalender
+
+%h1
   Kalender
-  
-  
-  
+
+%br
+
 - overlaps = Session.find_overlapping_sessions(@year, @month)
 
 - if overlaps.count > 0
-  .overlaps
+  .alert.alert-danger
     In diesem Monat gibt es Terminkollisionen:
     %br
     %br

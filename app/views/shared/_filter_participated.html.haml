@@ -3,5 +3,5 @@
   = hidden_field_tag "active[fparticipated]", params[:active][:fparticipated]
   Anzahl Teilnahmen
   %br
-  = select_tag :participated_op, options_for_select(["<=", ">"], params[:participated_op])
-  = select_tag :participated, options_for_select((0..10), params[:participated])
+  = select_tag :participated_op, options_for_select(["<=", ">"], params[:participated_op]), :class => "span1"
+  = select_tag :participated, options_for_select((0..10), params[:participated]), :class => "span1"

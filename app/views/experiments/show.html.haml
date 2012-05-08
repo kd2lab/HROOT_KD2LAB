@@ -6,7 +6,9 @@
   &gt;
   Übersicht
   
-%h3
+= render :partial => "experiments/enrollment"
+  
+%h1
   = @experiment.name
 
 = render :partial => "tabs", :locals => {:selected => "Übersicht"} 

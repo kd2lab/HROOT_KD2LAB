@@ -1,0 +1,21 @@
+= content_for :breadcrumb do
+  %ul.breadcrumb
+    %li
+      = link_to "Startseite", root_path
+      %span.divider
+        &gt;
+    %li.active
+      Passwort vergessen
+
+.row
+  .span4
+    %h1
+      Passwort vergessen?
+    %br
+    = simple_form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post, :class => 'form-vertical' }) do |f|
+      = f.input  :email
+      %br
+      = f.submit "E-Mail für Passwortänderung senden", :class => "btn btn-primary"
+
+  .span4
+    = render :partial => "devise/shared/links" 

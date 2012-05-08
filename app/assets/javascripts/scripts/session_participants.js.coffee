@@ -67,4 +67,15 @@ $ ->
       $('.participation_checkbox').attr('checked', false)
     update_checkboxes()
     
-    
+  $('#open-message-box').click ->
+	  $('#dialog-form').dialog 'open'
+	  
+	  
+  $('#dialog-form').dialog(autoOpen: false,
+    modal: true
+    dialogClass: 'alert' 
+    width: 600
+    height: 400
+    #buttons: { "Delete all items": -> ($( this ).dialog( "close" )), "Cancel": -> ($( this ).dialog( "close" ))	}
+    create: -> $(".ui-widget-header").hide()
+  )      

@@ -1,0 +1,31 @@
+!!!
+%html
+  %head
+    %title Hroot
+    %meta{:"http-equiv" => "content-type", :content => "text/html;charset=UTF-8"}
+    = csrf_meta_tags
+    
+    = javascript_include_tag 'application'
+    = stylesheet_link_tag 'application'
+    
+    = yield :head
+    
+    
+    
+    
+  %body
+    .container
+      = render :partial => 'layouts/topbar'
+      .row
+        .span12
+          = render :partial => 'layouts/flash'
+      
+      = yield :breadcrumb
+      = yield
+          
+        
+            
+          
+      
+      = render :partial => "layouts/footer"
+        

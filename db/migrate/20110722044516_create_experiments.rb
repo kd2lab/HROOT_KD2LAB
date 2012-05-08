@@ -12,7 +12,6 @@ class CreateExperiments < ActiveRecord::Migration
       t.boolean :show_in_stats, :default => true
       t.boolean :show_in_calendar, :default => true
       t.integer :participations_count
-      t.integer :experiment_type_id
       t.boolean :registration_active, :default => false
       
       t.string   :invitation_subject, :default => "Einladung zum Experiment"

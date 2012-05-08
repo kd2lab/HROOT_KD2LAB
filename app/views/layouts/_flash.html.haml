@@ -1,0 +1,9 @@
+- if notice  
+  .alert
+    %a.close{:'data-dismiss'=>'alert', :href => '#'} x
+    = notice
+
+- if alert
+  .alert.alert-error
+    %a.close{:'data-dismiss'=>'alert', :href => '#'} x
+    = alert

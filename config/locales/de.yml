@@ -51,10 +51,10 @@ de:
         password_confirmation: Passwort wdh.
         preference: Interesse an
       experiment:
+        tag_list: Tags
         description: Beschreibung
         contact: Kontaktinfos
         sender_email: E-Mail-Absender
-        experiment_type_id: Experiment-Typ
         confirmation_subject: Betreff
         confirmation_text: Text
     errors:

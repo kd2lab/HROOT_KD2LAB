@@ -1,0 +1,25 @@
+= content_for :breadcrumb do
+  %ul.breadcrumb
+    %li
+      = link_to "Startseite", root_path
+      %span.divider
+        >
+    %li.active
+      E-Mail zur Registrierung erneut senden 
+
+
+.row
+  .span4
+    %h1
+      E-Mail zur Registrierung
+    %p
+      erneut senden
+    %br
+    = simple_form_for(resource, :as => resource_name, :url => confirmation_path(resource_name), :html => { :method => :post, :class => 'form-vertical' }) do |f|
+      = f.input :email
+      %br
+      = f.submit "E-Mail erneut senden", :class => "btn btn-primary"
+
+  .span4
+    = render :partial => "devise/shared/links" 
+

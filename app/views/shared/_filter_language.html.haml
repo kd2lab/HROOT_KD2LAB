@@ -1,6 +1,7 @@
 #flanguage.filter-block{:style => filter_style('flanguage')}
   = render :partial => 'shared/close_link', :locals => {:name => 'flanguage'} 
   = hidden_field_tag "active[flanguage]", params[:active][:flanguage]
-  Nur Teilnehmer mit Kenntnissen in einer der folgenden Sprachen:
-  %br
+  %p
+    Nur Teilnehmer mit Kenntnissen in einer der folgenden Sprachen:
+  
   = select_tag :language, options_for_select(Language.all.map{|l| [l.name, l.id]}, params[:language]), {:include_blank => true, :multiple => true, :class => "chzn-select", :'data-placeholder' => "Sprachen...", :style=>"width:650px"}

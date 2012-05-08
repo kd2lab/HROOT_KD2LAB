@@ -1,5 +1,5 @@
 require 'simplecov'
-SimpleCov.start do
+SimpleCov.start 'rails' do
  add_filter "/vendor/"
  add_filter "/test/"
  add_filter "/config/"

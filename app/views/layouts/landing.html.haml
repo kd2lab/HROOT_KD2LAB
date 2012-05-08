@@ -1,0 +1,72 @@
+!!!
+%html
+  %head
+    %title Hroot
+    %meta{:"http-equiv" => "content-type", :content => "text/html;charset=UTF-8"}
+    = csrf_meta_tags
+    
+    = javascript_include_tag 'application'
+    = stylesheet_link_tag 'application'
+    
+    = yield :head
+    
+    
+    
+    
+  %body
+    .container
+      = render :partial => 'layouts/topbar'
+      .row
+        .span12
+          = render :partial => 'layouts/flash'
+      .row
+        .span9
+          .hero-unit
+            %h1
+              hroot
+            %p
+              Rekrutierungssystem für ökonomische Experimente
+            %p
+              Noch kein Zugang? Jetzt anmelden und an Experimenten teilnehmen.
+              Eine Teilnahme an ökonomischen Experimenten hat viele Vorteile:
+              %ul
+                %li eins
+                %li zwei
+                %li drei
+              
+            %p          
+              = link_to "Jetzt registrieren", register_path, :class => "btn btn-primary btn-large"
+              = link_to "Mehr Informationen", register_path, :class => "btn btn-large"
+              
+        .span3
+          != image_tag("logo-uni-hh.png")
+          %br
+          %br
+          %br
+          %h1
+            Login
+          
+          %p
+            für bereits registrierte Nutzer
+            
+          %p
+            %br
+            = form_for("user", :url => user_session_path) do |f|
+              %p
+                = f.label "E-Mail" 
+                = f.email_field :email
+
+              %p
+                = f.label :password
+                = f.password_field :password 
+
+              %p= f.submit "Login", :class => "btn"
+        
+        
+     
+        
+            
+          
+      
+      = render :partial => "layouts/footer"
+        

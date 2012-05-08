@@ -1,63 +1,37 @@
-#experiment_typ, #experiment_leiter
-  width: 410px
-
-#experiment_description, #experiment_contact
-  height: 100px  
-  
-.finished  
-  color: #777
-  h4
-    color: #777
-    
-.experiment
-  label  
-    width: 120px  
-  div.boolean, input[type='submit'] 
-    margin-left: 140px
-
-.participantline
-  clear: both
-  .left
-    float: left
-    width: 200px
-    
 .experimentline
   padding: 10px 0px
-  height: 110px
   h4
     margin: 0px
   .right
     float: right
+    width: 200px
     text-align: right
     
-  a
-    display: block
-    padding: 10px 5px
-    color: #000
-    text-decoration: none
-    
-    a:hover
-    background-color: #eee
-  
-  border-bottom: solid 1px #aaa
-
-
-.overlaps
-  border: 1px solid #fcc
-  padding: 5px
-  //color: #f00
-  background: #fff0f0
-  
 #state
-  .stategreen
-    .button
-      float: right
-    padding: 3px
-    background-color: #EFE
-    border: solid 1px #0F0
-  .statered
-    .button
-      float: right    
-    padding: 3px
-    background-color: #FEE
-    border: solid 1px #F00
+  float: right
+  
+.click-label a
+  color: white
+  &:hover
+    color: white
+
+.simple_form 
+  label 
+    font-weight: normal 
+    float: left
+    width: 140px  
+    text-align: right
+    margin-right: 20px  
+    
+  label.select
+    margin-top: 3px
+  div.input  
+    margin-bottom: 10px
+
+#experiment_leiter_chzn
+  .chzn-search 
+    input
+      width: 300px
+      
+.checkbox-wrapper
+  padding-left: 160px

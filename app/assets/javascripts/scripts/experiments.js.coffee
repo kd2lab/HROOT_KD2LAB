@@ -4,6 +4,8 @@
   window.setInterval ( -> $('#time_info').html((--i))), 1000 
 
 $ ->
+      
+    
   # ajax experiment list
   $('#experiments th a, #experiments .pagination a').live 'click', ->  
     $.getScript this.href
@@ -27,17 +29,17 @@ $ ->
 
   # add and remove buttons for experiment type
   $('a.add-link').click ->
-    i = parseInt $('#exp_typ_count').val()
+    i = parseInt $('#exp_tag_count').val()
     if i < 10
        $('#exp_filter_'+i).fadeIn()
-       $('#exp_typ_count').val i+1
+       $('#exp_tag_count').val i+1
     false
 
   $('a.remove-link').click ->
-    i = parseInt $('#exp_typ_count').val()-1
+    i = parseInt $('#exp_tag_count').val()-1
     if i > 0
        $('#exp_filter_'+i).fadeOut()
-       $('#exp_typ_count').val i
+       $('#exp_tag_count').val i
     false
 
   # ajax for enabling and disabling of experiment enrollment

@@ -1,23 +1,26 @@
 = content_for :breadcrumb do
-  &gt;
-  = link_to "Startseite", root_path
-  &gt;
-  Login
+  %ul.breadcrumb
+    %li
+      = link_to "Startseite", root_path
+      %span.divider
+        >
+    %li.active
+      Login 
 
-%h2 Login
-
-= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f|
-  %p
-    = f.label :email 
+.row
+  .span4
+    %h1 Login
+    %p für bereits registrierte Nutzer
     %br
-    = f.email_field :email
+    = form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f|
+      = f.label :email 
+      = f.email_field :email
 
-  %p
-    = f.label :password
-    %br
-    = f.password_field :password 
+      = f.label :password
+      = f.password_field :password 
 
-  %p= f.submit "Login"
+      %br
+      = f.submit "Login", :class => "btn btn-primary"
 
-
-= render :partial => "devise/shared/links" 
+  .span4
+    = render :partial => "devise/shared/links" 

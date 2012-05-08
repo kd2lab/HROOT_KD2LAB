@@ -90,9 +90,9 @@ class User < ActiveRecord::Base
     
     #require :active param
     params[:active] = {} unless params[:active]
-    params[:exp_typ_op1] ||= []
-    params[:exp_typ_op2] ||= []
-    params[:exp_typ] ||= []
+    params[:exp_tag_op1] ||= []
+    params[:exp_tag_op2] ||= []
+    params[:exp_tag] ||= []
     
     # search
     unless params[:search].blank?
@@ -169,27 +169,30 @@ class User < ActiveRecord::Base
                " users.lang3 IN (#{params[:language].map(&:to_i).join(', ')})) "
     end
     
-    #experiment types
-    experiment_typ_subquery = ""
-    if params[:active][:fexperimenttype] == '1'
-      params[:exp_typ_count].to_i.times do |i|
-        if params["exp_typ#{i}"].to_i > 0
-          experiment_typ_subquery += t =  "(SELECT COUNT(participations.id) FROM participations, experiments WHERE user_id = users.id AND 
+    #experiment tags
+    # todo guard against sql injection
+    experiment_tag_subquery = ""
+    if params[:active][:ftags] == '1'
+      
+      params[:exp_tag_count].to_i.times do |i|
+        if params["exp_tag#{i}"].length > 0
+          experiment_tag_subquery += t =  "(SELECT COUNT(participations.id) FROM participations, experiments,  taggings, tags WHERE user_id = users.id AND 
           (SELECT count(s.id)  FROM sessions s WHERE s.reference_session_id = participations.session_id) =
           (SELECT count(s.id)  FROM session_participations s, sessions s2 WHERE  
              s.user_id = users.id AND
              s.session_id = s2.id AND 
              s2.reference_session_id = participations.session_id AND s.participated = 1)
           AND (SELECT count(s.id)  FROM sessions s WHERE s.reference_session_id = participations.session_id) > 0
-          AND participations.experiment_id=experiments.id AND experiments.experiment_type_id = #{params["exp_typ#{i}"].to_i}) AS exp_type_count#{i}, \n"
+          AND participations.experiment_id=experiments.id 
+          AND experiments.id = taggings.taggable_id AND taggings.tag_id = tags.id AND tags.name LIKE \"#{params["exp_tag#{i}"]}\") AS exp_tag_count#{i}, \n"
                
-          if params['exp_typ_op1'][i] == "Mindestens"
-            having << "exp_type_count#{i} >= #{params["exp_typ_op2"][i].to_i}"
-          elsif params['exp_typ_op1'][i] == "Höchstens"
-            having << "exp_type_count#{i} <= #{params["exp_typ_op2"][i].to_i}"
+          if params['exp_tag_op1'][i] == "Mindestens"
+            having << "exp_tag_count#{i} >= #{params["exp_tag_op2"][i].to_i}"
+          elsif params['exp_tag_op1'][i] == "Höchstens"
+            having << "exp_tag_count#{i} <= #{params["exp_tag_op2"][i].to_i}"
           end
-  
-        end    
+        end  
+        puts t  
       end
     end
     
@@ -325,7 +328,7 @@ class User < ActiveRecord::Base
           ) as study_name,
           
           #{experiment_subquery}
-          #{experiment_typ_subquery}
+          #{experiment_tag_subquery}
           
           str_to_date(CONCAT_WS('-', COALESCE(begin_year, 1990), COALESCE(begin_month,1), '1'), '%Y-%m-%d') as begin_date
       FROM users
@@ -336,9 +339,12 @@ class User < ActiveRecord::Base
         #{where.join(' AND ')}
       #{'HAVING' unless having.blank?} 
         #{having.join(' AND ')}
-      ORDER BY #{sort_column + ' ' + sort_direction}
+      ORDER BY #{sort_column + ' ' + sort_direction} 
 EOSQL
     
+    #count = User.count_by_sql("SELECT count(test.id) FROM ("+sql+") as test;")
+    #puts ">>>>>>>>>>>>>>>>"+count.to_s
+    #User.find_by_sql(sql+ " LIMIT 100")
     User.find_by_sql(sql)
   end
   

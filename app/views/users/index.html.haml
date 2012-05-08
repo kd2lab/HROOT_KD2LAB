@@ -1,8 +1,13 @@
 = content_for :breadcrumb do
-  &gt;
-  = link_to "Benutzer", users_path
+  %ul.breadcrumb
+    %li
+      =link_to "Administration", :controller => "admin", :action => "index"
+      %span.divider
+        &gt;
+    %li.active
+      Benutzer
   
-= button_to 'Neuer Benutzer', new_user_path, :method => :get 
+= button_to 'Neuer Benutzer', new_user_path, :method => :get, :class =>"btn btn-primary"
 
 %br
 

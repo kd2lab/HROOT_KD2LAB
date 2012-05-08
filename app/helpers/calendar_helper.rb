@@ -33,7 +33,6 @@ module CalendarHelper
       session = args[:event]
       %(<div class="event-qtip cal_color#{args[:options][:colors][session.experiment_id]}"
           data-title="#{session.experiment.name}"
-          data-exptype="#{session.experiment.experiment_type.name if session.experiment.experiment_type}"
           data-location="#{session.location.name if session.location}"
           data-expid="#{session.experiment.id}"
           data-sessionid="#{session.id}"

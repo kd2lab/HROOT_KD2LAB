@@ -1,20 +1,18 @@
 = content_for :breadcrumb do
-  &gt;
-  = link_to "Experimente", experiments_path
-  &gt;
-  = link_to @experiment.name, experiment_path(@experiment)
-  &gt;
-  Teilnehmer
+  = render :partial => "layouts/crumb", :object => [           |
+      link_to("Experimente", experiments_path),                |
+      link_to(@experiment.name, experiment_path(@experiment)), |
+      "Teilnehmer"]
+
+
+= render :partial => "experiments/enrollment"
   
-%h3
-  = @experiment.name  
+%h1
+  = @experiment.name 
   
 = render :partial => "experiments/tabs", :locals => {:selected => "Zugeordnete"} 
 
 %br
-%br
-%br
-
 = form_tag experiment_participants_path(@experiment), :method => 'post', :id => "participant_search" do
   #participants
     = render 'participants'

@@ -11,7 +11,26 @@
   %br
   
 %br
- 
+
+
+#dialog-form
+  Betreff
+  %br
+  = text_field_tag :subject
+  %br
+  %br
+  Text
+  %br
+  = text_area_tag :message, :size => "80x3"  #todo masse
+  
+  
+
+
+
+
+= link_to "Nachricht senden", '#', :class => "btn", :id => 'open-message-box'
+
+
 .move-menu 
   Gewählte Teilnehmer
 
@@ -24,48 +43,50 @@
   
 - if @users.count > 0
   %br
-  %table.user-table
-    %tr
-      %th 
-      %th
-      %th= sortable_for_form 'lastname', 'Name'  
-      %th= sortable_for_form 'email', 'E-Mail'
-      %th= sortable_for_form 'study_name', 'Fach'
-      %th= sortable_for_form 'gender',  'Gesch.'
-      %th= sortable_for_form 'begin_date', 'Beginn'
-      %th 
-        E
-        %br
-        = check_box_tag "", "", false, :id => "all_show"
-      %th 
-        T
-        %br
-        = check_box_tag "", "", false, :id => "all_participation"
-      
-      %th{:style => "color:red"}
-        N
-        %br
-        = check_box_tag "", "", false, :id => "all_noshow"
-      
-    - @users.each_with_index do |user, index| 
+  %table.table
+    %thead
       %tr
-        %td= check_box_tag "selected_users[#{user.id}]", '1', false, :class => 'selected_users'
-        %td= index + 1
+        %th 
+        %th
+        %th= sortable_for_form 'lastname', 'Name'  
+        %th= sortable_for_form 'email', 'E-Mail'
+        %th= sortable_for_form 'study_name', 'Fach'
+        %th= sortable_for_form 'gender',  'Gesch.'
+        %th= sortable_for_form 'begin_date', 'Beginn'
+        %th 
+          E
+          %br
+          = check_box_tag "", "", false, :id => "all_show"
+        %th 
+          T
+          %br
+          = check_box_tag "", "", false, :id => "all_participation"
       
-        %td= link_to highlight(truncate(user.lastname, {:length => 15}), params[:search])+', '+highlight(truncate(user.firstname, {:length => 10}), params[:search]), user_path(user)
-        %td= link_to highlight(truncate(user.email, {:length => 20}), params[:search]), "mailto:#{user.email}"
-        %td.study_name_popup{:'data-text' => user.study_name || 'keine Angabe' }
-          =user.study_name ? truncate(user.study_name, {:length => 10}) : 'k. A.'
-        %td= user.gender
-        %td= user.begin_date 
-        %td= check_box_tag "showups[#{user.id}]", "1", user.session_showup == 1, :class => "show_checkbox", :'data-id' => user.id
-        %td= check_box_tag "participations[#{user.id}]", "1", user.session_participated == 1, :class => "participation_checkbox", :'data-id' => user.id
-        %td
-          = check_box_tag "noshows[#{user.id}]", "1", user.session_noshow == 1, :class => "noshow_checkbox", :'data-id' => user.id
-          = hidden_field_tag "ids[#{user.id}]", "1"
+        %th{:style => "color:red"}
+          N
+          %br
+          = check_box_tag "", "", false, :id => "all_noshow"
+
+    %tbody  
+      - @users.each_with_index do |user, index| 
+        %tr
+          %td= check_box_tag "selected_users[#{user.id}]", '1', false, :class => 'selected_users'
+          %td= index + 1
+      
+          %td= link_to highlight(truncate(user.lastname, {:length => 15}), params[:search])+', '+highlight(truncate(user.firstname, {:length => 10}), params[:search]), user_path(user)
+          %td= link_to highlight(truncate(user.email, {:length => 20}), params[:search]), "mailto:#{user.email}"
+          %td.study_name_popup{:'data-text' => user.study_name || 'keine Angabe' }
+            =user.study_name ? truncate(user.study_name, {:length => 10}) : 'k. A.'
+          %td= user.gender
+          %td= user.begin_date 
+          %td= check_box_tag "showups[#{user.id}]", "1", user.session_showup == 1, :class => "show_checkbox", :'data-id' => user.id
+          %td= check_box_tag "participations[#{user.id}]", "1", user.session_participated == 1, :class => "participation_checkbox", :'data-id' => user.id
+          %td
+            = check_box_tag "noshows[#{user.id}]", "1", user.session_noshow == 1, :class => "noshow_checkbox", :'data-id' => user.id
+            = hidden_field_tag "ids[#{user.id}]", "1"
                 
               
-  = button_tag "Änderungen jetzt speichern", :name => "save"
+  = button_tag "Änderungen jetzt speichern", :name => "save", :class => "btn btn-primary"
         
 - else
   %b

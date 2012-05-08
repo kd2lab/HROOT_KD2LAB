@@ -35,6 +35,8 @@ Hroot::Application.routes.draw do
     resources :languages, :except => :show    
     resources :professions, :except => :show
 
+    match 'experiments/tag/:tag', :as => 'tagged_experiment', :controller => 'experiments', :action => 'tag'
+
     resources :experiments do
       member do
         get :enable
@@ -42,6 +44,7 @@ Hroot::Application.routes.draw do
         get :invitation
         post :invitation
         post :save_mail_text
+        get :autocomplete_tags
       end
       
       resources :sessions, :except => :show do
