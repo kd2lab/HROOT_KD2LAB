@@ -19,6 +19,11 @@ module WillPaginate
       def previous_or_next_page(page, text, classname)
         tag :li, link(text, page || '#'), :class => [classname[0..3], classname, ('disabled' unless page)].join(' ')
       end
+      
+      def gap
+         tag :li, link('...', '#'), :class => 'disabled'
+      end
+
     end
   end
 end
