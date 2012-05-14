@@ -23,6 +23,7 @@
 
 every 2.minutes do
   runner "Message.process_queue"
+end
 
 every 2.minutes do
   runner "Experiment.send_invitations"
