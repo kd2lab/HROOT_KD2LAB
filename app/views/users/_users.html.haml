@@ -38,17 +38,17 @@
 .searchinfo
   = submit_tag "Filter anwenden und Ergebnis aktualisieren", :name => 'submit_mode', :class => "btn btn-primary"
   Zeige
-  %b= @users.length
+  %b= @users.total_entries
   von
   %b= @user_count
   
 %hr
-%br
 
-%br
-%br
 
 - if @users.count > 0
+
+  = will_paginate @users,  :renderer => WillPaginate::ActionView::BootstrapLinkRenderer , :prev_label => "&lt;&lt;&nbsp;", :next_label => "&nbsp;&gt;&gt;"
+
   %table.table
     %thead
       %tr

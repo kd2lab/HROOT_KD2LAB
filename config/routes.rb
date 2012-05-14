@@ -27,7 +27,7 @@ Hroot::Application.routes.draw do
         
     resources :users do
       collection do
-        post :filter
+        post :index
       end
     end
       

@@ -15,14 +15,6 @@ class UsersControllerTest < ActionController::TestCase
       should respond_with :success
     end
     
-    context "post on filter" do
-      setup do
-        post :filter
-      end
-    
-      should respond_with :success
-    end
-    
     context "get on new" do
       setup do
         get :new

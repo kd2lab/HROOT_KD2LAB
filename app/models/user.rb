@@ -340,11 +340,26 @@ class User < ActiveRecord::Base
       ORDER BY #{sort_column + ' ' + sort_direction} 
 EOSQL
     
+    if options && options[:paginate]
+      page = (params[:page] || 1).to_i
     
-    #count = User.count_by_sql("SELECT count(test.id) FROM ("+sql+") as test;")
-    #puts ">>>>>>>>>>>>>>>>"+count.to_s
-    #User.find_by_sql(sql+ " LIMIT 100")
-    User.find_by_sql(sql)
+      if params[:active].values.select{|x| !x.blank?}.count > 0 || experiment || !params[:search].blank?
+        count = User.count_by_sql("SELECT count(test.id) FROM ("+sql+") as test;")
+      elsif options && options[:include_deleted_users]
+        count = User.count
+      else  
+        count = User.where('deleted=0').count
+      end
+    
+      objects = User.find_by_sql(sql+ " LIMIT 50 OFFSET "+((page-1)*50).to_s)
+      
+      return WillPaginate::Collection.create(page,50) do |pager|    
+        pager.replace(objects)
+        pager.total_entries = count
+      end
+    else 
+      User.find_by_sql(sql)
+    end
   end
   
   def self.roles
