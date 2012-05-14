@@ -1,5 +1,6 @@
 %ul.dropdown-menu.template-menu
   %li Text speichern
+  - data = {} unless data
   - data.keys.sort.each do |name|
     %li= link_to name, "", :class => 'save_template', :'data-name' => name
   %li= link_to "Neu...", "", :class => 'save_template'

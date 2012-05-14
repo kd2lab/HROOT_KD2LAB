@@ -1,7 +1,7 @@
 = content_for :breadcrumb do
   = render :partial => "layouts/crumb", :object => [           |
       link_to("Experimente", experiments_path),                |
-      link_to(@experiment.name, experiment_path(@experiment)), |
+      link_to(@experiment.name,experiment_sessions_path(@experiment)), |
       "Mailtexte"]
       
 = render :partial => "experiments/enrollment"

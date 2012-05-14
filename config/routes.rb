@@ -37,7 +37,7 @@ Hroot::Application.routes.draw do
 
     match 'experiments/tag/:tag', :as => 'tagged_experiment', :controller => 'experiments', :action => 'tag'
 
-    resources :experiments do
+    resources :experiments, :except => :show do
       member do
         get :enable
         get :disable

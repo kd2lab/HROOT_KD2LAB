@@ -23,10 +23,6 @@ class ExperimentsController < ApplicationController
     @experiment.set_default_mail_texts
   end
 
-  def show
-    
-  end
-
   def edit
     params[:experiment_leiter] = @experiment.experimenter_assignments.where(:role => "experiment_admin").collect(&:user_id) 
     params[:experiment_helper] = @experiment.experimenter_assignments.where(:role => "experiment_helper").collect(&:user_id) 
@@ -39,7 +35,7 @@ class ExperimentsController < ApplicationController
     if @experiment.save
       @experiment.update_experiment_assignments(params[:experiment_helper], "experiment_helper")
       @experiment.update_experiment_assignments(params[:experiment_leiter], "experiment_admin")
-      redirect_to(experiment_path(@experiment), :notice => 'Das Experiment wurde erfolgreich angelegt.') 
+      redirect_to(experiment_sessions_path(@experiment), :notice => 'Das Experiment wurde erfolgreich angelegt.') 
     else
       render :action => "new"
     end
@@ -63,7 +59,7 @@ class ExperimentsController < ApplicationController
       @experiment.update_experiment_assignments(params[:experiment_helper], "experiment_helper")
       @experiment.update_experiment_assignments(params[:experiment_leiter], "experiment_admin")
       
-      redirect_to(experiment_url(@experiment), :notice => 'Das Experiment wurde erfolgreich geändert.')
+      redirect_to(edit_experiment_url(@experiment), :notice => 'Das Experiment wurde erfolgreich geändert.')
     else
       render :action => "edit"
     end

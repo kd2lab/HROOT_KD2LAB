@@ -84,6 +84,9 @@ $ ->
       switch e.which
         when 38, 40, 13, 9, 188
           e.preventDefault()
+      if $(this).val().length == 0 
+        if e.which == 8 
+          $(this).prev().remove()     
           
     $('#its_new_tag').keyup (e) ->
       switch e.which
@@ -101,10 +104,7 @@ $ ->
           selected = selected + 1 if selected < $('#its_drop_down li').length-1
           update_selection()  
         else
-          if $(this).val().length == 0 
-            if e.which == 8 
-              $(this).prev().remove() 
-          else if $(this).val().length <= 1
+          if $(this).val().length <= 1
             update_dropdown()
           else
             $this = $(this)

@@ -173,7 +173,6 @@ class User < ActiveRecord::Base
     # todo guard against sql injection
     experiment_tag_subquery = ""
     if params[:active][:ftags] == '1'
-      
       params[:exp_tag_count].to_i.times do |i|
         if params["exp_tag#{i}"].length > 0
           experiment_tag_subquery += t =  "(SELECT COUNT(participations.id) FROM participations, experiments,  taggings, tags WHERE user_id = users.id AND 
@@ -192,7 +191,6 @@ class User < ActiveRecord::Base
             having << "exp_tag_count#{i} <= #{params["exp_tag_op2"][i].to_i}"
           end
         end  
-        puts t  
       end
     end
     
@@ -341,6 +339,7 @@ class User < ActiveRecord::Base
         #{having.join(' AND ')}
       ORDER BY #{sort_column + ' ' + sort_direction} 
 EOSQL
+    
     
     #count = User.count_by_sql("SELECT count(test.id) FROM ("+sql+") as test;")
     #puts ">>>>>>>>>>>>>>>>"+count.to_s

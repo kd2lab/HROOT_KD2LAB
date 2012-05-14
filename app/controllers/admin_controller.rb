@@ -13,6 +13,8 @@ class AdminController < ApplicationController
   end
   
   def templates
+    current_user.settings.templates = {} unless current_user.settings.templates
+    
     if request.xhr?
       if params['mode'] == 'create'
         current_user.settings.templates = current_user.settings.templates.merge({params['templatename'] => params['value']})

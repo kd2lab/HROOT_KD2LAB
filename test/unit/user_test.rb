@@ -169,9 +169,9 @@ class UserTest < ActiveSupport::TestCase
     end
     
     should "filter tags" do      
-      assert_same_elements [], User.load({"exp_tag0" => @tag1, "exp_tag_op1" => ["Mindestens"], "exp_tag_op2" => ["5"], :exp_tag_count => "1", :active => {:ftag => '1'} })
-      assert_same_elements [@u5, @u6], User.load({"exp_tag0" => @tag1, "exp_tag1" => @tag3, "exp_tag_op1" => ["Mindestens", "Mindestens"], "exp_tag_op2" => ["1", "1"], :exp_tag_count => "2", :active => {:ftag => '1'} })
-      assert_same_elements [@u1, @u2, @u3, @u4, @u7, @u9], User.load({"exp_tag0" => @tag1, "exp_tag_op1" => ["Höchstens"], "exp_tag_op2" => ["0"], :exp_tag_count => "1", :role => 'user', :active => {:ftag => '1', :frole => '1'} })    
+      assert_same_elements [], User.load({"exp_tag0" => @tag1, "exp_tag_op1" => ["Mindestens"], "exp_tag_op2" => ["5"], :exp_tag_count => "1", :active => {:ftags => '1'} })
+      assert_same_elements [@u5, @u6], User.load({"exp_tag0" => @tag1, "exp_tag1" => @tag3, "exp_tag_op1" => ["Mindestens", "Mindestens"], "exp_tag_op2" => ["1", "1"], :exp_tag_count => "2", :active => {:ftags => '1'} })
+      assert_same_elements [@u1, @u2, @u3, @u4, @u7, @u9], User.load({"exp_tag0" => @tag1, "exp_tag_op1" => ["Höchstens"], "exp_tag_op2" => ["0"], :exp_tag_count => "1", :role => 'user', :active => {:ftags => '1', :frole => '1'} })    
     end
     
     should "filter for experiments" do
