@@ -41,6 +41,8 @@ Hroot::Application.routes.draw do
       member do
         get :enable
         get :disable
+        get :mail
+        post :mail
         get :invitation
         post :invitation
         post :save_mail_text
@@ -56,6 +58,7 @@ Hroot::Application.routes.draw do
           post :duplicate
           get :participants
           post :participants
+          post :send_messages
         end
       end
 

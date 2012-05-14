@@ -1,21 +1,15 @@
 = content_for :breadcrumb do
-  %ul.breadcrumb
-    %li
-      = link_to "Experimente", experiments_path
-      %span.divider
-        &gt;
-    %li
-      = link_to @experiment.name, experiment_path(@experiment)
-      %span.divider
-        &gt;
-    %li.active
-      Versand
-  
+  = render :partial => "layouts/crumb", :object => [           |
+      link_to("Experimente", experiments_path),                |
+      link_to(@experiment.name, experiment_path(@experiment)), |
+      "Versand"]
+
+= render :partial => "experiments/enrollment"
   
 %h1
   = @experiment.name
 
-= render :partial => "tabs", :locals => {:selected => "Einladungen"} 
+= render :partial => "tabs", :locals => {:selected => "Einladungsversand"} 
 
 
 
@@ -62,64 +56,11 @@
       %td= @experiment.space_left
     
   %br  
-  = link_to "Einladungsversand stoppen", invitation_experiment_path(:stop => true), :confirm => "Sind Sie sich sicher?", :class => 'btn btn-danger'
+  = link_to "Einladungsversand stoppen", invitation_experiment_path(:stop => true), :confirm => "Sind Sie sich sicher, dass der Versand gestoppt werden soll?", :class => 'btn btn-danger'
   
 - else 
 
-
-  %h3
-    Einladungen versenden
-  
-      
   = form_for @experiment, :url => {:action => "invitation"}, :html => {:method => :post, :class => "guarded_form"} do |f|
-    
-    
-    #text-accordion
-      %h3{:style => "border: 1px solid; outline: none"}
-        %a{:href=>"#tabs-1"} Einladungstext
-    
-      #tabs-1{:style => "border-width: 0px 1px 1px 1px; border-style: solid; margin-top: -2px; background-color: #fff"}
-        Betreff
-        %br
-        = f.text_field :invitation_subject, :id => "invitation_subject"
-        %br
-        %br
-        
-        = render :partial => 'shared/text_templates', :locals => {:data => current_user.settings.templates, :element_id => 'invitation_text' }
-        Einladungstext
-        %br
-        = f.text_area :invitation_text, :id => "invitation_text", :rows => 5
-        %br
-        = f.submit "Mailtext speichern", :name => "test", :class => "save_invitation", :disabled => true
-        %span.invitation_result
-      %h3{:style => "border: 1px solid; outline: none"}
-        %a{:href=>"#tabs-2"} Bestätigungstext
-      #tabs-2{:style => "border-width: 0px 1px 1px 1px; border-style: solid; margin-top: -2px; background-color: #fff"}
-        Betreff
-        %br
-        = f.text_field :confirmation_subject, :id => 'confirmation_subject'
-        %br
-        %br
-
-        = #render :partial => 'shared/text_templates', :locals => {:data => current_user.settings.templates, :element_id => 'confirmation_text' }
-        Bestätigungstext
-        %br
-        
-        = f.text_area :confirmation_text, :id => "confirmation_text", :rows => 5
-        %br
-        = f.submit "Mailtext speichern", :name => "test", :class => "save_confirmation", :disabled => true
-        %span.confirmation_result
-    
-    
-   
-        
-    	
-    
-    
-    
-    
-    
-    %br
     %br
     
     .info{:style => "float:right; width:300px"}
@@ -149,8 +90,8 @@
     Teilnehmer mit wenig Teilnahmen bevorzugen
     %br
     %br
-    = f.submit "Versand starten und Experiment zur Anmeldung freigeben", :confirm => "Sind Sie sich sicher?", :class => "guarded_form_save btn btn-success"
-    = f.submit "Versand AN ALLE TEILNEHMER starten", :confirm => "Sind Sie sich sicher? Damit werden AUCH BEREITS EINGELADENE Teilnehmer eingeladen", :class => "guarded_form_save btn btn-warning"
+    = f.submit "Versand starten und Experiment zur Anmeldung freigeben", :confirm => "Sind Sie sich sicher, dass der Versand gestartet werden soll?", :class => "guarded_form_save btn btn-success"
+    = f.submit "Versand AN ALLE TEILNEHMER starten", :confirm => "Sind Sie sich sicher, dass der Versand gestartet werden soll? Damit werden AUCH BEREITS EINGELADENE Teilnehmer eingeladen", :class => "guarded_form_save btn btn-warning"
     %span#info_text2
     
 %br

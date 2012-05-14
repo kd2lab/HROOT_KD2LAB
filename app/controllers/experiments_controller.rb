@@ -46,12 +46,7 @@ class ExperimentsController < ApplicationController
   end
   
   def autocomplete_tags
-    #list = [params.inspect, "anton", "andnwer", "antsdfsf", "berta", "ceasar", "dana"]
-    #render :json => list.find_all{|e| e.index(params[:query])==0}
-    
-    l = User.where(["firstname LIKE ?", params[:query]+"%"]).limit(20).collect{|e|e.firstname}
-    
-    
+    l = User.where(["firstname LIKE ?", params[:query]+"%"]).limit(20).collect{|e|e.firstname}    
     l = Experiment.tag_counts_on('tags').where(["name LIKE ?", params[:query]+'%'])
     
     render :json => l.collect{|e| e.name}
@@ -117,18 +112,13 @@ class ExperimentsController < ApplicationController
   end
   
   def save_mail_text
-    if params['invitation_subject']
-      @experiment.invitation_subject = params['invitation_subject']
-      @experiment.invitation_text = params['invitation_text']
-    end
-    
-    if params['confirmation_subject']
-      @experiment.confirmation_subject = params['confirmation_subject']
-      @experiment.confirmation_text = params['confirmation_text']
-    end
-    
-    @experiment.save
     render :text => "Der Text wurde erfolgreich gespeichert."
+  end
+  
+  def mail
+    if params[:experiment] && @experiment.update_attributes(params[:experiment])
+      flash[:notice] = 'Die Mailtexte wurden gespeichert'
+    end
   end
   
   def start

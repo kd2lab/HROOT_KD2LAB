@@ -5,6 +5,15 @@
         = link_to "Logout", logout_path, :method => :delete, :id => "logout", :class => "btn btn-small pull-right"
         
         %ul.nav.pull-right
+          
+          - if current_user.admin?
+            - count = Message.count
+            - if count > 0 
+              %li
+                %p.navbar-text
+                  Mailqueue
+                  %span.badge.badge-info=count
+              %li.divider-vertical
           %li
             %p.navbar-text
               Eingeloggt als

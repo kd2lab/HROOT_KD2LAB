@@ -73,9 +73,16 @@ $ ->
 	  
   $('#dialog-form').dialog(autoOpen: false,
     modal: true
-    dialogClass: 'alert' 
-    width: 600
-    height: 400
-    #buttons: { "Delete all items": -> ($( this ).dialog( "close" )), "Cancel": -> ($( this ).dialog( "close" ))	}
-    create: -> $(".ui-widget-header").hide()
-  )      
+    width: 800
+    height: 520
+    buttons: { 
+      "Nachrichten senden": -> 
+        $('#dialog_form').submit()
+        $( this ).dialog( "close" )
+      "Abbrechen": -> ($( this ).dialog( "close" ))	
+    }
+    create: -> 
+      $(".ui-widget-header").hide()
+      $('.ui-button').addClass('btn') 
+      $('.ui-button:eq(0)').addClass('btn-primary').css('margin-right', '5px') 
+  )     

@@ -101,6 +101,23 @@ class SessionsController < ApplicationController
     render :action => "index"
   end
   
+  def send_messages
+    @session = Session.find(params[:id])
+    
+    @session.participations.each do |p|
+      Message.create(
+        :sender_id => current_user.id,
+        :recipient_id => p.user_id,
+        :experiment_id => @experiment.id,
+        :subject => params[:subject],
+        :message =>  params[:message]
+      )
+    end
+    
+    redirect_to(participants_experiment_session_path(@experiment, @session), :flash => { :id => @session.id, :notice => "Nachricht(en) wurden in die Mailqueue eingetragen."})
+  end
+
+  
   def participants
     @session = Session.find(params[:id])
     changes = 0

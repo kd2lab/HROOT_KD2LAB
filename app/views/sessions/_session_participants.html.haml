@@ -2,7 +2,7 @@
 = hidden_field_tag :direction, params[:direction]
 %br
 
-%h1
+%h2
   Session am
   = @session.time_str
 
@@ -13,22 +13,8 @@
 %br
 
 
-#dialog-form
-  Betreff
-  %br
-  = text_field_tag :subject
-  %br
-  %br
-  Text
-  %br
-  = text_area_tag :message, :size => "80x3"  #todo masse
-  
-  
 
-
-
-
-= link_to "Nachricht senden", '#', :class => "btn", :id => 'open-message-box'
+= link_to "Nachricht an alle Session-Teilnehmer", '#', :class => "btn", :id => 'open-message-box'
 
 
 .move-menu 

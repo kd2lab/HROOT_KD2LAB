@@ -52,27 +52,5 @@ $ ->
   
   update_calculations()
   
-  $("#text-tabs").tabs()
-  
-  $( "#text-accordion" ).accordion()
-  
-  $('#invitation_text, #invitation_subject').keydown ->
-    $('.save_invitation').attr("disabled", null)
-
-  $('#confirmation_text, #confirmation_subject').keydown ->
-    $('.save_confirmation').attr("disabled", null)
-
-  
-  $('.save_invitation').live 'click', ->
-    $('.save_invitation').attr("disabled", "true")
-    $('.invitation_result').load "save_mail_text", { invitation_subject : $('#invitation_subject').val(), invitation_text : $('#invitation_text').val()}, ->
-      $('.invitation_result').show().delay(3000).fadeOut(400)
-    false
-
-  $('.save_confirmation').live 'click', ->
-    $('.save_confirmation').attr("disabled", "true")
-    $('.confirmation_result').load "save_mail_text", { confirmation_subject : $('#confirmation_subject').val(), confirmation_text : $('#confirmation_text').val()}, ->
-      $('.confirmation_result').show().delay(3000).fadeOut(400)
-    false
   
   

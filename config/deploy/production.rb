@@ -7,6 +7,9 @@ set :user, "hroot"
 server "hroot@wiso-srv-webhr.wiso.uni-hamburg.de", :app, :web #, :db, :primary => true
 
 
+set :deploy_via, :copy
+
+
 # unicorn integration
 set :unicorn_binary, "/usr/local/rvm/gems/ruby-1.9.2-p0@hroot/bin/unicorn"
 set :unicorn_config, "#{current_path}/config/unicorn.rb"

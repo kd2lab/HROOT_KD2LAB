@@ -2,3 +2,7 @@
 *= require_self
 *= require_tree .
 */
+
+.ui-dialog { position: absolute; padding: 15px; width: 300px; overflow: hidden; background-color: #fff;}
+.ui-widget-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+.ui-widget-overlay { background: #aaaaaa url(images/ui-bg_flat_0_aaaaaa_40x100.png) 50% 50% repeat-x; opacity: .60;filter:Alpha(Opacity=60); }

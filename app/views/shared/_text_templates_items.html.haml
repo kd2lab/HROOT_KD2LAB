@@ -1,23 +1,14 @@
-Aktuellen Text speichern
-%br
-- data.keys.sort.each do |name|
-  =  link_to name, "", :class => 'save_template', :'data-name' => name, :'data-element-id' => element_id
-  %br
-
-= link_to "Neu...", "", :class => 'save_template', :'data-element-id' => element_id
-%br
-
-- if data.count > 0
-  %br
-  Einfügen
-  %br
+%ul.dropdown-menu.template-menu
+  %li Text speichern
   - data.keys.sort.each do |name|
-    = link_to name, "", :class => 'load_template', :'data-name' => name, :'data-element-id' => element_id
-    %br
+    %li= link_to name, "", :class => 'save_template', :'data-name' => name
+  %li= link_to "Neu...", "", :class => 'save_template'
 
-  %br
-  Löschen
-  %br
-  - data.keys.sort.each do |name|
-    = link_to name, "", :class => 'delete_template', :'data-name' => name, :'data-element-id' => element_id
-    %br
+  - if data.count > 0
+    %li Einfügen
+    - data.keys.sort.each do |name|
+      %li= link_to name, "", :class => 'load_template', :'data-name' => name
+
+    %li Löschen
+    - data.keys.sort.each do |name|
+      %li= link_to name, "", :class => 'delete_template', :'data-name' => name
