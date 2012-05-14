@@ -9,20 +9,26 @@ class UserMailer < ActionMailer::Base
   
   def experiment_message(message)
     from = if message.experiment.sender_email.blank? then UserMailer.default[:from] else message.experiment.sender_email end
-    mail(:from => from, :to => "hroottest@googlemail.com", :subject => message.subject, :text => message.message)
+    mail(:from => from, :to => "hroottest@googlemail.com", :subject => message.subject) do |format|
+      format.text { render :text => message.message }
+    end
   end
   
   def invitation_email(user, experiment)
     text = experiment.invitation_text_for(user)
     from = if experiment.sender_email.blank? then UserMailer.default[:from] else experiment.sender_email end
-    mail(:to => "hroottest@googlemail.com", :subject => experiment.invitation_subject, :from => from,  :text => text)
+    mail(:to => "hroottest@googlemail.com", :subject => experiment.invitation_subject, :from => from) do |format|
+      format.text { render :text => text }
+    end
   end
   
   def confirmation_email(user, session)
     experiment = session.experiment
     text = experiment.confirmation_text_for(user, session)
     from = if experiment.sender_email.blank? then UserMailer.default[:from] else experiment.sender_email end
-    mail(:to => "hroottest@googlemail.com", :subject => experiment.confirmation_subject, :from => from, :text => text)
+    mail(:to => "hroottest@googlemail.com", :subject => experiment.confirmation_subject, :from => from) do |format|
+      format.text { render :text => text }
+    end
   end
   
   def secondary_email_confirmation(user)
