@@ -7,8 +7,13 @@
     %li.active
       Benutzer
   
-= button_to 'Neuer Benutzer', new_user_path, :method => :get, :class =>"btn btn-primary"
+= render :partial => "shared/messaging"   
 
+= link_to 'Neuer Benutzer', new_user_path, :class =>"btn btn-primary", :style => "float:right"
+
+%h1
+  Benutzer
+  
 %br
 
 = form_tag users_path, :method => 'post', :id => "user_search" do

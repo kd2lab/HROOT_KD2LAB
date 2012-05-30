@@ -1,7 +1,5 @@
-#fnoshow.filter-block{:style => filter_style('fnoshow')}
-  = render :partial => 'shared/close_link', :locals => {:name => 'fnoshow'} 
-  = hidden_field_tag "active[fnoshow]", params[:active][:fnoshow]
+#fnoshow.filter-block{is_enabled(:noshow)}
   Anzahl Nichterscheinen
   %br
-  = select_tag :noshow_op, options_for_select(["<=", ">"], params[:noshow_op]), :class => "span1"
-  = select_tag :noshow, options_for_select((0..10), params[:noshow]), :class => "span1"
+  = select_tag 'filter[noshow_op]', options_for_select(["<=", ">"], params[:filter][:noshow_op]), :class => "span1"
+  = select_tag 'filter[noshow]', options_for_select((0..10), params[:filter][:noshow]), :class => "span1"

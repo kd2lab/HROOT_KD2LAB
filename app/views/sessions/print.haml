@@ -1,0 +1,55 @@
+
+
+
+
+- @users.each_slice(30) do |users| 
+  .page    
+    %h2
+      = @experiment.name  
+
+    %h3
+      Session am
+      = @session.time_str
+
+    - if @session.location
+      = @session.location.name 
+  
+    - if users.count > 0
+      %br
+      %table.table
+        %thead
+          %tr
+            %th
+            %th Name
+            %th Vorname
+            %th Telefon
+            /%th Fach
+            %th G.
+            %th 
+              E
+            %th 
+              T
+            %th
+              N
+            
+        %tbody  
+          - users.each_with_index do |user, index| 
+            %tr
+              %td= index + 1
+      
+              %td= truncate(user.lastname, {:length => 20})
+              %td= truncate(user.firstname, {:length => 20})
+              %td= user.phone
+          
+              /%td.study_name_popup{:'data-text' => user.study_name || 'keine Angabe' }
+              /  =user.study_name ? truncate(user.study_name, {:length => 10}) : 'k. A.'
+              /%td= truncate(user.study_name, {:length => 30})
+              %td= user.gender
+              %td= check_box_tag "showups[#{user.id}]", "1", user.session_showup == 1, :class => "show_checkbox", :'data-id' => user.id
+              %td= check_box_tag "participations[#{user.id}]", "1", user.session_participated == 1, :class => "participation_checkbox", :'data-id' => user.id
+              %td
+                = check_box_tag "noshows[#{user.id}]", "1", user.session_noshow == 1, :class => "noshow_checkbox", :'data-id' => user.id
+                = hidden_field_tag "ids[#{user.id}]", "1"
+                
+        
+

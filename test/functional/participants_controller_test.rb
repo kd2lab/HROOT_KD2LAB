@@ -10,6 +10,18 @@ class ParticipantsControllerTest < ActionController::TestCase
     
     context "get on index" do
       setup do
+        @user1 = Factory(:user)
+        @user2 = Factory(:user)
+        @user3 = Factory(:user)
+       
+        Participation.create(:user => @user1, :experiment => @experiment)
+        Participation.create(:user => @user2, :experiment => @experiment)
+        Participation.create(:user => @user3, :experiment => @experiment)
+        
+        SessionParticipation.create(:user => @user1, :session => @session)
+        SessionParticipation.create(:user => @user2, :session => @session)
+        SessionParticipation.create(:user => @user3, :session => @session)
+        
         get :index, :experiment_id => @experiment.id
       end
     
@@ -22,15 +34,15 @@ class ParticipantsControllerTest < ActionController::TestCase
         @user2 = Factory(:user)
         @user3 = Factory(:user)
         
-        Participation.create(:user => @user1, :experiment => @experiment, :session => @session)
-        Participation.create(:user => @user2, :experiment => @experiment, :session => @session)
-        Participation.create(:user => @user3, :experiment => @experiment, :session => @session)
+        SessionParticipation.create(:user => @user1, :session => @session)
+        SessionParticipation.create(:user => @user2, :session => @session)
+        SessionParticipation.create(:user => @user3, :session => @session)
         
         get :index, :experiment_id => @experiment.id, :move_member => 0, :selected_users => {@user1.id => "1", @user2.id => "1"}
       end
       
       should "remove selected participations" do
-        assert_equal 1, Participation.count
+        assert_equal 1, SessionParticipation.count
       end
     end
     
@@ -40,24 +52,21 @@ class ParticipantsControllerTest < ActionController::TestCase
         @user2 = Factory(:user)
         @user3 = Factory(:user)
         
-        @p1 = Participation.create(:user => @user1, :experiment => @experiment, :session => @session)
-        @p2 = Participation.create(:user => @user2, :experiment => @experiment, :session => @session)
-        @p3 = Participation.create(:user => @user3, :experiment => @experiment, :session => @session)
-        
+        SessionParticipation.create(:user => @user1, :session => @session)
+        SessionParticipation.create(:user => @user2, :session => @session)
+        SessionParticipation.create(:user => @user3, :session => @session)
+                    
         @session2 = Session.create(:experiment => @experiment, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 20, :reserve => 4)
         
         get :index, :experiment_id => @experiment.id, :move_member => @session2.id, :selected_users => {@user1.id => "1", @user2.id => "1"}
       end
       
       should "move selected participations" do
-        @p1.reload
-        @p2.reload
-        @p3.reload
-        assert_equal @session2.id, @p1.session_id
-        assert_equal @session2.id, @p2.session_id
-        assert_equal @session.id,  @p3.session_id
-
-        assert_equal 3, Participation.count
+        assert_equal 1, SessionParticipation.where(:user_id => @user1.id, :session_id => @session2.id).count
+        assert_equal 1, SessionParticipation.where(:user_id => @user2.id, :session_id => @session2.id).count
+        assert_equal 1, SessionParticipation.where(:user_id => @user3.id, :session_id => @session.id).count
+        
+        assert_equal 3, SessionParticipation.count
       end
     end
     
@@ -69,23 +78,20 @@ class ParticipantsControllerTest < ActionController::TestCase
 
         @session2 = Session.create(:experiment => @experiment, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 2, :reserve => 0)
         
-        @p1 = Participation.create(:user => @user1, :experiment => @experiment, :session => @session)
-        @p2 = Participation.create(:user => @user2, :experiment => @experiment, :session => @session)
-        @p3 = Participation.create(:user => @user3, :experiment => @experiment, :session => @session2)
+        SessionParticipation.create(:user => @user1, :session => @session)
+        SessionParticipation.create(:user => @user2, :session => @session)
+        SessionParticipation.create(:user => @user3, :session => @session2)
         
         
         get :index, :experiment_id => @experiment.id, :move_member => @session2.id, :selected_users => {@user1.id => "1", @user2.id => "1"}
       end
       
-      should "move selected participations" do
-        @p1.reload
-        @p2.reload
-        @p3.reload
-        assert_equal @session.id, @p1.session_id
-        assert_equal @session.id, @p2.session_id
-        assert_equal @session2.id,  @p3.session_id
-
-        assert_equal 3, Participation.count
+      should "not move selected participations" do
+        assert_equal 1, SessionParticipation.where(:user_id => @user1.id, :session_id => @session.id).count
+        assert_equal 1, SessionParticipation.where(:user_id => @user2.id, :session_id => @session.id).count
+        assert_equal 1, SessionParticipation.where(:user_id => @user3.id, :session_id => @session2.id).count
+        
+        assert_equal 3, SessionParticipation.count
       end
     end
     

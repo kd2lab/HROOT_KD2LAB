@@ -22,11 +22,8 @@ class SessionsControllerTest < ActionController::TestCase
         @user2 = Factory(:user)
         @user3 = Factory(:user)
         
-        Participation.create(:user => @user1, :experiment => @experiment, :session => @session)
         SessionParticipation.create(:user => @user1, :session => @session)
-        Participation.create(:user => @user2, :experiment => @experiment, :session => @session)
         SessionParticipation.create(:user => @user2, :session => @session)
-        Participation.create(:user => @user3, :experiment => @experiment, :session => @session)
         SessionParticipation.create(:user => @user3, :session => @session)
         
         get :participants, :experiment_id => @experiment.id, :move_member => "0", :selected_users => {@user1.id => "1", @user2.id => "1"}, :id => @session.id
@@ -43,11 +40,8 @@ class SessionsControllerTest < ActionController::TestCase
         @user2 = Factory(:user)
         @user3 = Factory(:user)
         
-        @p1 = Participation.create(:user => @user1, :experiment => @experiment, :session => @session)
         SessionParticipation.create(:user => @user1, :session => @session)
-        @p2 = Participation.create(:user => @user2, :experiment => @experiment, :session => @session)
         SessionParticipation.create(:user => @user2, :session => @session)
-        @p3 = Participation.create(:user => @user3, :experiment => @experiment, :session => @session)
         SessionParticipation.create(:user => @user3, :session => @session)
         
         @session2 = Session.create(:experiment => @experiment, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 20, :reserve => 4)
@@ -56,15 +50,11 @@ class SessionsControllerTest < ActionController::TestCase
       end
       
       should "move selected participations" do
-        @p1.reload
-        @p2.reload
-        @p3.reload
-        assert_equal @session2.id, @p1.session_id
-        assert_equal @session2.id, @p2.session_id
-        assert_equal @session.id,  @p3.session_id
-
-        assert_equal 3, Participation.count
-        assert_equal 1, SessionParticipation.count
+        assert_equal 1, SessionParticipation.where(:user_id => @user1.id, :session_id => @session2.id).count
+        assert_equal 1, SessionParticipation.where(:user_id => @user2.id, :session_id => @session2.id).count
+        assert_equal 1, SessionParticipation.where(:user_id => @user3.id, :session_id => @session.id).count
+        
+        assert_equal 3, SessionParticipation.count
       end
     end    
     
@@ -74,9 +64,9 @@ class SessionsControllerTest < ActionController::TestCase
         @u2 = Factory(:user)
         @u3 = Factory(:user)
         
-        Participation.create(:user => @u1, :experiment => @experiment, :session => @session)
-        Participation.create(:user => @u2, :experiment => @experiment, :session => @session)
-        Participation.create(:user => @u3, :experiment => @experiment, :session => @session)
+        SessionParticipation.create(:user => @u1, :session => @session)
+        SessionParticipation.create(:user => @u2, :session => @session)
+        SessionParticipation.create(:user => @u3, :session => @session)
         
         get :participants, :experiment_id => @experiment.id, :id => @session.id, :save => true, :ids => {@u1.id => "1", @u2.id => "1", @u3.id => "1"}, 
             :showups => {@u1.id => "1", @u2.id => "1"}, :participations => {@u2.id => "1"}, :noshows => {@u3.id => "1"}
@@ -103,18 +93,6 @@ class SessionsControllerTest < ActionController::TestCase
         
       end
     end
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     context "get on new" do
       setup do
@@ -159,7 +137,7 @@ class SessionsControllerTest < ActionController::TestCase
           delete :destroy, :id => @session.id, :experiment_id => @experiment.id
         end
                  
-        assert_response :success
+        assert_response :redirect
       end
     end
     
@@ -174,7 +152,7 @@ class SessionsControllerTest < ActionController::TestCase
           delete :destroy, :id => @session2.id, :experiment_id => @experiment.id
         end
                  
-        assert_response :success
+        assert_response :redirect
       end
     end
     
@@ -182,7 +160,7 @@ class SessionsControllerTest < ActionController::TestCase
       setup do
         @session2 = Session.create(:experiment => @experiment, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 20, :reserve => 4)
         @u = Factory(:user)
-        Participation.create(:experiment => @experiment, :session => @session2, :user => @u)
+        SessionParticipation.create(:session => @session2, :user => @u)
       end
       
       should "not delete the session" do
@@ -190,7 +168,7 @@ class SessionsControllerTest < ActionController::TestCase
           delete :destroy, :id => @session2.id, :experiment_id => @experiment.id
         end
                  
-        assert_response :success
+        assert_response :redirect
       end
     end
   end

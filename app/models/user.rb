@@ -13,8 +13,8 @@ class User < ActiveRecord::Base
   attr_accessible :email, :secondary_email, :password, :password_confirmation, :remember_me, :firstname, :lastname, 
                   :matrikel, :role, :phone, :gender, :begin_month, :begin_year, :study_id, :deleted, 
                   :email_prefix, :email_suffix, 
-                  :country_name, :terms_and_conditions, :lang1, :lang2, :lang3, :profession_id, :degree, :birthday,
-                  :preference
+                  :country_name, :terms_and_conditions, :lang1, :lang2, :lang3, :profession_id, :degree_id, :birthday,
+                  :preference, :experience
   
   ROLES = %w[user experimenter admin]
   
@@ -23,11 +23,14 @@ class User < ActiveRecord::Base
   has_many :participations
   has_many :participating_experiments, :through => :participations, :source => :experiment
   has_many :session_participations
+  has_many :sessions, :through => :session_participations
   has_many :login_codes
   has_settings
 
   belongs_to :study
   belongs_to :profession
+  belongs_to :degree
+  
   
   validates_presence_of :firstname, :lastname, :matrikel, :gender, :birthday
   validates_uniqueness_of :calendar_key
@@ -70,215 +73,216 @@ class User < ActiveRecord::Base
     langs = Language.find(language_ids).map &:name
   end
   
+  def main_email
+    if secondary_email_confirmed_at
+      secondary_email
+    elsif confirmed_at
+      email
+    else
+      ""
+    end
+  end
+  
   def available_sessions
-    # find all ids of experiments where the user is assigned and registration is open
-    # and the user has not defined his participation status
-    ids = participating_experiments.where(:registration_active => true, 'participations.session_id' => nil).map(&:id)
+    # find all ids of the sessions the user is already participating
+    session_ids = [-1] + self.sessions.map(&:id)
       
-    #find all future sessions, which still have space and are open
-    Session.in_the_future
-      .where(:experiment_id => ids)
+    #find all future sessions, which still have space and are open and the user is not part of
+    Session.includes(:experiment)
+      .in_the_future
+      .where("experiments.registration_active=1")
       .where("sessions.reference_session_id = sessions.id")
-      .order('start_at')
+      .where(["sessions.id NOT IN (?)", session_ids])
+      .order('sessions.start_at')
       .select{ |s| s.space_left > 0}
   end
   
   # load users and aggregate participation data
-  def self.load params, sort_column='lastname', sort_direction='ASC', experiment = nil, options = nil
+  def self.create_filter_sql params, options
     where = []
     having = []
     
-    #require :active param
-    params[:active] = {} unless params[:active]
-    params[:exp_tag_op1] ||= []
-    params[:exp_tag_op2] ||= []
-    params[:exp_tag] ||= []
+    filter = params[:filter] || {}
+    options = options || {}
+    
+    sort_column = options[:sort_column] || 'lastname'
+    sort_direction = options[:sort_direction] || 'ASC'
+    experiment = options[:experiment]
     
     # search
-    unless params[:search].blank?
-      where << ActiveRecord::Base.send(:sanitize_sql_array, ['(firstname LIKE ? OR lastname LIKE ? OR email LIKE ?)', '%'+params[:search]+'%','%'+params[:search]+'%','%'+params[:search]+'%'])
+    unless filter[:search].blank?
+      where << ActiveRecord::Base.send(:sanitize_sql_array, ['(firstname LIKE ? OR lastname LIKE ? OR email LIKE ?)', '%'+filter[:search]+'%','%'+filter[:search]+'%','%'+filter[:search]+'%'])
     end
     
     # also show deleted users?
-    unless options && options[:include_deleted_users]
+    unless options[:include_deleted_users]
       where << "users.deleted=0"
     end
     
     # gender
-    if params[:active][:fgender] == '1' && ['f', 'm', '?'].include?(params[:gender])
-      where << "users.gender='#{params[:gender]}'"
+    if ['f', 'm', '?'].include?(filter[:gender])
+      where << "users.gender='#{filter[:gender]}'"
     end
-    
+        
     # preference
-    if params[:active][:fpreference] == '1' && [1,2].include?(params[:preference].to_i)
-      where << "(users.preference=0 OR users.preference=#{params[:preference].to_i})"
+    if [1,2].include?(filter[:preference].to_i)
+      where << "(users.preference=0 OR users.preference=#{filter[:preference].to_i})"
     end
     
     # role
-    if params[:active][:frole] == '1' && User.roles.values.include?(params[:role])
-      where << "users.role='#{params[:role]}'"
+    if User.roles.values.include?(filter[:role])
+      where << "users.role='#{filter[:role]}'"
     end
     
     # noshow
-    if params[:active][:fnoshow] == '1' && ["<=", ">"].include?(params[:noshow_op])
-      having << "noshow_count #{params[:noshow_op]} #{params[:noshow].to_i}"
+    if ["<=", ">"].include?(filter[:noshow_op])
+      having << "noshow_count #{filter[:noshow_op]} #{filter[:noshow].to_i}"
     end
     
     # successful participations
-    if params[:active][:fparticipated] == '1'&& ["<=", ">"].include?(params[:participated_op])
-      having << "participations_count #{params[:participated_op]} #{params[:participated].to_i}"
+    if ["<=", ">"].include?(filter[:participated_op])
+      having << "participations_count #{filter[:participated_op]} #{filter[:participated].to_i}"
     end
     
     #studienbeginn
-    if params[:active][:fbegin] == '1'
-      if (1..12).include?(params[:begin_von_month].to_i) && params[:begin_von_year].to_i > 1990
-        where << "((begin_month >= #{params[:begin_von_month].to_i} AND begin_year=#{params[:begin_von_year].to_i}) OR (begin_year>#{params[:begin_von_year].to_i}))"
-      end
-
-      if (1..12).include?(params[:begin_bis_month].to_i) && params[:begin_bis_year].to_i > 1990
-        where << "((begin_month <= #{params[:begin_bis_month].to_i} AND begin_year=#{params[:begin_bis_year].to_i}) OR (begin_year<#{params[:begin_bis_year].to_i}))"
-      end
+    if (1..12).include?(filter[:begin_von_month].to_i) && filter[:begin_von_year].to_i > 1990
+      where << "((begin_month >= #{filter[:begin_von_month].to_i} AND begin_year=#{filter[:begin_von_year].to_i}) OR (begin_year>#{filter[:begin_von_year].to_i}))"
     end
 
+    if (1..12).include?(filter[:begin_bis_month].to_i) && filter[:begin_bis_year].to_i > 1990
+      where << "((begin_month <= #{filter[:begin_bis_month].to_i} AND begin_year=#{filter[:begin_bis_year].to_i}) OR (begin_year<#{filter[:begin_bis_year].to_i}))"
+    end
+  
     # birthday
-    if params[:active][:fbirthday] == '1'
-      if (1..12).include?(params[:birthday_von_month].to_i) && params[:birthday_von_year].to_i >= 1900 && params[:birthday_von_year].to_i <= Time.now.year
-        where << "birthday >= '#{params[:birthday_von_year].to_i}-#{params[:birthday_von_month].to_i}-01'"
-      end
+    if (1..12).include?(filter[:birthday_von_month].to_i) && filter[:birthday_von_year].to_i >= 1900 && filter[:birthday_von_year].to_i <= Time.now.year
+      where << "birthday >= '#{filter[:birthday_von_year].to_i}-#{filter[:birthday_von_month].to_i}-01'"
+    end
 
-      if (1..12).include?(params[:birthday_bis_month].to_i) && params[:birthday_bis_year].to_i >= 1900 && params[:birthday_bis_year].to_i <= Time.now.year
-        where << "birthday <= '#{params[:birthday_bis_year].to_i}-#{params[:birthday_bis_month].to_i}-31'"
-      end
+    if (1..12).include?(filter[:birthday_bis_month].to_i) && filter[:birthday_bis_year].to_i >= 1900 && filter[:birthday_bis_year].to_i <= Time.now.year
+      where << "birthday <= '#{filter[:birthday_bis_year].to_i}-#{filter[:birthday_bis_month].to_i}-31'"
+    end
+    
+    # external experience
+    if filter[:experience]
+      where << "experience = #{filter[:experience].to_i}"
     end
     
     # study 
-    if params[:active][:fstudy] == '1' && params[:study]
-      s = "users.study_id IN (#{params[:study].map(&:to_i).join(', ')})"
+    if filter[:study]
+      s = "users.study_id IN (#{filter[:study].map(&:to_i).join(', ')})"
       
-      if params[:study_op] == "Ohne"
+      if filter[:study_op] == "Ohne"
         where << "(NOT(#{s}) OR users.study_id IS NULL)"
+      else
+        where << s
+      end
+    end
+
+    # degree
+    if filter[:degree]
+      s = "users.degree_id IN (#{filter[:degree].map(&:to_i).join(', ')})"
+      
+      if filter[:degree_op] == "Ohne"
+        where << "(NOT(#{s}) OR users.degree_id IS NULL)"
       else
         where << s
       end
     end
     
     # languages
-    if params[:active][:flanguage] == '1' && params[:language]
-      where << "(users.lang1 IN (#{params[:language].map(&:to_i).join(', ')}) OR "+
-               " users.lang2 IN (#{params[:language].map(&:to_i).join(', ')}) OR "+
-               " users.lang3 IN (#{params[:language].map(&:to_i).join(', ')})) "
+    if filter[:language]
+      where << "(users.lang1 IN (#{filter[:language].map(&:to_i).join(', ')}) OR "+
+               " users.lang2 IN (#{filter[:language].map(&:to_i).join(', ')}) OR "+
+               " users.lang3 IN (#{filter[:language].map(&:to_i).join(', ')})) "
     end
     
     #experiment tags
     # todo guard against sql injection
     experiment_tag_subquery = ""
-    if params[:active][:ftags] == '1'
-      params[:exp_tag_count].to_i.times do |i|
-        if params["exp_tag#{i}"].length > 0
-          experiment_tag_subquery += t =  "(SELECT COUNT(participations.id) FROM participations, experiments,  taggings, tags WHERE user_id = users.id AND 
-          (SELECT count(s.id)  FROM sessions s WHERE s.reference_session_id = participations.session_id) =
-          (SELECT count(s.id)  FROM session_participations s, sessions s2 WHERE  
-             s.user_id = users.id AND
-             s.session_id = s2.id AND 
-             s2.reference_session_id = participations.session_id AND s.participated = 1)
-          AND (SELECT count(s.id)  FROM sessions s WHERE s.reference_session_id = participations.session_id) > 0
-          AND participations.experiment_id=experiments.id 
-          AND experiments.id = taggings.taggable_id AND taggings.tag_id = tags.id AND tags.name LIKE \"#{params["exp_tag#{i}"]}\") AS exp_tag_count#{i}, \n"
-               
-          if params['exp_tag_op1'][i] == "Mindestens"
-            having << "exp_tag_count#{i} >= #{params["exp_tag_op2"][i].to_i}"
-          elsif params['exp_tag_op1'][i] == "Höchstens"
-            having << "exp_tag_count#{i} <= #{params["exp_tag_op2"][i].to_i}"
-          end
-        end  
-      end
+    
+    filter[:exp_tag_count].to_i.times do |i|
+      if filter["exp_tag#{i}"].length > 0
+        experiment_tag_subquery += t = <<EOSQL
+          (SELECT 
+            COUNT(session_participations.id)
+           FROM session_participations, sessions, experiments, taggings, tags 
+           WHERE 
+             session_participations.participated = 1 AND
+             session_participations.user_id = users.id AND 
+             session_participations.session_id = sessions.id AND
+             sessions.experiment_id = experiments.id AND
+             experiments.id = taggings.taggable_id AND
+             taggings.tag_id = tags.id AND 
+             tags.name LIKE "#{filter["exp_tag#{i}"]}") AS exp_tag_count#{i}, 
+EOSQL
+        
+        
+        if filter['exp_tag_op1'][i] == "Mindestens"
+          having << "exp_tag_count#{i} >= #{filter["exp_tag_op2"][i].to_i}"
+        elsif filter['exp_tag_op1'][i] == "Höchstens"
+          having << "exp_tag_count#{i} <= #{filter["exp_tag_op2"][i].to_i}"
+        end
+      end  
     end
     
     #experiments
-    if params[:active][:fexperiment] == '1'
-      # if the user even has selected some experiments
-      if params[:experiment]
-        # at least one ...
-        if params[:exp_op] == "zu einem der"
-          experiment_join = "JOIN participations ON participations.user_id = users.id AND participations.experiment_id IN (#{params[:experiment].map(&:to_i).join(',')})"  
-          if params[:exp_op2] == "teilgenommen haben"
-            experiment_join += " AND (SELECT count(s.id)  FROM sessions s WHERE s.reference_session_id = participations.session_id) =
-            (SELECT count(s.id)  FROM session_participations s, sessions s2 WHERE  
-               s.user_id = users.id AND
-               s.session_id = s2.id AND 
-               s2.reference_session_id = participations.session_id AND s.participated = 1) AND (SELECT count(s.id)  FROM sessions s WHERE s.reference_session_id = participations.session_id) > 0"
-          end
-        end
-        
-        # all of them ..
-        if params[:exp_op] == "zu allen der"
-          experiment_join = ''
-          params[:experiment].map(&:to_i).each do |i|
-            single_join = "JOIN participations as p#{i} ON p#{i}.user_id = users.id AND p#{i}.experiment_id = #{i} "
-            if params[:exp_op2] == "teilgenommen haben"
-              single_join += " AND (SELECT count(s.id)  FROM sessions s WHERE s.reference_session_id = p#{i}.session_id) =
-              (SELECT count(s.id)  FROM session_participations s, sessions s2 WHERE  
-                 s.user_id = users.id AND
-                 s.session_id = s2.id AND 
-                 s2.reference_session_id = p#{i}.session_id AND s.participated = 1)
-              AND 
-              (SELECT count(s.id) FROM sessions s WHERE s.reference_session_id = p#{i}.session_id) > 0 "              
-            end
-            experiment_join += single_join  
-          end
-        end
-        
-        # none of them...
-        if params[:exp_op] == "zu keinem der"
-          if params[:exp_op2] == "teilgenommen haben"
-            and_add = " AND (SELECT count(s.id)  FROM sessions s WHERE s.reference_session_id = participations.session_id) =
-            (SELECT count(s.id)  FROM session_participations s, sessions s2 WHERE  
-               s.user_id = users.id AND
-               s.session_id = s2.id AND 
-               s2.reference_session_id = participations.session_id AND s.participated = 1) AND (SELECT count(s.id)  FROM sessions s WHERE s.reference_session_id = participations.session_id) > 0"
-          end
-          experiment_subquery = "(SELECT COUNT(participations.id) FROM participations WHERE user_id = users.id #{and_add} AND participations.experiment_id IN (#{params[:experiment].map(&:to_i).join(',')})) AS forbidden_count, "
-          having << "forbidden_count = 0"
-        end
-        
+    # if the user even has selected some experiments
+    if filter[:experiment]
+      ids = filter[:experiment].map(&:to_i).join(',')
+    
+      # at least one ...
+      case filter[:exp_op]
+      when "die zu einem der folgenden Experimente zugeordnet sind"
+        experiment_join = "JOIN participations ON participations.user_id = users.id AND participations.experiment_id IN (#{ids})"  
+      when "die zu allen der folgenden Experimente zugeordnet sind"
+        experiment_join = filter[:experiment].map(&:to_i).collect{|id| "JOIN participations as p#{id} ON p#{id}.user_id = users.id AND p#{id}.experiment_id = #{id}"}.join(' ')
+      when "die zu keinem der folgenden Experimente zugeordnet sind"
+        experiment_subquery = "(SELECT COUNT(participations.id) FROM participations WHERE user_id = users.id AND participations.experiment_id IN (#{ids})) AS forbidden_count, "
+        having << "forbidden_count = 0"
+      when "die an mindestens einer Session eines der folgenden Experimente teilgenommen haben"
+        experiment_join = "JOIN sessions s ON s.experiment_id IN (#{ids}) JOIN session_participations sp ON sp.participated=1 AND s.id = sp.session_id AND sp.user_id = users.id "  
+      when "die an mindestens einer Session von jedem der folgenden Experimente teilgenommen haben"
+        experiment_join = filter[:experiment].map(&:to_i).collect do |id| 
+          "JOIN sessions s#{id} ON s#{id}.experiment_id=#{id} JOIN session_participations p#{id} ON p#{id}.user_id = users.id AND p#{id}.session_id = s#{id}.id "
+        end.join(' ')
+      when "die an keiner Session der folgenden Experimente teilgenommen haben"
+        experiment_subquery = "(SELECT COUNT(sp.id) FROM sessions s, session_participations sp WHERE sp.participated = 1 AND sp.user_id = users.id AND s.id = sp.session_id AND s.experiment_id IN (#{ids})) AS forbidden_count, "
+        having << "forbidden_count = 0"  
       end
     end
-    
+          
     # include / exclude participants in experiment
-    if experiment 
-      participation_join = "LEFT JOIN participations p ON p.user_id = users.id AND p.experiment_id = #{experiment.id} "+
-                           "LEFT JOIN sessions s ON p.session_id = s.id "
-
+    session_select = ''
+    session_participation_join = ''
+    if experiment
+      participation_join = "LEFT JOIN participations p ON p.user_id = users.id AND p.experiment_id = #{experiment.id} "
+      
       # exclude members
-      if options && options[:exclude_experiment_participants]
+      if options[:exclude_experiment_participants]
         where << "p.id IS NULL"
       end
 
       # only members
-      if options && options[:exclude_non_participants]
+      if options[:exclude_non_participants]
         where << "p.id IS NOT NULL"
         
-        # load session_participation
-        session_participation_join = "LEFT JOIN session_participations sps ON sps.user_id = users.id AND sps.session_id = p.session_id"
-                            
-        session_select = "s.start_at as session_start_at, p.session_id, p.invited_at, sps.showup as session_showup, sps.noshow as session_noshow, sps.participated as session_participated, "
-
         # limit to users of a certain session
-        if params[:session]
-          where << "p.session_id = #{params[:session].to_i}"
+        if filter[:session]
+          # load session_participation and join reference sessions
+          session_participation_join = "JOIN (sessions s JOIN session_participations sps ON s.id = sps.session_id AND s.id = #{filter[:session].to_i}) ON s.experiment_id = #{experiment.id} AND sps.user_id = users.id "         
+          session_select = "s.start_at as session_start_at, s.id as session_id, p.invited_at, sps.showup as session_showup, sps.noshow as session_noshow, sps.participated as session_participated, "
+        else
+          # load session_participation and join reference sessions
+          session_participation_join = "LEFT JOIN (sessions s JOIN session_participations sps ON s.id = sps.session_id) ON s.experiment_id = #{experiment.id} AND s.id = s.reference_session_id AND sps.user_id = users.id "         
+          session_select = "s.start_at as session_start_at, s.id as session_id, p.invited_at, sps.showup as session_showup, sps.noshow as session_noshow, sps.participated as session_participated, "
         end
 
-        # load participation data of a following session instead of the main session?
-        if params[:following_session]
-          session_participation_join = "LEFT JOIN session_participations sps ON sps.user_id = users.id AND sps.session_id = #{params[:following_session].to_i}"
-        end
-              
         # only select users with a successful participation
         # this filter only makes sense, when we select participants of an experiment
-        if params[:active][:fparticipation] == '1' 
-          where << "sps.participated = 1" if params[:participation] == '1'
-          where << "p.session_id > 0" if params[:participation] == '2'
-          where << "(p.session_id = 0 OR p.session_id IS NULL)" if params[:participation] == '3'
+        if filter[:participation]
+          where << "sps.participated = 1" if filter[:participation] == '1'
+          where << "sps.session_id > 0" if filter[:participation] == '2'
+          where << "(sps.session_id IS NULL)" if filter[:participation] == '3'
         end  
       end
     end  
@@ -291,11 +295,11 @@ class User < ActiveRecord::Base
           COALESCE(
             (SELECT
               count(sessions.id)
-            FROM sessions, participations, experiments
+            FROM sessions, session_participations, experiments
             WHERE
               sessions.id = sessions.reference_session_id AND
-              participations.session_id = sessions.id AND
-              participations.user_id = users.id AND
+              session_participations.session_id = sessions.id AND
+              session_participations.user_id = users.id AND
               experiments.id = sessions.experiment_id AND
               (SELECT count(s.id)  FROM sessions s WHERE s.reference_session_id = sessions.id) =
               (SELECT count(s.id)  FROM session_participations s, sessions s2 WHERE  s.session_id = s2.id AND s.user_id = users.id AND s2.reference_session_id = sessions.id AND s.participated = 1) 
@@ -309,11 +313,11 @@ class User < ActiveRecord::Base
           COALESCE(
             (SELECT
               count(sessions.id)
-            FROM sessions, participations, experiments
+            FROM sessions, session_participations, experiments
             WHERE
               sessions.id = sessions.reference_session_id AND
-              participations.session_id = sessions.id AND
-              participations.user_id = users.id AND
+              session_participations.session_id = sessions.id AND
+              session_participations.user_id = users.id AND
               experiments.id = sessions.experiment_id AND
               experiments.show_in_stats = 1 AND
               (SELECT count(s.id)  FROM session_participations s, sessions s2 WHERE  s.session_id = s2.id AND s.user_id=users.id AND s2.reference_session_id = sessions.id AND s.noshow = 1) >0
@@ -339,27 +343,44 @@ class User < ActiveRecord::Base
         #{having.join(' AND ')}
       ORDER BY #{sort_column + ' ' + sort_direction} 
 EOSQL
+  
+    return sql
+  end
     
-    if options && options[:paginate]
-      page = (params[:page] || 1).to_i
-    
-      if params[:active].values.select{|x| !x.blank?}.count > 0 || experiment || !params[:search].blank?
-        count = User.count_by_sql("SELECT count(test.id) FROM ("+sql+") as test;")
-      elsif options && options[:include_deleted_users]
-        count = User.count
-      else  
-        count = User.where('deleted=0').count
-      end
-    
-      objects = User.find_by_sql(sql+ " LIMIT 50 OFFSET "+((page-1)*50).to_s)
+  def self.paginate params, options = nil
+    sql = User.create_filter_sql(params, options)
       
-      return WillPaginate::Collection.create(page,50) do |pager|    
-        pager.replace(objects)
-        pager.total_entries = count
-      end
-    else 
-      User.find_by_sql(sql)
+    page = (params[:page] || 1).to_i
+    
+    if params[:filter] && ( params[:filter].keys.count > 0 || (options && options[:experiment]) || ! params[:filter][:search].blank?)
+      count = User.count_by_sql("SELECT count(filtered_users.id) FROM ("+sql+") as filtered_users;")
+    elsif options && options[:include_deleted_users]
+      count = User.count
+    else  
+      count = User.where('deleted=0').count
     end
+  
+    # reset page, if not enough results
+    if (count < (page-1)*50) 
+      page = 1
+    end
+    
+    objects = User.find_by_sql(sql+ " LIMIT 50 OFFSET "+((page-1)*50).to_s)
+    
+    return WillPaginate::Collection.create(page,50) do |pager|    
+      pager.replace(objects)
+      pager.total_entries = count
+    end
+  end
+  
+  def User.load params, options = nil
+    User.find_by_sql(User.create_filter_sql(params, options))    
+  end
+  
+  def User.load_ids params, options = nil
+    sql = User.create_filter_sql(params, options)
+    result = ActiveRecord::Base.connection.execute("SELECT id FROM ("+sql+") as id_table;")
+    result.collect{ |res| res[0] }
   end
   
   def self.roles

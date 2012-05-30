@@ -22,13 +22,21 @@
 
 
 every 2.minutes do
-  runner "Message.process_queue"
+  runner "Task.process_mail_queue"
 end
 
 every 2.minutes do
-  runner "Experiment.send_invitations"
+  runner "Task.send_invitations"
+end
+
+every 5.minutes do
+  runner "Task.send_session_reminders"
 end
 
 every 1.days do
   runner "LoginCode.cleanup"  
+end
+
+every 1.days do
+  runner "Session.send_reminders_for_incomplete_sessions"  
 end

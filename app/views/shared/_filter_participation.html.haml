@@ -1,4 +1,2 @@
-#fparticipation.filter-block{:style => filter_style('fparticipation')}
-  = render :partial => 'shared/close_link', :locals => {:name => 'fparticipation'} 
-  = hidden_field_tag "active[fparticipation]", params[:active][:fparticipation]
-  = select_tag :participation, options_for_select({"Alle Zugeordnete anzeigen" => 0, "Nur Zugeordnete, die teilgenommen haben" => 1, "Nur Zugeordnete, die bereits in eine Session eingetragen sind" => 2, "Nur Zugeordnete ohne Session" => 3}, params[:participation].to_i), {:style=>"width:650px"}
+#fparticipation.filter-block{is_enabled(:participation)}
+  = select_tag 'filter[participation]', options_for_select({"Nur Zugeordnete, die teilgenommen haben" => 1, "Nur Zugeordnete, die bereits in eine Session eingetragen sind" => 2, "Nur Zugeordnete ohne Session" => 3}, params[:filter][:participation].to_i), {:style=>"width:650px"}

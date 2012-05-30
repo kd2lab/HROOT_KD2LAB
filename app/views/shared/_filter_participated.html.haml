@@ -1,7 +1,5 @@
-#fparticipated.filter-block{:style => filter_style('fparticipated')}
-  = render :partial => 'shared/close_link', :locals => {:name => 'fparticipated'} 
-  = hidden_field_tag "active[fparticipated]", params[:active][:fparticipated]
+#fparticipated.filter-block{is_enabled(:participated)}
   Anzahl Teilnahmen
   %br
-  = select_tag :participated_op, options_for_select(["<=", ">"], params[:participated_op]), :class => "span1"
-  = select_tag :participated, options_for_select((0..10), params[:participated]), :class => "span1"
+  = select_tag 'filter[participated_op]', options_for_select(["<=", ">"], params[:filter][:participated_op]), :class => "span1"
+  = select_tag 'filter[participated]', options_for_select((0..10), params[:filter][:participated]), :class => "span1"

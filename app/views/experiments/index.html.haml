@@ -15,23 +15,21 @@
 
 
 
-.row
-  .span8
-    = link_to 'Neues Experiment', new_experiment_path, :class => "btn btn-primary", :style => "float:right"
+= link_to 'Neues Experiment', new_experiment_path, :class => "btn btn-primary", :style => "float:right"
 
-    %h1
-      Experimente
+%h1
+  Experimente
 
 
-    %br
+%br
 
-    = form_tag experiments_path, :method => 'get', :id => "experiment_search" do
-      %p  
-        = text_field_tag :search, params[:search] 
-        = submit_tag "Suche", :name => nil  
+= form_tag experiments_path, :method => 'get', :id => "experiment_search" do
+  %p  
+    = text_field_tag :search, params[:search] 
+    = submit_tag "Suche", :name => nil  
 
-    #experiments
-      = render 'experiments'
+#experiments
+  = render 'experiments'
 
   
 

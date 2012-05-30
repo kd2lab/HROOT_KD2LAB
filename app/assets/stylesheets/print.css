@@ -1,0 +1,7 @@
+h1,h2,h3,h4,h5,h6 {color: #F00;}
+div.page {page-break-after: always; page-break-inside: avoid;}
+* {font-family: arial, sans-serif;}
+td, tr {border-bottom: 1px solid black;}
+table {border-spacing: 0;}
+td {padding: 0 20px 0 0;}
+th {text-align:left;}

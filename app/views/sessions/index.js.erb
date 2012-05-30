@@ -3,9 +3,7 @@ $('#sessions').html(
 );
 
 <% if flash[:message]  %>
-  $('p.notice').html("<%= flash[:message]%>").show()
-<% else %>
-  $('p.notice').hide()
+  $('.flash').html("<div class='alert'><%= flash[:message]%></div>").show()
 <% end %>
 
 <% if @session %>

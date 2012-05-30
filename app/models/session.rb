@@ -5,7 +5,6 @@ class Session < ActiveRecord::Base
   
   belongs_to :experiment
   belongs_to :location
-  has_many :participations
   has_many :session_participations
   
   validates_presence_of :start_at
@@ -16,6 +15,10 @@ class Session < ActiveRecord::Base
   
   scope :in_the_future, lambda { 
     where("start_at > NOW()")
+  }
+  
+  scope :in_the_past, lambda { 
+    where("end_at < NOW()")
   }
   
   scope :main_sessions, lambda { 
@@ -51,20 +54,31 @@ class Session < ActiveRecord::Base
   end
   
   def self.move_members(members, experiment, target = nil)
-    if target && members.size > target.space_left 
-      return false
+    if target 
+      if members.size > target.space_left 
+        return false
+      else
+        target_sessions = Session.where(:reference_session_id => target.reference_session_id)
+        members.each do |id|
+          u = User.find(id)
+          if u
+            SessionParticipation.where(:user_id => u.id, :session_id => experiment.sessions).delete_all
+            
+            # put in all target sessions
+            target_sessions.each do |s| 
+              SessionParticipation.create(:user => u, :session => s)
+            end  
+          end
+        end
+        return true
+      end
     else
       members.each do |id|
         u = User.find(id)
         if u
           SessionParticipation.where(:user_id => u.id, :session_id => experiment.sessions).delete_all
-          p = Participation.find_by_user_id_and_experiment_id(u, experiment)
-          p.session_id = target ? target.id : nil
-          p.save
-        end
+        end  
       end
-      
-      return true
     end
   end
     
@@ -76,6 +90,10 @@ class Session < ActiveRecord::Base
     start_at.strftime("%d.%m.%Y %H:%M")+" - "+end_at.strftime("%H:%M")
   end
   
+  def only_time_str
+    start_at.strftime("%H:%M")+" - "+end_at.strftime("%H:%M")
+  end
+    
   def mail_string
     "todo: session repräsentation"
   end
@@ -124,7 +142,26 @@ EOSQL
   end
   
   def space_left
-    needed + reserve - participations.count
+    needed + reserve - session_participations.count
+  end
+  
+  def self.incomplete_sessions
+    # load sessions in the past with incomplete lists
+    Session.in_the_past.where('(SELECT count(s.id) FROM session_participations s WHERE s.session_id=sessions.id AND showup=0 AND participated=0 AND noshow=0) >0')
+  end
+  
+  def self.send_reminders_for_incomplete_sessions
+    # send an email for each session
+    Session.incomplete_sessions.each do |session|
+      UserMailer.experimenter_message(
+        session.experiment,
+        "#{session.experiment.name}: Session #{session.time_str} ist noch nicht abgeschlossen",
+        "Hallo, \n\nSie erhalten diese Nachricht, da Sie als Verantwortlicher für das Experiment #{session.experiment.name} eingetragen sind. 
+         Bitte vervollständigen Sie die Teilnehmerliste der Session am #{session.time_str}.\n\nDiese E-Mail wurde automatisch versendet."
+      ).deliver
+    end
+    
+    # todo mail pflegbar machen
   end
   
 end

@@ -4,9 +4,8 @@ class SessionsController < ApplicationController
   before_filter :load_experiment_and_sessions
   helper_method :sort_column, :sort_direction
   
-  
   def index
-  
+    params[:filter] = params[:filter] || {}
   end
   
   def show
@@ -45,6 +44,12 @@ class SessionsController < ApplicationController
     @session.experiment = @experiment
     
     if @session.save
+      if (@session.id != @session.reference_session_id)
+        # copy session participants to following session
+        @session.reference_session.session_participations.each do |sp| 
+          SessionParticipation.create(:session => @session, :user => sp.user)
+        end
+      end  
       redirect_to(experiment_sessions_path(@experiment), :flash => { :id => @session.id, :message => "Es wurde eine neue Session angelegt"})
     else
       render :action => "index" 
@@ -90,7 +95,7 @@ class SessionsController < ApplicationController
     if @s
       if @s.following_sessions.count > 0 
         flash[:message] = "Sessions mit Folgesessions können nicht gelöscht werden."
-      elsif @s.participations.count.to_i > 0 || @s.session_participations.count.to_i > 0
+      elsif @s.session_participations.count.to_i > 0
         flash[:message] = "Sessions mit Teilnehmern können nicht gelöscht werden."
       else  
         @s.destroy
@@ -98,32 +103,47 @@ class SessionsController < ApplicationController
       end
     end
     
-    render :action => "index"
+    redirect_to :action => "index"
   end
   
-  def send_messages
+  def print
     @session = Session.find(params[:id])
+    params[:filter] = {} unless params[:filter]
+    params[:filter][:role] = 'user' 
     
-    @session.participations.each do |p|
-      Message.create(
-        :sender_id => current_user.id,
-        :recipient_id => p.user_id,
-        :experiment_id => @experiment.id,
-        :subject => params[:subject],
-        :message =>  params[:message]
-      )
-    end
     
-    redirect_to(participants_experiment_session_path(@experiment, @session), :flash => { :id => @session.id, :notice => "Nachricht(en) wurden in die Mailqueue eingetragen."})
+    # todo move this to options
+    params[:filter][:session] = @session.reference_session_id
+    params[:filter][:following_session] = @session.id
+    
+    
+    @users = User.load(params, {:experiment => @experiment, :sort_column => sort_column, :sort_direction => sort_direction, :exclude_non_participants => 1})
+    
+    render :layout => 'print'
   end
-
   
   def participants
     @session = Session.find(params[:id])
-    changes = 0
     
-    # move session members
-    if !params[:move_member].blank?
+    if params[:message] && params[:message][:action] == 'send'
+      message = Message.create(
+        :sender_id => current_user.id,
+        :experiment_id => @experiment.id,
+        :subject => params[:message][:subject],
+        :message =>  params[:message][:text]
+      )
+      
+      if (params[:message][:mode] == 'all')        
+        ids = @session.participations.collect{|p| p.user_id}
+      elsif (params[:message][:mode] == 'selected')
+        ids = params['selected_users'].keys.map(&:to_i)
+      end  
+      
+      Recipient.insert_bulk(message, ids)
+      redirect_to(participants_experiment_session_path(@experiment, @session), :flash => { :id => @session.id, :notice => "Nachricht(en) wurden in die Mailqueue eingetragen."})
+      
+    elsif !params[:move_member].blank?
+      # move session members
       if params[:move_member] == "0"
         Session.move_members(params['selected_users'].keys.map(&:to_i), @experiment)
         flash[:notice] = "Die gewählen Teilnehmer wurden aus der Session ausgetragen"
@@ -139,14 +159,15 @@ class SessionsController < ApplicationController
         end
       end
     else
+      changes = 0
+    
       # save session participations
       if params['save']
         params['participations'] = {} unless params['participations']
         params["ids"].keys.each do |user_id| 
-          if params['showups'] && params['showups'][user_id]
-            sp = SessionParticipation.find_or_create_by_session_id_and_user_id(@session.id, user_id)
+          sp = SessionParticipation.find_by_session_id_and_user_id(@session.id, user_id)
           
-            # only save if changes are detected
+          if params['showups'] && params['showups'][user_id]
             unless sp.showup && (sp.participated == (params['participations'][user_id] == "1")) && !sp.noshow
               sp.showup = true
               sp.participated = params['participations'][user_id]
@@ -155,8 +176,6 @@ class SessionsController < ApplicationController
               sp.save
             end
           elsif params['noshows'] && params['noshows'][user_id]
-            sp = SessionParticipation.find_or_create_by_session_id_and_user_id(@session.id, user_id)
-
             # only save if changes are detected          
             unless !sp.showup && !sp.participated && sp.noshow
               sp.showup = false
@@ -166,11 +185,12 @@ class SessionsController < ApplicationController
               changes +=1
             end
           else
-            # only save if changes are detected
-            sp = SessionParticipation.find_by_session_id_and_user_id(@session.id, user_id)
-            if sp
-              sp.destroy
-              changes += 1
+            if (sp.showup || sp.participated || sp.noshow)
+              sp.showup = false
+              sp.participated = false
+              sp.noshow = false
+              sp.save
+              changes +=1
             end
           end
         end
@@ -179,13 +199,13 @@ class SessionsController < ApplicationController
       flash[:notice] = "#{ActionController::Base.helpers.pluralize(changes, "Änderung", "Änderungen")} gespeichert" if changes > 0
     end
     
-    params[:active] = {} unless params[:active]
-    params[:active][:frole] = '1'
-    params[:role] = 'user' 
-    params[:session] = @session.reference_session_id
-    params[:following_session] = @session.id
+    params[:filter] = {} unless params[:filter]
+    params[:filter][:role] = 'user' 
     
-    @users = User.load(params, sort_column, sort_direction, @experiment, {:exclude_non_participants => 1})
+    
+    # todo move this to options
+    params[:filter][:session] = @session.id
+    @users = User.load(params, {:experiment => @experiment, :sort_column => sort_column, :sort_direction => sort_direction, :exclude_non_participants => 1})
   end
   
   def overlaps

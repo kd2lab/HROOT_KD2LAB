@@ -44,7 +44,7 @@ de:
         lang3: weitere Sprache
         study_id: Studiengang
         profession_id: Beruf
-        degree: Abschluss(-ziel)
+        degree_id: Abschluss(-ziel)
         gender: Geschlecht
         birthday: Geburtstag
         password: Passwort
@@ -57,6 +57,7 @@ de:
         sender_email: E-Mail-Absender
         confirmation_subject: Betreff
         confirmation_text: Text
+        reminder_hours: Erinnerungsversand
     errors:
       models:
         profession:

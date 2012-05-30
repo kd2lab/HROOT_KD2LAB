@@ -33,7 +33,7 @@
     - r = subsession ? session.reference_session : session
     
     .participants
-      - surplus = r.participations.count - r.needed
+      - surplus = r.session_participations.count - r.needed
 
       - css_class = if surplus < 0 then |
           "participants-red"            |
@@ -42,10 +42,10 @@
         else                            |
           "participants-green"          |
         end                             |
-      = link_to "Teilnehmer: #{r.participations.count} (#{r.needed},#{r.reserve})#{", Gruppengröße: "+session.group_size.to_s if session.group_size}", participants_experiment_session_path(@experiment, session), :class => css_class
+      = link_to "Teilnehmer: #{r.session_participations.count} (#{r.needed},#{r.reserve})#{", Gruppengröße: "+session.group_size.to_s if session.group_size}", participants_experiment_session_path(@experiment, session), :class => css_class
       
       - if session.end_at < Time.zone.now then
-        - if session.participations.count != session.session_participations.count
+        - if session.session_participations.where('showup=0 AND participated=0 AND noshow=0').count > 0
           %span.session-warning
             Teilnahmeliste noch nicht vollständig
       

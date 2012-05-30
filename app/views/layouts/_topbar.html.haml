@@ -7,7 +7,7 @@
         %ul.nav.pull-right
           
           - if current_user.admin?
-            - count = Message.count
+            - count = Recipient.where('sent_at IS NULL').count
             - if count > 0 
               %li
                 %p.navbar-text

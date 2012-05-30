@@ -1,0 +1,11 @@
+- if @degree.new_record?
+  - url = degrees_path
+- else
+  - url = degree_path(@degree)
+  
+= simple_form_for @degree, {:html => {:class => "guarded_form form-horizontal"}, :url => url} do |f| 
+  = f.input :name, :required => false, :input_html => { :class => 'span4' }
+  %br
+  = f.submit "Abschluss speichern", :class => "guarded_form_save btn btn-primary"
+
+

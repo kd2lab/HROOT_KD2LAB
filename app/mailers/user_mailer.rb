@@ -7,26 +7,15 @@ class UserMailer < ActionMailer::Base
     mail(:to => "ingmar.baetge@googlemail.com", :subject => subject, :text => text)
   end
   
-  def experiment_message(message)
-    from = if message.experiment.sender_email.blank? then UserMailer.default[:from] else message.experiment.sender_email end
-    mail(:from => from, :to => "hroottest@googlemail.com", :subject => message.subject) do |format|
-      format.text { render :text => message.message }
-    end
-  end
-  
-  def invitation_email(user, experiment)
-    text = experiment.invitation_text_for(user)
-    from = if experiment.sender_email.blank? then UserMailer.default[:from] else experiment.sender_email end
-    mail(:to => "hroottest@googlemail.com", :subject => experiment.invitation_subject, :from => from) do |format|
+  def email(subject, text, to, from = nil)
+    mail(:from => unless from.blank? then from else UserMailer.default[:from] end, :to => "hroottest@googlemail.com", :subject => subject) do |format|
       format.text { render :text => text }
     end
   end
-  
-  def confirmation_email(user, session)
-    experiment = session.experiment
-    text = experiment.confirmation_text_for(user, session)
-    from = if experiment.sender_email.blank? then UserMailer.default[:from] else experiment.sender_email end
-    mail(:to => "hroottest@googlemail.com", :subject => experiment.confirmation_subject, :from => from) do |format|
+    
+  def experimenter_message(experiment, subject, text)
+    # todo diese mails später an die experimentatoren schicken
+    mail(:from => UserMailer.default[:from], :to => "mail@ingmar.net", :subject => subject) do |format|
       format.text { render :text => text }
     end
   end

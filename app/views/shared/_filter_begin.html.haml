@@ -1,11 +1,9 @@
-#fbegin.filter-block{:style => filter_style('fbegin')}
-  = render :partial => 'shared/close_link', :locals => {:name => 'fbegin'} 
-  = hidden_field_tag "active[fbegin]", params[:active][:fbegin]
+#fbegin.filter-block{is_enabled('begin_von_month')}
   Studienbeginn
   %br
   von
-  = select_tag :begin_von_month, options_for_select((1..12), params[:begin_von_month]), {:include_blank => true, :class => "span1"}
-  = select_tag :begin_von_year, options_for_select((Time.now.year-10..Time.now.year), params[:begin_von_year]), {:include_blank => true, :class => "span1"}
+  = select_tag 'filter[begin_von_month]', options_for_select((1..12), params[:filter][:begin_von_month]), {:include_blank => true, :class => "span1"}
+  = select_tag 'filter[begin_von_year]', options_for_select((Time.now.year-10..Time.now.year), params[:filter][:begin_von_year]), {:include_blank => true, :class => "span1"}
   bis
-  = select_tag :begin_bis_month, options_for_select((1..12), params[:begin_bis_month]), {:include_blank => true, :class => "span1"}
-  = select_tag :begin_bis_year, options_for_select((Time.now.year-10..Time.now.year), params[:begin_bis_year]), {:include_blank => true, :class => "span1"}
+  = select_tag 'filter[begin_bis_month]', options_for_select((1..12), params[:filter][:begin_bis_month]), {:include_blank => true, :class => "span1"}
+  = select_tag 'filter[begin_bis_year]', options_for_select((Time.now.year-10..Time.now.year), params[:filter][:begin_bis_year]), {:include_blank => true, :class => "span1"}

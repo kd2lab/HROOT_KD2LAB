@@ -1,0 +1,11 @@
+- if @study.new_record?
+  - url = studies_path
+- else
+  - url = study_path(@study)
+  
+= simple_form_for @study, {:html => {:class => "guarded_form form-horizontal"}, :url => url} do |f| 
+  = f.input :name, :required => false, :input_html => { :class => 'span4' }
+  %br
+  = f.submit "Studiengang speichern", :class => "guarded_form_save btn btn-primary"
+
+

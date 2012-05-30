@@ -5,11 +5,47 @@ class ParticipantsController < ApplicationController
   helper_method :sort_column, :sort_direction
   
   def index
-    # destroy participation relation
-    if !params[:move_member].blank? && params[:selected_users]
-      if params[:move_member] == "0"
-        # aus allen sessions austragen, session participations löschen
+    # filters are only in session, when message was sent
+    if session[:filter]
+      params[:filter] = session[:filter]
+      session[:filter] = nil
+    end
+    
+    params[:filter] = params[:filter] || {}
+    params[:filter][:role] = 'user' 
+    
+    if params[:message] && params[:message][:action] == 'send'
+      message = Message.create(
+        :sender_id => current_user.id,
+        :experiment_id => @experiment.id,
+        :subject => params[:message][:subject],
+        :message =>  params[:message][:text]
+      )
+      
+      if (params[:message][:mode] == 'all')
+        ids =  User.load_ids(params, {:experiment => @experiment, :sort_column => sort_column, :sort_direction => sort_direction, :exclude_non_participants => 1})
+      elsif (params[:message][:mode] == 'selected')
+        ids = params['selected_users'].keys.map(&:to_i)
+      end        
+      Recipient.insert_bulk(message, ids)
+      
+      # store filters in session to enable redirect
+      session[:filter] = params[:filter]
+      redirect_to(experiment_participants_path(@experiment), :flash => {:notice => "Nachricht(en) wurden in die Mailqueue eingetragen."})
+    elsif !params[:move_member].blank?
+      if params[:move_member] == "remove_all"
+        ids =  User.load_ids(params, {:experiment => @experiment, :sort_column => sort_column, :sort_direction => sort_direction, :exclude_non_participants => 1})
         
+        # aus allen sessions austragen, session participations löschen
+        Session.move_members(ids, @experiment)
+        
+        # participation auch löschen
+        ids.each do |id|
+          p = Participation.find_by_user_id_and_experiment_id(id, @experiment.id)
+          p.destroy if p
+        end
+      elsif params[:move_member] == "0" && params[:selected_users]
+        # aus allen sessions austragen, session participations löschen
         Session.move_members(params[:selected_users].keys.map(&:to_i), @experiment)
         
         # participation auch löschen
@@ -17,40 +53,57 @@ class ParticipantsController < ApplicationController
           p = Participation.find_by_user_id_and_experiment_id(id, @experiment.id)
           p.destroy if p
         end  
-      else
+      elsif params[:move_member].to_i > 0 && params[:selected_users]
         target = Session.find(params[:move_member].to_i)
         
         if target
+          # store filters in session to enable redirect
+          session[:filter] = params[:filter]
+    
           if Session.move_members(params[:selected_users].keys.map(&:to_i), @experiment, target)
-            flash[:notice] = "Die gewählen Teilnehmer wurden in die Session #{target.time_str} eingetragen"
+            redirect_to(experiment_participants_path(@experiment), :flash => {:notice => "Die gewählen Teilnehmer wurden in die Session #{target.time_str} eingetragen"})            
           else
-            flash[:alert] = "Die Mitglieder konnten nicht verschoben werden, da nicht mehr genug freie Plätze in der Session sind."
+            redirect_to(experiment_participants_path(@experiment), :flash => {:alert => "Die Teilnehmer konnten nicht verschoben werden, da nicht mehr genug freie Plätze in der Session sind."})
           end    
         end
       end
     end
     
-    params[:active] = {} unless params[:active]
-    @users = User.load(params, sort_column, sort_direction, @experiment, {:exclude_non_participants => 1, :include_deleted_users => true})
-    @user_count = @experiment.participants.count
+    @users = User.paginate(params, {:experiment => @experiment, :sort_column => sort_column, :sort_direction => sort_direction, :exclude_non_participants => 1})
+    @user_count = @experiment.participations.includes(:user).where('users.role' => 'user', 'users.deleted' => false).count
   end
   
   def manage
+    params[:filter] = {} unless params[:filter]
+    params[:filter][:role] = 'user' 
+    
     # create participation relation
-    if (params[:submit_marked]) && params[:selected_users]
+    if params[:submit_all]
+      # persist filter settings
+      filter_settings = Filter.create(:settings => params[:filter].to_json)
+      
+      ids =  User.load_ids(params, {:sort_column => sort_column, :sort_direction => sort_direction, :exclude_experiment_participants => 1})
+      ids.each do |id|
+        p = Participation.find_or_create_by_user_id_and_experiment_id(id, @experiment.id)
+        p.filter_id = filter_settings.id
+        p.save
+      end
+      flash[:notice] = "Die Poolmitglieder wurden zugeordnet"  
+    elsif (params[:submit_marked]) && params[:selected_users]
+      # persist filter settings
+      filter_settings = Filter.create(:settings => params[:filter].to_json)
       params[:selected_users].keys.each do |id|
         p = Participation.find_or_create_by_user_id_and_experiment_id(id, @experiment.id)
+        p.filter_id = filter_settings.id
+        p.save
       end
       flash[:notice] = "Die Poolmitglieder wurden zugeordnet"
     end  
     
-    params[:active] = {} unless params[:active]
-    params[:active][:frole] = '1'
-    params[:role] = 'user' 
-    @users = User.load(params, sort_column, sort_direction, @experiment, {:exclude_experiment_participants => 1})
     
-    @user_count = User.where(:deleted => false, :role => 'user').count
-    @participants_count = @experiment.participations.joins(:user).where('users.role' => 'user', 'users.deleted' => false).count
+    @users = User.paginate(params, {:experiment => @experiment, :sort_column => sort_column, :sort_direction => sort_direction, :exclude_experiment_participants => 1})
+    @user_count = User.where('users.role' => 'user', 'users.deleted' => false).count
+    @participants_count = @experiment.participations.includes(:user).where('users.role' => 'user', 'users.deleted' => false).count
   end
   
   protected

@@ -1,5 +1,7 @@
 = hidden_field_tag :sort, params[:sort]
 = hidden_field_tag :direction, params[:direction]
+= hidden_field_tag :move_member, ''
+
 %br
 
 %h2
@@ -12,27 +14,30 @@
   
 %br
 
-
-
-= link_to "Nachricht an alle Session-Teilnehmer", '#', :class => "btn", :id => 'open-message-box'
-
-
-.move-menu 
-  Gewählte Teilnehmer
-
-  - h = {'aus dieser Session austragen' => 0}
-  - @session.alternative_sessions.each  do |s|
-    - h["in Session #{s.time_str} verschieben"] = s.id  
-  = select_tag "move_member", options_for_select(h), :include_blank => true
-
+.menu
+  = link_to "Drucken", print_experiment_session_path(@experiment, @session), :class => "btn new-window", :style => "float:right"
+  = link_to "Nachricht an alle Session-Teilnehmer", '#', :class => "btn send-message", :'data-to' => "Alle Sessionteilnehmer", :'data-subject'=> "Experiment-Session am "+ @session.time_str, :'data-mode' => 'all',  :style => "float:left"
+  = link_to "Nachricht an alle markierten Teilnehmer", '#', :class => "btn send-message context-menu", :'data-to' => "Markierte Sessionteilnehmer", :'data-subject'=> "Experiment-Session am "+ @session.time_str, :'data-mode' => 'selected', :style => "float:left"
+  
+  .btn-group.context-menu{:style => "float:left"}
+    %a.btn.dropdown-toggle{:'data-toggle' => "dropdown", :href => "#"}
+      Markierte Teilnehmer
+      %b.caret 
+    %ul.dropdown-menu
+      %li= link_to "Markierte Teilnehmer aus dieser Session austragen.", '#', :class => 'move_member_link', :'data-value' => 0
+      - @session.alternative_sessions.each  do |s|
+        %li= link_to "Markierte Teilnehmer in Session #{s.time_str} verschieben", '#', :class => 'move_member_link', :'data-value' => s.id
+  
+  
+  %br
   %br
   
 - if @users.count > 0
-  %br
+
   %table.table
     %thead
       %tr
-        %th 
+        %th= check_box_tag "", "", false, :id => "select_all_users"
         %th
         %th= sortable_for_form 'lastname', 'Name'  
         %th= sortable_for_form 'email', 'E-Mail'
@@ -75,6 +80,7 @@
   = button_tag "Änderungen jetzt speichern", :name => "save", :class => "btn btn-primary"
         
 - else
+  %br
   %b
     Diese Session hat keine Teilnehmer
   %br  

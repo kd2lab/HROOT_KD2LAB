@@ -1,14 +1,19 @@
+= hidden_field_tag :direction, params[:direction]
+= hidden_field_tag :sort, params[:sort]
+= hidden_field_tag :page, params[:page] || 1
+
+
 .filter
   Suche in Name, Vorname, E-Mail-Adresse:
   %br
-  = text_field_tag :search, params[:search] 
+  = text_field_tag 'filter[search]', params[:filter][:search] 
   %br
   %br
-
+  
   Filter: 
   %br
   - { 'gender' => 'Geschlecht', 'noshow' => 'Nichterscheinen', 'participated' => 'Teilnahmen', 'begin' => 'Studienbeginn', 'birthday' => "Alter", |
-      'study' => 'Fächer', 'language' => 'Sprachen', 'tags' => 'Tags', 'experiment' => 'Experimente', |  
+      'experience' => 'Erfahrung', 'study' => 'Fächer', 'degree' => 'Abschlüsse', 'language' => 'Sprachen', 'tags' => 'Tags', 'experiment' => 'Experimente', |  
       'preference' => 'Experiment-Präferenz'}.each do |key, value|
     %a.open-link{:href => '#f'+key}=value
     = '|' unless key == 'preference'
@@ -21,21 +26,19 @@
   = render :partial => 'shared/filter_participated' 
   = render :partial => 'shared/filter_begin' 
   = render :partial => 'shared/filter_birthday' 
+  = render :partial => 'shared/filter_experience' 
   = render :partial => 'shared/filter_study' 
+  = render :partial => 'shared/filter_degree' 
   = render :partial => 'shared/filter_language' 
   = render :partial => 'shared/filter_tags' 
   = render :partial => 'shared/filter_experiment' 
   = render :partial => 'shared/filter_preference'
 
 
-= hidden_field_tag :sort, params[:sort]
-= hidden_field_tag :direction, params[:direction]
-
 .searchinfo
-  = submit_tag "Filter anwenden und Ergebnis aktualisieren", :name => 'submit_mode', :class => "btn btn-primary"
-    
+  = submit_tag "Filter anwenden und Ergebnis aktualisieren", :name => 'submit_mode', :class => "btn btn-primary"    
   Zeige
-  %b= @users.length
+  %b= @users.total_entries
   von
   %b= @user_count
   Poolmitgliedern, bereits zugeordnet:
@@ -44,24 +47,23 @@
 
 %hr
 %br
-
-.searchnav
-  = link_to 'Alle auswählen', '#all', {:class => 'all-link'}
-  |
-  = link_to 'Alle abwählen', '#none', {:class => 'none-link'}
-  |
-  = submit_tag "Markierte Poolmitglieder zuordnen", :name => 'submit_marked', :class => "btn"
-  |
-  = submit_tag "Alle angezeigten Poolmitglieder zuordnen", :name => 'submit_marked', :class => "btn submit_all" 
-
 %br
 
 - if @users.count > 0
+  = will_paginate @users,  :renderer => WillPaginate::ActionView::BootstrapLinkRenderer , :prev_label => "&lt;&lt;&nbsp;", :next_label => "&nbsp;&gt;&gt;"
   
+  .menu
+    = submit_tag "Alle Poolmitglieder der aktuellen Filterung zuordnen", :name => 'submit_all', :class => "btn" 
+    = submit_tag "Markierte Poolmitglieder zuordnen", :name => 'submit_marked', :class => "btn context-menu"
+  
+  %br
+  %br
+  
+    
   %table.table
     %thead
       %tr
-        %th
+        %th= check_box_tag "", "", false, :id => "select_all_users"
         %th= sortable_for_form 'lastname', 'Name'  
         -#%th= sortable_for_form 'firstname', 'Vorname'
         %th= sortable_for_form 'email', 'E-Mail'
@@ -74,7 +76,7 @@
     %tbody
       - @users.each do |user| 
         %tr
-          %td= check_box_tag "selected_users[#{user.id}]"
+          %td= check_box_tag "selected_users[#{user.id}]", '1', false, :class => 'selected_users'
           %td= link_to highlight(truncate(user.lastname, {:length => 15}), params[:search])+', '+highlight(truncate(user.firstname, {:length => 10}), params[:search]), user_path(user)
           %td= link_to highlight(truncate(user.email, {:length => 20}), params[:search]), "mailto:#{user.email}"
           %td.study_name_popup{:'data-text' => user.study_name || 'keine Angabe' }

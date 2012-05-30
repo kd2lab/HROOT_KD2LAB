@@ -1,35 +1,18 @@
-Über Weihnachten:
+- fix jquery style (popup vs. date dropdown)
+- Filter glattziehen, weitere Filter einbauen
+- Schlüsselwörter in Texte einfügen
+- Standardmails bearbeiten, Accordion
+- todos suchen
+
+- bug nach import können mehrere experimentadmin sein
+- bug: active teilnehmer, was ist mit imported, not activated?
+- javascript bei registrierung raus
+- warnung über nicht akzeptierte nutzungsbedingungen rot!
+- Sprachen importieren?
+- import als extra seite
 
 
-Nutzer
-  Anzeige vervollständigen
-  Bearbeiten vervollständigen
 
-Anmeldung:
-  Passwortsicherheit prüfen
 
-Experimentansicht
-  Bessermachen,
-  Sessioncount, 
-  sortieren, 
-  pagination weg
 
-Sessionverwaltung:
-  Cronjob sessionabschluss
-  
-
-Filter für 
-  Sprachfähigkeiten
-  Nationalität
-  Beruf
-  Abschluss
-
-Generell:
-  Javascript Warnung
-  
-  
-Benachrichtigungsssite
-  jQuery-Tabs für Messages einführen
-  Standard-Text für Einladung
-  Textvorlagen für Einladungen
 

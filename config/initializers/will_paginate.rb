@@ -13,11 +13,11 @@ module WillPaginate
       end
 
       def page_number(page)
-        tag :li, link(page, page, :rel => rel_value(page)), :class => ('active' if page == current_page)
+        tag :li, link(page, page, :rel => rel_value(page), :'data-page' => page), :class => ('active' if page == current_page)
       end
 
       def previous_or_next_page(page, text, classname)
-        tag :li, link(text, page || '#'), :class => [classname[0..3], classname, ('disabled' unless page)].join(' ')
+        tag :li, link(text, page || '#', :'data-page' => page || '#'), :class => [classname[0..3], classname, ('disabled' unless page)].join(' ')
       end
       
       def gap

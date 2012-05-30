@@ -15,6 +15,14 @@ class ExperimentsControllerTest < ActionController::TestCase
       should respond_with :success
     end
     
+    context "get on invitation" do
+      setup do
+        get :invitation, :id => @experiment.id
+      end
+    
+      should respond_with :success
+    end
+    
     context "get on enable" do
       setup do
         @experiment.registration_active = false

@@ -21,6 +21,11 @@ class CreateExperiments < ActiveRecord::Migration
       t.integer  :invitation_hours
       t.boolean  :invitation_prefer_new_users, :default => false
       
+      t.boolean  :reminder_enabled, :default => false
+      t.string   :reminder_subject
+      t.text     :reminder_text
+      t.integer  :reminder_hours, :default => 48
+            
       t.string   :confirmation_subject, :default => "Anmeldebestätigung"
       t.text     :confirmation_text
       t.timestamps

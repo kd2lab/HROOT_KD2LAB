@@ -36,7 +36,7 @@ module CalendarHelper
           data-location="#{session.location.name if session.location}"
           data-expid="#{session.experiment.id}"
           data-sessionid="#{session.id}"
-          data-count="#{session.participations.count} (#{session.needed},#{session.reserve})"
+          data-count="#{session.session_participations.count} (#{session.needed},#{session.reserve})"
           data-exp="#{session.experiment.experimenters.collect{|u| u.firstname[0]+". "+u.lastname}.join(' | ')}">
           <a href="#{participants_experiment_session_path(session.experiment, session)}">#{session.start_at.strftime("%H:%M")}</a>
           <a href="#{experiment_sessions_path(session.experiment)}">#{h(truncate(session.experiment.name, :length => 8))}</a>

@@ -19,20 +19,6 @@ $ =>
     false
     
   
-  # select and deselect all checkboxes
-  $('a.all-link').click ->
-    $('form input[type=checkbox]').attr 'checked', true
-    false
-  
-  $('a.none-link').click ->
-    $('form input[type=checkbox]').attr 'checked', false
-    false
-  
-  # on submit of "all" check all boxes
-  $('.submit_all').click ->
-    $('form input[type=checkbox]').attr 'checked', true
-    
-    
   # add and remove url lines for settings
   $('a.add-url-link').click ->
     $('#url-tags').append('<span> ... <input id="mail_restrictions__prefix" name="mail_restrictions[][prefix]" type="text" value="" /> ... @ '+
@@ -40,3 +26,8 @@ $ =>
                 
   $('a.remove-url-link').click ->
     $('#url-tags span:last-child').remove()
+    
+  # open links in new window
+  $('.new-window').click ->
+    window.open this.href
+    return false

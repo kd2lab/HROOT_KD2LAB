@@ -1,9 +1,5 @@
-#fexperiment.filter-block{:style => filter_style('fexperiment')}
-  = render :partial => 'shared/close_link', :locals => {:name => 'fexperiment'} 
-  = hidden_field_tag "active[fexperiment]", params[:active][:fexperiment]
-  Teilnehmer, die  
-  = select_tag :exp_op, options_for_select(["zu einem der", "zu allen der", "zu keinem der"], params[:exp_op]), {:class => "span2"}
-  folgenden Experimente 
-  = select_tag :exp_op2, options_for_select(["zugeordnet sind", "teilgenommen haben"], params[:exp_op2]), {:class => "span2"}
+#fexperiment.filter-block{is_enabled(:exp_op)}
+  Teilnehmer,
+  = select_tag 'filter[exp_op]', options_for_select(["die zu einem der folgenden Experimente zugeordnet sind", "die zu allen der folgenden Experimente zugeordnet sind", "die zu keinem der folgenden Experimente zugeordnet sind", "die an mindestens einer Session eines der folgenden Experimente teilgenommen haben", "die an mindestens einer Session von jedem der folgenden Experimente teilgenommen haben", "die an keiner Session der folgenden Experimente teilgenommen haben"], params[:filter][:exp_op]), {:class => "span7"}
   %br
-  = select_tag :experiment, options_for_select(Experiment.order(:name).map{|s| [truncate(s.name), s.id]}, params[:experiment]), {:include_blank => true, :multiple => true, :class => "chzn-select", :'data-placeholder' => "Experimente...", :style=>"width:650px"}
+  = select_tag 'filter[experiment]', options_for_select(Experiment.order(:name).map{|s| [truncate(s.name), s.id]}, params[:filter][:experiment]), {:include_blank => true, :multiple => true, :class => "chzn-select", :'data-placeholder' => "Experimente...", :style=>"width:650px"}

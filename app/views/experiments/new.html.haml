@@ -1,7 +1,12 @@
 = content_for :breadcrumb do
-  &gt;
-  = link_to "Experimente", experiments_path
-  &gt;
-  Neues Experiment
+  = render :partial => "layouts/crumb", :object => [           |
+      link_to("Experimente", experiments_path),                 |
+      "Neues Experiment"]
+
+
+%h1 Neues Experiment
+
+%br
+%br
 
 = render 'form' 

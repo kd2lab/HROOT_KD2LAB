@@ -1,25 +1,25 @@
 = hidden_field_tag :direction, params[:direction]
 = hidden_field_tag :sort, params[:sort]
+= hidden_field_tag :page, params[:page] || 1
+
 
 .filter
   Suche in Name, Vorname, E-Mail-Adresse:
   %br
-  = text_field_tag :search, params[:search] 
+  = text_field_tag 'filter[search]', params[:filter][:search] 
   %br
   %br
-
+  
   Filter: 
   %br
-  - { 'gender' => 'Geschlecht', 'noshow' => 'Nichterscheinen', 'participated' => 'Teilnahmen', 'role' => 'Rolle', 'begin' => 'Studienbeginn', 'birthday' => "Alter", |
-      'study' => 'Fächer', 'language' => 'Sprachen', 'tags' => 'Tags', 'experiment' => 'Experimente', |        
+  - { 'gender' => 'Geschlecht', 'noshow' => 'Nichterscheinen', 'participated' => 'Teilnahmen', 'role' => 'Rolle', 'begin' => 'Studienbeginn', 'birthday' => "Alter",  |
+      'experience' => 'Erfahrung', 'study' => 'Fächer', 'degree' => 'Abschlüsse', 'language' => 'Sprachen', 'tags' => 'Tags', 'experiment' => 'Experimente', |        
       'preference' => 'Experiment-Präferenz'}.each do |key, value|
     %a.open-link{:href => '#f'+key}=value
     = '|' unless key == 'preference'
-  
- 
+   
   %br
   %br
-
 
   = render :partial => 'shared/filter_gender'
   = render :partial => 'shared/filter_noshow' 
@@ -27,13 +27,13 @@
   = render :partial => 'shared/filter_role'
   = render :partial => 'shared/filter_begin'
   = render :partial => 'shared/filter_birthday' 
+  = render :partial => 'shared/filter_experience' 
   = render :partial => 'shared/filter_study' 
+  = render :partial => 'shared/filter_degree' 
   = render :partial => 'shared/filter_language' 
   = render :partial => 'shared/filter_tags' 
   = render :partial => 'shared/filter_experiment' 
   = render :partial => 'shared/filter_preference'
-
-
 
 .searchinfo
   = submit_tag "Filter anwenden und Ergebnis aktualisieren", :name => 'submit_mode', :class => "btn btn-primary"
@@ -49,9 +49,19 @@
 
   = will_paginate @users,  :renderer => WillPaginate::ActionView::BootstrapLinkRenderer , :prev_label => "&lt;&lt;&nbsp;", :next_label => "&nbsp;&gt;&gt;"
 
+
+  .menu
+    = link_to "Nachricht an alle User der aktuellen Filterung", '#', :class => "btn send-message", :'data-to' => "Aktuell gefilterte User", :'data-mode' => 'all', :style => "float:left"
+    = link_to "Nachricht an alle markierten User", '#', :class => "btn send-message context-menu", :'data-to' => "Markierte User", :'data-mode' => 'selected', :style => "float:left"
+    
+  %br
+  %br
+  
+  
   %table.table
     %thead
       %tr
+        %th= check_box_tag "", "", false, :id => "select_all_users"
         %th= sortable_for_form 'lastname', 'Name'  
         %th= sortable_for_form 'role', 'Rolle'
         %th= sortable_for_form 'email', 'E-Mail'
@@ -65,6 +75,7 @@
     %tbody    
       - @users.each do |user| 
         %tr{:class => if user.deleted then "deleted" end}
+          %td= check_box_tag "selected_users[#{user.id}]", '1', false, :class => 'selected_users'
           %td= link_to highlight(truncate(user.lastname, {:length => 15}), params[:search])+', '+highlight(truncate(user.firstname, {:length => 10}), params[:search]), user_path(user)
           %td= {'user' => 'P', 'experimenter' => 'E', 'admin' => 'A'}[user.role]
           %td= link_to highlight(truncate(user.email, {:length => 15}), params[:search]), "mailto:#{user.email}"

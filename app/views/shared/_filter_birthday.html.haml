@@ -1,11 +1,9 @@
-#fbirthday.filter-block{:style => filter_style('fbirthday')}
-  = render :partial => 'shared/close_link', :locals => {:name => 'fbirthday'} 
-  = hidden_field_tag "active[fbirthday]", params[:active][:fbirthday]
+#fbirthday.filter-block{is_enabled(:birthday_von_month)}
   Geburtstag
   %br
   von
-  = select_tag :birthday_von_month, options_for_select((1..12), params[:birthday_von_month]), {:include_blank => true, :class => "span1"}
-  = select_tag :birthday_von_year, options_for_select((Time.now.year-65..Time.now.year-16), params[:birthday_von_year]), {:include_blank => true, :class => "span1"}
+  = select_tag 'filter[birthday_von_month]', options_for_select((1..12), params[:filter][:birthday_von_month]), {:include_blank => true, :class => "span1"}
+  = select_tag 'filter[birthday_von_year]', options_for_select((Time.now.year-65..Time.now.year-16), params[:filter][:birthday_von_year]), {:include_blank => true, :class => "span1"}
   bis
-  = select_tag :birthday_bis_month, options_for_select((1..12), params[:birthday_bis_month]), {:include_blank => true, :class => "span1"}
-  = select_tag :birthday_bis_year, options_for_select((Time.now.year-65..Time.now.year-16), params[:birthday_bis_year]), {:include_blank => true, :class => "span1"}
+  = select_tag 'filter[birthday_bis_month]', options_for_select((1..12), params[:filter][:birthday_bis_month]), {:include_blank => true, :class => "span1"}
+  = select_tag 'filter[birthday_bis_year]', options_for_select((Time.now.year-65..Time.now.year-16), params[:filter][:birthday_bis_year]), {:include_blank => true, :class => "span1"}

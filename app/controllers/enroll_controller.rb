@@ -13,24 +13,44 @@ class EnrollController < ApplicationController
   end
 
   def register
+    # create session participation if there is space (a) and user is not in the session already (b)
     sql = <<EOSQL
-      UPDATE 
-        participations,
-        (SELECT s.needed + s.reserve - count(p.id) as count
-        FROM sessions s, participations p 
-        WHERE p.session_id = s.id AND s.id = #{@session.id}) as c
-      SET
-        participations.session_id = #{@session.id}
+      INSERT INTO session_participations 
+      SELECT NULL, #{@session.id}, #{@user.id}, NULL, 0, 0, 0, NOW(), NOW() 
+      FROM sessions s
       WHERE
-        participations.session_id IS NULL AND participations.id = #{@participation.id} AND c.count > 0;
+        s.id = #{@session.id} AND
+        ( -- (a)
+          SELECT s.needed + s.reserve - count(sp.id) 
+          FROM session_participations sp 
+          WHERE sp.session_id = s.id
+        ) > 0 AND
+        ( -- (b)
+          SELECT count(sps.id) FROM session_participations sps
+          WHERE sps.session_id = s.id AND sps.user_id = #{@user.id}
+        ) = 0
 EOSQL
-    
+
+   
     ActiveRecord::Base.connection.execute(sql)
-    @participation.reload
+   
+    # check for result
+    @session_participation = SessionParticipation.find_by_user_id_and_session_id(@user.id, @session.id)
     
-    if @participation.session_id.to_i > 0
+    if @session_participation
       # successful registration - send confirmation mail
-      UserMailer.confirmation_email(@user, @session).deliver
+      text = @session.experiment.confirmation_text.to_s.mreplace({
+        "#firstname" => @user.firstname, 
+        "#lastname"  => @user.lastname,
+        "#session"  =>  @session.mail_string
+      })
+      
+      UserMailer.email(
+        @session.experiment.confirmation_subject,
+        text,
+        @user.main_email,
+        @session.experiment.sender_email
+      ).deliver
       
       redirect_to enroll_path(params[:code]), :notice => "Sie wurden verbindlich angemeldet."
     else
@@ -55,13 +75,14 @@ protected
 
   def load_session_and_participation
     @session = Session.find_by_id(params[:session])
+          
     unless @session
       redirect_to enroll_path(params[:code])
-      return
+      return 
     end
     
-    @participation = Participation.find_by_user_id_and_experiment_id(@user.id, @session.experiment_id)
-    unless @participation
+    @session_participation = SessionParticipation.find_by_user_id_and_session_id(@user.id, @session.id)
+    if @session_participation
       redirect_to enroll_path(params[:code])
       return
     end

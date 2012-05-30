@@ -34,7 +34,12 @@ class ProfessionsController < ApplicationController
   end
 
   def destroy
-    @profession.destroy
-    redirect_to professions_url, :notice => "Der Beruf wurde entfernt"
+    if @profession.users.count > 0
+      redirect_to(professions_url, :notice => "Der Beruf kann nicht gelöscht werden, da User mit diesem Beruf existieren.") 
+    else
+      @profession.destroy
+      redirect_to professions_url, :notice => "Der Beruf wurde entfernt"
+    end
+    
   end
 end

@@ -1,6 +1,4 @@
-#fgender.filter-block{:style => filter_style('fgender')}
-  = render :partial => 'shared/close_link', :locals => {:name => 'fgender'} 
-  = hidden_field_tag "active[fgender]", params[:active][:fgender]
+#fgender.filter-block{is_enabled(:gender)}
   Geschlecht:
   %br
-  = select_tag :gender, options_for_select({"männlich" => 'm', "weiblich" => 'f', 'keine Angabe' => '?'}, params[:gender]), :class => "span2"
+  = select_tag 'filter[gender]', options_for_select({"männlich" => 'm', "weiblich" => 'f', 'keine Angabe' => '?'}, params[:filter][:gender]), :class => "span2"

@@ -64,10 +64,13 @@ class UserTest < ActiveSupport::TestCase
       @s1 = Study.create(:name => "Subject 1")
       @s2 = Study.create(:name => "Subject 2")
       
-      @u1 = Factory(:user, :firstname => "Hugo", :study => @s1)
-      @u2 = Factory(:user, :lastname => "Boss", :study => @s1)
-      @u3 = Factory(:user, :email => "somebody@somewhere.net", :study => @s2)
-      @u4 = Factory(:user, :gender => 'f', :begin_month => 12, :begin_year => 2010, :study => @s2)
+      @d1 = Degree.create(:name => "Degree 1")
+      @d2 = Degree.create(:name => "Degree 2")
+      
+      @u1 = Factory(:user, :firstname => "Hugo", :study => @s1, :experience => true, :degree => @d1)
+      @u2 = Factory(:user, :lastname => "Boss", :study => @s1, :experience => false, :degree => @d2)
+      @u3 = Factory(:user, :email => "somebody@somewhere.net", :study => @s2, :degree => @d1)
+      @u4 = Factory(:user, :gender => 'f', :begin_month => 12, :begin_year => 2010, :study => @s2, :degree => @d2)
       @u5 = Factory(:user, :gender => 'f', :begin_month => 3, :begin_year => 2011)
       @u6 = Factory(:user, :gender => 'm', :begin_month => 6, :begin_year => 2011)
       @u7 = Factory(:user, :gender => 'm', :begin_month => 9, :begin_year => 2011)
@@ -93,12 +96,12 @@ class UserTest < ActiveSupport::TestCase
       @sess4 = Session.create(:experiment => @e4, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 20, :reserve => 4)
       @sess5 = Session.create(:experiment => @e2, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 20, :reserve => 4)
       
-      Participation.create(:user => @u1, :experiment => @e1, :session_id => @sess1.id)
-      Participation.create(:user => @u2, :experiment => @e1, :session_id => @sess1.id)
-      Participation.create(:user => @u3, :experiment => @e1, :session_id => @sess1.id)
-      Participation.create(:user => @u4, :experiment => @e1, :session_id => @sess1.id)
-      Participation.create(:user => @u5, :experiment => @e1, :session_id => @sess1.id)
-      Participation.create(:user => @u6, :experiment => @e1, :session_id => @sess1.id)
+      Participation.create(:user => @u1, :experiment => @e1)
+      Participation.create(:user => @u2, :experiment => @e1)
+      Participation.create(:user => @u3, :experiment => @e1)
+      Participation.create(:user => @u4, :experiment => @e1)
+      Participation.create(:user => @u5, :experiment => @e1)
+      Participation.create(:user => @u6, :experiment => @e1)
       SessionParticipation.create(:user => @u1, :session_id => @sess1.id, :showup => false, :noshow => true)
       SessionParticipation.create(:user => @u2, :session_id => @sess1.id, :showup => false, :noshow => true)
       SessionParticipation.create(:user => @u3, :session_id => @sess1.id, :showup => true)
@@ -106,17 +109,20 @@ class UserTest < ActiveSupport::TestCase
       SessionParticipation.create(:user => @u5, :session_id => @sess1.id, :showup => true, :participated => true)
       SessionParticipation.create(:user => @u6, :session_id => @sess1.id, :showup => true, :participated => true)
       
-      Participation.create(:user => @u3, :experiment => @e2, :session_id => @sess5.id)
-      Participation.create(:user => @u4, :experiment => @e2, :session_id => @sess5.id)
-      Participation.create(:user => @u5, :experiment => @e3, :session_id => @sess3.id)
-      Participation.create(:user => @u6, :experiment => @e4, :session_id => @sess4.id)
-      Participation.create(:user => @u7, :experiment => @e4, :session_id => @sess4.id)
+      Participation.create(:user => @u3, :experiment => @e2)
+      Participation.create(:user => @u4, :experiment => @e2)
+      Participation.create(:user => @u5, :experiment => @e3)
+      Participation.create(:user => @u6, :experiment => @e4)
+      Participation.create(:user => @u7, :experiment => @e4)
       SessionParticipation.create(:user => @u3, :session_id => @sess5.id, :showup => true, :participated => true)
       SessionParticipation.create(:user => @u4, :session_id => @sess5.id, :showup => true, :participated => true)
       SessionParticipation.create(:user => @u5, :session_id => @sess3.id, :showup => true, :participated => true)
       SessionParticipation.create(:user => @u6, :session_id => @sess4.id, :showup => true, :participated => true)
       SessionParticipation.create(:user => @u7, :session_id => @sess4.id, :showup => true, :participated => true)
       
+      
+      Participation.create(:user => @u9, :experiment => @e3)
+      SessionParticipation.create(:user => @u9, :session_id => @sess5.id, :showup => false, :participated => false)
       Participation.create(:user => @u9, :experiment => @e1)
       Participation.create(:user => @u9, :experiment => @e2)
     end
@@ -126,67 +132,78 @@ class UserTest < ActiveSupport::TestCase
     end
       
     should "return all users with empty filtering when deleted are included " do
-      assert_same_elements User.all, User.load({}, 'firstname', '', nil, {:include_deleted_users => true} )
+      assert_same_elements User.all, User.load({}, {:include_deleted_users => true} )
     end
     
     should "filter for gender" do
-        assert_same_elements [@u4, @u5], User.load({:gender => 'f', :active => {:fgender => '1'} })
-        assert_same_elements [@admin, @experimenter, @u1, @u2, @u3, @u6, @u7, @u9], User.load({:gender => 'm', :active => {:fgender => '1'} })
+        assert_same_elements [@u4, @u5], User.load({ :filter => {:gender => 'f'}})
+        assert_same_elements [@admin, @experimenter, @u1, @u2, @u3, @u6, @u7, @u9], User.load({ :filter => {:gender => 'm'}})
     end
     
+    should "filter for experience" do
+        assert_same_elements [@u1], User.load({ :filter => {:experience => '1'}})
+        assert_same_elements [@u2], User.load({ :filter => {:experience => '0'}})
+    end
     
     should "find by email, name and lastname" do
-      assert_equal [@u1], User.load(:search => 'uGO')
-      assert_equal [@u2], User.load(:search => 'Bos')
-      assert_equal [@u3], User.load(:search => 'omewher')
+      assert_equal [@u1], User.load({ :filter => {:search => 'uGO'}})
+      assert_equal [@u2], User.load({ :filter => {:search => 'Bos'}})
+      assert_equal [@u3], User.load({ :filter => {:search => 'omewher'}})
     end
     
     should "filter for role" do 
-      assert_equal [@admin], User.load({:role => 'admin', :active => {:frole => '1'} })
-      assert_equal [@experimenter], User.load({:role => 'experimenter', :active => {:frole => '1'} })
-      assert_same_elements User.where(:role => 'user', :deleted => false), User.load({:role => 'user', :active => {:frole => '1'} })
+      assert_equal [@admin], User.load({ :filter => {:role => 'admin' }})
+      assert_equal [@experimenter], User.load({ :filter => {:role => 'experimenter'}})
+      assert_same_elements User.where(:role => 'user', :deleted => false), User.load({ :filter => {:role => 'user'}})
     end
     
     should "filter for showup correctly" do
-      assert_same_elements [@u3, @u4, @u5, @u6, @u7, @u9].map(&:id), User.load({:noshow => '0', :noshow_op => "<=", :role => 'user', :active => {:fnoshow => '1', :frole => '1'} }).map(&:id)
-      assert_same_elements [@u1, @u2], User.load({:noshow => '0', :noshow_op => ">", :active => {:fnoshow => '1'} })
+      assert_same_elements [@u3, @u4, @u5, @u6, @u7, @u9].map(&:id), User.load({ :filter => {:noshow => '0', :noshow_op => "<=", :role => 'user'}}).map(&:id)
+      assert_same_elements [@u1, @u2], User.load({ :filter => { :noshow => '0', :noshow_op => ">"}})
     end
     
     should "filter for participations correctly" do
-      assert_same_elements [@u5, @u6], User.load({:participated => '1', :participated_op => ">", :active => {:fparticipated => '1'} })
+      assert_same_elements [@u5, @u6], User.load({ :filter => {:participated => '1', :participated_op => ">"}})
     end
     
     should "filter for studybegin" do
-      assert_same_elements [@u6, @u7], User.load({:begin_von_month => 5, :begin_von_year => 2011, :active => {:fbegin => '1'} })
-      assert_same_elements [@u6, @u7], User.load({:begin_von_month => 6, :begin_von_year => 2011, :active => {:fbegin => '1'} })
-      assert_same_elements [@u4, @u5], User.load({:begin_bis_month => 5, :begin_bis_year => 2011, :active => {:fbegin => '1'} })
-      assert_same_elements [@u5, @u6], User.load({:begin_von_month => 1, :begin_von_year => 2011, :begin_bis_month => 8, :begin_bis_year => 2011, :active => {:fbegin => '1'} })
+      assert_same_elements [@u6, @u7], User.load({ :filter => {:begin_von_month => 5, :begin_von_year => 2011} })
+      assert_same_elements [@u6, @u7], User.load({ :filter => {:begin_von_month => 6, :begin_von_year => 2011} })
+      assert_same_elements [@u4, @u5], User.load({ :filter => {:begin_bis_month => 5, :begin_bis_year => 2011} })
+      assert_same_elements [@u5, @u6], User.load({ :filter => {:begin_von_month => 1, :begin_von_year => 2011, :begin_bis_month => 8, :begin_bis_year => 2011} })
     end
     
+    
+    
     should "filter for study" do
-      assert_same_elements [@u1, @u2, @u3, @u4], User.load({:study => [@s1.id, @s2.id], :active => {:fstudy => '1'} })
-      assert_same_elements [@u5, @u6, @u7, @u9], User.load({:study => [@s1.id, @s2.id], :study_op => "Ohne", :role => 'user', :active => {:fstudy => '1', :frole => '1'} })
+      assert_same_elements [@u1, @u2, @u3, @u4], User.load({ :filter => {:study => [@s1.id, @s2.id]}})
+      assert_same_elements [@u5, @u6, @u7, @u9], User.load({ :filter => {:study => [@s1.id, @s2.id], :study_op => "Ohne", :role => 'user'} })
+    end
+    
+    should "filter for degree" do
+      assert_same_elements [@u1, @u2, @u3, @u4], User.load({ :filter => {:degree => [@d1.id, @d2.id]}})
+      assert_same_elements [@u5, @u6, @u7, @u9], User.load({ :filter => {:degree => [@d1.id, @d2.id], :degree_op => "Ohne", :role => 'user'} })
     end
     
     should "filter tags" do      
-      assert_same_elements [], User.load({"exp_tag0" => @tag1, "exp_tag_op1" => ["Mindestens"], "exp_tag_op2" => ["5"], :exp_tag_count => "1", :active => {:ftags => '1'} })
-      assert_same_elements [@u5, @u6], User.load({"exp_tag0" => @tag1, "exp_tag1" => @tag3, "exp_tag_op1" => ["Mindestens", "Mindestens"], "exp_tag_op2" => ["1", "1"], :exp_tag_count => "2", :active => {:ftags => '1'} })
-      assert_same_elements [@u1, @u2, @u3, @u4, @u7, @u9], User.load({"exp_tag0" => @tag1, "exp_tag_op1" => ["Höchstens"], "exp_tag_op2" => ["0"], :exp_tag_count => "1", :role => 'user', :active => {:ftags => '1', :frole => '1'} })    
+      assert_same_elements [], User.load({ :filter => {"exp_tag0" => @tag1, "exp_tag_op1" => ["Mindestens"], "exp_tag_op2" => ["5"], :exp_tag_count => "1"}})
+      assert_same_elements [@u5, @u6], User.load({ :filter => {"exp_tag0" => @tag1, "exp_tag1" => @tag3, "exp_tag_op1" => ["Mindestens", "Mindestens"], "exp_tag_op2" => ["1", "1"], :exp_tag_count => "2"} })
+      assert_same_elements [@u1, @u2, @u3, @u4, @u7, @u9], User.load({ :filter => {"exp_tag0" => @tag1, "exp_tag_op1" => ["Höchstens"], "exp_tag_op2" => ["0"], :exp_tag_count => "1", :role => 'user'} })    
     end
     
     should "filter for experiments" do
-      assert_same_elements [@u1, @u2, @u3, @u4, @u5, @u6, @u9], User.load({:experiment => [@e1.id, @e2.id], :exp_op => "zu einem der", :active => {:fexperiment => '1'} })
-      assert_same_elements [@u5], User.load({:experiment => [@e1.id, @e3.id], :exp_op => "zu allen der", :active => {:fexperiment => '1'} })
-      assert_same_elements [@u7], User.load({:experiment => [@e1.id, @e2.id], :exp_op => "zu keinem der", :role => "user", :active => {:fexperiment => '1', :frole => '1'} })
+      assert_same_elements [@u1, @u2, @u3, @u4, @u5, @u6, @u9], User.load({ :filter => {:experiment => [@e1.id, @e2.id], :exp_op => "die zu einem der folgenden Experimente zugeordnet sind"} })
+      assert_same_elements [@u5, @u9], User.load({ :filter => {:experiment => [@e1.id, @e3.id], :exp_op => "die zu allen der folgenden Experimente zugeordnet sind"} })
+      assert_same_elements [@u7], User.load({ :filter => {:experiment => [@e1.id, @e2.id], :exp_op => "die zu keinem der folgenden Experimente zugeordnet sind", :role => "user"} })
       
-      assert_same_elements [@u3, @u4, @u5, @u6], User.load({:experiment => [@e1.id, @e2.id], :exp_op => "zu einem der", :exp_op2 => "teilgenommen haben", :active => {:fexperiment => '1'} })
-      assert_same_elements [@u5], User.load({:experiment => [@e1.id, @e3.id], :exp_op => "zu allen der", :exp_op2 => "teilgenommen haben",  :active => {:fexperiment => '1'} })
-      assert_same_elements [@u1, @u2, @u7, @u9], User.load({:experiment => [@e1.id, @e2.id], :exp_op => "zu keinem der", :exp_op2 => "teilgenommen haben", :role => "user", :active => {:fexperiment => '1', :frole => '1'} })
+      assert_same_elements [@u3, @u4, @u5, @u6], User.load({ :filter => {:experiment => [@e1.id, @e2.id], :exp_op => "die an mindestens einer Session eines der folgenden Experimente teilgenommen haben"} })
+      assert_same_elements [@u5], User.load({ :filter => {:experiment => [@e1.id, @e3.id], :exp_op => "die an mindestens einer Session von jedem der folgenden Experimente teilgenommen haben"} })
+      assert_same_elements [@u1, @u2, @u7, @u9], User.load({ :filter => {:experiment => [@e1.id, @e2.id], :exp_op => "die an keiner Session der folgenden Experimente teilgenommen haben", :role => "user"} })
     end
     
     should "in- or exclude experiment members" do
-      assert_same_elements [@u1, @u2, @u3, @u4, @u5, @u6, @u9], User.load({}, 'lastname', 'ASC', experiment = @e1, {:exclude_non_participants => true})
-      assert_same_elements [@u7], User.load({ :role => "user", :active => {:frole => '1'}}, 'lastname', 'ASC', experiment = @e1, {:exclude_experiment_participants => true})
+      assert_same_elements [@u1, @u2, @u3, @u4, @u5, @u6, @u9], User.load({}, {:experiment => @e1, :exclude_non_participants => true})
+      assert_same_elements [@u7], User.load({ :filter => { :role => "user"}}, {:experiment => @e1, :exclude_experiment_participants => true})
     end
     
     should "find available sessions" do
@@ -217,23 +234,23 @@ class UserTest < ActiveSupport::TestCase
       @e3_s2 = Factory(:future_session, :experiment => @e3, :reference_session_id => @e3_s1.id)
       @e3_s3 = Factory(:past_session  , :experiment => @e3)
       
-      Participation.create(:user => @u1, :experiment => @e1, :session_id => @e1_s1.id)
+      Participation.create(:user => @u1, :experiment => @e1)
       SessionParticipation.create(:user => @u1, :session_id => @e1_s1.id, :showup => true, :participated => true)
       SessionParticipation.create(:user => @u1, :session_id => @e1_s2.id, :showup => true, :participated => true)
       SessionParticipation.create(:user => @u1, :session_id => @e1_s3.id, :showup => true, :participated => true)
       
-      Participation.create(:user => @u1, :experiment => @e2, :session_id => @e2_s1.id)
+      Participation.create(:user => @u1, :experiment => @e2)
       SessionParticipation.create(:user => @u1, :session_id => @e2_s1.id, :noshow => true)
       SessionParticipation.create(:user => @u1, :session_id => @e2_s2.id, :noshow => true)
       
-      Participation.create(:user => @u1, :experiment => @e2, :session_id => @e3_s1.id)
+      Participation.create(:user => @u1, :experiment => @e2)
       SessionParticipation.create(:user => @u1, :session_id => @e3_s1.id, :showup => true, :participated => true)
       SessionParticipation.create(:user => @u1, :session_id => @e3_s2.id, :showup => true, :participated => true)
       
     end
     
     should "count correct numbers for show and noshow" do
-      user =  User.load({:search => 'Hugo'}).first
+      user =  User.load({ :filter => {:search => 'Hugo'}}).first
       
       assert_equal 2, user.participations_count
       assert_equal 1, user.noshow_count

@@ -1,0 +1,5 @@
+#fdegree.filter-block{is_enabled(:degree_op)}
+  = select_tag 'filter[degree_op]', options_for_select(["Nur", "Ohne"], params[:filter][:degree_op])
+  Teilnehmer mit folgenden Abschlüssen:
+  %br
+  = select_tag 'filter[degree]', options_for_select(Degree.all.map{|s| [s.name, s.id]}, params[:filter][:degree]), {:include_blank => true, :multiple => true, :class => "chzn-select", :'data-placeholder' => "Abschlüsse...", :style=>"width:650px"}

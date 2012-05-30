@@ -15,8 +15,6 @@
       %br
       Bitte geben Sie Ihre E-Mail-Adresse und ein Passwort an - diese Daten dienen als Zugangsdaten. Das Passwort muss mindestens 8 Zeichen lang sein und einen Buchstaben, eine Zahl und ein Sonderzeichen enthalten.
 
-
-
     = simple_form_for resource, :as => resource_name, :url => registration_path(resource_name), :html => {:class => 'form-horizontal'} do |f| 
       %br
       - if Settings.mail_restrictions && Settings.mail_restrictions.map{|r| r['suffix']}.select{|r| !r.blank?}.count > 0  
@@ -45,7 +43,9 @@
       = f.input :matrikel, :required => false
       = f.input :phone, :hint => "Eine Angabe erlaubt es uns, Sie schnell zu erreichen, wenn z.B. ein Experiment abgesagt werden muss."
       = f.input :country_name, :priority => [ "Germany" ], :blank => true
-
+      
+      
+      
       %br
       %hr
       Die folgenden Felder sind optional. Je mehr dieser Felder Sie jedoch ausfüllen, umso höher ist die Wahrscheinlichkeit, dass wir Sie zu bestimmten Experimenten einladen.
@@ -60,13 +60,14 @@
       = f.input :preference, :collection => {'Präsenz- und Online-Experimenten' => 0, 'nur Präsenz-Experimente' => 1, 'nur Online-Experimente' => 2}, :default => 0
 
       = f.input :study_id, :collection => Study.all.map{|s| [s.name, s.id]}
-      = f.input :degree, :collection => ['Bachelor', 'Master', 'Diplom', 'Magister', 'Staatsexamen']
+      = f.input :degree, :collection => Degree.all.map{|s| [s.name, s.id]}
       = f.input :begin_month, :collection => 1..12, :as => :select, :required => false
       = f.input :begin_year, :collection => (Date.today.year-10 .. Date.today.year), :as => :select, :required => false
-      %br
-      %br
       = f.input :profession_id, :collection => Profession.all.map{|s| [s.name, s.id]}
-  
+      .checkbox-wrapper
+        = f.check_box :experience 
+        Ich habe bereits an wirtschaftswissenschaftlichen Experimenten teilgenommen.
+        
       %br
       %hr
   

@@ -15,6 +15,11 @@ class CreateSessions < ActiveRecord::Migration
       
       t.text :limitations
       
+      t.boolean  :reminder_enabled, :default => false
+      t.string   :reminder_subject
+      t.text     :reminder_text
+      t.integer  :reminder_hours, :default => 48
+
       t.integer :time_before, :default => 0
       t.integer :time_after, :default => 0
       

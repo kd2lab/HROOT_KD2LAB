@@ -1,20 +1,21 @@
-#ftags.filter-block{:style => filter_style('ftags')}
-  = render :partial => 'shared/close_link', :locals => {:name => 'ftags'} 
-  = hidden_field_tag "active[ftags]", params[:active][:ftags]
+#ftags.filter-block{is_enabled(:exp_tag_count)}
   
-  - count = (params[:exp_tag_count] || "1").to_i
-  = hidden_field_tag :exp_tag_count, count
+  - count = (params[:filter][:exp_tag_count] || "1").to_i
+  - tag_ops1 = params[:filter]["exp_tag_op1"] || []
+  - tag_ops2 = params[:filter]["exp_tag_op2"] || []
   
-  Nur Teilnehmer mit folgenden Teilnahmen an Experimenten mit Tags:
+  = hidden_field_tag 'filter[exp_tag_count]', count
+  
+  Nur Teilnehmer mit folgenden Teilnahmen an Sessions von Experimenten mit Tags:
   %br
   %br
   
   - 10.times do |i|
     %div{:id => "exp_filter_#{i}", :style => i < count ? "" : "display:none"}
-      = select_tag "exp_tag_op1[]", options_for_select(["Mindestens", "Höchstens"], params[:exp_tag_op1][i]), :class => "span2"
-      = select_tag "exp_tag_op2[]", options_for_select((0..10), params["exp_tag_op2"][i]), :class => "span1"
-      mal an einem Experiment mit Tag
-      = select_tag "exp_tag#{i}", options_for_select(ActsAsTaggableOn::Tag.order(:name).map{|s| [s.name, s.name]}, params["exp_tag#{i}"]), {:include_blank => true, :class => "chzn-select", :'data-placeholder' => "Tags...", :style=>"width:150px"}
+      = select_tag "filter[exp_tag_op1][]", options_for_select(["Mindestens", "Höchstens"], tag_ops1[i]), :class => "span2"
+      = select_tag "filter[exp_tag_op2][]", options_for_select((0..10), tag_ops2[i]), :class => "span1"
+      mal an einer Session eines Experiments mit Tag
+      = select_tag "filter[exp_tag#{i}]", options_for_select(ActsAsTaggableOn::Tag.order(:name).map{|s| [s.name, s.name]}, params[:filter]["exp_tag#{i}"]), {:include_blank => true, :class => "chzn-select", :'data-placeholder' => "Tags...", :style=>"width:150px"}
       teilgenommen
       %br
   

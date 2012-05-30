@@ -15,7 +15,7 @@
   = f.input :country_name, :priority => [ "Germany" ], :include_blank => true
   %br
   = f.input :study_id, :collection => Study.all.map{|s| [s.name, s.id]}, :include_blank => "keine Angabe"
-  = f.input :degree, :collection => ['Bachelor', 'Master', 'Diplom', 'Magister', 'Staatsexamen']
+  = f.input :degree_id, :collection => Degree.all.map{|s| [s.name, s.id]}, :include_blank => "keine Angabe"
   = f.input :begin_month, :collection => (1..12)
   = f.input :begin_year, :collection => (Time.now.year-10..Time.now.year)
   %br
@@ -25,6 +25,8 @@
   = f.input :lang3, :collection => Language.all.map{|s| [s.name, s.id]}, :as => :select, :required => false, :wrapper_html => {:style => "display:none", :id => 'lang3'}
   %br
   = f.input :profession_id, :collection => Profession.all.map{|s| [s.name, s.id]}
+  %br
+  = f.input :experience, :label => "Experimenterfahrung" 
   %br
   = f.input :deleted, :label => "Benutzer ist als gelöscht markiert" 
   

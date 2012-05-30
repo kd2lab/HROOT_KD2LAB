@@ -6,13 +6,14 @@
 
 
 = render :partial => "experiments/enrollment"
-  
+= render :partial => "shared/messaging" 
+
 %h1
   = @experiment.name 
   
 = render :partial => "experiments/tabs", :locals => {:selected => "Zugeordnete"} 
 
 %br
-= form_tag experiment_participants_path(@experiment), :method => 'post', :id => "participant_search" do
+= form_tag experiment_participants_path(@experiment), :method => 'post', :id => "user_search" do
   #participants
     = render 'participants'

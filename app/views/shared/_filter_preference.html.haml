@@ -1,6 +1,4 @@
-#fpreference.filter-block{:style => filter_style('fpreference')}
-  = render :partial => 'shared/close_link', :locals => {:name => 'fpreference'} 
-  = hidden_field_tag "active[fpreference]", params[:active][:fpreference]
+#fpreference.filter-block{is_enabled(:preference)}
   %p
     Experiment-Präferenz:
-  = select_tag :preference, options_for_select({"Nur Teilnehmer, die an Präsenz-Experimenten teilnehmen wollen" => 1, "Nur Teilnehmer, die an Online-Experimenten teilnehmen wollen" => 2}, params[:preference]), {:style => "width: 650px"}
+  = select_tag 'filter[preference]', options_for_select({"Nur Teilnehmer, die an Präsenz-Experimenten teilnehmen wollen" => 1, "Nur Teilnehmer, die an Online-Experimenten teilnehmen wollen" => 2}, params[:filter][:preference]), {:style => "width: 650px"}

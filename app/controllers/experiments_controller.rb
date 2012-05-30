@@ -42,10 +42,7 @@ class ExperimentsController < ApplicationController
   end
   
   def autocomplete_tags
-    l = User.where(["firstname LIKE ?", params[:query]+"%"]).limit(20).collect{|e|e.firstname}    
-    l = Experiment.tag_counts_on('tags').where(["name LIKE ?", params[:query]+'%'])
-    
-    render :json => l.collect{|e| e.name}
+    render :json =>  Experiment.tag_counts_on('tags').where(["name LIKE ?", params[:query]+'%']).collect{|e| e.name}
   end
 
   def update
@@ -109,6 +106,12 @@ class ExperimentsController < ApplicationController
   
   def save_mail_text
     render :text => "Der Text wurde erfolgreich gespeichert."
+  end
+  
+  def reminders
+    if params[:experiment] && @experiment.update_attributes(params[:experiment])
+      flash[:notice] = 'Die Einstellungen zur Erinnerung wurden erfolgreich gespeichert.'
+    end
   end
   
   def mail

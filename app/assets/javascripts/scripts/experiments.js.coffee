@@ -16,31 +16,14 @@ $ ->
     $.get this.action, $(this).serialize(), null, 'script'  
     false
     
-  # close button on filters and reopen
-  $('a.close-link').click ->
-    $($(this).attr('href')).fadeOut()
-    $("input[id=active_#{$(this).attr('href').substring(1)}]").val("")
-    false
+  
+  $('.accordion .toggle').hide();
 
-  $('a.open-link').click ->
-    $($(this).attr('href')).fadeIn()
-    $("input[id=active_#{$(this).attr('href').substring(1)}]").val("1")
-    false
-
-  # add and remove buttons for experiment type
-  $('a.add-link').click ->
-    i = parseInt $('#exp_tag_count').val()
-    if i < 10
-       $('#exp_filter_'+i).fadeIn()
-       $('#exp_tag_count').val i+1
-    false
-
-  $('a.remove-link').click ->
-    i = parseInt $('#exp_tag_count').val()-1
-    if i > 0
-       $('#exp_filter_'+i).fadeOut()
-       $('#exp_tag_count').val i
-    false
+  $('.accordion td h3').click ->
+    $(this).parent().find('.toggle').slideToggle(200)
+    $(this).parent().find('i').toggleClass('icon-chevron-right')
+    $(this).parent().find('i').toggleClass('icon-chevron-down')
+    
 
   # ajax for enabling and disabling of experiment enrollment
   $('#state_button_enable').live 'click', ->
@@ -48,3 +31,19 @@ $ ->
     
   $('#state_button_disable').live 'click', ->
     $("#state").load "/admin/experiments/"+$(this).attr("data-id")+"/disable"
+
+
+  check_form_enabling = ->
+    if $('#reminder_check').attr('checked')
+      $('.subpart').css('color', '')
+      $('.subpart :input').removeAttr('disabled')
+    else
+      $('.subpart').css('color', '#999')
+      $('.subpart :input').attr('disabled', 'disabled')
+  
+  
+  check_form_enabling()
+  
+  # enabling / disabling the reminder
+  $('#reminder_check').click ->
+    check_form_enabling()

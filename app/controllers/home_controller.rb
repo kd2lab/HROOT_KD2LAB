@@ -52,9 +52,23 @@ class HomeController < ApplicationController
    
     User.delete_all
     Study.delete_all
-     
+    Session.delete_all
+    Experiment.delete_all
+    ExperimenterAssignment.delete_all
+    Participation.delete_all
+    SessionParticipation.delete_all
+    Location.delete_all
+    ActsAsTaggableOn::Tag.delete_all
+    ActsAsTaggableOn::Tagging.delete_all
+    Message.delete_all
+    Recipient.delete_all
+    Filter.delete_all
+    Language.delete_all
+    Degree.delete_all
+    
     # import admins
     @report << "--------- ADMINS ------------"
+    
     db[:or_admin].each do |row|
       u = User.new(
         :email => row[:email], 
@@ -74,13 +88,22 @@ class HomeController < ApplicationController
         @report << u.email+" "+u.errors.inspect
       end
     end
-         
+        
+    # prepare Study table
+    studies={}
+    db[:or_lang].where(:content_type => "field_of_studies").collect{|row| studies[row[:content_name]] = {:name => row[:de]} }    
+    studies.each do |key, row|
+      unless row[:name] == '-'
+        row[:id] = Study.find_or_create_by_name(row[:name]).id
+      end
+    end
+    
     # import users
     @report << "--------- USERS ------------"
     db[:or_participants].each do |row|
-      field_of_studies = db[:or_lang].first(:content_type => "field_of_studies", :content_name => row[:field_of_studies])
-      unless field_of_studies[:de] == '-'
-        study_id = Study.find_or_create_by_name(field_of_studies[:de]).id
+      field_of_studies = studies[row[:field_of_studies].to_s]
+      unless field_of_studies[:name] == '-'
+        study_id = field_of_studies[:id]
       else
         study_id = nil
       end
@@ -115,15 +138,16 @@ class HomeController < ApplicationController
         :begin_year => y,
         :birthday => '1.1.1900',
         :deleted => row[:deleted] == 'y',
-        :study_id => study_id
+        :study_id => study_id,
+        :created_at => Date.new(1970,1,1)+row[:creation_time].seconds
       )
       
       u.skip_confirmation!
       u.save
       
       # set correct creation date
-      u.created_at = Date.new(1970,1,1)+row[:creation_time].seconds
-      u.save
+      #u.created_at = Date.new(1970,1,1)+row[:creation_time].seconds
+      #u.save(:validate => false)
       
       if !u.valid?
         @report << u.email+" "+u.errors.inspect
@@ -141,17 +165,27 @@ class HomeController < ApplicationController
     h = User.new :firstname => 'Harald', :lastname => 'Wypior', :email => "harald.wypior@ovgu.de", :role => "admin", :password => 'tester_1', :password_confirmation => 'tester_1', :matrikel => '1'
     h.skip_confirmation!
     h.save
-    
+  
     # import experiments
     @report << "--------- EXPERIMENTS ------------"
-    Session.delete_all
-    Experiment.delete_all
-    ExperimenterAssignment.delete_all
-    Participation.delete_all
-    SessionParticipation.delete_all
-    Location.delete_all
-    ActsAsTaggableOn::Tag.delete_all
-    ActsAsTaggableOn::Tagging.delete_all
+    
+    
+    # create default Languages
+    Language.create(:name => "Deutsch")
+    Language.create(:name => "Englisch")
+    Language.create(:name => "Französisch")
+    Language.create(:name => "Italienisch")
+    Language.create(:name => "Spanisch")
+    Language.create(:name => "Chinesisch")
+
+    # create default degrees
+    Degree.create(:name => "Bachelor")
+    Degree.create(:name => "Master")
+    Degree.create(:name => "Diplom")
+    Degree.create(:name => "Lehramt")
+    Degree.create(:name => "Magister")
+    
+    
     
     db[:or_experiments].each do |row|
       # load type string
@@ -245,12 +279,12 @@ class HomeController < ApplicationController
             else
               # only allow onw Participation
               unless Participation.find_by_user_id_and_experiment_id(user.id, e.id)
-                Participation.create(
+                p = Participation.new(
                   :experiment_id => e.id,
-                  :session_id => s.id,
                   :user_id => user.id,
                   :invited_at => part[:invited] == 'y' ? Time.zone.now : nil
                 )
+                p.save(:validate => false)
                 
                 sp = SessionParticipation.new(
                   :session_id => s.id,
@@ -261,9 +295,9 @@ class HomeController < ApplicationController
                 ) 
                 
                 # only build session participations with interesting information
-                if sp.showup || sp.noshow
-                  sp.save
-                end
+                #if sp.showup || sp.noshow
+                sp.save(:validate => false)
+                #end
               end
             end
           end
@@ -278,12 +312,12 @@ class HomeController < ApplicationController
             @report << or_user[:email]+" not found"
           else
             unless Participation.find_by_user_id_and_experiment_id(user.id, e.id)
-              Participation.create(
+              p = Participation.new(
                 :experiment_id => e.id,
-                :session_id => nil,
                 :user_id => user.id,
                 :invited_at => part[:invited] == 'y' ? Time.zone.now : nil,
               )
+              p.save(:validate => false)
               
             end
           end

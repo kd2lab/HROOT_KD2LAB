@@ -34,15 +34,23 @@ Hroot::Application.routes.draw do
     resources :locations, :except => :show
     resources :languages, :except => :show    
     resources :professions, :except => :show
+    resources :studies, :except => :show
+    resources :degrees, :except => :show
 
     match 'experiments/tag/:tag', :as => 'tagged_experiment', :controller => 'experiments', :action => 'tag'
 
     resources :experiments, :except => :show do
+      collection do
+        get :autocomplete_tags
+      end
+      
       member do
         get :enable
         get :disable
         get :mail
         post :mail
+        get :reminders
+        post :reminders
         get :invitation
         post :invitation
         post :save_mail_text
@@ -58,7 +66,7 @@ Hroot::Application.routes.draw do
           post :duplicate
           get :participants
           post :participants
-          post :send_messages
+          get :print
         end
       end
 

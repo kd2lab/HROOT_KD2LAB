@@ -1,12 +1,4 @@
-update_menu = ->
-  if $('.selected_users:checked').size() > 0
-    $('.move-menu').fadeIn('fast')
-  else
-    $('.move-menu').fadeOut('fast')
-    
-
-$ -> 
-  
+$ ->   
   update_checkboxes = ->
     $('#all_show').attr('checked', $('.show_checkbox:not(:checked)').size() == 0)
     $('#all_participation').attr('checked', $('.participation_checkbox:not(:checked)').size() == 0)
@@ -31,13 +23,18 @@ $ ->
       $('.noshow_checkbox[data-id='+$(this).attr('data-id')+']').attr('checked', false)
     update_checkboxes()
 
-  $('#move_member').change ->
-    $('form').submit()
+  
+  
+  
+  # Teilnehmer verschieben
+  $('.move_member_link').click ->
+    if $(this).attr('data-confirm') && !confirm($(this).attr('data-confirm'))
+      return false
     
-  update_menu()
-  $('.selected_users').click ->
-    update_menu()
-    
+    $('#move_member').val($(this).attr('data-value'))
+    $('#user_search').submit()
+    return false
+  
   update_checkboxes()
   $('#all_show').click ->
     if $(this).is(':checked')      
@@ -48,7 +45,7 @@ $ ->
       $('.participation_checkbox').attr('checked', false)
     update_checkboxes()
     
-  $('#all_participation').live 'click', ->
+  $('#all_participation').click ->
     if $(this).is(':checked')
     #  $('#all_show').attr('checked', true)
       $('.show_checkbox').attr('checked', true)
@@ -67,22 +64,5 @@ $ ->
       $('.participation_checkbox').attr('checked', false)
     update_checkboxes()
     
-  $('#open-message-box').click ->
-	  $('#dialog-form').dialog 'open'
-	  
-	  
-  $('#dialog-form').dialog(autoOpen: false,
-    modal: true
-    width: 800
-    height: 520
-    buttons: { 
-      "Nachrichten senden": -> 
-        $('#dialog_form').submit()
-        $( this ).dialog( "close" )
-      "Abbrechen": -> ($( this ).dialog( "close" ))	
-    }
-    create: -> 
-      $(".ui-widget-header").hide()
-      $('.ui-button').addClass('btn') 
-      $('.ui-button:eq(0)').addClass('btn-primary').css('margin-right', '5px') 
-  )     
+  
+  

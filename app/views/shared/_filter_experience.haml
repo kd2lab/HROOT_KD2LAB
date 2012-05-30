@@ -1,0 +1,4 @@
+#fexperience.filter-block{is_enabled(:experience)}
+  Externe Experimenterfahrung:
+  %br
+  = select_tag 'filter[experience]', options_for_select({"Ohne Teilnehmer, die bereits externe Experimenterfahrung haben" => '0', "Nur Teilnehmer, die bereits externe Experimenterfahrung haben" => '1'}, params[:filter][:experience]), :class => "span6"

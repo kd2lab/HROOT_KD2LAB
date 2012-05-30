@@ -22,11 +22,12 @@ class DeviseCreateUsers < ActiveRecord::Migration
       t.string :calendar_key
       t.boolean :deleted, :default => false
       t.integer :study_id
-      t.string :degree
+      t.string :degree_id
       t.string :country_name
       t.integer :begin_month
       t.integer :begin_year
       t.integer :preference
+      t.boolean :experience
       
       t.integer :lang1
       t.integer :lang2

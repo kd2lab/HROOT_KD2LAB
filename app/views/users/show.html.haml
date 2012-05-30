@@ -36,7 +36,7 @@
       %td= @user.study.name if @user.study
     %tr
       %td Abschluss(-ziel)
-      %td= @user.degree  
+      %td= @user.degree.name if @user.degree  
     %tr
       %td Studienbegin
       %td= "#{@user.begin_month}/#{@user.begin_year}"
@@ -66,18 +66,18 @@
   
   %table.table
     %tbody  
-      - @user.participations.includes(:session).joins(:experiment).where("sessions.id = sessions.reference_session_id").order("sessions.start_at").each do |p|
+      - @user.session_participations.includes(:session).where('sessions.id=sessions.reference_session_id').order("sessions.start_at").each do |sp|
       
         %tr
           %td
-            = truncate(p.experiment.name, :length => 60)
+            = truncate(sp.session.experiment.name, :length => 60)
             %br
-            - ([p.session] + p.session.following_sessions).each do |s|
-              = link_to s.time_str, participants_experiment_session_path(p.experiment, s)
+            - ([sp.session] + sp.session.following_sessions).each do |s|
+              = link_to s.time_str, participants_experiment_session_path(s.experiment, s)
               %br
           %td
             %br
-            - ([p.session] + p.session.following_sessions).each do |s|
+            - ([sp.session] + sp.session.following_sessions).each do |s|
               - if ptable[s.id] && ptable[s.id].showup
                 %span.label.label-success
                   Erschienen
@@ -87,7 +87,7 @@
               %br
           %td
             %br
-            - ([p.session] + p.session.following_sessions).each do |s|
+            - ([sp.session] + sp.session.following_sessions).each do |s|
               - if ptable[s.id] && ptable[s.id].participated
                 %span.label.label-success
                   Teilgenommen

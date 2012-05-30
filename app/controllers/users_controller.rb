@@ -6,9 +6,36 @@ class UsersController < ApplicationController
   helper_method :sort_column, :sort_direction
   
   def index
-    params[:active] = {} unless params[:active]
+    # filters are only in session, when message was sent
+    if session[:filter]
+      params[:filter] = session[:filter]
+      session[:filter] = nil
+    end
     
-    @users = User.load(params, sort_column, sort_direction, nil, {:include_deleted_users => 1, :paginate => true})
+    params[:filter] = params[:filter] || {}
+
+    if params[:message] && params[:message][:action] == 'send'
+      message = Message.create(
+        :sender_id => current_user.id,
+        :experiment_id => nil,
+        :subject => params[:message][:subject],
+        :message =>  params[:message][:text]
+      )
+      
+      if (params[:message][:mode] == 'all')
+        ids =  User.load_ids(params, {:sort_column => sort_column, :sort_direction => sort_direction})
+      elsif (params[:message][:mode] == 'selected')
+        ids = params['selected_users'].keys.map(&:to_i)
+      end  
+      
+      Recipient.insert_bulk(message, ids)
+      
+      # store filters in session to enable redirect
+      session[:filter] = params[:filter]
+      redirect_to(users_path, :flash => {:notice => "Nachricht(en) wurden in die Mailqueue eingetragen."})
+    end  
+    
+    @users = User.paginate(params, {:sort_column => sort_column, :sort_direction => sort_direction, :include_deleted_users => 1})
     @user_count = User.count
   end
   
