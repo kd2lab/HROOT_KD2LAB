@@ -23,7 +23,7 @@ gem 'capistrano-ext'
 # gem 'ruby-debug'
 gem 'ruby-debug19', :require => 'ruby-debug'
 gem 'haml'
-# gem "rails-settings", :git => "git://github.com/100hz/rails-settings.git"
+gem "rails-settings"   #, :git => "git://github.com/100hz/rails-settings.git"
 gem 'sequel'
 gem 'jquery-rails', '>= 1.0.12'
 gem 'will_paginate', '3.0.pre4' 
