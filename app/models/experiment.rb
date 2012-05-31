@@ -88,9 +88,5 @@ class Experiment < ActiveRecord::Base
       .all
   end
   
-  # todo remove this, make configurable
-  def set_default_mail_texts
-    self.confirmation_text = "Hallo,\n\nSie haben sich erfolgreich zu folgender Experiment-Session angemeldet:\n\n#session\n\nViele Grüße,\nIhr Laborteam"  
-    self.invitation_text = "Hallo #firstname #lastname,\n\nwir möchten Sie gerne dazu einladen, bei einer der folgenden Experiment-Sessions teilzunehmen:\n\n#sessions\n\nSie können sich zu den Sessions mit folgedem Link anmelden:\n\n#link\n\nViele Grüße,\nIhr Laborteam"  
-  end
+  
 end

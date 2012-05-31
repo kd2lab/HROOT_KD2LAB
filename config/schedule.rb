@@ -38,5 +38,5 @@ every 1.days do
 end
 
 every 1.days do
-  runner "Session.send_reminders_for_incomplete_sessions"  
+  runner "Task.send_reminders_for_incomplete_sessions"  
 end

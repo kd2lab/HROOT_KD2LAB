@@ -30,7 +30,6 @@ class EnrollController < ApplicationController
           WHERE sps.session_id = s.id AND sps.user_id = #{@user.id}
         ) = 0
 EOSQL
-
    
     ActiveRecord::Base.connection.execute(sql)
    
@@ -42,7 +41,9 @@ EOSQL
       text = @session.experiment.confirmation_text.to_s.mreplace({
         "#firstname" => @user.firstname, 
         "#lastname"  => @user.lastname,
-        "#session"  =>  @session.mail_string
+        "#session_date"  => @session.start_at.strftime("%d.%m.%Y"),
+        "#session_start_time" => @session.start_at.strftime("%H:%M"),
+        "#session_end_time" => @session.end_at.strftime("%H:%M")
       })
       
       UserMailer.email(

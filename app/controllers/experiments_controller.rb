@@ -20,7 +20,6 @@ class ExperimentsController < ApplicationController
 
   def new
     @experiment = Experiment.new
-    @experiment.set_default_mail_texts
   end
 
   def edit
@@ -30,7 +29,12 @@ class ExperimentsController < ApplicationController
 
   def create
     @experiment = Experiment.new(params[:experiment])
-    @experiment.set_default_mail_texts
+    @experiment.invitation_subject = Settings.invitation_subject
+    @experiment.invitation_text = Settings.invitation_text
+    @experiment.confirmation_subject = Settings.confirmation_subject
+    @experiment.confirmation_text = Settings.confirmation_text
+    @experiment.reminder_subject = Settings.reminder_subject
+    @experiment.reminder_text = Settings.reminder_text
     
     if @experiment.save
       @experiment.update_experiment_assignments(params[:experiment_helper], "experiment_helper")
@@ -109,8 +113,13 @@ class ExperimentsController < ApplicationController
   end
   
   def reminders
-    if params[:experiment] && @experiment.update_attributes(params[:experiment])
-      flash[:notice] = 'Die Einstellungen zur Erinnerung wurden erfolgreich gespeichert.'
+   
+    if params[:experiment]
+      params[:experiment][:reminder_hours] = 48 if params[:experiment][:reminder_hours].to_i == 0
+       
+      if @experiment.update_attributes(params[:experiment])
+        flash[:notice] = 'Die Einstellungen zur Erinnerung wurden erfolgreich gespeichert.'
+      end
     end
   end
   

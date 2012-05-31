@@ -35,12 +35,9 @@ $ ->
 
   check_form_enabling = ->
     if $('#reminder_check').attr('checked')
-      $('.subpart').css('color', '')
-      $('.subpart :input').removeAttr('disabled')
+      $('.subpart').show()
     else
-      $('.subpart').css('color', '#999')
-      $('.subpart :input').attr('disabled', 'disabled')
-  
+      $('.subpart').hide()
   
   check_form_enabling()
   

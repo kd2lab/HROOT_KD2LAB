@@ -14,26 +14,27 @@
   
 %br
 
-.menu
-  = link_to "Drucken", print_experiment_session_path(@experiment, @session), :class => "btn new-window", :style => "float:right"
-  = link_to "Nachricht an alle Session-Teilnehmer", '#', :class => "btn send-message", :'data-to' => "Alle Sessionteilnehmer", :'data-subject'=> "Experiment-Session am "+ @session.time_str, :'data-mode' => 'all',  :style => "float:left"
-  = link_to "Nachricht an alle markierten Teilnehmer", '#', :class => "btn send-message context-menu", :'data-to' => "Markierte Sessionteilnehmer", :'data-subject'=> "Experiment-Session am "+ @session.time_str, :'data-mode' => 'selected', :style => "float:left"
-  
-  .btn-group.context-menu{:style => "float:left"}
-    %a.btn.dropdown-toggle{:'data-toggle' => "dropdown", :href => "#"}
-      Markierte Teilnehmer
-      %b.caret 
-    %ul.dropdown-menu
-      %li= link_to "Markierte Teilnehmer aus dieser Session austragen.", '#', :class => 'move_member_link', :'data-value' => 0
-      - @session.alternative_sessions.each  do |s|
-        %li= link_to "Markierte Teilnehmer in Session #{s.time_str} verschieben", '#', :class => 'move_member_link', :'data-value' => s.id
-  
-  
-  %br
-  %br
+
   
 - if @users.count > 0
-
+  .menu
+    = link_to "Drucken", print_experiment_session_path(@experiment, @session), :class => "btn new-window", :style => "float:right"
+    = link_to "Nachricht an alle Session-Teilnehmer", '#', :class => "btn send-message", :'data-to' => "Alle Sessionteilnehmer", :'data-subject'=> "Experiment-Session am "+ @session.time_str, :'data-mode' => 'all',  :style => "float:left"
+    = link_to "Nachricht an alle markierten Teilnehmer", '#', :class => "btn send-message context-menu", :'data-to' => "Markierte Sessionteilnehmer", :'data-subject'=> "Experiment-Session am "+ @session.time_str, :'data-mode' => 'selected', :style => "float:left"
+  
+    .btn-group.context-menu{:style => "float:left"}
+      %a.btn.dropdown-toggle{:'data-toggle' => "dropdown", :href => "#"}
+        Markierte Teilnehmer
+        %b.caret 
+      %ul.dropdown-menu
+        %li= link_to "Markierte Teilnehmer aus dieser Session austragen.", '#', :class => 'move_member_link', :'data-value' => 0
+        - @session.alternative_sessions.each  do |s|
+          %li= link_to "Markierte Teilnehmer in Session #{s.time_str} verschieben", '#', :class => 'move_member_link', :'data-value' => s.id
+  
+  
+    %br
+    %br
+  
   %table.table
     %thead
       %tr

@@ -2,7 +2,7 @@ $ ->
 	$('#message_dialog').dialog(autoOpen: false,
     modal: true
     width: 800
-    height: 730
+    height: 600
     buttons: {
       "Nachrichten senden": -> 
         $('#message_action').val('send')

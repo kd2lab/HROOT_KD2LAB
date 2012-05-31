@@ -18,16 +18,8 @@ class SessionsController < ApplicationController
     @session.end_at = @session.start_at + 90.minutes
     
     @session.reference_session_id ||= params[:reference_session_id]
-    
-    render :action => "index" 
   end
-
-  def edit
-    @session = Session.find(params[:id])
-    
-    render :action => "index" 
-  end
-
+  
   def create
     begin
       params[:session][:start_at] = Time.zone.parse  "#{params[:session][:start_date]} "
@@ -42,6 +34,8 @@ class SessionsController < ApplicationController
     
     @session = Session.new(params[:session])
     @session.experiment = @experiment
+    @session.reminder_subject = Settings.reminder_subject
+    @session.reminder_text = Settings.reminder_text
     
     if @session.save
       if (@session.id != @session.reference_session_id)
@@ -50,12 +44,16 @@ class SessionsController < ApplicationController
           SessionParticipation.create(:session => @session, :user => sp.user)
         end
       end  
-      redirect_to(experiment_sessions_path(@experiment), :flash => { :id => @session.id, :message => "Es wurde eine neue Session angelegt"})
+      redirect_to(experiment_sessions_path(@experiment), :notice => "Es wurde eine neue Session angelegt")
     else
-      render :action => "index" 
+      render :action => "new" 
     end
   end
 
+  def edit
+    @session = Session.find(params[:id])
+  end
+  
   def update
     @session = Session.find(params[:id])
     
@@ -72,9 +70,16 @@ class SessionsController < ApplicationController
     params[:session].delete :duration
     
     if @session.update_attributes(params[:session])
-      redirect_to(experiment_sessions_path(@experiment), :flash => { :id => @session.id })
+      redirect_to(experiment_sessions_path(@experiment), :notice => "Die Session-Änderungen wurden gespeichert.")
     else
       render :action => "edit" 
+    end
+  end
+  
+  def reminders
+    @session = Session.find(params[:id])    
+    if params[:session] && @session.update_attributes(params[:session])
+      flash[:notice] = 'Die Einstellungen zur Erinnerung wurden erfolgreich gespeichert.'
     end
   end
   
@@ -94,16 +99,16 @@ class SessionsController < ApplicationController
     # only delete sessions without subsessions and without participants
     if @s
       if @s.following_sessions.count > 0 
-        flash[:message] = "Sessions mit Folgesessions können nicht gelöscht werden."
+        message = "Sessions mit Folgesessions können nicht gelöscht werden."
       elsif @s.session_participations.count.to_i > 0
-        flash[:message] = "Sessions mit Teilnehmern können nicht gelöscht werden."
+        message = "Sessions mit Teilnehmern können nicht gelöscht werden."
       else  
         @s.destroy
-        flash[:message] = "Die Session wurde gelöscht."
+        message = "Die Session wurde gelöscht."
       end
     end
     
-    redirect_to :action => "index"
+    redirect_to({:action => "index"}, :alert => message)
   end
   
   def print
@@ -134,7 +139,7 @@ class SessionsController < ApplicationController
       )
       
       if (params[:message][:mode] == 'all')        
-        ids = @session.participations.collect{|p| p.user_id}
+        ids = @session.session_participations.collect{|p| p.user_id}
       elsif (params[:message][:mode] == 'selected')
         ids = params['selected_users'].keys.map(&:to_i)
       end  

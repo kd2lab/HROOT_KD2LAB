@@ -1,14 +1,14 @@
-- fix jquery style (popup vs. date dropdown)
-- Filter glattziehen, weitere Filter einbauen
-- Schlüsselwörter in Texte einfügen
-- Standardmails bearbeiten, Accordion
 - todos suchen
+- email ändern
+- persönliche Daten ändern
+- perönliche daten ansehen
+- account deaktivieren
+- remove standard account deactivate
+
 
 - bug nach import können mehrere experimentadmin sein
 - bug: active teilnehmer, was ist mit imported, not activated?
 - javascript bei registrierung raus
-- warnung über nicht akzeptierte nutzungsbedingungen rot!
-- Sprachen importieren?
 - import als extra seite
 
 

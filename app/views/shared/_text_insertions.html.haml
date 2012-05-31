@@ -1,0 +1,9 @@
+.text-insertions{:'data-element-id' => element_id}
+  .btn-group
+    %a.btn.dropdown-toggle{:'data-toggle' => 'dropdown', :href => '#'}
+      Daten einfügen
+      %span.caret
+    
+    %ul.dropdown-menu.insertion-menu
+      - data.each do |name|
+        %li= link_to name, "", :class => 'insert_text', :'data-name' => name

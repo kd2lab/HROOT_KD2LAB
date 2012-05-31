@@ -1,0 +1,72 @@
+= content_for :breadcrumb do
+  %ul.breadcrumb
+    %li
+      =link_to "Login-Bereich", :controller => "account", :action => "index"
+      %span.divider
+        &gt;
+    %li.active
+      Account-Optionen
+
+%h3 Account-Optionen
+
+= render :partial => "tabs", :locals => {:selected => "Datenüberblick"} 
+
+%h3 Datenübersicht 
+Folgende Daten sind bei hroot gespeichert, bitte wenden Sie sich zu Datenänderungen an die Laborleitung.
+%br
+%br
+
+%table.table
+  %thead
+    %tr
+      %td Name
+      %td
+        = "#{current_user.lastname}, #{current_user.firstname}"      
+  %tbody
+    %tr
+      %td E-Mail
+      %td= current_user.email
+    %tr
+      %td Geschlecht
+      %td= {'m' => 'männlich', 'f' => 'weiblich', '?' => "keine Angabe" }[current_user.gender]
+    %tr
+      %td Geburtsdatum
+      %td= current_user.birthday.strftime('%d.%m.%Y')
+    %tr
+      %td Matrikelnummer
+      %td= current_user.matrikel
+    - unless current_user.country_name.blank?
+      %tr
+        %td Land
+        %td= current_user.country_name
+    - if current_user.preference
+      %tr
+        %td Interesse an
+        %td= ['Präsenz- und Online-Experimenten', 'nur Präsenz-Experimente', 'nur Online-Experimente'][current_user.preference]
+    
+    - if current_user.study
+      %tr
+        %td Studiengang
+        %td= current_user.study.name
+    
+    %tr
+      %td Sprachkenntnisse
+      %td= current_user.languages.join(',')
+
+    - if current_user.degree
+      %tr
+        %td Abschluss(-ziel)
+        %td= current_user.degree.name   
+    - if current_user.begin_month.to_i > 0
+      %tr
+        %td Studienbeginn
+        %td= "#{current_user.begin_month}/#{current_user.begin_year}"
+    - unless current_user.phone.blank?
+      %tr
+        %td Telefon 
+        %td= current_user.phone
+    - if current_user.profession
+      %tr
+        %td Beruf
+        %td=  current_user.profession.name
+

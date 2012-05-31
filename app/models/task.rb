@@ -29,12 +29,14 @@ EOSQL
       text = text.to_s.mreplace({
         "#firstname" => sp.user.firstname, 
         "#lastname"  => sp.user.lastname,
-        "#session"  => sp.session.mail_string
+        "#session_date"  => sp.session.start_at.strftime("%d.%m.%Y"),
+        "#session_start_time" => sp.session.start_at.strftime("%H:%M"),
+        "#session_end_time" => sp.session.end_at.strftime("%H:%M")
       })
       
       # only deliver mails with subject and text
       unless text.blank? || subject.blank?      
-        UserMailer.email(sp.user.main_email, sp.session.experiment, subject, text).deliver
+        UserMailer.email(subject, text, sp.user.main_email, sp.session.experiment.sender_email).deliver
         sp.reminded_at = Time.zone.now
         sp.save
       end
@@ -89,7 +91,7 @@ EOSQL
         text = experiment.invitation_text.to_s.mreplace({
           "#firstname" => u.firstname, 
           "#lastname"  => u.lastname,
-          "#sessions"  => experiment.open_sessions.map{|s| s.start_at.strftime("%d.%m.%Y, %H:%M Uhr") }.join("\n"),
+          "#sessionlink"  => experiment.open_sessions.map{|s| s.start_at.strftime("%d.%m.%Y, %H:%M Uhr") }.join("\n"),
           "#link"      => Rails.application.routes.url_helpers.enroll_url(u.create_code)
         })
         
@@ -136,5 +138,25 @@ EOSQL
     end
     
   end  
+  
+  def self.send_reminders_for_incomplete_sessions
+    # send an email for each session
+    Session.incomplete_sessions.each do |session|
+      subject = Settings.session_finish_subject
+      text = Settings.session_finish_text.to_s.mreplace({
+        "#experiment_name" => session.experiment.name, 
+        "#session_date"  => session.start_at.strftime("%d.%m.%Y"),
+        "#session_start_time" => session.start_at.strftime("%H:%M"),
+        "#session_end_time" => session.end_at.strftime("%H:%M")
+      })
+          
+      # only deliver mails with subject and text
+      unless text.blank? || subject.blank?      
+        session.experiment.experimenters.where("experimenter_assignments.role='experiment_admin'").each do |user|
+          UserMailer.email(subject, text, user.main_email).deliver
+        end
+      end
+    end  
+  end
   
 end

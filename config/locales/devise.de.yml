@@ -35,7 +35,7 @@ de:
     registrations:
       signed_up: 'Sie haben sich erfolgreich registriert. Es kann sein, dass Sie eine Aktivierungs-E-Mail erhalten.'
       inactive_signed_up: 'Sie haben sich erfolgreich registriert. Sie werden in Kürze eine Aktivierungs-E-Mail erhalten.'
-      updated: 'Die Angaben wurden erfolgreich geändert.'
+      updated: 'Das Passwort wurde erfolgreich geändert.'
       destroyed: 'Ihr Zugang wurde erfolgreich gelöscht.'
     unlocks:
       send_instructions: 'Sie erhalten in wenigen Minuten eine E-Mail mit der Anleitung, wie Sie Ihren Zugang entsperren können.'

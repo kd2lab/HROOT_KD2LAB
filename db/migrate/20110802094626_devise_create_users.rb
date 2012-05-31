@@ -37,6 +37,15 @@ class DeviseCreateUsers < ActiveRecord::Migration
       t.string   :secondary_email
       t.datetime :secondary_email_confirmed_at
       t.string   :secondary_email_confirmation_token
+
+      t.string   :change_email
+      t.string   :change_email_confirmation_token
+
+      t.boolean :imported, :default => false
+      t.boolean :activated_after_import, :default => false
+      t.string  :import_email
+      t.string  :import_email_confirmation_token
+      
       
       t.timestamps
     end

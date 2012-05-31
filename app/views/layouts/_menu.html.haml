@@ -2,7 +2,7 @@
   - if current_user
     %li.nav-header Allgemein
     %li= link_to "Home", account_path
-    %li= link_to "Account-Optionen", :controller => "account", :action => "options"
+    %li= link_to "Account-Optionen", account_data_path
     
     
     - if can? :manage, :all

@@ -25,7 +25,17 @@ class OptionsController < ApplicationController
   end
 
   def emails
-
+    if params[:invitation_subject]
+      Settings.invitation_subject = params[:invitation_subject]
+      Settings.invitation_text = params[:invitation_text]
+      Settings.confirmation_subject = params[:confirmation_subject]
+      Settings.confirmation_text = params[:confirmation_text]
+      Settings.reminder_subject = params[:reminder_subject]
+      Settings.reminder_text = params[:reminder_text]
+      Settings.session_finish_subject = params[:session_finish_subject]
+      Settings.session_finish_text = params[:session_finish_text]
+      redirect_to options_emails_path, :notice => "Die Mailtexte wurden gespeichert"
+    end
   end
 
 end

@@ -1,0 +1,33 @@
+= content_for :breadcrumb do
+  %ul.breadcrumb
+    %li
+      =link_to "Login-Bereich", :controller => "account", :action => "index"
+      %span.divider
+        &gt;
+    %li.active
+      Account-Optionen
+
+%h3 Account-Optionen
+
+= render :partial => "account/tabs", :locals => {:selected => "Passwort"} 
+
+%h3 Passwort ändern
+
+%br
+
+= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put }) do |f| 
+
+  = f.label :password 
+  = f.password_field :password
+
+  = f.label :password_confirmation
+  = f.password_field :password_confirmation
+
+  %br
+  %br
+  Bitte geben Sie das aktuelle Passwort zur Bestätigung ein
+  %br
+  = f.password_field :current_password
+  %br
+  %br
+  = f.submit "Passwort ändern", :class => "btn btn-primary"

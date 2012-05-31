@@ -14,14 +14,5 @@ class ApplicationController < ActionController::Base
       dashboard_url
     end
   end
-  
-  layout :layout_by_resource
 
-  def layout_by_resource
-    if devise_controller? # && action_name == 'new'
-      "plain"
-    else
-      "application"
-    end
-  end
 end

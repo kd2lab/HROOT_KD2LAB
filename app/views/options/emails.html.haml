@@ -8,3 +8,98 @@
       Einstellungen
   
 = render :partial => "tabs", :locals => {:selected => "E-Mails"} 
+
+
+= form_tag options_emails_path, :method => "post", :class => "form-horizontal" do
+  %table.table.accordion  
+    %tr
+      %td 
+        %i.icon-chevron-right.btn-mini.accordion-icon
+           
+        %h3
+          Standard-E-Mail-Text zur Experiment-Einladung
+        .toggle
+          %br
+          Betreff
+          %br
+          = text_field_tag :invitation_subject, Settings.invitation_subject, :class => "span8"
+          %br
+          %br
+
+          .templated-field-header.span10 
+            = render :partial => 'shared/text_insertions', :locals => {:data => ['#firstname', '#lastname', '#sessionlist', '#link'], :element_id => 'invitation_text' }
+
+            Einladungstext
+          = text_area_tag :invitation_text, Settings.invitation_text, :rows => 5, :class => "span8"
+          %br
+    %tr
+      %td  
+        %i.icon-chevron-right.btn-mini.accordion-icon
+        
+        %h3
+          Standard-E-Mail-Text zur Anmeldebestätigung
+        .toggle
+          %br
+          Betreff
+          %br
+          = text_field_tag :confirmation_subject, Settings.confirmation_subject, :class => "span8"
+          %br
+          %br
+
+          .templated-field-header.span10
+            = render :partial => 'shared/text_insertions', :locals => {:data => ['#firstname', '#lastname', '#session_date', '#session_start_time', '#session_end_time'], :element_id => 'confirmation_text' }
+
+            Bestätigungstext
+  
+          = text_area_tag :confirmation_text, Settings.confirmation_text, :rows => 5, :class => "span8"
+          %br
+    %tr
+      %td  
+        %i.icon-chevron-right.btn-mini.accordion-icon
+        
+        %h3
+          Standard-E-Mail-Text zur Session-Erinnerung
+        .toggle
+          %br
+          Betreff
+          %br
+          = text_field_tag :reminder_subject, Settings.reminder_subject, :class => "span8"
+          %br
+          %br
+
+          .templated-field-header.span10
+            = render :partial => 'shared/text_insertions', :locals => {:data => ['#firstname', '#lastname', '#session_date', '#session_start_time', '#session_end_time'], :element_id => 'reminder_text' }
+
+            Bestätigungstext
+  
+          = text_area_tag :reminder_text, Settings.reminder_text, :rows => 5, :class => "span8"
+          %br
+    %tr
+      %td  
+        %i.icon-chevron-right.btn-mini.accordion-icon
+        
+        %h3
+          Standard-E-Mail-Text zur Erinnerung des Sessionabschluss
+        .toggle
+          %br
+          Betreff
+          %br
+          = text_field_tag :session_finish_subject, Settings.session_finish_subject, :class => "span8"
+          %br
+          %br
+
+          .templated-field-header.span10
+            = render :partial => 'shared/text_insertions', :locals => {:data => ['#experiment_name', '#session_date', '#session_start_time', '#session_end_time'], :element_id => 'session_finish_text' }
+
+            Bestätigungstext
+  
+          = text_area_tag :session_finish_text, Settings.session_finish_text, :rows => 5, :class => "span8"
+          %br
+    
+  = submit_tag "Mailtexte speichern", :name => "test", :class => "guarded_form_save btn btn-primary"
+  
+
+   
+        
+    	
+    

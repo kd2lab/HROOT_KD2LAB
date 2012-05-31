@@ -19,7 +19,7 @@
   %br  
     
   = f.check_box :reminder_enabled, :id => "reminder_check"
-  automatischen Erinnerungsverand aktivieren
+  automatischen Erinnerungsversand aktivieren
   %br
   %br
   .subpart
@@ -36,6 +36,8 @@
 
     .templated-field-header.span8 
       = render :partial => 'shared/text_templates', :locals => {:data => current_user.settings.templates, :element_id => 'experiment_reminder_text' }
+      = render :partial => 'shared/text_insertions', :locals => {:data => ['#firstname', '#lastname', '#session_date', '#session_start_time', '#session_end_time'], :element_id => 'experiment_reminder_text' }
+
       Erinnerungstext
     = f.text_area :reminder_text, :rows => 5, :class => "span8"
     %br

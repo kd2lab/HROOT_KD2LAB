@@ -1,5 +1,8 @@
 class RegistrationsController < Devise::RegistrationsController
-  layout "plain"
+  
+  def index
+    super
+  end
 
   def new
     super

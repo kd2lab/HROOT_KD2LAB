@@ -13,16 +13,15 @@ class UserMailer < ActionMailer::Base
     end
   end
     
-  def experimenter_message(experiment, subject, text)
-    # todo diese mails später an die experimentatoren schicken
-    mail(:from => UserMailer.default[:from], :to => "mail@ingmar.net", :subject => subject) do |format|
-      format.text { render :text => text }
-    end
-  end
-  
   def secondary_email_confirmation(user)
     @user = user
     mail(:to => user.secondary_email, :subject => "Bestätigung der alternativen E-Mail-Adresse")
   end    
+  
+  def change_email_confirmation(user)
+    @user = user
+    mail(:to => user.change_email, :subject => "Bestätigung der neuen E-Mail-Adresse")
+  end    
+  
   
 end

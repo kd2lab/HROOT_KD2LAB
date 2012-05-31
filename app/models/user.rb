@@ -38,7 +38,7 @@ class User < ActiveRecord::Base
   validates :secondary_email, :email => true, :allow_blank => true
     
   # http://www.zorched.net/2009/05/08/password-strength-validation-with-regular-expressions/                                        
-  validates_format_of :password, :with => /^.*(?=.{8,})(?=.*[a-zA-Z])(?=.*[\W_])(?=.*[\d]).*$/, :on => :create
+  validates_format_of :password, :with => /^.*(?=.{8,})(?=.*[a-zA-Z])(?=.*[\W_])(?=.*[\d]).*$/
   
   after_create :set_defaults
   

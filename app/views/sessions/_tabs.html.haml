@@ -1,0 +1,9 @@
+= render :partial => "layouts/tabs",                                                                            |
+           :locals => {                                                                                         |
+             :selected => selected,                                                                             |
+             :links => [                                                                                        |
+               {:title => "Allgemeine Daten", :url=> edit_experiment_session_path(@experiment, @session)},        |
+               {:title => "Session-Erinnerung", :url => reminders_experiment_session_path(@experiment, @session)}  |
+             ]                                                                                                  |
+           }                                                                                                    |
+

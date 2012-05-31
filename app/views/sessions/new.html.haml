@@ -13,14 +13,13 @@
 
 = render :partial => "experiments/tabs", :locals => {:selected => "Sessions"}
 
-
-= link_to 'Neue Session anlegen', new_experiment_session_path(@experiment), :class => "btn btn-primary"
+= link_to "Zurück zur Session-Übersicht", experiment_sessions_path(@experiment), :class => "btn"
 
 %br
 %br
+%h2= "Neue #{@session.is_subsession? ? "Folgesession" : "Session"} anlegen"
+  
+%br
 
-%table.table
-  - @sessions.each do |session| 
-    = render :partial => 'line', :locals => {:session => session}
-    - session.following_sessions.each do |subsession|
-      = render :partial => 'line', :locals => {:session => subsession}
+
+= render 'form' 

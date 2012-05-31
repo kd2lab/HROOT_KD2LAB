@@ -1,37 +1,15 @@
-- if edit
-  = render :partial => 'form', :locals => {:session => session, :subsession => subsession}  
--else
-  %div{:id => "session"+session.id.to_s, :class => 'sessionline '+(subsession ? 'subsession' : '')}
-  
-    
-
-    
-    .right-col
-
-      .btn-group
-        =link_to "Bearbeiten", edit_experiment_session_path(@experiment, session), :class => 'session_edit btn btn-primary'
-        %a.btn.dropdown-toggle{:'data-toggle' => "dropdown", :href => "#"}
-          Aktionen
-          %b.caret
-        %ul.dropdown-menu
-          - unless subsession
-            %li= link_to 'Folgesession', new_experiment_session_path(:experiment_id => @experiment, :reference_session_id => session.id), :class => "session_new_subsession"
-          %li= link_to "Duplizieren", duplicate_experiment_session_path(@experiment, session), :class => 'session_duplicate'
-          %li= link_to "Löschen", experiment_session_path(@experiment, session), :class => 'session_delete', :confirm => "Soll diese Session wirklich gelöscht werden?"
-
-  
-          
-      
+%tr{:class =>if session.is_subsession? then "subsession" else "" end}
+  %td
     %span.time{:class => if session.end_at < Time.zone.now then "past" end}
-       
-      = '+' if subsession
+   
+      = '+' if session.is_subsession?
       = session.time_str
-  
+
     .room
       =truncate(session.location.name, :length => 30) if session.location
-      
-    - r = subsession ? session.reference_session : session
-    
+  
+    - r = session.is_subsession? ? session.reference_session : session
+
     .participants
       - surplus = r.session_participations.count - r.needed
 
@@ -43,9 +21,23 @@
           "participants-green"          |
         end                             |
       = link_to "Teilnehmer: #{r.session_participations.count} (#{r.needed},#{r.reserve})#{", Gruppengröße: "+session.group_size.to_s if session.group_size}", participants_experiment_session_path(@experiment, session), :class => css_class
-      
+  
       - if session.end_at < Time.zone.now then
         - if session.session_participations.where('showup=0 AND participated=0 AND noshow=0').count > 0
           %span.session-warning
             Teilnahmeliste noch nicht vollständig
-      
+  
+  %td
+    .btn-group{:style => 'float:left'}
+      = link_to "Bearbeiten", edit_experiment_session_path(@experiment, session), :class => 'btn btn-primary'
+      = link_to "Teilnehmer", participants_experiment_session_path(@experiment, session), :class => 'btn'
+  
+    .btn-group{:style => 'float:left'}
+      %a.btn.dropdown-toggle{:'data-toggle' => "dropdown", :href => "#"}
+        Aktionen
+        %b.caret
+      %ul.dropdown-menu
+        - unless session.is_subsession?
+          %li= link_to 'Folgesession', new_experiment_session_path(:experiment_id => @experiment, :reference_session_id => session.id), :class => "session_new_subsession"
+        %li= link_to "Duplizieren", duplicate_experiment_session_path(@experiment, session)
+        %li= link_to "Löschen", experiment_session_path(@experiment, session), :method => :delete, :confirm => "Soll diese Session wirklich gelöscht werden?"

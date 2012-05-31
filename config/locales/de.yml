@@ -50,6 +50,9 @@ de:
         password: Passwort
         password_confirmation: Passwort wdh.
         preference: Interesse an
+        change_email: E-Mail ändern
+        current_password: Aktuelles Passwort
+        
       experiment:
         tag_list: Tags
         description: Beschreibung
@@ -85,7 +88,7 @@ de:
             password: 
               confirmation: muss wiederholt werden
               too_short: ist zu kurz (mind. 8 Zeichen)
-              invalid: Sonderzeichen fehlen!
+              invalid: Sonderzeichen fehlen (mind. eine Zahl und ein Sonderzeichen)!
             password_confirmation:
               too_short: ist zu kurz (mind. 8 Zeichen) 
             terms_and_conditions:

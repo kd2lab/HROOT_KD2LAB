@@ -94,10 +94,6 @@ class Session < ActiveRecord::Base
     start_at.strftime("%H:%M")+" - "+end_at.strftime("%H:%M")
   end
     
-  def mail_string
-    "todo: session repräsentation"
-  end
-    
   def following_sessions
     Session.where(["experiment_id = ? AND reference_session_id = ? AND id <> reference_session_id", self.experiment_id, self.id]).order('start_at').all
   end
@@ -150,18 +146,8 @@ EOSQL
     Session.in_the_past.where('(SELECT count(s.id) FROM session_participations s WHERE s.session_id=sessions.id AND showup=0 AND participated=0 AND noshow=0) >0')
   end
   
-  def self.send_reminders_for_incomplete_sessions
-    # send an email for each session
-    Session.incomplete_sessions.each do |session|
-      UserMailer.experimenter_message(
-        session.experiment,
-        "#{session.experiment.name}: Session #{session.time_str} ist noch nicht abgeschlossen",
-        "Hallo, \n\nSie erhalten diese Nachricht, da Sie als Verantwortlicher für das Experiment #{session.experiment.name} eingetragen sind. 
-         Bitte vervollständigen Sie die Teilnehmerliste der Session am #{session.time_str}.\n\nDiese E-Mail wurde automatisch versendet."
-      ).deliver
-    end
-    
-    # todo mail pflegbar machen
+  def is_subsession?
+    return id != reference_session_id
   end
   
 end
