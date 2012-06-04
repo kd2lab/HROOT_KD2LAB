@@ -52,6 +52,15 @@ namespace :deploy do
   
 end
 
+after 'deploy:update_code', 'deploy:symlink_db'
+
+namespace :deploy do
+  desc "Symlinks the database.yml"
+  task :symlink_db, :roles => :app do
+    run "ln -nfs #{deploy_to}/shared/config/database.yml #{release_path}/config/database.yml"
+  end
+end
+
 # whenever integration
 set :whenever_command, "bundle exec whenever"
 #set :whenever_environment, defer { stage }
@@ -61,6 +70,8 @@ require "whenever/capistrano"
 #before "deploy", "deploy:stop"
 after "deploy", "deploy:migrate"
 after 'deploy:update_code', 'deploy:compile_assets'
+after 'deploy:update_code', 'deploy:symlink_db'
+
 #after "deploy", "deploy:start"
 
 
