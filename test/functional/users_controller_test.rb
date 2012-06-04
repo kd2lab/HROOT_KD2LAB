@@ -62,7 +62,10 @@ class UsersControllerTest < ActionController::TestCase
       
     context "updating" do
       setup do
-        put :update, :id => @user.to_param, :user => @user.attributes
+        attributes = @user.attributes
+        attributes['password'] = ''
+
+        put :update, :id => @user.to_param, :user => attributes
       end
       
       should "redirect to user show" do
