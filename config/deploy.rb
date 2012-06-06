@@ -59,6 +59,11 @@ namespace :deploy do
   task :symlink_db, :roles => :app do
     run "ln -nfs #{deploy_to}/shared/config/database.yml #{release_path}/config/database.yml"
   end
+  
+  desc "Symlinks the unicorn configuration"
+  task :symlink_unicorn, :roles => :app do
+    run "ln -nfs #{deploy_to}/shared/config/unicorn.rb #{release_path}/config/unicorn.rb"
+  end
 end
 
 # whenever integration
@@ -71,6 +76,7 @@ require "whenever/capistrano"
 after "deploy", "deploy:migrate"
 after 'deploy:update_code', 'deploy:compile_assets'
 after 'deploy:update_code', 'deploy:symlink_db'
+after 'deploy:update_code', 'deploy:symlink_unicorn'
 
 #after "deploy", "deploy:start"
 
