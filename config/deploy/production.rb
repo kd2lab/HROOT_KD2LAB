@@ -11,6 +11,6 @@ set :deploy_via, :copy
 
 
 # unicorn integration
-set :unicorn_binary, "/usr/local/rvm/gems/ruby-1.9.2-p0@hroot/bin/unicorn"
+set :unicorn_binary, "/home/hroot/.rvm/gems/ruby-1.9.2-p290@hroot/bin/unicorn"
 set :unicorn_config, "#{current_path}/config/unicorn.rb"
 set :unicorn_pid, "#{current_path}/tmp/pids/unicorn.pid"
