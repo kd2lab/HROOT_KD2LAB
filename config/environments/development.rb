@@ -37,8 +37,8 @@ ActionMailer::Base.smtp_settings = {
   :address              => "smtp.gmail.com",
   :port                 => "587",
   :domain               => "googlemail.com",
-  :user_name            => "ingmar.baetge@googlemail.com",
-  :password             => "v1rtua11nsan1ty",
+  :user_name            => "hroottest@googlemail.com",
+  :password             => "hrootamstart",
   :authentication       => "plain",
   :enable_starttls_auto => true
 }
