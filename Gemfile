@@ -56,4 +56,5 @@ group :development, :test do
   #gem 'shoulda-matchers'
   #gem 'shoulda-context'
   gem 'mocha'
+  gem 'gem-licenses'
 end
