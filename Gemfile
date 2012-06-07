@@ -37,6 +37,7 @@ gem 'cancan'
 # gem 'blueprint-rails'
 gem 'country-select'
 gem 'acts-as-taggable-on', '~> 2.2.2'
+gem 'gem-licenses'
 
 # js runtime for server
 gem "therubyracer", :require => 'v8'
@@ -56,5 +57,4 @@ group :development, :test do
   #gem 'shoulda-matchers'
   #gem 'shoulda-context'
   gem 'mocha'
-  gem 'gem-licenses'
 end
