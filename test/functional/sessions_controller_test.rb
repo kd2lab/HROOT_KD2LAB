@@ -26,7 +26,7 @@ class SessionsControllerTest < ActionController::TestCase
         SessionParticipation.create(:user => @user2, :session => @session)
         SessionParticipation.create(:user => @user3, :session => @session)
         
-        get :participants, :experiment_id => @experiment.id, :move_member => "0", :selected_users => {@user1.id => "1", @user2.id => "1"}, :id => @session.id
+        get :participants, :experiment_id => @experiment.id, :user_action => "0", :selected_users => {@user1.id => "1", @user2.id => "1"}, :id => @session.id
       end
       
       should "remove selected participations" do
@@ -46,7 +46,7 @@ class SessionsControllerTest < ActionController::TestCase
         
         @session2 = Session.create(:experiment => @experiment, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 20, :reserve => 4)
         
-        get :participants, :experiment_id => @experiment.id, :move_member => @session2.id, :selected_users => {@user1.id => "1", @user2.id => "1"}, :id => @session.id
+        get :participants, :experiment_id => @experiment.id, :user_action => @session2.id, :selected_users => {@user1.id => "1", @user2.id => "1"}, :id => @session.id
       end
       
       should "move selected participations" do

@@ -32,7 +32,7 @@ de:
         firstname: Vorname
         lastname: Nachname
         matrikel: Matrikelnummer
-        country_name: Land
+        country_name: Nationalität
         role: Rolle
         phone: Mobilnummer
         begin_month: Studienbeginn Monat

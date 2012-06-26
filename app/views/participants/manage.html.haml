@@ -9,10 +9,10 @@
 %h1
   = @experiment.name  
 
-= render :partial => "experiments/tabs", :locals => {:selected => "Poolmitglieder zuordnen"} 
+= render :partial => "experiments/tabs", :locals => {:selected => "Teilnehmer"} 
 
+%h2 Neue Teilnehmer zuordnen
 %br
-
 
 = form_tag manage_experiment_participants_path(@experiment), :method => 'post', :id => "user_search" do
   #users

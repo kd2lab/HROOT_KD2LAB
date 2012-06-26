@@ -64,6 +64,7 @@
     %thead
       %tr
         %th= check_box_tag "", "", false, :id => "select_all_users"
+        %th
         %th= sortable_for_form 'lastname', 'Name'  
         -#%th= sortable_for_form 'firstname', 'Vorname'
         %th= sortable_for_form 'email', 'E-Mail'
@@ -75,8 +76,15 @@
 
     %tbody
       - @users.each do |user| 
-        %tr
+        - cl = []; 
+        - cl << "deleted" if user.deleted
+        - cl << "import_inactive" if user.imported && !user.activated_after_import
+        %tr{:class => cl.join(' ')}
           %td= check_box_tag "selected_users[#{user.id}]", '1', false, :class => 'selected_users'
+          %td
+            - if !user.deleted && user.imported && !user.activated_after_import
+              %i.icon-warning-sign
+          
           %td= link_to highlight(truncate(user.lastname, {:length => 15}), params[:search])+', '+highlight(truncate(user.firstname, {:length => 10}), params[:search]), user_path(user)
           %td= link_to highlight(truncate(user.email, {:length => 20}), params[:search]), "mailto:#{user.email}"
           %td.study_name_popup{:'data-text' => user.study_name || 'keine Angabe' }

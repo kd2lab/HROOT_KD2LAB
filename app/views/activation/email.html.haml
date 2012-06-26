@@ -1,0 +1,21 @@
+%h1
+  Aktivierung
+
+%br
+Auf dieser Seite können Sie Ihren Account aktivieren, wenn Ihre Daten aus dem bisherigen System übernommen wurden.
+%br
+%br
+Ihre bisherige E-Mail-Adresse kann mit den neuen System nicht verwendet werden. Bitte geben Sie eine gültige E-Mail-Adresse an:
+%br
+%br
+= simple_form_for @activation_user, :html => {:class => "form-horizontal"}, :url => '' do |f| 
+  = f.label :email
+  = f.text_field :email_prefix, :class => "span1"
+  @
+  = f.select :email_suffix, options_for_select(Settings.mail_restrictions.map{|r| r['suffix']}.select{|r| !r.blank?}, params[:user] ? params[:user][:email_suffix] : "")
+  = f.error :email
+  %br
+  %br
+  = f.submit "E-Mail zur Bestätigung absenden", :class => "btn btn-primary"
+
+

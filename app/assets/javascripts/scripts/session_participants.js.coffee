@@ -24,17 +24,6 @@ $ ->
     update_checkboxes()
 
   
-  
-  
-  # Teilnehmer verschieben
-  $('.move_member_link').click ->
-    if $(this).attr('data-confirm') && !confirm($(this).attr('data-confirm'))
-      return false
-    
-    $('#move_member').val($(this).attr('data-value'))
-    $('#user_search').submit()
-    return false
-  
   update_checkboxes()
   $('#all_show').click ->
     if $(this).is(':checked')      

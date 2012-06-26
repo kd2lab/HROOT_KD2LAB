@@ -17,3 +17,13 @@ $ ->
     else
       $('.selected_users').attr('checked', false)
     update_user_selection()
+    
+    
+  # Actions on user lists
+  $('.user_action_link').click ->
+    if $(this).attr('data-confirm') && !confirm($(this).attr('data-confirm'))
+      return false
+    
+    $('#user_action').val($(this).attr('data-value'))
+    $('#user_search').submit()
+    return false

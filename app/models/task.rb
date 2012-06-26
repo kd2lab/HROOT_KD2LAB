@@ -26,6 +26,14 @@ EOSQL
       end    
       
       # insert dynamic parts
+      subject = subject.to_s.mreplace({
+        "#firstname" => sp.user.firstname, 
+        "#lastname"  => sp.user.lastname,
+        "#session_date"  => sp.session.start_at.strftime("%d.%m.%Y"),
+        "#session_start_time" => sp.session.start_at.strftime("%H:%M"),
+        "#session_end_time" => sp.session.end_at.strftime("%H:%M")
+      })
+      
       text = text.to_s.mreplace({
         "#firstname" => sp.user.firstname, 
         "#lastname"  => sp.user.lastname,
@@ -46,7 +54,19 @@ EOSQL
   # send 50 Mails from regular mail queue
   def self.process_mail_queue
     Recipient.includes(:message, :user).where('sent_at IS NULL').limit(50).each do |recipient|
-      UserMailer.email(recipient.message.subject, recipient.message.message, recipient.user.main_email, recipient.message.experiment.sender_email).deliver
+      message = recipient.message.message.to_s.mreplace({
+        "#firstname" => recipient.user.firstname, 
+        "#lastname"  => recipient.user.lastname,
+        '#activation_link' => Rails.application.routes.url_helpers.activation_url(recipient.user.import_token)
+      })
+      
+      if recipient.message.experiment
+        sender = recipient.message.experiment.sender_email
+      else
+        sender = nil
+      end
+      
+      UserMailer.email(recipient.message.subject, message, recipient.user.main_email, sender).deliver
       recipient.sent_at = Time.zone.now
       recipient.save
     end
@@ -88,14 +108,23 @@ EOSQL
         u = participation.user
         log += "#{Time.zone.now}: Sende Mail an #{u.email}\n"
         
+        link = Rails.application.routes.url_helpers.enroll_url(u.create_code)
+        
+        subject = experiment.invitation_subject.to_s.mreplace({
+          "#firstname" => u.firstname, 
+          "#lastname"  => u.lastname,
+          "#sessionlink"  => experiment.open_sessions.map{|s| s.start_at.strftime("%d.%m.%Y, %H:%M Uhr") }.join("\n"),
+          "#link"      => link
+        })
+        
         text = experiment.invitation_text.to_s.mreplace({
           "#firstname" => u.firstname, 
           "#lastname"  => u.lastname,
           "#sessionlink"  => experiment.open_sessions.map{|s| s.start_at.strftime("%d.%m.%Y, %H:%M Uhr") }.join("\n"),
-          "#link"      => Rails.application.routes.url_helpers.enroll_url(u.create_code)
+          "#link"      => link
         })
         
-        UserMailer.email(experiment.invitation_subject, text, u.main_email, experiment.sender_email).deliver        
+        UserMailer.email(subject, text, u.main_email, experiment.sender_email).deliver        
         
         participation.invited_at = Time.zone.now
         participation.save
@@ -142,7 +171,13 @@ EOSQL
   def self.send_reminders_for_incomplete_sessions
     # send an email for each session
     Session.incomplete_sessions.each do |session|
-      subject = Settings.session_finish_subject
+      subject = Settings.session_finish_subject.to_s.mreplace({
+        "#experiment_name" => session.experiment.name, 
+        "#session_date"  => session.start_at.strftime("%d.%m.%Y"),
+        "#session_start_time" => session.start_at.strftime("%H:%M"),
+        "#session_end_time" => session.end_at.strftime("%H:%M")
+      })
+      
       text = Settings.session_finish_text.to_s.mreplace({
         "#experiment_name" => session.experiment.name, 
         "#session_date"  => session.start_at.strftime("%d.%m.%Y"),

@@ -15,25 +15,33 @@ class UsersController < ApplicationController
     params[:filter] = params[:filter] || {}
 
     if params[:message] && params[:message][:action] == 'send'
-      message = Message.create(
-        :sender_id => current_user.id,
-        :experiment_id => nil,
-        :subject => params[:message][:subject],
-        :message =>  params[:message][:text]
-      )
-      
       if (params[:message][:mode] == 'all')
         ids =  User.load_ids(params, {:sort_column => sort_column, :sort_direction => sort_direction})
       elsif (params[:message][:mode] == 'selected')
         ids = params['selected_users'].keys.map(&:to_i)
       end  
       
-      Recipient.insert_bulk(message, ids)
+      Message.send_message(current_user.id, ids, nil, params[:message][:subject], params[:message][:text])
       
       # store filters in session to enable redirect
       session[:filter] = params[:filter]
       redirect_to(users_path, :flash => {:notice => "Nachricht(en) wurden in die Mailqueue eingetragen."})
-    end  
+    elsif !params[:user_action].blank?  
+      # store filters in session to enable redirect
+      session[:filter] = params[:filter]
+      
+      if params[:user_action] == "invite_all"
+        params[:filter] = params[:filter].merge({:activated_after_import => false})
+        ids =  User.load_ids(params, {:sort_column => sort_column, :sort_direction => sort_direction})
+      elsif params[:user_action] == "invite_selected"
+        selected_ids = params['selected_users'].keys.map(&:to_i)
+        ids = User.where('activated_after_import=0 AND deleted=0').where("id IN (?)", selected_ids).map(&:id)
+      end
+      
+      Message.send_message(current_user.id, ids, nil, Settings.import_invitation_subject, Settings.import_invitation_text)
+      
+      redirect_to(users_path, :flash => {:notice => "Die Aktivierungs-Einladungen(en) wurden in die Mailqueue eingetragen."})
+    end
     
     @users = User.paginate(params, {:sort_column => sort_column, :sort_direction => sort_direction, :include_deleted_users => 1})
     @user_count = User.count

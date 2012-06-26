@@ -20,14 +20,15 @@
       %br
       %br
       #url-tags
-        - Settings.mail_restrictions.each do |r|
-          %span
-            = " ... "
-            = text_field_tag("mail_restrictions[][prefix]", r['prefix'])
-            = " ... "
-            @
-            = text_field_tag('mail_restrictions[][suffix]', r['suffix'])
-            %br
+        - if Settings.mail_restrictions
+          - Settings.mail_restrictions.each do |r|
+            %span
+              = " ... "
+              = text_field_tag("mail_restrictions[][prefix]", r['prefix'])
+              = " ... "
+              @
+              = text_field_tag('mail_restrictions[][suffix]', r['suffix'])
+              %br
   
   
       %br

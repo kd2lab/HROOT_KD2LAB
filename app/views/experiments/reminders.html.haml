@@ -9,7 +9,7 @@
 %h1
   = @experiment.name
       
-= render :partial => "tabs", :locals => {:selected => "Erinnerung"} 
+= render :partial => "tabs", :locals => {:selected => "Einladungen"} 
 
 
 = form_for @experiment, :url => {:action => "reminders"}, :html => {:method => :post, :class => "guarded_form"} do |f|

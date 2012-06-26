@@ -38,6 +38,14 @@ EOSQL
     
     if @session_participation
       # successful registration - send confirmation mail
+      subject = @session.experiment.confirmation_subject.to_s.mreplace({
+        "#firstname" => @user.firstname, 
+        "#lastname"  => @user.lastname,
+        "#session_date"  => @session.start_at.strftime("%d.%m.%Y"),
+        "#session_start_time" => @session.start_at.strftime("%H:%M"),
+        "#session_end_time" => @session.end_at.strftime("%H:%M")
+      })
+      
       text = @session.experiment.confirmation_text.to_s.mreplace({
         "#firstname" => @user.firstname, 
         "#lastname"  => @user.lastname,
@@ -47,7 +55,7 @@ EOSQL
       })
       
       UserMailer.email(
-        @session.experiment.confirmation_subject,
+        subject,
         text,
         @user.main_email,
         @session.experiment.sender_email

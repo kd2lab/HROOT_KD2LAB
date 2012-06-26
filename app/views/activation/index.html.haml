@@ -1,0 +1,16 @@
+%h1
+  Aktivierung
+
+%br
+Auf dieser Seite können Sie Ihren Account aktivieren, wenn Ihre Daten aus dem bisherigen System übernommen wurden.
+%br
+%br
+%br
+Bitte wählen Sie zur Aktivierung ein neues Passwort:
+%br
+%br
+= simple_form_for @activation_user, :html => {:class => "form-horizontal"}, :url => '' do |f| 
+  = f.input :password
+  = f.input :password_confirmation, :hint => "mindestens 8 Zeichen, mindestens eine Zahl und ein Sonderzeichen"
+  = f.submit "Passwort speichern und Account aktivieren", :class => "btn btn-primary"
+

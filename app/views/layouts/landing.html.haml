@@ -51,13 +51,15 @@
             
           %p
             %br
-            = form_for("user", :url => user_session_path) do |f|
+            = form_for(:user, :url => user_session_path) do |f|
               %p
-                = f.label "E-Mail" 
+                E-Mail
+                %br
                 = f.email_field :email
 
               %p
-                = f.label :password
+                Passwort
+                %br
                 = f.password_field :password 
 
               %p= f.submit "Login", :class => "btn"

@@ -28,6 +28,8 @@ class DeviseCreateUsers < ActiveRecord::Migration
       t.integer :begin_year
       t.integer :preference
       t.boolean :experience
+      t.integer :noshow_count, :default => 0
+      t.integer :participations_count, :default => 0
       
       t.integer :lang1
       t.integer :lang2
@@ -43,6 +45,7 @@ class DeviseCreateUsers < ActiveRecord::Migration
 
       t.boolean :imported, :default => false
       t.boolean :activated_after_import, :default => false
+      t.string  :import_token
       t.string  :import_email
       t.string  :import_email_confirmation_token
       
@@ -53,6 +56,8 @@ class DeviseCreateUsers < ActiveRecord::Migration
     add_index :users, :email,                :unique => true
     add_index :users, :reset_password_token, :unique => true
     add_index :users, :confirmation_token,   :unique => true
+    add_index :users, :deleted
+    add_index :users, :role
     
     
     # User.create(:email => "mail@ingmar.net", :password => "test", :password_confirmation => "test", :active => true, :firstname => "Ingmar", :lastname => "Baetge", :matrikel => "123")

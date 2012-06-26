@@ -2,17 +2,26 @@
 %br  
 %br
 
-= render :partial => "layouts/tabs",                                                                            |
-           :locals => {                                                                                         |
-             :selected => selected,                                                                             |
-             :links => [                                                                                        |
-               {:title => "Sessions", :url => experiment_sessions_path(@experiment)},                           |
-               {:title => "Allgemeine Daten", :url=>edit_experiment_url(@experiment)},                          |
-               {:title => "Zugeordnete", :url => experiment_participants_path(@experiment)},                    |
-               {:title => "Poolmitglieder zuordnen", :url => manage_experiment_participants_path(@experiment)}, |
-               {:title => "Mailtexte", :url => mail_experiment_path(@experiment)},                      |
-               {:title => "Erinnerung", :url => reminders_experiment_path(@experiment)},                      |
-               {:title => "Einladungsversand", :url => invitation_experiment_path(@experiment)}                       |
-             ]                                                                                                  |
-           }                                                                                                    |
+
+%ul.nav.nav-tabs
+  %li{:class => if selected == 'Allgemeine Daten' then 'active' else '' end}= link_to "Allgemeine Daten", edit_experiment_url(@experiment)
+  %li{:class => if selected == 'Sessions' then 'active' else '' end}= link_to "Sessions", experiment_sessions_path(@experiment)
+  
+  %li.dropdown{:class => if selected == 'Teilnehmer' then 'active' else '' end}
+    %a.dropdown-toggle{:'data-toggle' => 'dropdown', :href => '#'}
+      Teilnehmer
+      %b.caret
+    %ul.dropdown-menu
+      %li= link_to "Neue Teilnehmer zuordnen", manage_experiment_participants_path(@experiment)
+      %li= link_to "Bereits zugeordnete Teilnehmer", experiment_participants_path(@experiment)
+  
+  %li.dropdown{:class => if selected == 'Einladungen' then 'active' else '' end}
+    %a.dropdown-toggle{:'data-toggle' => 'dropdown', :href => '#'}
+      Einladungen
+      %b.caret
+    %ul.dropdown-menu
+      %li= link_to "E-Mail-Texte", mail_experiment_path(@experiment)
+      %li= link_to "Experiment-Erinnerung", reminders_experiment_path(@experiment)
+      %li= link_to "Einladungsversand", invitation_experiment_path(@experiment)
+
 

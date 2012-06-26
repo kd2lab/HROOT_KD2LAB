@@ -8,13 +8,16 @@ class User < ActiveRecord::Base
 
   # for email check on registration
   attr_accessor :email_prefix, :email_suffix
+  
+  # flag for admin update
+  attr_accessor :admin_update
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :secondary_email, :password, :password_confirmation, :remember_me, :firstname, :lastname, 
                   :matrikel, :role, :phone, :gender, :begin_month, :begin_year, :study_id, :deleted, 
                   :email_prefix, :email_suffix, 
                   :country_name, :terms_and_conditions, :lang1, :lang2, :lang3, :profession_id, :degree_id, :birthday,
-                  :preference, :experience
+                  :preference, :experience, :imported, :activated_after_import, :import_token
   
   ROLES = %w[user experimenter admin]
   
@@ -32,7 +35,16 @@ class User < ActiveRecord::Base
   belongs_to :degree
   
   
-  validates_presence_of :firstname, :lastname, :matrikel, :gender, :birthday
+  def is_not_admin_update?
+    !admin_update
+  end
+  
+  with_options :if => :is_not_admin_update? do |import_user|
+    import_user.validates_presence_of :birthday, :on => :create
+  end
+  
+  validates_presence_of :firstname, :lastname, :matrikel, :gender
+  
   validates_uniqueness_of :calendar_key
   validates_acceptance_of :terms_and_conditions
   validates :secondary_email, :email => true, :allow_blank => true
@@ -101,7 +113,7 @@ class User < ActiveRecord::Base
   end
   
   # load users and aggregate participation data
-  def self.create_filter_sql params, options
+  def self.create_filter_sql params, options, counting = false
     where = []
     having = []
     
@@ -139,20 +151,31 @@ class User < ActiveRecord::Base
     
     # noshow
     if ["<=", ">"].include?(filter[:noshow_op])
-      having << "noshow_count #{filter[:noshow_op]} #{filter[:noshow].to_i}"
+      where << "noshow_count #{filter[:noshow_op]} #{filter[:noshow].to_i}"
     end
     
     # successful participations
     if ["<=", ">"].include?(filter[:participated_op])
-      having << "participations_count #{filter[:participated_op]} #{filter[:participated].to_i}"
+      where << "participations_count #{filter[:participated_op]} #{filter[:participated].to_i}"
     end
     
+    # activation after import
+    if filter.has_key?(:activated_after_import)
+      if filter[:activated_after_import]
+        where << 'users.activated_after_import=1'
+      else
+        where << 'users.activated_after_import=0'
+      end
+    end
+        
     #studienbeginn
     if (1..12).include?(filter[:begin_von_month].to_i) && filter[:begin_von_year].to_i > 1990
+      begin_select = "str_to_date(CONCAT_WS('-', COALESCE(begin_year, 1990), COALESCE(begin_month,1), '1'), '%Y-%m-%d') as begin_date, "
       where << "((begin_month >= #{filter[:begin_von_month].to_i} AND begin_year=#{filter[:begin_von_year].to_i}) OR (begin_year>#{filter[:begin_von_year].to_i}))"
     end
 
     if (1..12).include?(filter[:begin_bis_month].to_i) && filter[:begin_bis_year].to_i > 1990
+      begin_select = "str_to_date(CONCAT_WS('-', COALESCE(begin_year, 1990), COALESCE(begin_month,1), '1'), '%Y-%m-%d') as begin_date, "
       where << "((begin_month <= #{filter[:begin_bis_month].to_i} AND begin_year=#{filter[:begin_bis_year].to_i}) OR (begin_year<#{filter[:begin_bis_year].to_i}))"
     end
   
@@ -216,7 +239,7 @@ class User < ActiveRecord::Base
              sessions.experiment_id = experiments.id AND
              experiments.id = taggings.taggable_id AND
              taggings.tag_id = tags.id AND 
-             tags.name LIKE "#{filter["exp_tag#{i}"]}") AS exp_tag_count#{i}, 
+             tags.name LIKE "#{filter["exp_tag#{i}"]}") AS exp_tag_count#{i},
 EOSQL
         
         
@@ -290,52 +313,25 @@ EOSQL
       end
     end  
       
+    # counting or selecting?
+    if counting
+      user_select = "count(DISTINCT users.id),"     
+    else
+      user_select = "DISTINCT users.*,"
+    end
           
     sql = <<EOSQL
       SELECT 
-          DISTINCT users.*, 
-          #{session_select}
-          COALESCE(
-            (SELECT
-              count(sessions.id)
-            FROM sessions, session_participations, experiments
-            WHERE
-              sessions.id = sessions.reference_session_id AND
-              session_participations.session_id = sessions.id AND
-              session_participations.user_id = users.id AND
-              experiments.id = sessions.experiment_id AND
-              (SELECT count(s.id)  FROM sessions s WHERE s.reference_session_id = sessions.id) =
-              (SELECT count(s.id)  FROM session_participations s, sessions s2 WHERE  s.session_id = s2.id AND s.user_id = users.id AND s2.reference_session_id = sessions.id AND s.participated = 1) 
-              AND
-              (SELECT count(s.id)  FROM sessions s WHERE s.reference_session_id = sessions.id) > 0
-              AND
-              experiments.show_in_stats = 1
-            ), 
-            0
-          ) AS participations_count,
-          COALESCE(
-            (SELECT
-              count(sessions.id)
-            FROM sessions, session_participations, experiments
-            WHERE
-              sessions.id = sessions.reference_session_id AND
-              session_participations.session_id = sessions.id AND
-              session_participations.user_id = users.id AND
-              experiments.id = sessions.experiment_id AND
-              experiments.show_in_stats = 1 AND
-              (SELECT count(s.id)  FROM session_participations s, sessions s2 WHERE  s.session_id = s2.id AND s.user_id=users.id AND s2.reference_session_id = sessions.id AND s.noshow = 1) >0
-            ),
-            0
-          ) AS noshow_count,
+          #{user_select}
+          #{session_select} 
+          #{experiment_subquery}
+          #{experiment_tag_subquery}
+          #{begin_select}
+          
           (SELECT studies.name
               FROM studies
               WHERE studies.id = users.study_id
-          ) as study_name,
-          
-          #{experiment_subquery}
-          #{experiment_tag_subquery}
-          
-          str_to_date(CONCAT_WS('-', COALESCE(begin_year, 1990), COALESCE(begin_month,1), '1'), '%Y-%m-%d') as begin_date
+          ) as study_name
       FROM users
       #{experiment_join}
       #{participation_join}
@@ -349,14 +345,57 @@ EOSQL
   
     return sql
   end
+  
+  def self.update_noshow_calculation(ids = nil)
+    sql = <<EOSQL
+UPDATE users
+SET
+  participations_count = COALESCE(
+            (SELECT
+              count(sessions.id)
+            FROM sessions, session_participations, experiments
+            WHERE
+              sessions.id = sessions.reference_session_id AND
+              session_participations.session_id = sessions.id AND
+              session_participations.user_id = users.id AND
+              experiments.id = sessions.experiment_id AND
+              (SELECT count(s.id)  FROM sessions s WHERE s.reference_session_id = sessions.id) =
+              (SELECT count(s.id)  FROM session_participations s, sessions s2 WHERE  s.session_id = s2.id AND s.user_id = users.id AND s2.reference_session_id = sessions.id AND s.showup = 1) 
+              AND
+              (SELECT count(s.id)  FROM sessions s WHERE s.reference_session_id = sessions.id) > 0
+              AND
+              experiments.show_in_stats = 1
+            ), 
+            0
+          ),
+          
+  noshow_count=COALESCE(
+            (SELECT
+              count(sessions.id)
+            FROM sessions, session_participations, experiments
+            WHERE
+              sessions.id = sessions.reference_session_id AND
+              session_participations.session_id = sessions.id AND
+              session_participations.user_id = users.id AND
+              experiments.id = sessions.experiment_id AND
+              experiments.show_in_stats = 1 AND
+              (SELECT count(s.id)  FROM session_participations s, sessions s2 WHERE  s.session_id = s2.id AND s.user_id=users.id AND s2.reference_session_id = sessions.id AND s.noshow = 1) >0
+            ),
+            0
+          )
+EOSQL
+
+    sql += " WHERE users.id IN (#{ids.map(&:to_i).join(',')}) " if ids
+
+    result = ActiveRecord::Base.connection.execute(sql)
+  
+  end
     
   def self.paginate params, options = nil
-    sql = User.create_filter_sql(params, options)
-      
     page = (params[:page] || 1).to_i
     
     if params[:filter] && ( params[:filter].keys.count > 0 || (options && options[:experiment]) || ! params[:filter][:search].blank?)
-      count = User.count_by_sql("SELECT count(filtered_users.id) FROM ("+sql+") as filtered_users;")
+      count = User.count_by_sql(User.create_filter_sql(params, options, true))
     elsif options && options[:include_deleted_users]
       count = User.count
     else  
@@ -368,7 +407,7 @@ EOSQL
       page = 1
     end
     
-    objects = User.find_by_sql(sql+ " LIMIT 50 OFFSET "+((page-1)*50).to_s)
+    objects = User.find_by_sql(User.create_filter_sql(params, options)+ " LIMIT 50 OFFSET "+((page-1)*50).to_s)
     
     return WillPaginate::Collection.create(page,50) do |pager|    
       pager.replace(objects)
@@ -401,6 +440,16 @@ EOSQL
     
     return l.code
   end  
+  
+  def self.check_email prefix, suffix
+    if Settings.mail_restrictions
+      Settings.mail_restrictions.each do |r|
+        return true if r['suffix'] == suffix && (r['prefix'].blank? || prefix.include?(r['prefix']))
+      end
+      return false
+    end    
+    return true
+  end
   
    
 end

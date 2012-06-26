@@ -15,25 +15,19 @@ class ParticipantsController < ApplicationController
     params[:filter][:role] = 'user' 
     
     if params[:message] && params[:message][:action] == 'send'
-      message = Message.create(
-        :sender_id => current_user.id,
-        :experiment_id => @experiment.id,
-        :subject => params[:message][:subject],
-        :message =>  params[:message][:text]
-      )
-      
       if (params[:message][:mode] == 'all')
         ids =  User.load_ids(params, {:experiment => @experiment, :sort_column => sort_column, :sort_direction => sort_direction, :exclude_non_participants => 1})
       elsif (params[:message][:mode] == 'selected')
         ids = params['selected_users'].keys.map(&:to_i)
-      end        
-      Recipient.insert_bulk(message, ids)
+      end
+      
+      Message.send_message(current_user.id, ids, @experiment.id, params[:message][:subject], params[:message][:text])
       
       # store filters in session to enable redirect
       session[:filter] = params[:filter]
       redirect_to(experiment_participants_path(@experiment), :flash => {:notice => "Nachricht(en) wurden in die Mailqueue eingetragen."})
-    elsif !params[:move_member].blank?
-      if params[:move_member] == "remove_all"
+    elsif !params[:user_action].blank?
+      if params[:user_action] == "remove_all"
         ids =  User.load_ids(params, {:experiment => @experiment, :sort_column => sort_column, :sort_direction => sort_direction, :exclude_non_participants => 1})
         
         # aus allen sessions austragen, session participations löschen
@@ -44,7 +38,7 @@ class ParticipantsController < ApplicationController
           p = Participation.find_by_user_id_and_experiment_id(id, @experiment.id)
           p.destroy if p
         end
-      elsif params[:move_member] == "0" && params[:selected_users]
+      elsif params[:user_action] == "0" && params[:selected_users]
         # aus allen sessions austragen, session participations löschen
         Session.move_members(params[:selected_users].keys.map(&:to_i), @experiment)
         
@@ -53,8 +47,8 @@ class ParticipantsController < ApplicationController
           p = Participation.find_by_user_id_and_experiment_id(id, @experiment.id)
           p.destroy if p
         end  
-      elsif params[:move_member].to_i > 0 && params[:selected_users]
-        target = Session.find(params[:move_member].to_i)
+      elsif params[:user_action].to_i > 0 && params[:selected_users]
+        target = Session.find(params[:user_action].to_i)
         
         if target
           # store filters in session to enable redirect

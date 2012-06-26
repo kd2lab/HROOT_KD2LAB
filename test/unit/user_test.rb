@@ -125,6 +125,8 @@ class UserTest < ActiveSupport::TestCase
       SessionParticipation.create(:user => @u9, :session_id => @sess5.id, :showup => false, :participated => false)
       Participation.create(:user => @u9, :experiment => @e1)
       Participation.create(:user => @u9, :experiment => @e2)
+      
+      User.update_noshow_calculation
     end
     
     should "return all non-deleted users with empty filtering" do
@@ -163,7 +165,7 @@ class UserTest < ActiveSupport::TestCase
     end
     
     should "filter for participations correctly" do
-      assert_same_elements [@u5, @u6], User.load({ :filter => {:participated => '1', :participated_op => ">"}})
+      assert_same_elements [@u3, @u4, @u5, @u6], User.load({ :filter => {:participated => '1', :participated_op => ">"}})
     end
     
     should "filter for studybegin" do
@@ -247,6 +249,7 @@ class UserTest < ActiveSupport::TestCase
       SessionParticipation.create(:user => @u1, :session_id => @e3_s1.id, :showup => true, :participated => true)
       SessionParticipation.create(:user => @u1, :session_id => @e3_s2.id, :showup => true, :participated => true)
       
+      User.update_noshow_calculation
     end
     
     should "count correct numbers for show and noshow" do

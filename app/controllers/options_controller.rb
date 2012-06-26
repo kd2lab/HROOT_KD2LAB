@@ -3,8 +3,21 @@
 class OptionsController < ApplicationController
 
   def index
-    if params[:mail_restrictions]
-      Settings.mail_restrictions = params[:mail_restrictions]
+    if params[:commit]
+      
+      result = []
+      if params[:mail_restrictions]
+        params[:mail_restrictions].each do |r|
+          result << r unless r['prefix'].blank? && r['suffix'].blank?
+        end
+      end
+          
+      if result.length > 0
+        Settings.mail_restrictions = result
+      else
+        Settings.mail_restrictions = nil
+      end
+      
       flash[:notice] = "Die Änderungen wurden gespeichert"  
     end
     
@@ -16,11 +29,6 @@ class OptionsController < ApplicationController
     if params[:terms_and_conditions]
       Settings.terms_and_conditions = params[:terms_and_conditions]
       flash[:notice] = "Die Änderungen wurden gespeichert"  
-    end
-    
-    # set default for mail restriction array
-    unless Settings.mail_restrictions
-      Settings.mail_restrictions = [{"prefix" => "", "suffix" => ""}]
     end
   end
 
@@ -34,6 +42,8 @@ class OptionsController < ApplicationController
       Settings.reminder_text = params[:reminder_text]
       Settings.session_finish_subject = params[:session_finish_subject]
       Settings.session_finish_text = params[:session_finish_text]
+      Settings.import_invitation_subject = params[:import_invitation_subject]
+      Settings.import_invitation_text = params[:import_invitation_text]
       redirect_to options_emails_path, :notice => "Die Mailtexte wurden gespeichert"
     end
   end

@@ -1,6 +1,7 @@
 = hidden_field_tag :direction, params[:direction]
 = hidden_field_tag :sort, params[:sort]
 = hidden_field_tag :page, params[:page] || 1
+= hidden_field_tag :user_action, ''
 
 
 .filter
@@ -50,9 +51,24 @@
   = will_paginate @users,  :renderer => WillPaginate::ActionView::BootstrapLinkRenderer , :prev_label => "&lt;&lt;&nbsp;", :next_label => "&nbsp;&gt;&gt;"
 
 
+
   .menu
-    = link_to "Nachricht an alle User der aktuellen Filterung", '#', :class => "btn send-message", :'data-to' => "Aktuell gefilterte User", :'data-mode' => 'all', :style => "float:left"
-    = link_to "Nachricht an alle markierten User", '#', :class => "btn send-message context-menu", :'data-to' => "Markierte User", :'data-mode' => 'selected', :style => "float:left"
+    .btn-group{:style => "float:left"}
+      %a.btn.dropdown-toggle{:'data-toggle' => "dropdown", :href => "#"}
+        Aktuelle Filterung
+        %b.caret 
+      %ul.dropdown-menu
+        %li= link_to "Nachricht an alle User der aktuellen Filterung", '#', :class => "send-message", :'data-to' => "Aktuell gefilterte User", :'data-mode' => 'all'    
+        %li= link_to "Aktivierungseinladung an alle noch nicht aktivierten User dieser Filterung schicken", '#', :class => "user_action_link", :'data-value' => 'invite_all'    
+    
+    .btn-group.context-menu{:style => "float:left"}
+      %a.btn.dropdown-toggle{:'data-toggle' => "dropdown", :href => "#"}
+        Markierte User
+        %b.caret 
+      %ul.dropdown-menu
+        %li= link_to "Nachricht an alle markierten User", '#', :class => "send-message", :'data-to' => "Markierte User", :'data-mode' => 'selected'
+        %li= link_to "Aktivierungseinladung an alle markierten User schicken", '#', :class => "user_action_link", :'data-value' => 'invite_selected'    
+    
     
   %br
   %br
@@ -62,6 +78,7 @@
     %thead
       %tr
         %th= check_box_tag "", "", false, :id => "select_all_users"
+        %th
         %th= sortable_for_form 'lastname', 'Name'  
         %th= sortable_for_form 'role', 'Rolle'
         %th= sortable_for_form 'email', 'E-Mail'
@@ -74,8 +91,15 @@
 
     %tbody    
       - @users.each do |user| 
-        %tr{:class => if user.deleted then "deleted" end}
+        - cl = []; 
+        - cl << "deleted" if user.deleted
+        - cl << "import_inactive" if user.imported && !user.activated_after_import
+        %tr{:class => cl.join(' ')}
           %td= check_box_tag "selected_users[#{user.id}]", '1', false, :class => 'selected_users'
+          %td
+            - if !user.deleted && user.imported && !user.activated_after_import
+              %i.icon-warning-sign
+              
           %td= link_to highlight(truncate(user.lastname, {:length => 15}), params[:search])+', '+highlight(truncate(user.firstname, {:length => 10}), params[:search]), user_path(user)
           %td= {'user' => 'P', 'experimenter' => 'E', 'admin' => 'A'}[user.role]
           %td= link_to highlight(truncate(user.email, {:length => 15}), params[:search]), "mailto:#{user.email}"

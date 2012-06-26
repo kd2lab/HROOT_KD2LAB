@@ -31,7 +31,7 @@ Folgende Daten sind bei hroot gespeichert, bitte wenden Sie sich zu Datenänderu
       %td= {'m' => 'männlich', 'f' => 'weiblich', '?' => "keine Angabe" }[current_user.gender]
     %tr
       %td Geburtsdatum
-      %td= current_user.birthday.strftime('%d.%m.%Y')
+      %td= current_user.birthday ? current_user.birthday.strftime('%d.%m.%Y') : "Keine Angabe"
     %tr
       %td Matrikelnummer
       %td= current_user.matrikel

@@ -1,4 +1,9 @@
 Hroot::Application.routes.draw do
+  match 'activation/:import_token/email', :controller => 'activation', :action => 'email'
+  match 'activation/:import_token/email_delivered', :controller => 'activation', :action => 'email_delivered'
+  match 'activation/:import_token(/:email_token)', :controller => 'activation', :action => 'index', :as => "activation"
+  
+  
   match 'enroll(/:code)', :controller => 'enroll', :action => 'index', :as => "enroll"
   post 'enroll_confirm(/:code)', :controller => 'enroll', :action => 'confirm', :as => 'enroll_confirm'
   post "enroll_register(/:code)", :controller => 'enroll', :action => 'register', :as => 'enroll_register'

@@ -131,33 +131,28 @@ class SessionsController < ApplicationController
     @session = Session.find(params[:id])
     
     if params[:message] && params[:message][:action] == 'send'
-      message = Message.create(
-        :sender_id => current_user.id,
-        :experiment_id => @experiment.id,
-        :subject => params[:message][:subject],
-        :message =>  params[:message][:text]
-      )
-      
       if (params[:message][:mode] == 'all')        
         ids = @session.session_participations.collect{|p| p.user_id}
       elsif (params[:message][:mode] == 'selected')
         ids = params['selected_users'].keys.map(&:to_i)
       end  
       
-      Recipient.insert_bulk(message, ids)
-      redirect_to(participants_experiment_session_path(@experiment, @session), :flash => { :id => @session.id, :notice => "Nachricht(en) wurden in die Mailqueue eingetragen."})
+      Message.send_message(current_user.id, ids, @experiment.id, params[:message][:subject], params[:message][:text])
       
-    elsif !params[:move_member].blank?
+      redirect_to(participants_experiment_session_path(@experiment, @session), :flash => { :id => @session.id, :notice => "Nachricht(en) wurden in die Mailqueue eingetragen."})
+    elsif !params[:user_action].blank?
       # move session members
-      if params[:move_member] == "0"
+      if params[:user_action] == "0"
         Session.move_members(params['selected_users'].keys.map(&:to_i), @experiment)
         flash[:notice] = "Die gewählen Teilnehmer wurden aus der Session ausgetragen"
+        User.update_noshow_calculation(params['selected_users'].keys)  
       else
-        target = Session.find(params[:move_member].to_i)
+        target = Session.find(params[:user_action].to_i)
         
         if target
           if Session.move_members(params['selected_users'].keys.map(&:to_i), @experiment, target)
             flash[:notice] = "Die gewählen Teilnehmer wurden in die Session #{target.time_str} verschoben"
+            User.update_noshow_calculation(params['selected_users'].keys)
           else
             flash[:alert] = "Die Mitglieder konnten nicht verschoben werden, da nicht mehr genug freie Plätze in der Session sind."
           end
@@ -201,7 +196,10 @@ class SessionsController < ApplicationController
         end
       end
 
-      flash[:notice] = "#{ActionController::Base.helpers.pluralize(changes, "Änderung", "Änderungen")} gespeichert" if changes > 0
+      if changes > 0
+        flash[:notice] = "#{ActionController::Base.helpers.pluralize(changes, "Änderung", "Änderungen")} gespeichert"
+        User.update_noshow_calculation(params["ids"].keys)
+      end 
     end
     
     params[:filter] = {} unless params[:filter]

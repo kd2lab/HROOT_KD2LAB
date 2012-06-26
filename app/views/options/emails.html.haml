@@ -17,7 +17,7 @@
         %i.icon-chevron-right.btn-mini.accordion-icon
            
         %h3
-          Standard-E-Mail-Text zur Experiment-Einladung
+          E-Mail zur Experiment-Einladung
         .toggle
           %br
           Betreff
@@ -37,7 +37,7 @@
         %i.icon-chevron-right.btn-mini.accordion-icon
         
         %h3
-          Standard-E-Mail-Text zur Anmeldebestätigung
+          E-Mail zur Anmeldebestätigung
         .toggle
           %br
           Betreff
@@ -58,7 +58,7 @@
         %i.icon-chevron-right.btn-mini.accordion-icon
         
         %h3
-          Standard-E-Mail-Text zur Session-Erinnerung
+          E-Mail zur Session-Erinnerung
         .toggle
           %br
           Betreff
@@ -79,7 +79,7 @@
         %i.icon-chevron-right.btn-mini.accordion-icon
         
         %h3
-          Standard-E-Mail-Text zur Erinnerung des Sessionabschluss
+          E-Mail zur Erinnerung des Sessionabschluss
         .toggle
           %br
           Betreff
@@ -94,6 +94,27 @@
             Bestätigungstext
   
           = text_area_tag :session_finish_text, Settings.session_finish_text, :rows => 5, :class => "span8"
+          %br
+    
+    %tr
+      %td  
+        %i.icon-chevron-right.btn-mini.accordion-icon
+        
+        %h3
+          E-Mail zur Aktivierungseinladung nach dem Import
+        .toggle
+          %br
+          Betreff
+          %br
+          = text_field_tag :import_invitation_subject, Settings.import_invitation_subject, :class => "span8"
+          %br
+          %br
+
+          .templated-field-header.span10
+            = render :partial => 'shared/text_insertions', :locals => {:data => ['#firstname', '#lastname', '#activation_link'], :element_id => 'import_invitation_text' }
+            Text
+  
+          = text_area_tag :import_invitation_text, Settings.import_invitation_text, :rows => 5, :class => "span8"
           %br
     
   = submit_tag "Mailtexte speichern", :name => "test", :class => "guarded_form_save btn btn-primary"

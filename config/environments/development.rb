@@ -30,7 +30,7 @@ end
 
 Rails.application.routes.default_url_options[:host] =  'localhost:3000'
 
-ActionMailer::Base.delivery_method = :test
+ActionMailer::Base.delivery_method = :smtp
 ActionMailer::Base.perform_deliveries = true
 
 ActionMailer::Base.smtp_settings = {
