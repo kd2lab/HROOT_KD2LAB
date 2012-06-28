@@ -53,7 +53,7 @@ Hroot::Application.configure do
     :host => 'https://www.wiso.uni-hamburg.de/hroot/'
   }
   
-  config.assets.prefix = "/hroot/assets"
+  #config.assets.prefix = "/hroot/assets"
 end
 
 #Rails.application.routes.default_url_options[:host] =  'hroot.ingmar.net'
