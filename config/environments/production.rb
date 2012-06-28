@@ -53,7 +53,7 @@ Hroot::Application.configure do
     :host => 'https://www.wiso.uni-hamburg.de/hroot/'
   }
   
-  config.assets.prefix = "/hroot/assets"
+  #config.assets.prefix = "/hroot/assets"
   config.path_prefix = '/hroot'
 end
 
