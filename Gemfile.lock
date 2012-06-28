@@ -85,8 +85,6 @@ GEM
     less-rails (2.2.3)
       actionpack (>= 3.1)
       less (~> 2.2.0)
-    less-rails-bootstrap (2.0.13)
-      less-rails (~> 2.2.0)
     libv8 (3.3.10.4)
     linecache19 (0.5.12)
       ruby_core_source (>= 0.1.4)
@@ -168,6 +166,10 @@ GEM
     treetop (1.4.10)
       polyglot
       polyglot (>= 0.3.1)
+    twitter-bootstrap-rails (2.0.6)
+      actionpack (>= 3.1)
+      less-rails (~> 2.2.0)
+      railties (>= 3.1)
     tzinfo (0.3.31)
     unicorn (4.1.1)
       kgio (~> 2.4)
@@ -199,7 +201,6 @@ DEPENDENCIES
   icalendar
   jquery-rails (>= 1.0.12)
   jslint_on_rails
-  less-rails-bootstrap
   mocha
   mysql2
   rails (= 3.1.1)
@@ -210,6 +211,7 @@ DEPENDENCIES
   simple_form
   simplecov
   therubyracer
+  twitter-bootstrap-rails
   unicorn
   whenever
   will_paginate (= 3.0.pre4)
