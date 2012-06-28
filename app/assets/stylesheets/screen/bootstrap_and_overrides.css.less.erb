@@ -4,8 +4,9 @@ body { padding-top: 60px; }
 @import "twitter/bootstrap/responsive";
 
 // Set the correct sprite paths
-@iconSpritePath: '<%= (ENV['RAILS_RELATIVE_URL_ROOT'] || '')+asset_path('twitter/bootstrap/glyphicons-halflings.png')%>';
-@iconWhiteSpritePath: '<%= (ENV['RAILS_RELATIVE_URL_ROOT'] || '')+asset_path('twitter/bootstrap/glyphicons-halflings-white.png')%>';
+
+@iconSpritePath: '<%= (Hroot::Application.config.path_prefix || '')+asset_path('twitter/bootstrap/glyphicons-halflings.png')%>';
+@iconWhiteSpritePath: '<%= (Hroot::Application.config.path_prefix || '')+asset_path('twitter/bootstrap/glyphicons-halflings-white.png')%>';
 
 
 // Set the Font Awesome (Font Awesome is default. You can disable by commenting below lines)

@@ -54,6 +54,7 @@ Hroot::Application.configure do
   }
   
   #config.assets.prefix = "/hroot/assets"
+  config.path_prefix = '/hroot'
 end
 
 #Rails.application.routes.default_url_options[:host] =  'hroot.ingmar.net'

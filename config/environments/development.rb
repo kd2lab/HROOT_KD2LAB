@@ -26,6 +26,8 @@ Hroot::Application.configure do
     :host => 'localhost',
     :port => 3000
   }
+  
+  config.path_prefix = nil
 end
 
 Rails.application.routes.default_url_options[:host] =  'localhost:3000'
