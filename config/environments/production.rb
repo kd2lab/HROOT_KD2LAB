@@ -29,10 +29,10 @@ Hroot::Application.configure do
 
   # Disable Rails's static asset server
   # In production, Apache or nginx will already do this
-  config.serve_static_assets = false
+  #config.serve_static_assets = false
 
   # Enable serving of images, stylesheets, and javascripts from an asset server
-  config.action_controller.asset_host = "https://www.wiso.uni-hamburg.de/hroot/assets"
+  #config.action_controller.asset_host = "https://www.wiso.uni-hamburg.de"
 
   # Disable delivery errors, bad email addresses will be ignored
   config.action_mailer.delivery_method = :sendmail
@@ -53,7 +53,7 @@ Hroot::Application.configure do
     :host => 'https://www.wiso.uni-hamburg.de/hroot/'
   }
   
-  config.assets.prefix = "/hroot/assets"
+  #config.assets.prefix = "/hroot/assets"
 end
 
 #Rails.application.routes.default_url_options[:host] =  'hroot.ingmar.net'
