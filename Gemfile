@@ -34,7 +34,6 @@ gem 'exception_notification'
 gem 'icalendar'
 gem 'coffee-script'
 gem 'cancan'
-# gem 'blueprint-rails'
 gem 'country-select'
 gem 'acts-as-taggable-on', '~> 2.2.2'
 gem 'gem-licenses'
@@ -44,7 +43,7 @@ gem "therubyracer", :require => 'v8'
 
 # whenever for cron
 gem 'whenever', :require => false
-gem 'twitter-bootstrap-rails'
+gem 'less-rails-bootstrap'
 
 # Bundle gems for the local environment. Make sure to
 # put test-only gems in this group so their generators

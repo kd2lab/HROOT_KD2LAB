@@ -1,8 +1,9 @@
 - account deaktivieren
 - bug nach import können mehrere experimentadmin sein
 - todos suchen
-
-
+- bootstrap bilder einfügen
+- email versand
+- eigentlichen mailempfänger anzeigen
 
 später:
 
