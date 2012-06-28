@@ -1,7 +1,7 @@
 #encoding: utf-8
 
 class UserMailer < ActionMailer::Base
-  default from: "hroot@ingmar.net"
+  default from: "experiments@wiso.uni-hamburg.de"
   
   def log_mail(subject, text)
     mail(:to => "ingmar.baetge@googlemail.com", :subject => subject) do |format|
