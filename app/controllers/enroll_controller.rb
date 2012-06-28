@@ -33,10 +33,24 @@ EOSQL
    
     ActiveRecord::Base.connection.execute(sql)
    
-    # check for result
-    @session_participation = SessionParticipation.find_by_user_id_and_session_id(@user.id, @session.id)
+    # check for result - do not use cache :-)
+    SessionParticipation.uncached do
+      @session_participation = SessionParticipation.find_by_user_id_and_session_id(@user.id, @session.id)
+    end
     
     if @session_participation
+      # add user to all following sessions
+      sql = <<EOSQL
+      INSERT INTO session_participations 
+      SELECT NULL, s.id, #{@user.id}, NULL, 0, 0, 0, NOW(), NOW() 
+      FROM sessions s
+      WHERE
+        s.reference_session_id = #{@session.id} AND
+        s.id <> s.reference_session_id
+EOSQL
+      
+      ActiveRecord::Base.connection.execute(sql)
+      
       # successful registration - send confirmation mail
       subject = @session.experiment.confirmation_subject.to_s.mreplace({
         "#firstname" => @user.firstname, 
@@ -51,7 +65,8 @@ EOSQL
         "#lastname"  => @user.lastname,
         "#session_date"  => @session.start_at.strftime("%d.%m.%Y"),
         "#session_start_time" => @session.start_at.strftime("%H:%M"),
-        "#session_end_time" => @session.end_at.strftime("%H:%M")
+        "#session_end_time" => @session.end_at.strftime("%H:%M"),
+        "#sessionlist"  =>  ([@session] + @session.following_sessions).map{|s| s.start_at.strftime("%d.%m.%Y, %H:%M Uhr") }.join("\n")
       })
       
       UserMailer.email(
@@ -61,7 +76,7 @@ EOSQL
         @session.experiment.sender_email
       ).deliver
       
-      redirect_to enroll_path(params[:code]), :notice => "Sie wurden verbindlich angemeldet."
+      redirect_to enroll_path(params[:code]), :notice => "Sie wurden verbindlich angemeldet. Wenn noch weitere Anmeldungen möglich sind, können Sie sich erneut anmelden."
     else
       redirect_to enroll_path(params[:code]), :alert => "Die Anmeldung war NICHT erfolgreich, da keine Plätze mehr frei waren."
     end
@@ -79,7 +94,13 @@ protected
       @user = current_user
     end
     
-    redirect_to root_url, :alert => "Für diesen Bereich ist ein Login erforderlich. " unless @user
+    if @user 
+      if @user.imported && !@user.activated_after_import
+        redirect_to activate_url, :notice => "Ihr bestehender Zugang aus Orsee wurde im neuen System noch nicht aktiviert."
+      end
+    else
+      redirect_to root_url, :alert => "Für diesen Bereich ist ein Login erforderlich. "
+    end
   end
 
   def load_session_and_participation

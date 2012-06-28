@@ -99,17 +99,36 @@ class User < ActiveRecord::Base
   end
   
   def available_sessions
-    # find all ids of the sessions the user is already participating
-    session_ids = [-1] + self.sessions.map(&:id)
-      
-    #find all future sessions, which still have space and are open and the user is not part of
-    Session.includes(:experiment)
-      .in_the_future
-      .where("experiments.registration_active=1")
-      .where("sessions.reference_session_id = sessions.id")
-      .where(["sessions.id NOT IN (?)", session_ids])
-      .order('sessions.start_at')
-      .select{ |s| s.space_left > 0}
+    sql = <<EOSQL
+SELECT 
+ sessions.*
+FROM 
+  sessions, experiments, participations
+WHERE
+  experiments.registration_active=1 AND              
+  sessions.experiment_id = experiments.id AND
+  sessions.id = sessions.reference_session_id AND
+  participations.user_id = #{self.id} AND
+  participations.experiment_id = experiments.id AND
+  start_at > NOW() AND
+  
+  (SELECT COUNT(id) FROM session_participations WHERE session_participations.session_id = sessions.id) < sessions.needed+sessions.reserve AND
+  
+  (SELECT COUNT(*) 
+   FROM session_participations, sessions s2 
+   WHERE session_participations.session_id = s2.id AND session_participations.user_id=#{self.id} AND s2.experiment_id = experiments.id
+  ) = 0 AND
+  
+  (SELECT COUNT(*) 
+   FROM session_participations sp, sessions s3 
+   WHERE
+     sp.session_id = s3.id AND sp.user_id=#{self.id} AND 
+     s3.end_at > sessions.start_at AND s3.start_at < sessions.end_at
+  ) = 0
+  
+EOSQL
+
+    Session.find_by_sql(sql)
   end
   
   # load users and aggregate participation data
@@ -451,5 +470,8 @@ EOSQL
     return true
   end
   
-   
+  def is_missing_data?
+    study_id.nil? || birthday.nil? || degree_id.nil? || country_name.nil? || preference.nil? || experience.nil? || (lang1.nil? && lang2.nil? && lang3.nil?) || begin_year.nil? || begin_month.nil?
+  end
+  
 end

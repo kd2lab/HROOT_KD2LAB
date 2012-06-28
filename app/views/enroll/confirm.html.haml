@@ -1,57 +1,52 @@
 = content_for :breadcrumb do
   %ul.breadcrumb
     %li
-      = link_to "Startseite", root_path
+      =link_to "Login-Bereich", :controller => "account", :action => "index"
       %span.divider
         >
     %li.active
       Experiment-Anmeldung bestätigen
 
-%h3 Anmeldungen zu Experimenten
+%h3 Experiment-Anmeldung bestätigen
 Möchten Sie sich hiermit verbindlich zu folgendem Experiment anmelden?
 %br
 %br
-#enrollment
-  = form_tag enroll_register_path(params[:code]) do
-    = hidden_field_tag("session", @session.id)
-    = @session.time_str
+
+= form_tag enroll_register_path(params[:code]) do
+  = hidden_field_tag("session", @session.id)
+  
+  .well
+    Termine:
     %br
-    
-    - @session.following_sessions.each do |f|  
-      = f.time_str 
-      (Folgesession)
-      %br
-    %br
-            
-    - unless @session.limitations.blank?
-      .limitations
-        %b
-          Teilnahmehinweise: 
-        %br
-        = @session.limitations
-            
-    - if @session.location
-      %small= "Raum: "+@session.location.name
-      %br
+    %b= @session.time_str
+    = @session.location.name if @session.location
             
     - if @session.following_sessions.count > 0
-      %small
-        Achtung: Dies ist ein Experiment mit Folgesessions, bitte überprüfen Sie, ob Sie an 
-        %b
-          allen
-        angezeigten Terminen Zeit haben
+      %br
+      - @session.following_sessions.each do |f|  
+        %b= f.time_str 
+        =f.location.name if f.location
         %br
-            
     %br
-    
-    
-    
-    
     %br
-    = submit_tag('VERBINDLICH ANMELDEN')
-    oder
-    = link_to "zurück", enroll_path(params[:code])
 
-%br
-%br
-%br
+    - unless @session.limitations.blank?
+      %b
+        Teilnahmehinweise: 
+      %br
+      = @session.limitations
+          
+  - if @session.following_sessions.count > 0
+    .alert.alert-block
+      %b Experiment mit Folgesessions:
+      %br
+      Dieses Experiment hat mehrere Termine, bitte überprüfen Sie, ob Sie an 
+      %b allen
+      angezeigten Terminen Zeit haben.
+      %br
+          
+  %br
+  = submit_tag 'Verbindlich anmelden', :class => "btn btn-danger"
+  oder
+  = link_to "zurück", enroll_path(params[:code])
+

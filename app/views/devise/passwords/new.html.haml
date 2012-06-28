@@ -12,8 +12,10 @@
     %h1
       Passwort vergessen?
     %br
-    = simple_form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post, :class => 'form-vertical' }) do |f|
-      = f.input  :email
+    = simple_form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post }) do |f|
+      E-Mail
+      %br
+      = f.input  :email, :label => false
       %br
       = f.submit "E-Mail für Passwortänderung senden", :class => "btn btn-primary"
 

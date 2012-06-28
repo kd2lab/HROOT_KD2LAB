@@ -61,12 +61,7 @@ Folgende Daten sind bei hroot gespeichert, bitte wenden Sie sich zu Datenänderu
       %tr
         %td Studienbeginn
         %td= "#{current_user.begin_month}/#{current_user.begin_year}"
-    - unless current_user.phone.blank?
-      %tr
-        %td Telefon 
-        %td= current_user.phone
     - if current_user.profession
       %tr
         %td Beruf
         %td=  current_user.profession.name
-

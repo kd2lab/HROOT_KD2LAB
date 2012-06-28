@@ -58,6 +58,64 @@ class UserTest < ActiveSupport::TestCase
     end
   end
 
+  context "finding available users" do
+    setup do
+      @u1 = Factory(:user)
+      
+      @e1 = Factory(:experiment, :registration_active => true)
+      @e2 = Factory(:experiment, :registration_active => true)
+      @e3 = Factory(:experiment, :registration_active => true)
+      @e4 = Factory(:experiment)
+      @e5 = Factory(:experiment, :registration_active => true)
+      @e6 = Factory(:experiment, :registration_active => true)
+      
+      Participation.create(:user => @u1, :experiment => @e1)
+      Participation.create(:user => @u1, :experiment => @e2)
+      Participation.create(:user => @u1, :experiment => @e4)
+      Participation.create(:user => @u1, :experiment => @e5)
+      Participation.create(:user => @u1, :experiment => @e6)
+      
+      # normal available session
+      @sess1 = Session.create(:experiment => @e1, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 20, :reserve => 4)
+      
+      # following sessions, should not be part of available sessions
+      @sess1_b = Session.create(:experiment => @e1, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 20, :reserve => 4, :reference_session_id => @sess1.id)
+      @sess1_c = Session.create(:experiment => @e1, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 20, :reserve => 4, :reference_session_id => @sess1.id)
+      
+      # a session without space - not available
+      @sess2 = Session.create(:experiment => @e1, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 0, :reserve => 0)
+      
+      # a session in the past - not available
+      @sess3 = Session.create(:experiment => @e2, :start_at => Time.now-2.hours, :end_at => Time.now+3.hours, :needed => 20, :reserve => 4)
+      
+      # this one is available
+      @sess4 = Session.create(:experiment => @e2, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 20, :reserve => 4)
+      
+      # no participation in these experiments - not available
+      @sess5 = Session.create(:experiment => @e3, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 20, :reserve => 4)
+      @sess6 = Session.create(:experiment => @e3, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 20, :reserve => 4)
+
+      # experiment is not open for registration - not available
+      @sess7 = Session.create(:experiment => @e4, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 20, :reserve => 4)
+      @sess8 = Session.create(:experiment => @e4, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 20, :reserve => 4)
+          
+      # the user is already participatiing in this one - not available
+      @sess9 = Session.create(:experiment => @e5, :start_at => Time.now+6.hours, :end_at => Time.now+8.hours, :needed => 20, :reserve => 4)
+      SessionParticipation.create(:session => @sess9, :user => @u1)
+      
+      # this session is ok, but the user is already participating in an other session of this exp - not available
+      @sess10 = Session.create(:experiment => @e5, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 20, :reserve => 4)
+      
+      
+      # this session is ok, but the user is already participating in an other session at the time - not available
+      @sess11 = Session.create(:experiment => @e6, :start_at => Time.now+5.hours, :end_at => Time.now+7.hours, :needed => 20, :reserve => 4)
+      
+    end
+    
+    should "just work :-)" do
+      assert_same_elements [@sess1, @sess4], @u1.available_sessions
+    end
+  end
   
   context "filtering users" do
     setup do
@@ -94,7 +152,7 @@ class UserTest < ActiveSupport::TestCase
       @sess2 = Session.create(:experiment => @e1, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 20, :reserve => 4)
       @sess3 = Session.create(:experiment => @e3, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 20, :reserve => 4)
       @sess4 = Session.create(:experiment => @e4, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 20, :reserve => 4)
-      @sess5 = Session.create(:experiment => @e2, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 20, :reserve => 4)
+      @sess5 = Session.create(:experiment => @e2, :start_at => Time.now+5.hours, :end_at => Time.now+6.hours, :needed => 20, :reserve => 4)
       
       Participation.create(:user => @u1, :experiment => @e1)
       Participation.create(:user => @u2, :experiment => @e1)

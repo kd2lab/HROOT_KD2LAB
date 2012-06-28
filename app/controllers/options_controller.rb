@@ -26,10 +26,7 @@ class OptionsController < ApplicationController
       flash[:notice] = "Die Änderungen wurden gespeichert"  
     end
     
-    if params[:terms_and_conditions]
-      Settings.terms_and_conditions = params[:terms_and_conditions]
-      flash[:notice] = "Die Änderungen wurden gespeichert"  
-    end
+    
   end
 
   def emails
@@ -46,6 +43,16 @@ class OptionsController < ApplicationController
       Settings.import_invitation_text = params[:import_invitation_text]
       redirect_to options_emails_path, :notice => "Die Mailtexte wurden gespeichert"
     end
+  end
+  
+  def texts
+    if params[:terms_and_conditions]
+      Settings.terms_and_conditions = params[:terms_and_conditions]
+      Settings.welcome_text = params[:welcome_text]
+      Settings.welcome_text_after_import = params[:welcome_text_after_import]
+      
+      redirect_to options_texts_path, :notice => "Die Texte wurden gespeichert"
+    end  
   end
 
 end

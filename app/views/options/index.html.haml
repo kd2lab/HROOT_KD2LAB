@@ -41,28 +41,4 @@
     
       %br
       %br
-  
-      = label_tag :testnr, "Test der Einladung: Jeder n-te Teilnehmer meldet sich an; n = "
-      %br
-      = text_field_tag(:testnr, Settings.testnr)
-  
-  
-      %br
-      %br
-  
-      %h3
-        Text der Datenschutzvereinbarung
-      Hier kann der Text festgelegt werden, der für die Datenschutzvereinbarung von neuen Teilnehmern akzeptiert werden muss.
-      
-      %br
-      %br
-      = text_area_tag(:terms_and_conditions, Settings.terms_and_conditions, :rows => 10, :class => "span6")
-  
-  
-  
-      %br
-      %br
-      = submit_tag("Änderungen speichern", :class => "btn btn-primary") 
-  
-      %br
-      %br
+      =submit_tag "Änderungen speichern", :class => "btn btn-primary"

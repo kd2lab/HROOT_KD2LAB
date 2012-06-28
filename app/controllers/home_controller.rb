@@ -12,16 +12,17 @@ class HomeController < ApplicationController
   
   def activate
     if params[:email]
-      @user = User.where(:imported => true).where(:email => params[:email]).first
+      @user = User.where(:imported => true).where(:activated_after_import => false).where(:email => params[:email]).first
       if @user
-        
+        UserMailer.import_email_confirmation(@user).deliver
+        redirect_to activate_path, :notice => "Es wurde Ihnen eine E-Mail mit einem Link zur Freischaltung zugesendet."
       else
         redirect_to activate_path, :alert => "Zu dieser E-Mail-Adresse gibt es keinen Account"
       end
     end
-    
   end
   
+  # todo test
   def confirm_alternative_email
     u = User.find_by_secondary_email_confirmation_token(params[:confirmation_token])
     if u
@@ -38,6 +39,8 @@ class HomeController < ApplicationController
     end      
   end
   
+  
+  # todo weg damit?
   #def confirm_change_email
   #  u = User.find_by_change_email_confirmation_token(params[:confirmation_token])
   #  if u

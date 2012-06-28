@@ -4,6 +4,59 @@ namespace :import do
   task :all => :environment do
     require 'sequel'
     
+     # set a few defaults:
+    Settings.invitation_subject = "Einladung zur Experiment-Session"
+    Settings.invitation_text = <<EOTXT
+Hallo #firstname #lastname,
+
+an folgenden Terminen können Sie an einer Experiment-Session teilnehmen:
+
+#sessionlist
+
+Melden Sie sich an unter #link.
+
+Viele Grüße,
+Ihre Laborleitung
+EOTXT
+
+    Settings.confirmation_subject = "Bestätigung zur Sessionanmeldung am #session_date um #session_start_time"
+    Settings.confirmation_text = <<EOTXT
+Hallo #firstname #lastname,
+
+hiermit bestätigen wir verbindlich die folgende Experiment-Teilnahme an folgenden Terminen:
+
+#sessionlist   
+EOTXT
+    
+    Settings.reminder_subject = "Erinnerung: Experiment-Session am #session_date um #session_end_time"
+    Settings.reminder_text = <<EOTXT
+Hallo #firstname #lastname,
+
+hiermit erinnern wir Sie an die Experiment-Session am #session_date von #session_start_time bis #session_end_time.        
+EOTXT
+
+    Settings.session_finish_subject = "Sessionabschluss unvollständig: #experiment_name am #session_date um #session_start_time"
+    Settings.session_finish_text = <<EOTXT
+Hallo,
+
+bitte vervollständigen Sie noch die Teilnahmedaten der folgenden Session: 
+Experiment: #experiment_name
+Datum: #session_date
+Startzeit: #session_start_time 
+EOTXT
+    Settings.import_invitation_subject = "Umstellung auf hroot - Neuaktivierung Ihres Accounts aus Orsee"
+    Settings.import_invitation_text = <<EOTXT
+Hallo #firstname #lastname,
+
+wir haben unsere Verwaltungssoftware zur Organisation von Experimenten aktualisiert. Die neue Software heisst hroot und löst das bestehende System Orsee ab. Bitte aktivieren Sie Ihren Account und folgendem Link:
+
+#activation_link
+EOTXT
+
+    Settings.terms_and_conditions = "Datenschutz und Nutzungsbedingungen..."
+    Settings.welcome_text = "Herzlich willkomen zum internen Bereich von hroot - hier können Sie Ihre persönlichen Daten verwalten und sich zu Experimentsessions anmelden."
+    Settings.welcome_text_after_import =  "Herzlich willkomen zum internen Bereich von hroot - hier können Sie Ihre persönlichen Daten verwalten und sich zu Experimentsessions anmelden. Ihre bestehenden Daten wurden aus dem bisherigen System Orsee übernommen."
+    
     db = Sequel.connect(:adapter=>'mysql2', :host=>'localhost', :database=>'controlling_orsee', :user=>'root', :password=>'abc8765')
    
     User.delete_all
@@ -83,6 +136,7 @@ namespace :import do
         y = y-1
       end
       
+      pw = SecureRandom.hex(16)+'_1'
       u = User.new(
         :email => row[:email], 
         :firstname => row[:fname],
@@ -90,8 +144,8 @@ namespace :import do
         :matrikel => if row[:matrikelnummer].blank? then "0" else row[:matrikelnummer] end,
         :gender => row[:gender] == '?'? '?' : row[:gender],
         :phone => row[:phone_number],
-        :password => 'tester_1',
-        :password_confirmation => "tester_1",
+        :password => pw,
+        :password_confirmation => pw,
         :role => 'user',
         :begin_month => m,
         :begin_year => y,
@@ -298,6 +352,9 @@ namespace :import do
     
     # update noshow calculation
     User.update_noshow_calculation
+    
+    
+    
     
   end
 end

@@ -10,7 +10,7 @@ class UserMailer < ActionMailer::Base
   end
   
   def email(subject, text, to, from = nil)
-    mail(:from => unless from.blank? then from else UserMailer.default[:from] end, :to => "mail@ingmar.net", :subject => subject) do |format|
+    mail(:from => unless from.blank? then from else UserMailer.default[:from] end, :to => "hroottest@googlemail.com", :subject => subject) do |format|
       format.text { render :text => text }
     end
   end
@@ -20,15 +20,16 @@ class UserMailer < ActionMailer::Base
     mail(:to => user.secondary_email, :subject => "Bestätigung der alternativen E-Mail-Adresse")
   end    
   
-  def change_email_confirmation(user)
-    @user = user
-    mail(:to => user.change_email, :subject => "Bestätigung der neuen E-Mail-Adresse")
-  end    
-  
   def import_email_confirmation(user)
     @user = user
     #mail(:to => user.import_email, :subject => "hroot-Anmeldung: Bestätigung der neuen E-Mail-Adresse")
-    mail(:to => 'mail@ingmar.net', :subject => "hroot-Anmeldung: Bestätigung der neuen E-Mail-Adresse")
+    mail(:to => 'hroottest@googlemail.com', :subject => "hroot-Anmeldung: Bestätigung der neuen E-Mail-Adresse")
   end  
+
+  #def change_email_confirmation(user)
+  #  @user = user
+  #  mail(:to => user.change_email, :subject => "Bestätigung der neuen E-Mail-Adresse")
+  #end    
+  
   
 end

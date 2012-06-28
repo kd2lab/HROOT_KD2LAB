@@ -1,15 +1,29 @@
 class DeviseCreateUsers < ActiveRecord::Migration
   def self.up
     create_table(:users) do |t|
-      t.database_authenticatable :null => false
-      t.recoverable
-      t.rememberable
-      t.trackable
-      t.confirmable
+      ## Database authenticatable
+      t.string :email,              :null => false, :default => ""
+      t.string :encrypted_password, :null => false, :default => ""
 
-      # t.encryptable
-      # t.lockable :lock_strategy => :failed_attempts, :unlock_strategy => :both
-      # t.token_authenticatable
+      ## Recoverable
+      t.string   :reset_password_token
+      t.datetime :reset_password_sent_at
+      
+      ## Rememberable
+      t.datetime :remember_created_at
+      
+      ## Trackable
+      t.integer  :sign_in_count, :default => 0
+      t.datetime :current_sign_in_at
+      t.datetime :last_sign_in_at
+      t.string   :current_sign_in_ip
+      t.string   :last_sign_in_ip
+      
+      
+      ## Confirmable
+      t.string   :confirmation_token
+      t.datetime :confirmed_at
+      t.datetime :confirmation_sent_at
 
       # user specific fields
       t.string :firstname
@@ -22,7 +36,7 @@ class DeviseCreateUsers < ActiveRecord::Migration
       t.string :calendar_key
       t.boolean :deleted, :default => false
       t.integer :study_id
-      t.string :degree_id
+      t.integer :degree_id
       t.string :country_name
       t.integer :begin_month
       t.integer :begin_year
@@ -40,9 +54,11 @@ class DeviseCreateUsers < ActiveRecord::Migration
       t.datetime :secondary_email_confirmed_at
       t.string   :secondary_email_confirmation_token
 
-      t.string   :change_email
-      t.string   :change_email_confirmation_token
-
+      #t.string   :change_email
+      #t.string   :change_email_confirmation_token
+      t.boolean :show_greeting, :default => true
+      t.boolean :account_paused, :default => false
+      
       t.boolean :imported, :default => false
       t.boolean :activated_after_import, :default => false
       t.string  :import_token

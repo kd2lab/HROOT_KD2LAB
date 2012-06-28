@@ -10,23 +10,31 @@ Hroot::Application.routes.draw do
 
   match 'account', :controller => 'account', :action => 'index'
   #match 'account/email', :controller => 'account', :action => 'email'
-
+  #match 'home/confirm_change_email/:confirmation_token', :controller => 'home', :action => 'confirm_change_email', :as => 'change_email_confirmation'
+  
   match 'account/data', :controller => 'account', :action => 'data'  
+  match 'account/phone', :controller => 'account', :action => 'phone'  
+  match 'account/edit', :controller => 'account', :action => 'edit'  
 
   match 'account/alternative_email', :controller => 'account', :action => 'alternative_email'  
   match 'home/confirm_alternative_email/:confirmation_token', :controller => 'home', :action => 'confirm_alternative_email', :as => 'secondary_email_confirmation'
 
-  #match 'account/password', :controller => 'account', :action => 'password'  
-
-  match 'home/confirm_change_email/:confirmation_token', :controller => 'home', :action => 'confirm_change_email', :as => 'change_email_confirmation'
   match 'home/activate', :controller => 'home', :action => 'activate', :as => 'activate'
 
-
-  devise_for :users, :controllers => {:registrations => "registrations"}, :path_names => { :sign_in => 'login', :sign_out => 'logout', :password => 'secret', :confirmation => 'confirmation', :sign_up => 'register' } do
+  devise_for :users, :controllers => {:registrations => "registrations"}, :path_names => { :sign_in => 'login' }, skip: :registrations 
+  
+  devise_scope :user do
     get "/login" => "devise/sessions#new"
     delete "/logout" => "devise/sessions#destroy"
     get "/logout" => "devise/sessions#destroy"
-    get "/register" => "devise/registrations#new"
+    
+    get "/register" => "registrations#new"
+    
+    resource :registration,
+      only: [:new, :create, :edit, :update],
+      path: 'users',
+      controller: 'registrations',
+      as: :user_registration 
   end
 
 
@@ -39,12 +47,17 @@ Hroot::Application.routes.draw do
     match 'options', :controller => 'options', :action => 'index'
     match 'options/index', :controller => 'options', :action => 'index'
     post 'options/index'
-  
     match 'options/emails', :controller => 'options', :action => 'emails'
+    match 'options/texts', :controller => 'options', :action => 'texts'
+      
       
     resources :users do
+      member do
+        get :login_as
+      end
       collection do
         post :index
+        post :create_user
       end
     end
     
@@ -98,13 +111,6 @@ Hroot::Application.routes.draw do
       end
     end
   end
-
-
-
-
-  get "home/import"
-  get "home/import_test"
-  get "home/index"
 
   root :to => "home#index"  
 end

@@ -16,7 +16,9 @@
       erneut senden
     %br
     = simple_form_for(resource, :as => resource_name, :url => confirmation_path(resource_name), :html => { :method => :post, :class => 'form-vertical' }) do |f|
-      = f.input :email
+      E-Mail
+      %br
+      = f.input :email, :label => false
       %br
       = f.submit "E-Mail erneut senden", :class => "btn btn-primary"
 

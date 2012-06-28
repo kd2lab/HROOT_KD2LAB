@@ -4,13 +4,32 @@
       link_to(@user.firstname+' '+@user.lastname, user_path(@user)) ]
 
   
+.btn-group{:style => "float:right"}
+  %a.btn.dropdown-toggle{:'data-toggle' => "dropdown", :href => "#"}
+    Weitere Funktionen
+    %b.caret 
+  %ul.dropdown-menu
+    %li= link_to "Als #{@user.firstname} #{@user.lastname} einloggen.", login_as_user_path(@user)
+
+    / %li= link_to "Nachricht an diesen Nutzer senden", '#', :class => "send-message", :'data-to' => "Markierte Teilnehmer", :'data-mode' => 'selected'
+    
 .edit_button{:style => "float: right"}
   = link_to "Bearbeiten", edit_user_path(@user), :class => "btn btn-primary"
-  
+    
 %h1
   = @user.firstname+' '+@user.lastname
   
+- if @user.imported && !@user.activated_after_import  
+  %span.label.label-important
+    nicht aktiviert nach Import
+  &nbsp;
+  
+- if @user.deleted
+  %span.label.label-important
+    als gelöscht markiert
+
 %br
+
 
 %table.table
   %thead
@@ -37,9 +56,11 @@
     %tr
       %td Abschluss(-ziel)
       %td= @user.degree.name if @user.degree  
+    
     %tr
-      %td Studienbegin
-      %td= "#{@user.begin_month}/#{@user.begin_year}"
+      %td Studienbeginn
+      %td
+        = "#{@user.begin_month}/#{@user.begin_year}" if @user.begin_month && @user.begin_year
     %tr
       %td Land
       %td= @user.country_name
@@ -50,45 +71,42 @@
       %td Beruf
       %td=  @user.profession.name if @user.profession
 
-- if @user.deleted?
-  .mark{:style=>"color:red"} 
-    Dieser Nutzer ist als gelöscht markiert!
-
-
   %br
 
 .userinfo
   - ptable = {}; @user.session_participations.each do |sp| ptable[sp.session_id] = sp end
+  - participations = @user.session_participations.includes(:session).where('sessions.id=sessions.reference_session_id').order("sessions.start_at")
   
-  Bisherige Experimentteilnahmen:
-  %br
-  %br
+  - if participations.count > 0
+
+    Bisherige Experimentteilnahmen:
+    %br
+    %br
   
-  %table.table
-    %tbody  
-      - @user.session_participations.includes(:session).where('sessions.id=sessions.reference_session_id').order("sessions.start_at").each do |sp|
-      
-        %tr
-          %td
-            = truncate(sp.session.experiment.name, :length => 60)
-            %br
-            - ([sp.session] + sp.session.following_sessions).each do |s|
-              = link_to s.time_str, participants_experiment_session_path(s.experiment, s)
+    %table.table
+      %tbody  
+        - participations.each do |sp|
+          %tr
+            %td
+              = truncate(sp.session.experiment.name, :length => 60)
               %br
-          %td
-            %br
-            - ([sp.session] + sp.session.following_sessions).each do |s|
-              - if ptable[s.id] && ptable[s.id].showup
-                %span.label.label-success
-                  Erschienen
-              - if ptable[s.id] && ptable[s.id].noshow
-                %span.label.label-important
-                  Nicht erschienen
+              - ([sp.session] + sp.session.following_sessions).each do |s|
+                = link_to s.time_str, participants_experiment_session_path(s.experiment, s)
+                %br
+            %td
               %br
-          %td
-            %br
-            - ([sp.session] + sp.session.following_sessions).each do |s|
-              - if ptable[s.id] && ptable[s.id].participated
-                %span.label.label-success
-                  Teilgenommen
+              - ([sp.session] + sp.session.following_sessions).each do |s|
+                - if ptable[s.id] && ptable[s.id].showup
+                  %span.label.label-success
+                    Erschienen
+                - if ptable[s.id] && ptable[s.id].noshow
+                  %span.label.label-important
+                    Nicht erschienen
+                %br
+            %td
               %br
+              - ([sp.session] + sp.session.following_sessions).each do |s|
+                - if ptable[s.id] && ptable[s.id].participated
+                  %span.label.label-success
+                    Teilgenommen
+                %br

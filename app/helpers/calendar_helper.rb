@@ -5,16 +5,10 @@ module CalendarHelper
   
   # custom options for this calendar
   def event_calendar_opts
-    colormap = {}
-    exp_ids = @event_strips.flatten.map{|s,i| s.experiment_id if s}.compact.uniq.each_with_index do |id, i|
-      colormap[id] = (i % 32)
-    end
-    
     { 
       :year => @year,
       :month => @month,
       :event_strips => @event_strips,
-      :colors => colormap,
       :month_name_text => I18n.localize(@shown_month, :format => "%B %Y"),
       :previous_month_text => "<< " + month_link(@shown_month.prev_month),
       :next_month_text => month_link(@shown_month.next_month) + " >>",
@@ -31,7 +25,8 @@ module CalendarHelper
     # args is an argument hash containing :event, :day, and :options
     calendar(event_calendar_opts) do |args|
       session = args[:event]
-      %(<div class="event-qtip cal_color#{args[:options][:colors][session.experiment_id]}"
+
+      %(<div class="event-qtip cal_color#{session.experiment_id % 32}"
           data-title="#{session.experiment.name}"
           data-location="#{session.location.name if session.location}"
           data-expid="#{session.experiment.id}"

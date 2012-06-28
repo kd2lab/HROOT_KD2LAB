@@ -60,9 +60,10 @@ class UsersController < ApplicationController
   
   end
 
-  def create
+  def create_user
     @user = User.new(params[:user])
     @user.skip_confirmation!
+    @user.admin_update = true
     
     if @user.save
       redirect_to(users_url, :notice => 'Der Benutzer wurde erfolgreich angelegt.') 
@@ -88,6 +89,11 @@ class UsersController < ApplicationController
     @user.destroy
 
     redirect_to(users_url) 
+  end
+  
+  def login_as
+    sign_in @user
+    redirect_to account_path
   end
   
   private

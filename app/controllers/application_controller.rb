@@ -15,4 +15,15 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  before_filter :redirect_imported_users
+  
+  def redirect_imported_users
+    if current_user
+      if current_user.imported && !current_user.activated_after_import
+        email = current_user.email
+        sign_out current_user
+        redirect_to activate_url, :notice => "Ihr bestehender Zugang aus Orsee wurde im neuen System noch nicht aktiviert."
+      end
+    end
+  end
 end

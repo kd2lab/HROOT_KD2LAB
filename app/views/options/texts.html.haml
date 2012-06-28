@@ -1,0 +1,48 @@
+= content_for :breadcrumb do
+  %ul.breadcrumb
+    %li
+      =link_to "Administration", :controller => "admin", :action => "index"
+      %span.divider
+        &gt;
+    %li.active
+      Einstellungen
+  
+= render :partial => "tabs", :locals => {:selected => "Texte"} 
+
+
+= form_tag options_texts_path, :method => "post", :class => "form-horizontal" do
+  %h3
+    Text der Datenschutzvereinbarung
+  Hier kann der Text festgelegt werden, der für die Datenschutzvereinbarung von neuen Teilnehmern akzeptiert werden muss.      
+  %br
+  %br
+  = text_area_tag(:terms_and_conditions, Settings.terms_and_conditions, :rows => 10, :class => "span8")
+  %br
+  %br
+  
+  %h3
+    Begrüßungstext für Neuanmeldungen
+  Der folgende Text wird Teilnehmern angezeigt, nachdem sie sich das erste Mal eingeloggt haben
+  %br
+  %br
+  = text_area_tag(:welcome_text, Settings.welcome_text, :rows => 10, :class => "span8")
+  %br
+  %br
+  
+  %h3
+    Begrüßungstext für Teilnehmer nach Importfreischaltung
+  Der folgende Text wird importierten Teilnehmern angezeigt, wenn sie sich das erste Mal nach Accountfreischaltung anmelden.
+  %br
+  %br
+  = text_area_tag(:welcome_text_after_import, Settings.welcome_text_after_import, :rows => 10, :class => "span8")
+  %br
+  %br
+  
+  
+  = submit_tag "Texte speichern", :class => "guarded_form_save btn btn-primary"
+  
+
+   
+        
+    	
+    

@@ -1,0 +1,37 @@
+= content_for :breadcrumb do
+  %ul.breadcrumb
+    %li
+      =link_to "Login-Bereich", :controller => "account", :action => "index"
+      %span.divider
+        &gt;
+    %li.active
+      Unvollständige Daten
+
+%h3 Unvollständige Daten
+
+Sie werden im Moment nicht zu allen möglichen Experiment-Sessions eingeladen, da Sie Ihre Daten nicht vollständig angegeben haben. Die Angabe der Daten ist freiwillig, wenn Sie mehr Informationen angeben, werden Sie allerdings häufiger zu Experimenten eingeladen. Hier können Sie Ihre Daten ergänzen:
+%br    
+%br
+= simple_form_for current_user, :url => '', :method => :post, :html => {:class => "form-horizontal"} do |f| 
+  - if current_user.birthday.nil?
+    = f.input :birthday, :include_blank => true, :order => [:day, :month, :year], :required => false, :start_year => Date.today.year-16, :end_year => 1900
+  - if current_user.study_id.nil?  
+    = f.input :study_id, :collection => Study.all.map{|s| [s.name, s.id]}, :include_blank => "keine Angabe"
+  - if current_user.begin_month.nil? || current_user.begin_year.nil?
+    = f.input :begin_month, :collection => (1..12)
+    = f.input :begin_year, :collection => (Time.now.year-10..Time.now.year)
+  - if current_user.degree_id.nil?
+    = f.input :degree_id, :collection => Degree.all.map{|s| [s.name, s.id]}, :include_blank => "keine Angabe"
+  - if current_user.country_name.nil?
+    = f.input :country_name, :priority => [ "Germany" ], :include_blank => true  
+  - if current_user.preference.nil?
+    = f.input :preference, :collection => {'Präsenz- und Online-Experimenten' => 0, 'nur Präsenz-Experimente' => 1, 'nur Online-Experimente' => 2}    
+  - if current_user.experience.nil?
+    = f.input :experience, :collection => [["Ich habe noch nie an Experimenten teilgenommen.", false], ["Ich habe bereits an Experimenten teilgenommen.", true]], :label => "Experimenterfahrung"   
+  - if (current_user.lang1.nil? && current_user.lang2.nil? && current_user.lang3.nil?) 
+    = f.input :lang1, :collection => Language.all.map{|s| [s.name, s.id]}, :as => :select, :required => false
+    = f.input :lang2, :collection => Language.all.map{|s| [s.name, s.id]}, :as => :select, :required => false, :wrapper_html => {:style => "display:none", :id => "lang2"}
+    = f.input :lang3, :collection => Language.all.map{|s| [s.name, s.id]}, :as => :select, :required => false, :wrapper_html => {:style => "display:none", :id => 'lang3'}
+  
+  = submit_tag "Daten speichern", :class => "btn btn-primary"
+  

@@ -8,8 +8,66 @@
       Willkommen
 
 
+- if current_user.show_greeting
+  .alert.alert-success
+  
+    %h3 Willkommen!
+    %br
+    - if current_user.imported
+      = Settings.welcome_text_after_import
+    - else
+      = Settings.welcome_text
+    %br
+    %br
+    /= link_to "Information ausblenden", '?hide', :class => "btn"
+    /%br
+    /%br
+    
+.well
+  %h3 Neuanmeldung zu Experiment-Sessions
+  - if current_user.available_sessions.count > 0
+    Sie können sich derzeit zu Experiment-Sessions anmelden.
+    %br
+    %br
+    = link_to "Jetzt anmelden", enroll_path, :class => "btn btn-primary"
+  - else
+    Derzeit gibt es keine Experiment-Sessions, zu denen Sie eingeladen wurden.
+    
+    
+  
+.well
+  %h3 Bestehende Sessionanmeldungen
 
-= render :partial => "shared/future_sessions", :locals => {:user => current_user}
+  - @session_participations_in_the_future = current_user.session_participations.includes(:session).where("sessions.start_at > NOW()")
+  - if @session_participations_in_the_future.count > 0
+    Sie sind zu folgenden Experiment-Sessions verbindlich angemeldet:
+    %br
+    %br
+    %table.table
+      - @session_participations_in_the_future.each do |sp|
+        %tr
+          %td
+            = sp.session.time_str
+            = sp.session.location.name if sp.session.location
+            %br
+            
+            - sp.session.following_sessions.each do |f|  
+              = f.time_str 
+              = f.location.name if f.location
+              %br
+          
+          
+  - else
+    Sie sind derzeit zu keinen Experiment-Sessions angemeldet.    
 
-
+- if current_user.is_missing_data?
+  .well
+    %h3 Unvollständige Daten
+    Sie werden im Moment nicht zu allen möglichen Experiment-Sessions eingeladen, da Sie Ihre Daten nicht vollständig angegeben haben. Die Angabe der Daten ist freiwillig, wenn Sie mehr Informationen angeben, werden Sie allerdings häufiger zu Experimenten eingeladen.
+    %br
+    %br
+    = link_to "Weitere Daten angeben", account_edit_path, :class => "btn"
+    
+    
+    
   

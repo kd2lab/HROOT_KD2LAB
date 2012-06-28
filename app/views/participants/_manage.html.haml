@@ -50,7 +50,7 @@
 %br
 
 - if @users.count > 0
-  = will_paginate @users,  :renderer => WillPaginate::ActionView::BootstrapLinkRenderer , :prev_label => "&lt;&lt;&nbsp;", :next_label => "&nbsp;&gt;&gt;"
+  = will_paginate @users,  :renderer => WillPaginate::ActionView::BootstrapLinkRenderer , :previous_label => "&lt;&lt;&nbsp;", :next_label => "&nbsp;&gt;&gt;"
   
   .menu
     = submit_tag "Alle Poolmitglieder der aktuellen Filterung zuordnen", :name => 'submit_all', :class => "btn" 

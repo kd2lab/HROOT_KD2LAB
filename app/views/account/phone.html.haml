@@ -1,0 +1,25 @@
+= content_for :breadcrumb do
+  %ul.breadcrumb
+    %li
+      =link_to "Login-Bereich", :controller => "account", :action => "index"
+      %span.divider
+        &gt;
+    %li.active
+      Account-Optionen
+
+%h3 Account-Optionen
+
+= render :partial => "tabs", :locals => {:selected => "Telefonnummer"} 
+
+
+%h3 Telefonnummer
+Die Angabe Ihrer Telefonnummer ist freiwillig. Wenn Sie Ihre Telefonnummer angeben, können wir Sie bei kurzfristigen Terminveränderungen schnell erreichen.
+%br
+%br
+= form_tag '' do
+  %b Telefonnummer:
+  %br
+  = text_field_tag :phone, current_user.phone
+  %br
+  %br
+  = submit_tag "Telefonnummer speichern", :class => "btn btn-primary"

@@ -1,9 +1,12 @@
 %ul.nav.nav-list
   - if current_user
-    %li.nav-header Allgemein
-    %li= link_to "Home", account_path
-    %li= link_to "Account-Optionen", account_data_path
-    
+    - if current_user.user?
+      %li.nav-header Allgemein
+      %li= link_to "Home", account_path
+      %li= link_to "Account-Optionen", account_data_path
+    - else
+      %li.nav-header Allgemein
+      %li= link_to "Account-Optionen", account_data_path
     
     - if can? :manage, :all
       %li.nav-header Admin-Menü

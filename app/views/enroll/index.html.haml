@@ -1,63 +1,58 @@
 = content_for :breadcrumb do
   %ul.breadcrumb
     %li
-      = link_to "Startseite", root_path
+      =link_to "Login-Bereich", :controller => "account", :action => "index"
       %span.divider
-        >
+        &gt;
     %li.active
-      Experiment-Anmeldung
-
-#enrollment
-
-  = render :partial => "shared/future_sessions", :locals => {:user => @user}
+      Neuanmeldung zu Experiment-Sessions
 
 
-  - if @availabe_sessions.count > 0
-    %h3 Anmeldungen zu Experiment-Sessions
-    Sie können sich für folgende Termine anmelden:
-    %br
-    %br
-  
-    = form_tag enroll_confirm_path(params[:code]) do
+%h3 Neuanmeldungen zu Experiment-Sessions
+
+- if @availabe_sessions.count > 0
+  Sie können sich für folgende Termine anmelden:
+  %br
+  %br
+
+  = form_tag enroll_confirm_path(params[:code]) do
+    
+    %table.table
       - @availabe_sessions.each do |s|
-        .line
-          .button
+        %tr
+          %td
             = radio_button_tag "session", "#{s.id}" 
-          .text
-            = s.time_str
-            %br
-            
-            - s.following_sessions.each do |f|  
-              = f.time_str 
-              (Folgesession)
-              %br
-            
-            - unless s.limitations.blank?
-              .limitations
-                %b
-                  Teilnahmehinweise: 
-                %br
-                = s.limitations
-            
-            %small= "Raum: "+s.location.name if s.location
-            %br
+          %td
+            %b= s.time_str
+            = s.location.name if s.location
             
             - if s.following_sessions.count > 0
-              %small
-                Achtung: Dies ist ein Experiment mit Folgesessions, bitte überprüfen Sie, ob Sie an 
-                %b
-                  allen
-                angezeigten Terminen Zeit haben
               %br
-            
+              - s.following_sessions.each do |f|  
+                %b= f.time_str 
+                =f.location.name if f.location
+                %br
             %br
-      %br
-      = submit_tag('Zu den gewählten Sessions anmelden')
-      %br
+            
+            - unless s.limitations.blank?
+              %b
+                Teilnahmehinweise: 
+              %br
+              = s.limitations
+              %br
+              %br
       
-      %small
-        
-
-    %br
-    %br
-    %br
+            - if s.following_sessions.count > 0
+              .alert.alert-block
+                %b Experiment mit Folgesessions:
+                %br
+                Dieses Experiment hat mehrere Termine, bitte überprüfen Sie, ob Sie an 
+                %b allen
+                angezeigten Terminen Zeit haben.
+                %br
+      
+    = submit_tag 'Zu den gewählten Sessions anmelden', :class => "btn btn-primary"
+    
+    
+- else    
+  Derzeit können Sie sich für keine weiteren Sessions anmelden.

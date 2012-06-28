@@ -1,29 +1,14 @@
-%h2 Aktivierung eines bestehenden Accounts aus Orsee
+%h2 Aktivierung eines bereits bestehenden Accounts
 
+%br
+Wenn Sie bereits Zugang zum bisherigen System haben, sind Ihre Daten übertragen worden. Sie können hier eine Freischaltung beantragen.
 
 %br
 %br
-
-
 
 = form_tag '' do
-  %h3 Bitte geben Sie Ihre E-Mail-Adresse an der Universität Hamburg an:
+  %h3 Bitte geben Sie die E-Mail-Adresse an mit der Sie bei Orsee angemeldet waren:
   %br
-  - if Settings.mail_restrictions && Settings.mail_restrictions.map{|r| r['suffix']}.select{|r| !r.blank?}.count > 0  
-    = text_field_tag :email_prefix, params[:email_prefix], :class => "span2"
-    @
-    = select_tag :email_suffix, options_for_select(Settings.mail_restrictions.map{|r| r['suffix']}.select{|r| !r.blank?}, params[:user] ? params[:user][:email_suffix] : "")
-    %br
-    %br
-  - else
-    = text_field_tag :email
-  
-  %br
-  %br
-  %h3 abweichende E-Mail in Orsee?
-  Wenn Sie bei Orsee mit einer anderen E-Mail-Adresse angemeldet waren
-  = text_field_tag :orsee_email
+  = text_field_tag :email, params[:email]
 
-  
-  %br
-  = submit_tag "Account suchen", :class => "btn btn-primary guarded_form_save"
+  = submit_tag "E-Mail zur Freischaltung senden", :class => "btn btn-primary"
