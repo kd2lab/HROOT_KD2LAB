@@ -50,18 +50,15 @@ Hroot::Application.configure do
   config.active_support.deprecation = :notify
   
   config.action_mailer.default_url_options = {
-    :host => 'hroot.ingmar.net'
+    :host => 'https://www.wiso.uni-hamburg.de/hroot/'
   }
+  
+  config.assets.prefix = "/hroot/assets"
 end
 
-Rails.application.routes.default_url_options[:host] =  'hroot.ingmar.net'
+#Rails.application.routes.default_url_options[:host] =  'hroot.ingmar.net'
 
 Hroot::Application.config.middleware.use ExceptionNotifier,
   :email_prefix => "[hroot] ",
   :sender_address => %{"hroot notifier" <hroot@ingmar.net>},
   :exception_recipients => %w{mail@ingmar.net}
-
-
-
-#ActionMailer::Base.delivery_method = :sendmail
-#ActionMailer::Base.smtp_settings[:enable_starttls_auto] = false
