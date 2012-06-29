@@ -19,7 +19,7 @@ Hroot::Application.configure do
   # just comment this out and Rails will serve the files
 
   # See everything in the log (default is :info)
-  # config.log_level = :debug
+  config.log_level = :debug
 
   # Use a different logger for distributed setups
   # config.logger = SyslogLogger.new
@@ -61,5 +61,5 @@ end
 
 Hroot::Application.config.middleware.use ExceptionNotifier,
   :email_prefix => "[hroot] ",
-  :sender_address => %{"hroot notifier" <hroot@ingmar.net>},
+  :sender_address => %{"hroot notifier" <notifier@wiso.uni-hamburg.de>},
   :exception_recipients => %w{mail@ingmar.net}
