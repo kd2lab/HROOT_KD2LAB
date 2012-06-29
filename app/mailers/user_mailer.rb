@@ -17,13 +17,13 @@ class UserMailer < ActionMailer::Base
     
   def secondary_email_confirmation(user)
     @user = user
-    mail(:to => user.secondary_email, :subject => "Bestätigung der alternativen E-Mail-Adresse")
+    mail(:from => UserMailer.default[:from], :to => user.secondary_email, :subject => "Bestätigung der alternativen E-Mail-Adresse")
   end    
   
   def import_email_confirmation(user)
     @user = user
     #mail(:to => user.import_email, :subject => "hroot-Anmeldung: Bestätigung der neuen E-Mail-Adresse")
-    mail(:to => 'hroottest@googlemail.com', :subject => "hroot-Anmeldung: Bestätigung der neuen E-Mail-Adresse")
+    mail(:from => UserMailer.default[:from], :to => 'hroottest@googlemail.com', :subject => "hroot-Anmeldung: Bestätigung der neuen E-Mail-Adresse")
   end  
 
   #def change_email_confirmation(user)
