@@ -38,7 +38,7 @@
 .well
   %h3 Bestehende Sessionanmeldungen
 
-  - @session_participations_in_the_future = current_user.session_participations.includes(:session).main_sessions.where("sessions.start_at > NOW()")
+  - @session_participations_in_the_future = current_user.session_participations.includes(:session).where("sessions.start_at > NOW() AND sessions.reference_session_id = sessions.id")
   - if @session_participations_in_the_future.count > 0
     Sie sind zu folgenden Experiment-Sessions verbindlich angemeldet:
     %br
