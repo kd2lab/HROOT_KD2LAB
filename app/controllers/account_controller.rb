@@ -70,7 +70,7 @@ class AccountController < ApplicationController
     redirect_to(account_path, :notice => 'Es wurde alle Daten angegeben.') unless current_user.is_missing_data?
     
     if params[:user]
-      params[:user][:country_name] = nil if params[:user][:country_name].blank?
+      params[:user][:country_name] = nil if params[:user][:country_name] == ''
       
       if current_user.update_attributes(params[:user])
         redirect_to(account_edit_path, :notice => 'Der Benutzer wurde erfolgreich geändert') 

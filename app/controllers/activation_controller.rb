@@ -50,7 +50,8 @@ class ActivationController < ApplicationController
           @activation_user.import_email_confirmation_token = SecureRandom.hex(16)
           @activation_user.save
           UserMailer.import_email_confirmation(@activation_user).deliver
-          redirect_to :action => :email_delivered
+          redirect_to({:action => :email_delivered}, :notice => "Es wurde Ihnen eine E-Mail zur Bestätigung Ihrer neuen Adresse gesendet.")
+          return
         end
       end
       
