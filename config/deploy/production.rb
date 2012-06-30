@@ -4,8 +4,8 @@ set :rvm_path, "$HOME/.rvm"
 
 set :deploy_to, "~/projects/#{application}"
 set :user, "hroot"
-server "hroot@wiso-srv-webhr.wiso.uni-hamburg.de", :app, :web #, :db, :primary => true
-
+server "hroot@wiso-srv-webhr.wiso.uni-hamburg.de", :app, :web, :db, :primary => true
+set :whenever_environment, 'production'
 
 set :deploy_via, :copy
 

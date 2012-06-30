@@ -71,7 +71,6 @@ set :whenever_command, "bundle exec whenever"
 #set :whenever_environment, defer { stage }
 require "whenever/capistrano"
 
-
 #before "deploy", "deploy:stop"
 after "deploy", "deploy:migrate"
 after 'deploy:update_code', 'deploy:compile_assets'
