@@ -66,7 +66,8 @@ Hroot::Application.configure do
   config.path_prefix = '/hroot'
 end
 
-#Rails.application.routes.default_url_options[:host] =  'hroot.ingmar.net'
+Rails.application.routes.default_url_options[:host] =  'www.wiso.uni-hamburg.de/hroot/'
+Rails.application.routes.default_url_options[:protocol] =  'https'
 
 Hroot::Application.config.middleware.use ExceptionNotifier,
   :email_prefix => "[hroot] ",
