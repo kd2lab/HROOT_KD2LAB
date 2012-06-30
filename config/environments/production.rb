@@ -59,17 +59,17 @@ Hroot::Application.configure do
   
   config.action_mailer.default_url_options = {
     :protocol => 'https',
-    :host => 'www.wiso.uni-hamburg.de/hroot/'
+    :host => 'www.wiso.uni-hamburg.de/hroot'
   }
   
   #config.assets.prefix = "/hroot/assets"
   config.path_prefix = '/hroot'
 end
 
-Rails.application.routes.default_url_options[:host] =  'www.wiso.uni-hamburg.de/hroot/'
+Rails.application.routes.default_url_options[:host] =  'www.wiso.uni-hamburg.de/hroot'
 Rails.application.routes.default_url_options[:protocol] =  'https'
 
 Hroot::Application.config.middleware.use ExceptionNotifier,
   :email_prefix => "[hroot] ",
-  :sender_address => %{"hroot notifier" <notifier@wiso.uni-hamburg.de>},
+  :sender_address => %{"hroot notifier" <experiments@wiso.uni-hamburg.de>},
   :exception_recipients => %w{mail@ingmar.net}
