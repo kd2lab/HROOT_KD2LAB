@@ -56,8 +56,8 @@ EOSQL
     Recipient.includes(:message, :user).where('sent_at IS NULL').limit(50).each do |recipient|
       message = recipient.message.message.to_s.mreplace({
         "#firstname" => recipient.user.firstname, 
-        "#lastname"  => recipient.user.lastname
-        # '#activation_link' => Rails.application.routes.url_helpers.activation_url(recipient.user.import_token)
+        "#lastname"  => recipient.user.lastname,
+        '#activation_link' => Rails.application.routes.url_helpers.activation_url(recipient.user.import_token)
       })
       
       if recipient.message.experiment
