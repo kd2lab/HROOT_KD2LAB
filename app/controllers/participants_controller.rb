@@ -1,7 +1,8 @@
 # encoding: utf-8
 
 class ParticipantsController < ApplicationController
-  before_filter :load_experiment
+  load_and_authorize_resource :experiment, :raise_on_record_not_found => false
+  before_filter :check_right
   helper_method :sort_column, :sort_direction
   
   def index
@@ -102,15 +103,10 @@ class ParticipantsController < ApplicationController
   
   protected
   
-  def load_experiment
-    @experiment = Experiment.find_by_id(params[:experiment_id])
-    if @experiment
-      authorize! :all, @experiment
-    else
-      redirect_to root_url
-    end
+  def check_right
+    redirect_to root_url unless current_user.has_right? @experiment, 'manage_participants'
   end
-  
+    
   private
 
   def sort_column

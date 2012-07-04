@@ -241,7 +241,13 @@ EOTXT
               assign = ExperimenterAssignment.new
               assign.user = u
               assign.experiment = e
-              assign.role = if u.admin? then "experiment_admin" else "experiment_helper" end
+              
+              if u.admin? 
+                assign.rights = ExperimenterAssignment.right_list.collect{|r| r.second}.join(',')
+              else 
+                assign.rights = ''
+              end
+              
               assign.save
             else
               puts "Error: "+adminname+" not found"

@@ -15,7 +15,8 @@
 
 
 
-= link_to 'Neues Experiment', new_experiment_path, :class => "btn btn-primary", :style => "float:right"
+- if current_user.admin?
+  = link_to 'Neues Experiment', new_experiment_path, :class => "btn btn-primary", :style => "float:right"
 
 %h1
   Experimente

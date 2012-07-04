@@ -26,19 +26,6 @@ class Experiment < ActiveRecord::Base
     )  
   end
   
-  def update_experiment_assignments ids, role
-    self.experimenter_assignments.where(:role => role).destroy_all
-    if ids
-      if ids.kind_of?(Array)    
-        ids.each do |id|
-          ExperimenterAssignment.create(:experiment => self, :user_id => id, :role => role)  
-        end
-      else
-        ExperimenterAssignment.create(:experiment => self, :user_id => ids, :role => role)  
-      end
-    end
-  end
-  
   def has_open_sessions?
     space_left > 0
   end

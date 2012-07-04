@@ -13,8 +13,8 @@
 
 = render :partial => "experiments/tabs", :locals => {:selected => "Sessions"}
 
-
-= link_to 'Neue Session anlegen', new_experiment_session_path(@experiment), :class => "btn btn-primary"
+- if current_user.has_right?(@experiment, 'manage_sessions')
+  = link_to 'Neue Session anlegen', new_experiment_session_path(@experiment), :class => "btn btn-primary"
 
 %br
 %br

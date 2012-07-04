@@ -1,7 +1,17 @@
 class AdminController < ApplicationController
-  authorize_resource :class => false
+  authorize_resource :class => false, :except => :templates
   
   def index
+    if current_user.experimenter?
+      @today_sessions = Session.where('DATE(start_at) = DATE(NOW())').where(['sessions.experiment_id IN (SELECT experiment_id FROM experimenter_assignments WHERE user_id = ?)', current_user.id]).order('start_at')
+      @latest_experiments = Experiment.where(['id IN (SELECT experiment_id FROM experimenter_assignments WHERE user_id = ?)', current_user.id]).order('created_at DESC').limit(5)
+      @incomplete_sessions = Session.incomplete_sessions.where(['sessions.experiment_id IN (SELECT experiment_id FROM experimenter_assignments WHERE user_id = ?)', current_user.id])
+
+    else
+      @today_sessions = Session.where('DATE(start_at) = DATE(NOW())').order('start_at')
+      @latest_experiments = Experiment.order('created_at DESC').limit(5)
+      @incomplete_sessions = Session.incomplete_sessions
+    end
     
   end
   

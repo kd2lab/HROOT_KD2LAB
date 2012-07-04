@@ -1,0 +1,47 @@
+= content_for :breadcrumb do
+  %ul.breadcrumb
+    %li
+      = link_to "Experimente", experiments_path
+      %span.divider
+        &gt;
+    %li
+      = link_to @experiment.name, experiment_sessions_path(@experiment)
+      %span.divider
+        &gt;
+    %li.active
+      Experimentatoren
+
+= render :partial => "experiments/enrollment"
+  
+%h1
+  = @experiment.name
+
+= render :partial => "tabs", :locals => {:selected => "Daten und Einstellungen"} 
+
+%h3 Experimentatoren:
+%br
+
+= simple_form_for @experiment,:url => '', :html => {:method => :post, :class => "guarded_form form-horizontal"} do |f| 
+  
+  
+  %table#usertable.table
+    - @experiment.experimenter_assignments.each do |assign|
+      %tr.removable{:'data-id' => assign.user_id}
+        %td
+          = hidden_field_tag 'user_submitted[]', assign.user_id
+          = "#{assign.user.lastname}, #{assign.user.firstname}"
+        %td
+          - rights = options_for_select(ExperimenterAssignment.right_list, assign.rights.split(','))
+          = select_tag("rights[#{assign.user_id}][]", rights, {:class => "chzn-select", :multiple => true, :style => "width:600px", :'data-placeholder' => "Rechte", :include_blank => true})
+          %button.close.removeline{:href => '#'} &times;
+    %tr
+      %td
+        - options = options_for_select(User.where("role = 'admin' OR role='experimenter'").order(:lastname, :firstname).collect do |u| [u.lastname+", "+u.firstname, u.id] end)
+        = select_tag(:add_user, options, {:class => "chzn-select", :'data-placeholder' => "Personen hinzufügen...", :include_blank => true})
+      %td
+        
+  = f.submit "Experimentatoren speichern", :class => "guarded_form_save btn btn-primary"
+  
+  %br
+  %br
+  %br

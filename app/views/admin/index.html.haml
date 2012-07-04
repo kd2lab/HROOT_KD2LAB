@@ -11,13 +11,13 @@
 
 %h1 Dashboard
 %br
-- today_sessions = Session.where('DATE(start_at) = DATE(NOW())').order('start_at')
-- if today_sessions.count > 0  
+
+- if @today_sessions.count > 0  
   .well
     %h3 Heute anstehende Sessions:
     %table.table
       %tbody
-        - today_sessions.each do |s|
+        - @today_sessions.each do |s|
           %tr
             %td= link_to s.only_time_str, participants_experiment_session_path(s.experiment, s)
             %td
@@ -34,39 +34,42 @@
   .span6
     .well
       %h3 Zuletzt angelegte Experimente:
-      %table.table
-        %tbody
-          - Experiment.order('created_at DESC').limit(5).each do |e|
-            %tr
-              %td= link_to e.name, experiment_sessions_path(e)
-  .span4
-    .well
-      %h3 Statistik:
-      Aktive Poolteilnehmer: 
-      = User.where("role='user'").where('deleted=0').count
-      %br
-      Neuanmeldungen in den letzten 30 Tagen:
-      = User.where('DATE(confirmed_at) >= DATE_SUB(DATE(NOW()), INTERVAL 30 DAY)').where("role='user'").where('deleted=0').count
- 
-
-
       
+      - if @latest_experiments.count > 0
+        %table.table
+          %tbody
+            - @latest_experiments.each do |e|
+              %tr
+                %td= link_to e.name, experiment_sessions_path(e)
+      - else
+        Es wurden noch keine Experimente angelegt.
+                
+  - if current_user.admin?
+    .span4
+      .well
+        %h3 Statistik:
+        Aktive Poolteilnehmer: 
+        = User.where("role='user'").where('deleted=0').count
+        %br
+        Neuanmeldungen in den letzten 30 Tagen:
+        = User.where('DATE(confirmed_at) >= DATE_SUB(DATE(NOW()), INTERVAL 30 DAY)').where("role='user'").where('deleted=0').count
 
-.well
-  %h3 Durchgeführte, aber nicht abgeschlossene Sessions:
-  %table.table
-    %tbody
-      - Session.incomplete_sessions.each do |s|
-        %tr
-          %td= link_to s.time_str, participants_experiment_session_path(s.experiment, s)
-          %td
-            = link_to s.experiment.name, experiment_sessions_path(s.experiment)
-            %br
-          %td
-            - u = s.experiment.experimenters.where("experimenter_assignments.role='experiment_admin'").all
-            = u.collect{|x| "#{x.firstname} #{x.lastname}"}.join(', ')
-          %td
-            Es fehlen
-            = s.session_participations.where("showup=0 AND participated=0 AND noshow=0").count
-            Angaben
+- if @incomplete_sessions.count > 0
+  .well
+    %h3 Durchgeführte, aber nicht abgeschlossene Sessions:
+    %table.table
+      %tbody
+        - @incomplete_sessions.each do |s|
+          %tr
+            %td= link_to s.time_str, participants_experiment_session_path(s.experiment, s)
+            %td
+              = link_to s.experiment.name, experiment_sessions_path(s.experiment)
+              %br
+            %td
+              - u = s.experiment.experimenters.all
+              = u.collect{|x| "#{x.firstname} #{x.lastname}"}.join(', ')
+            %td
+              Es fehlen
+              = s.session_participations.where("showup=0 AND participated=0 AND noshow=0").count
+              Angaben
 

@@ -3,7 +3,7 @@ class CreateExperimenterAssignments < ActiveRecord::Migration
     create_table :experimenter_assignments do |t|
       t.integer :user_id
       t.integer :experiment_id
-      t.string  :role
+      t.string  :rights
       t.timestamps
     end
   end

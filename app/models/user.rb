@@ -80,6 +80,10 @@ class User < ActiveRecord::Base
     role == 'experimenter'
   end
   
+  def has_right?(experiment, right)
+    admin? || experiment.experimenter_assignments.where(:user_id => id).where(["rights LIKE ?", '%'+right+'%']).count > 0
+  end
+  
   def language_ids
     ([lang1] + [lang2] + [lang3]).compact.uniq
   end

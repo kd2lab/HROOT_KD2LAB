@@ -14,31 +14,37 @@
   
 %br
 
+- selection_boxes = (current_user.has_right?(@experiment, 'manage_participants') || current_user.has_right?(@experiment, 'send_session_messages'))
+- participation_boxes = (current_user.has_right?(@experiment, 'manage_participants') || current_user.has_right?(@experiment, 'manage_showups'))
 
   
 - if @users.count > 0
   .menu
     = link_to "Drucken", print_experiment_session_path(@experiment, @session), :class => "btn new-window", :style => "float:right"
-    = link_to "Nachricht an alle Session-Teilnehmer", '#', :class => "btn send-message", :'data-to' => "Alle Sessionteilnehmer", :'data-subject'=> "Experiment-Session am "+ @session.time_str, :'data-mode' => 'all',  :style => "float:left"
-    = link_to "Nachricht an alle markierten Teilnehmer", '#', :class => "btn send-message context-menu", :'data-to' => "Markierte Sessionteilnehmer", :'data-subject'=> "Experiment-Session am "+ @session.time_str, :'data-mode' => 'selected', :style => "float:left"
+    - if current_user.has_right?(@experiment, 'send_session_messages')
+      = link_to "Nachricht an alle Session-Teilnehmer", '#', :class => "btn send-message", :'data-to' => "Alle Sessionteilnehmer", :'data-subject'=> "Experiment-Session am "+ @session.time_str, :'data-mode' => 'all',  :style => "float:left"
+      = link_to "Nachricht an alle markierten Teilnehmer", '#', :class => "btn send-message context-menu", :'data-to' => "Markierte Sessionteilnehmer", :'data-subject'=> "Experiment-Session am "+ @session.time_str, :'data-mode' => 'selected', :style => "float:left"
   
-    .btn-group.context-menu{:style => "float:left"}
-      %a.btn.dropdown-toggle{:'data-toggle' => "dropdown", :href => "#"}
-        Markierte Teilnehmer
-        %b.caret 
-      %ul.dropdown-menu
-        %li= link_to "Markierte Teilnehmer aus dieser Session austragen.", '#', :class => 'user_action_link', :'data-value' => 0
-        - @session.alternative_sessions.each  do |s|
-          %li= link_to "Markierte Teilnehmer in Session #{s.time_str} verschieben", '#', :class => 'user_action_link', :'data-value' => s.id
+    - if current_user.has_right?(@experiment, 'manage_participants')
+      .btn-group.context-menu{:style => "float:left"}
+        %a.btn.dropdown-toggle{:'data-toggle' => "dropdown", :href => "#"}
+          Markierte Teilnehmer
+          %b.caret 
+        %ul.dropdown-menu
+          %li= link_to "Markierte Teilnehmer aus dieser Session austragen.", '#', :class => 'user_action_link', :'data-value' => 0
+          - @session.alternative_sessions.each  do |s|
+            %li= link_to "Markierte Teilnehmer in Session #{s.time_str} verschieben", '#', :class => 'user_action_link', :'data-value' => s.id
   
   
     %br
     %br
   
+
   %table.table
     %thead
       %tr
-        %th= check_box_tag "", "", false, :id => "select_all_users"
+        - if selection_boxes
+          %th= check_box_tag "", "", false, :id => "select_all_users"
         %th
         %th= sortable_for_form 'lastname', 'Name'  
         %th= sortable_for_form 'email', 'E-Mail'
@@ -47,22 +53,26 @@
         %th= sortable_for_form 'begin_date', 'Beginn'
         %th 
           E
-          %br
-          = check_box_tag "", "", false, :id => "all_show"
+          - if participation_boxes
+            %br
+            = check_box_tag "", "", false, :id => "all_show"
         %th 
           T
-          %br
-          = check_box_tag "", "", false, :id => "all_participation"
+          - if participation_boxes
+            %br
+            = check_box_tag "", "", false, :id => "all_participation"
       
         %th{:style => "color:red"}
           N
-          %br
-          = check_box_tag "", "", false, :id => "all_noshow"
+          - if participation_boxes
+            %br
+            = check_box_tag "", "", false, :id => "all_noshow"
 
     %tbody  
       - @users.each_with_index do |user, index| 
         %tr
-          %td= check_box_tag "selected_users[#{user.id}]", '1', false, :class => 'selected_users'
+          -if selection_boxes
+            %td= check_box_tag "selected_users[#{user.id}]", '1', false, :class => 'selected_users'
           %td= index + 1
       
           %td= link_to highlight(truncate(user.lastname, {:length => 15}), params[:search])+', '+highlight(truncate(user.firstname, {:length => 10}), params[:search]), user_path(user)
@@ -71,14 +81,14 @@
             =user.study_name ? truncate(user.study_name, {:length => 10}) : 'k. A.'
           %td= user.gender
           %td= user.begin_date 
-          %td= check_box_tag "showups[#{user.id}]", "1", user.session_showup == 1, :class => "show_checkbox", :'data-id' => user.id
-          %td= check_box_tag "participations[#{user.id}]", "1", user.session_participated == 1, :class => "participation_checkbox", :'data-id' => user.id
+          %td= check_box_tag "showups[#{user.id}]", "1", user.session_showup == 1, :class => "show_checkbox", :disabled => !participation_boxes, :'data-id' => user.id
+          %td= check_box_tag "participations[#{user.id}]", "1", user.session_participated == 1, :class => "participation_checkbox", :disabled => !participation_boxes, :'data-id' => user.id
           %td
-            = check_box_tag "noshows[#{user.id}]", "1", user.session_noshow == 1, :class => "noshow_checkbox", :'data-id' => user.id
+            = check_box_tag "noshows[#{user.id}]", "1", user.session_noshow == 1, :class => "noshow_checkbox", :'data-id' => user.id, :disabled => !participation_boxes
             = hidden_field_tag "ids[#{user.id}]", "1"
                 
-              
-  = button_tag "Änderungen jetzt speichern", :name => "save", :class => "btn btn-primary"
+  - if participation_boxes     
+    = button_tag "Änderungen jetzt speichern", :name => "save", :class => "btn btn-primary"
         
 - else
   %br

@@ -29,33 +29,29 @@ class ExperimentTest < ActiveSupport::TestCase
       @user1 = Factory(:user)
       @user2 = Factory(:user)
       @user3 = Factory(:user)
-      @user4 = Factory(:user)
-      @user5 = Factory(:user)
       
       @e = Factory(:experiment)
       
-      ExperimenterAssignment.create(:experiment => @e, :user => @user1, :role => "experiment_admin")
-      ExperimenterAssignment.create(:experiment => @e, :user => @user2, :role => "experiment_admin")
-      ExperimenterAssignment.create(:experiment => @e, :user => @user3, :role => "experiment_admin")
-      ExperimenterAssignment.create(:experiment => @e, :user => @user4, :role => "experiment_helper")
-      ExperimenterAssignment.create(:experiment => @e, :user => @user5, :role => "experiment_helper")
+      ExperimenterAssignment.create(:experiment => @e, :user => @user1, :rights => "edit")
+      ExperimenterAssignment.create(:experiment => @e, :user => @user2, :rights => "send_session_messages")
     end
     
     should "work" do
-      @e.update_experiment_assignments [@user1.id, @user2.id], "experiment_helper"
-      @e.update_experiment_assignments [@user3.id, @user4.id], "experiment_admin"
+      rights = {
+        @user1.id.to_s => ["edit","manage_participants"],
+        @user2.id.to_s => ["send_session_messages","manage_participants"],
+        @user3.id.to_s => ["edit","send_session_messages"]
+      }
+      ExperimenterAssignment.update_experiment_rights @e, rights, @user1.id
       
-      assert_equal [@user3, @user4], @e.experimenter_assignments.where(:role => "experiment_admin").collect(&:user)
-      assert_equal [@user1, @user2], @e.experimenter_assignments.where(:role => "experiment_helper").collect(&:user)
+      # user 1 should not be changed (can't edit own rights)
+      assert_equal "edit", ExperimenterAssignment.where(:user_id => @user1.id, :experiment_id => @e.id).first.rights
+      assert_equal "send_session_messages,manage_participants", ExperimenterAssignment.where(:user_id => @user2.id, :experiment_id => @e.id).first.rights
+      assert_equal "edit,send_session_messages", ExperimenterAssignment.where(:user_id => @user3.id, :experiment_id => @e.id).first.rights
+      assert_equal 3, ExperimenterAssignment.count
+
     end
     
-    should "work with sinlge ids" do
-      @e.update_experiment_assignments @user1.id, "experiment_helper"
-      @e.update_experiment_assignments @user3.id, "experiment_admin"
-      
-      assert_equal [@user3], @e.experimenter_assignments.where(:role => "experiment_admin").collect(&:user)
-      assert_equal [@user1], @e.experimenter_assignments.where(:role => "experiment_helper").collect(&:user)
-    end
   end
   
   
@@ -156,16 +152,7 @@ class ExperimentTest < ActiveSupport::TestCase
       assert_equal 7, @e3.space_left
       assert_same_elements [@s8,@s9], @e3.open_sessions
     
-      # todo cleanup
-      #u1_inv_text = @e1.invitation_text_for(@u1)
-      #assert_equal "#{@u1.firstname} #{@u2.lastname} http://test.host/enroll/#{@u1.login_codes.first.code} #{@e1.session_time_text}", u1_inv_text
-      
-      assert LoginCode.count > 0
-      
-      #todo cleanup
-      #assert_equal 1, @u8.login_codes.count
-      #assert_equal 1, @u9.login_codes.count
-      #assert_equal 1, @u10.login_codes.count
+      assert_equal 3, LoginCode.count
     end
   end
   
@@ -183,8 +170,7 @@ class ExperimentTest < ActiveSupport::TestCase
       Participation.create(:user => @u5, :experiment => @e1)
       Participation.create(:user => @u5, :experiment => @e2)
       SessionParticipation.create(:user => @u5, :session => @s2, :participated => true)    
-      
-      
+           
       4.times do |i|
         u = Factory(:user, :firstname => i.to_s)
         Participation.create(:user => u, :experiment => @e1)
@@ -194,9 +180,6 @@ class ExperimentTest < ActiveSupport::TestCase
       @u6 = Factory(:user)
       Participation.create(:user => @u6, :experiment => @e1)
       SessionParticipation.create(:user => @u6, :session => @s1)
-      
-      
-      
       
       @p = @e1.load_random_participations
     end

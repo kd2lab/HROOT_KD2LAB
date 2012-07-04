@@ -1,7 +1,8 @@
 #encoding: utf-8
 
 class Task
-  # todo hier weiter
+  
+  # todo anzeige wer reminded wurde
   def self.send_session_reminders
     sql = <<EOSQL
     SELECT * FROM 
@@ -128,22 +129,6 @@ EOSQL
         
         participation.invited_at = Time.zone.now
         participation.save
-        
-        #-------------------- only for test ------------------------------
-        # todo remove this
-        unless Settings.testnr.blank?
-          # jeder n.te kriegt zufällig einen platz
-          if rand(Settings.testnr.to_i) == 0 
-            rs = experiment.sessions[rand(experiment.sessions.count)]
-        
-            if rs.space_left > 0
-              participation.session_id = rs.id
-              participation.save
-              log += "#{Time.zone.now}: #{u.email} meldet sich an, freie Plätze: #{experiment.space_left-1}\n"
-            end
-          end
-        end
-        # ------------------ << only for test -----------------------------------
       end
       
       if p.count > 0
@@ -187,8 +172,8 @@ EOSQL
           
       # only deliver mails with subject and text
       unless text.blank? || subject.blank?      
-        session.experiment.experimenters.where("experimenter_assignments.role='experiment_admin'").each do |user|
-          UserMailer.email(subject, text, user.main_email).deliver
+        session.experiment.experimenter_assignments.where("rights LIKE '%status_mails%'").each do |assign|
+          UserMailer.email(subject, text, assign.user.main_email).deliver
         end
       end
     end  

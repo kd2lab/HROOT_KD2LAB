@@ -1,33 +1,8 @@
-
 = simple_form_for @experiment, :html => {:class => "guarded_form form-horizontal"} do |f| 
   = f.input :name, :required => false, :input_html => {:class => "span5"}
   
   = f.input :tag_list
     
-
-  .input.string
-    %label.select Verantwortlicher
-    = select_tag( |
-      :experiment_leiter, |
-      options_for_select( |
-        User.where("role = 'admin' OR role='experimenter'").order(:lastname, :firstname).collect do |u| [u.lastname+", "+u.firstname, u.id] end, |
-        params[:experiment_leiter] |
-      ), |
-      {:class => "chzn-select", :'data-placeholder' => "Personen wählen...", :style=>"width:410px", :include_blank => true} |
-    ) |
-  
-    
-  .input.string
-    %label.select weitere Exp.
-    = select_tag( |
-        :experiment_helper, |
-        options_for_select( |
-          User.where("role = 'admin' OR role='experimenter'").order(:lastname, :firstname).collect do |u| [u.lastname+", "+u.firstname, u.id] end, |
-          params[:experiment_helper] |
-        ), |
-        {:multiple => true, :class => "chzn-select", :'data-placeholder' => "Personen wählen...", :style=>"width:410px"} |
-      ) |
-      
   = f.input :description, :as => :text, :input_html => {:class => "span5", :rows => 4} 
   
   = f.input :contact, :as => :text, :input_html => {:class => "span5", :rows => 4} 
@@ -44,9 +19,6 @@
   .checkbox-wrapper
     = f.input :show_in_stats, :wrapper => :none, :label => false, :boolean_style => :inline 
     Dieses Experiment in der Statistik berücksichtigen
-  
-
-    
   
   %br
   %br

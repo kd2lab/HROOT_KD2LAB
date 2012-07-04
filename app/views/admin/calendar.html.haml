@@ -35,10 +35,10 @@
 = raw(event_calendar)
 
 
-- if current_user.admin?
+- if current_user.admin? || current_user.experimenter?
   .calendar_url
     Diesen Kalender als ICS:
-    %span.url= calendar_url(current_user.calendar_key)
+    %span.url= public_calendar_url(current_user.calendar_key)
    
 %br
 

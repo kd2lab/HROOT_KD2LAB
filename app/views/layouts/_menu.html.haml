@@ -8,13 +8,20 @@
       %li.nav-header Allgemein
       %li= link_to "Account-Optionen", account_data_path
     
-    - if can? :manage, :all
+    - if current_user.experimenter?
+      %li.nav-header Admin-Menü
+      %li= link_to "Dashboard", dashboard_path
+      %li= link_to "Kalender", calendar_path
+      %li= link_to "Experimente", experiments_path
+      
+    - if current_user.admin?
       %li.nav-header Admin-Menü
       %li= link_to "Dashboard", dashboard_path
       %li= link_to "Kalender", calendar_path
       %li= link_to "Experimente", experiments_path
       %li= link_to "Benutzer", users_path
       %li= link_to "Einstellungen", options_path
+  
   - else
     %li.nav-header Allgemein
     %li= link_to "Home", root_path

@@ -1,11 +1,15 @@
-- account deaktivieren
-- bug nach import können mehrere experimentadmin sein
-- todos suchen
-- bootstrap bilder einfügen
-- email versand
-- eigentlichen mailempfänger anzeigen
+- neuimport
+- testprotokoll erstellen
 
 später:
 
+- import datenbank angeben
+- todos suchen
+- vernünftige fehlerseite / nicht erlaubt seite / redirect_back?
+- versand der "session unvollständig"-Meldungen optional
+- anzeige wer reminded wurde
+- alle rechte setzen button
 - begruessungsseite info ausblenden implementieren
 - bei enroll link: login
+- übersetzen
+- account deaktivieren

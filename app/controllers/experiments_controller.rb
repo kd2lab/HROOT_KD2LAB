@@ -1,19 +1,34 @@
 #encoding: utf-8
 
 class ExperimentsController < ApplicationController
-  load_and_authorize_resource
+  load_and_authorize_resource :except => :autocomplete_tags
   
   def index
-    @experiments = Experiment.search(params[:search]).includes(:sessions)
-      .order("experiments.finished, COALESCE(sessions.start_at, experiments.created_at) DESC")
-      .paginate(:per_page => 30, :page => params[:page])  
+    if current_user.admin?
+      @experiments = Experiment.search(params[:search]).includes(:sessions)
+        .order("experiments.finished, COALESCE(sessions.start_at, experiments.created_at) DESC")
+        .paginate(:per_page => 30, :page => params[:page])  
+    else
+      @experiments = Experiment.search(params[:search]).includes(:sessions)
+        .where(['experiments.id IN (SELECT experiment_id FROM experimenter_assignments WHERE user_id = ?)', current_user.id])
+        .order("experiments.finished, COALESCE(sessions.start_at, experiments.created_at) DESC")
+        .paginate(:per_page => 30, :page => params[:page])  
+      
+    end
   end
 
   def tag
     @tag = ActsAsTaggableOn::Tag.find(params[:tag])
-    @experiments = Experiment.tagged_with(@tag.name).search(params[:search]).includes(:sessions)
-      .order("experiments.finished, COALESCE(sessions.start_at, experiments.created_at) DESC")
-      .paginate(:per_page => 30, :page => params[:page])  
+    if current_user.admin?
+      @experiments = Experiment.tagged_with(@tag.name).search(params[:search]).includes(:sessions)
+        .order("experiments.finished, COALESCE(sessions.start_at, experiments.created_at) DESC")
+        .paginate(:per_page => 30, :page => params[:page])  
+    else
+      @experiments = Experiment.tagged_with(@tag.name).search(params[:search]).includes(:sessions)
+        .where(['experiments.id IN (SELECT experiment_id FROM experimenter_assignments WHERE user_id = ?)', current_user.id])
+        .order("experiments.finished, COALESCE(sessions.start_at, experiments.created_at) DESC")
+        .paginate(:per_page => 30, :page => params[:page])  
+    end
     
     render :action => "index"
   end
@@ -23,8 +38,7 @@ class ExperimentsController < ApplicationController
   end
 
   def edit
-    params[:experiment_leiter] = @experiment.experimenter_assignments.where(:role => "experiment_admin").collect(&:user_id) 
-    params[:experiment_helper] = @experiment.experimenter_assignments.where(:role => "experiment_helper").collect(&:user_id) 
+
   end
 
   def create
@@ -37,8 +51,6 @@ class ExperimentsController < ApplicationController
     @experiment.reminder_text = Settings.reminder_text
     
     if @experiment.save
-      @experiment.update_experiment_assignments(params[:experiment_helper], "experiment_helper")
-      @experiment.update_experiment_assignments(params[:experiment_leiter], "experiment_admin")
       redirect_to(experiment_sessions_path(@experiment), :notice => 'Das Experiment wurde erfolgreich angelegt.') 
     else
       render :action => "new"
@@ -49,6 +61,30 @@ class ExperimentsController < ApplicationController
     render :json =>  Experiment.tag_counts_on('tags').where(["name LIKE ?", params[:query]+'%']).collect{|e| e.name}
   end
 
+  def experimenters
+    if params[:commit]
+      params[:rights] = {} unless params[:rights]
+      
+      # include empty rights lines
+      if params[:user_submitted]
+        params[:user_submitted].each do |user_id|
+          unless params[:rights].keys.include?(user_id)
+            params[:rights][user_id] = []
+          end
+        end
+      end
+      
+      # experimenters may not change their own rights
+      if current_user.experimenter?
+        ExperimenterAssignment.update_experiment_rights @experiment, params[:rights], current_user.id
+      else
+        ExperimenterAssignment.update_experiment_rights @experiment, params[:rights]  
+      end
+      
+      redirect_to(experimenters_experiment_path(@experiment), :notice => 'Die Zuordnung der Experimentatoren wurde erfolgreich geändert.')
+    end  
+  end  
+  
   def update
     if params[:experiment][:tag_list]
       params[:experiment][:tag_list] = params[:experiment][:tag_list].join(", ")
@@ -57,9 +93,6 @@ class ExperimentsController < ApplicationController
     end  
     
     if @experiment.update_attributes(params[:experiment])
-      @experiment.update_experiment_assignments(params[:experiment_helper], "experiment_helper")
-      @experiment.update_experiment_assignments(params[:experiment_leiter], "experiment_admin")
-      
       redirect_to(edit_experiment_url(@experiment), :notice => 'Das Experiment wurde erfolgreich geändert.')
     else
       render :action => "edit"

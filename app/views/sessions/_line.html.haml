@@ -29,15 +29,18 @@
   
   %td
     .btn-group{:style => 'float:left'}
-      = link_to "Bearbeiten", edit_experiment_session_path(@experiment, session), :class => 'btn btn-primary'
+      - if current_user.has_right?(@experiment, 'manage_sessions')
+        = link_to "Bearbeiten", edit_experiment_session_path(@experiment, session), :class => 'btn btn-primary'
       = link_to "Teilnehmer", participants_experiment_session_path(@experiment, session), :class => 'btn'
-  
-    .btn-group{:style => 'float:left'}
-      %a.btn.dropdown-toggle{:'data-toggle' => "dropdown", :href => "#"}
-        Aktionen
-        %b.caret
-      %ul.dropdown-menu
-        - unless session.is_subsession?
-          %li= link_to 'Folgesession', new_experiment_session_path(:experiment_id => @experiment, :reference_session_id => session.id), :class => "session_new_subsession"
-        %li= link_to "Duplizieren", duplicate_experiment_session_path(@experiment, session)
-        %li= link_to "Löschen", experiment_session_path(@experiment, session), :method => :delete, :confirm => "Soll diese Session wirklich gelöscht werden?"
+    
+    
+    - if current_user.has_right?(@experiment, 'manage_sessions')
+      .btn-group{:style => 'float:left'}
+        %a.btn.dropdown-toggle{:'data-toggle' => "dropdown", :href => "#"}
+          Aktionen
+          %b.caret
+        %ul.dropdown-menu
+          - unless session.is_subsession?
+            %li= link_to 'Folgesession', new_experiment_session_path(:experiment_id => @experiment, :reference_session_id => session.id), :class => "session_new_subsession"
+          %li= link_to "Duplizieren", duplicate_experiment_session_path(@experiment, session)
+          %li= link_to "Löschen", experiment_session_path(@experiment, session), :method => :delete, :confirm => "Soll diese Session wirklich gelöscht werden?"

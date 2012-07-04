@@ -20,13 +20,6 @@ class OptionsController < ApplicationController
       
       flash[:notice] = "Die Änderungen wurden gespeichert"  
     end
-    
-    if params[:testnr]
-      Settings.testnr = params[:testnr]
-      flash[:notice] = "Die Änderungen wurden gespeichert"  
-    end
-    
-    
   end
 
   def emails

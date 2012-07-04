@@ -20,6 +20,8 @@ Hroot::Application.routes.draw do
   match 'home/confirm_alternative_email/:confirmation_token', :controller => 'home', :action => 'confirm_alternative_email', :as => 'secondary_email_confirmation'
 
   match 'home/activate', :controller => 'home', :action => 'activate', :as => 'activate'
+  match 'home/calendar/:key', :controller => 'home', :action => 'calendar', :as => 'public_calendar'
+
 
   devise_for :users, :controllers => {:registrations => "registrations"}, :path_names => { :sign_in => 'login' }, skip: :registrations 
   
@@ -75,6 +77,8 @@ Hroot::Application.routes.draw do
       end
     
       member do
+        get :experimenters
+        post :experimenters
         get :enable
         get :disable
         get :mail
@@ -83,7 +87,6 @@ Hroot::Application.routes.draw do
         post :reminders
         get :invitation
         post :invitation
-        post :save_mail_text
         get :autocomplete_tags
       end
     

@@ -1,11 +1,18 @@
 # encoding: utf-8
 
 class SessionsController < ApplicationController
-  before_filter :load_experiment_and_sessions
+  # authorize_resource :class => false
+  load_and_authorize_resource :experiment
+  load_and_authorize_resource :session, :through => :experiment, :except => :create
+  
+  
+  #before_filter :load_experiment_and_sessions
   helper_method :sort_column, :sort_direction
   
   def index
-    params[:filter] = params[:filter] || {}
+    @sessions = @experiment.sessions.where("sessions.reference_session_id = sessions.id").order(:start_at)
+    @assignment = @experiment.experimenter_assignments.where(:user_id => current_user.id).first
+    params[:filter] = params[:filter] || {}    
   end
   
   def show
@@ -34,6 +41,9 @@ class SessionsController < ApplicationController
     
     @session = Session.new(params[:session])
     @session.experiment = @experiment
+    
+    authorize! :create, @session
+    
     @session.reminder_subject = Settings.reminder_subject
     @session.reminder_text = Settings.reminder_text
     
@@ -94,16 +104,16 @@ class SessionsController < ApplicationController
   end
   
   def destroy
-    @s = Session.find(params[:id])
+    @session = Session.find(params[:id])
     
     # only delete sessions without subsessions and without participants
-    if @s
-      if @s.following_sessions.count > 0 
+    if @session
+      if @session.following_sessions.count > 0 
         message = "Sessions mit Folgesessions können nicht gelöscht werden."
-      elsif @s.session_participations.count.to_i > 0
+      elsif @session.session_participations.count.to_i > 0
         message = "Sessions mit Teilnehmern können nicht gelöscht werden."
       else  
-        @s.destroy
+        @session.destroy
         message = "Die Session wurde gelöscht."
       end
     end
@@ -131,75 +141,104 @@ class SessionsController < ApplicationController
     @session = Session.find(params[:id])
     
     if params[:message] && params[:message][:action] == 'send'
-      if (params[:message][:mode] == 'all')        
-        ids = @session.session_participations.collect{|p| p.user_id}
-      elsif (params[:message][:mode] == 'selected')
-        ids = params['selected_users'].keys.map(&:to_i)
-      end  
       
-      Message.send_message(current_user.id, ids, @experiment.id, params[:message][:subject], params[:message][:text])
+      #
+      # send messages to users of this session
+      #
+      #
+      # this is only allowed if the user has the right 'send_session_messages'
+      #
       
-      redirect_to(participants_experiment_session_path(@experiment, @session), :flash => { :id => @session.id, :notice => "Nachricht(en) wurden in die Mailqueue eingetragen."})
+      if current_user.has_right?(@experiment, 'send_session_messages')
+        if (params[:message][:mode] == 'all')        
+          ids = @session.session_participations.collect{|p| p.user_id}
+        elsif (params[:message][:mode] == 'selected')
+          ids = params['selected_users'].keys.map(&:to_i)
+        end  
+      
+        Message.send_message(current_user.id, ids, @experiment.id, params[:message][:subject], params[:message][:text])
+      
+        redirect_to(participants_experiment_session_path(@experiment, @session), :flash => { :id => @session.id, :notice => "Nachricht(en) wurden in die Mailqueue eingetragen."})
+      end
     elsif !params[:user_action].blank?
+      
+      #
       # move session members
-      if params[:user_action] == "0"
-        Session.move_members(params['selected_users'].keys.map(&:to_i), @experiment)
-        flash[:notice] = "Die gewählen Teilnehmer wurden aus der Session ausgetragen"
-        User.update_noshow_calculation(params['selected_users'].keys)  
-      else
-        target = Session.find(params[:user_action].to_i)
+      #
+      #
+      # this is only allowed if the user has the right 'manage_participants'
+      #
+      
+      if current_user.has_right?(@experiment, 'manage_participants')
+        if params[:user_action] == "0"
+          Session.move_members(params['selected_users'].keys.map(&:to_i), @experiment)
+          flash[:notice] = "Die gewählen Teilnehmer wurden aus der Session ausgetragen"
+          User.update_noshow_calculation(params['selected_users'].keys)  
+        else
+          target = Session.find(params[:user_action].to_i)
         
-        if target
-          if Session.move_members(params['selected_users'].keys.map(&:to_i), @experiment, target)
-            flash[:notice] = "Die gewählen Teilnehmer wurden in die Session #{target.time_str} verschoben"
-            User.update_noshow_calculation(params['selected_users'].keys)
-          else
-            flash[:alert] = "Die Mitglieder konnten nicht verschoben werden, da nicht mehr genug freie Plätze in der Session sind."
+          if target
+            if Session.move_members(params['selected_users'].keys.map(&:to_i), @experiment, target)
+              flash[:notice] = "Die gewählen Teilnehmer wurden in die Session #{target.time_str} verschoben"
+              User.update_noshow_calculation(params['selected_users'].keys)
+            else
+              flash[:alert] = "Die Mitglieder konnten nicht verschoben werden, da nicht mehr genug freie Plätze in der Session sind."
+            end
           end
         end
       end
     else
-      changes = 0
+      
+      #
+      # change showup or noshow information
+      #
+      #
+      # this is only allowed if the user has the right 'manage_participants' or the right 'manage_showups'
+      #
+      
+      if current_user.has_right?(@experiment, 'manage_participants') || current_user.has_right?(@experiment, 'manage_showups')
+        changes = 0
     
-      # save session participations
-      if params['save']
-        params['participations'] = {} unless params['participations']
-        params["ids"].keys.each do |user_id| 
-          sp = SessionParticipation.find_by_session_id_and_user_id(@session.id, user_id)
+        # save session participations
+        if params['save']
+          params['participations'] = {} unless params['participations']
+          params["ids"].keys.each do |user_id| 
+            sp = SessionParticipation.find_by_session_id_and_user_id(@session.id, user_id)
           
-          if params['showups'] && params['showups'][user_id]
-            unless sp.showup && (sp.participated == (params['participations'][user_id] == "1")) && !sp.noshow
-              sp.showup = true
-              sp.participated = params['participations'][user_id]
-              sp.noshow = false
-              changes += 1
-              sp.save
-            end
-          elsif params['noshows'] && params['noshows'][user_id]
-            # only save if changes are detected          
-            unless !sp.showup && !sp.participated && sp.noshow
-              sp.showup = false
-              sp.participated = false
-              sp.noshow = true
-              sp.save
-              changes +=1
-            end
-          else
-            if (sp.showup || sp.participated || sp.noshow)
-              sp.showup = false
-              sp.participated = false
-              sp.noshow = false
-              sp.save
-              changes +=1
+            if params['showups'] && params['showups'][user_id]
+              unless sp.showup && (sp.participated == (params['participations'][user_id] == "1")) && !sp.noshow
+                sp.showup = true
+                sp.participated = params['participations'][user_id]
+                sp.noshow = false
+                changes += 1
+                sp.save
+              end
+            elsif params['noshows'] && params['noshows'][user_id]
+              # only save if changes are detected          
+              unless !sp.showup && !sp.participated && sp.noshow
+                sp.showup = false
+                sp.participated = false
+                sp.noshow = true
+                sp.save
+                changes +=1
+              end
+            else
+              if (sp.showup || sp.participated || sp.noshow)
+                sp.showup = false
+                sp.participated = false
+                sp.noshow = false
+                sp.save
+                changes +=1
+              end
             end
           end
         end
-      end
 
-      if changes > 0
-        flash[:notice] = "#{ActionController::Base.helpers.pluralize(changes, "Änderung", "Änderungen")} gespeichert"
-        User.update_noshow_calculation(params["ids"].keys)
-      end 
+        if changes > 0
+          flash[:notice] = "#{ActionController::Base.helpers.pluralize(changes, "Änderung", "Änderungen")} gespeichert"
+          User.update_noshow_calculation(params["ids"].keys)
+        end 
+      end
     end
     
     params[:filter] = {} unless params[:filter]
@@ -232,14 +271,5 @@ class SessionsController < ApplicationController
   def sort_direction
     %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
   end
-  
-  def load_experiment_and_sessions
-    @experiment = Experiment.find_by_id(params[:experiment_id])
-    if @experiment
-      authorize! :all, @experiment
-      @sessions = @experiment.sessions.where("sessions.reference_session_id = sessions.id").order(:start_at)
-    else
-      redirect_to root_url
-    end
-  end
+
 end
