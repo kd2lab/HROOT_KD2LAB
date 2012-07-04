@@ -136,7 +136,7 @@ EOSQL
       end
       
       # alle eingeladen?
-      if experiment.participants.where("participations.invited_at IS NULL").count == 0
+      if experiment.participants.where("participations.invited_at IS NULL").where(" (SELECT count(sp.id) FROM session_participations sp, sessions s WHERE sp.session_id = s.id AND s.experiment_id = participations.experiment_id AND sp.user_id = users.id) = 0").count = 0        
         experiment.invitation_start = nil
         experiment.save
         UserMailer.log_mail("Einladungsversand für #{experiment.name} abgeschlossen (alle Personen eingeladen)", "Es wurden alle zugeordnete Personen eingeladen.").deliver
