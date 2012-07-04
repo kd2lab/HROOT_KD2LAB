@@ -14,7 +14,7 @@ class HomeController < ApplicationController
     if params[:email]
       @user = User.where(:imported => true).where(:activated_after_import => false).where(:email => params[:email]).first
       if @user
-        UserMailer.import_email_confirmation(@user).deliver
+        UserMailer.import_email_activation(@user).deliver
         redirect_to activate_path, :notice => "Es wurde Ihnen eine E-Mail mit einem Link zur Freischaltung zugesendet."
       else
         redirect_to activate_path, :alert => "Zu dieser E-Mail-Adresse gibt es keinen Account"

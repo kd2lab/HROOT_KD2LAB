@@ -28,6 +28,15 @@ class UserMailer < ActionMailer::Base
     mail(:from => UserMailer.default[:from], :to => 'hroottest@googlemail.com', :subject => "hroot-Anmeldung: Bestätigung der neuen E-Mail-Adresse (eigentlicher Empfänger #{user.import_email})")
   end  
 
+  def import_email_activation(user)
+    @user = user
+    #todo eigentlicher empfänger raus!
+    #mail(:to => user.email, :subject => "hroot-Anmeldung: Bestätigung der neuen E-Mail-Adresse")
+    mail(:from => UserMailer.default[:from], :to => 'hroottest@googlemail.com', :subject => "hroot: Aktivierung eines bestehenden Accounts (eigentlicher Empfänger #{user.email})")
+  end  
+
+
+
   #def change_email_confirmation(user)
   #  @user = user
   #  mail(:to => user.change_email, :subject => "Bestätigung der neuen E-Mail-Adresse")

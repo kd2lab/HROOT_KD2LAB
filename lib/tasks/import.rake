@@ -78,6 +78,15 @@ EOTXT
     # import admins
     puts "--------- ADMINS ------------"
     
+    # create account for harald
+    h = User.new :firstname => 'Harald', :birthday => "1.1.1900", :gender => 'm', :lastname => 'Wypior', :email => "harald.wypior@ovgu.de", :role => "admin", :password => 'tester_1', :password_confirmation => 'tester_1', :matrikel => '1'
+    h.skip_confirmation!
+    
+    unless h.save
+      puts h.errors.full_messages
+    end
+
+    
     db[:or_admin].each do |row|
       u = User.new(
         :email => row[:email], 
@@ -179,10 +188,6 @@ EOTXT
       j.save
     end
     
-    # create account for harald
-    h = User.new :firstname => 'Harald', :lastname => 'Wypior', :email => "harald.wypior@ovgu.de", :role => "admin", :password => 'tester_1', :password_confirmation => 'tester_1', :matrikel => '1'
-    h.skip_confirmation!
-    h.save
   
     # import experiments
     puts "--------- EXPERIMENTS ------------"
