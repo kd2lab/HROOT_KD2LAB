@@ -138,7 +138,6 @@ EOSQL
   # load users and aggregate participation data
   def self.create_filter_sql params, options, counting = false
     where = []
-    having = []
     
     filter = params[:filter] || {}
     options = options || {}
@@ -247,11 +246,10 @@ EOSQL
     
     #experiment tags
     # todo guard against sql injection
-    experiment_tag_subquery = ""
     
     filter[:exp_tag_count].to_i.times do |i|
       if filter["exp_tag#{i}"].length > 0
-        experiment_tag_subquery += t = <<EOSQL
+        experiment_tag_subquery = <<EOSQL
           (SELECT 
             COUNT(session_participations.id)
            FROM session_participations, sessions, experiments, taggings, tags 
@@ -262,15 +260,16 @@ EOSQL
              sessions.experiment_id = experiments.id AND
              experiments.id = taggings.taggable_id AND
              taggings.tag_id = tags.id AND 
-             tags.name LIKE "#{filter["exp_tag#{i}"]}") AS exp_tag_count#{i},
+             tags.name LIKE "#{filter["exp_tag#{i}"]}")
 EOSQL
         
         
         if filter['exp_tag_op1'][i] == "Mindestens"
-          having << "exp_tag_count#{i} >= #{filter["exp_tag_op2"][i].to_i}"
+          experiment_tag_subquery += " >= #{filter["exp_tag_op2"][i].to_i}"
         elsif filter['exp_tag_op1'][i] == "Höchstens"
-          having << "exp_tag_count#{i} <= #{filter["exp_tag_op2"][i].to_i}"
+          experiment_tag_subquery += " <= #{filter["exp_tag_op2"][i].to_i}"
         end
+        where << experiment_tag_subquery
       end  
     end
     
@@ -286,8 +285,7 @@ EOSQL
       when "die zu allen der folgenden Experimente zugeordnet sind"
         experiment_join = filter[:experiment].map(&:to_i).collect{|id| "JOIN participations as p#{id} ON p#{id}.user_id = users.id AND p#{id}.experiment_id = #{id}"}.join(' ')
       when "die zu keinem der folgenden Experimente zugeordnet sind"
-        experiment_subquery = "(SELECT COUNT(participations.id) FROM participations WHERE user_id = users.id AND participations.experiment_id IN (#{ids})) AS forbidden_count, "
-        having << "forbidden_count = 0"
+        where << "(SELECT COUNT(participations.id) FROM participations WHERE user_id = users.id AND participations.experiment_id IN (#{ids})) = 0"
       when "die an mindestens einer Session eines der folgenden Experimente teilgenommen haben"
         experiment_join = "JOIN sessions s ON s.experiment_id IN (#{ids}) JOIN session_participations sp ON sp.participated=1 AND s.id = sp.session_id AND sp.user_id = users.id "  
       when "die an mindestens einer Session von jedem der folgenden Experimente teilgenommen haben"
@@ -295,8 +293,7 @@ EOSQL
           "JOIN sessions s#{id} ON s#{id}.experiment_id=#{id} JOIN session_participations p#{id} ON p#{id}.user_id = users.id AND p#{id}.session_id = s#{id}.id "
         end.join(' ')
       when "die an keiner Session der folgenden Experimente teilgenommen haben"
-        experiment_subquery = "(SELECT COUNT(sp.id) FROM sessions s, session_participations sp WHERE sp.participated = 1 AND sp.user_id = users.id AND s.id = sp.session_id AND s.experiment_id IN (#{ids})) AS forbidden_count, "
-        having << "forbidden_count = 0"  
+        where << "(SELECT COUNT(sp.id) FROM sessions s, session_participations sp WHERE sp.participated = 1 AND sp.user_id = users.id AND s.id = sp.session_id AND s.experiment_id IN (#{ids})) = 0"
       end
     end
           
@@ -347,8 +344,6 @@ EOSQL
       SELECT 
           #{user_select}
           #{session_select} 
-          #{experiment_subquery}
-          #{experiment_tag_subquery}
           #{begin_select}
           
           (SELECT studies.name
@@ -361,8 +356,6 @@ EOSQL
       #{session_participation_join}
       #{'WHERE' unless where.blank?} 
         #{where.join(' AND ')}
-      #{'HAVING' unless having.blank?} 
-        #{having.join(' AND ')}
       ORDER BY #{sort_column + ' ' + sort_direction} 
 EOSQL
   
@@ -430,12 +423,14 @@ EOSQL
       page = 1
     end
     
-    objects = User.find_by_sql(User.create_filter_sql(params, options)+ " LIMIT 50 OFFSET "+((page-1)*50).to_s)
+    sql = User.create_filter_sql(params, options)+ " LIMIT 50 OFFSET "+((page-1)*50).to_s
+    objects = User.find_by_sql(sql)
     
     return WillPaginate::Collection.create(page,50) do |pager|    
       pager.replace(objects)
       pager.total_entries = count
     end
+    
   end
   
   def User.load params, options = nil

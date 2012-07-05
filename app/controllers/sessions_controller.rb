@@ -242,12 +242,10 @@ class SessionsController < ApplicationController
     end
     
     params[:filter] = {} unless params[:filter]
-    params[:filter][:role] = 'user' 
-    
     
     # todo move this to options
     params[:filter][:session] = @session.id
-    @users = User.load(params, {:experiment => @experiment, :sort_column => sort_column, :sort_direction => sort_direction, :exclude_non_participants => 1})
+    @users = User.load(params, {:experiment => @experiment, :sort_column => sort_column, :sort_direction => sort_direction, :exclude_non_participants => 1, :include_deleted_users => 1})
   end
   
   def overlaps

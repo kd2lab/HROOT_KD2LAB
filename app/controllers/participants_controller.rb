@@ -64,8 +64,8 @@ class ParticipantsController < ApplicationController
       end
     end
     
-    @users = User.paginate(params, {:experiment => @experiment, :sort_column => sort_column, :sort_direction => sort_direction, :exclude_non_participants => 1})
-    @user_count = @experiment.participations.includes(:user).where('users.role' => 'user', 'users.deleted' => false).count
+    @users = User.paginate(params, {:experiment => @experiment, :sort_column => sort_column, :sort_direction => sort_direction, :exclude_non_participants => 1, :include_deleted_users => 1})
+    @user_count = @experiment.participations.includes(:user).where('users.role' => 'user').count
   end
   
   def manage

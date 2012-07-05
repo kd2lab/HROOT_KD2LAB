@@ -70,7 +70,10 @@
 
     %tbody  
       - @users.each_with_index do |user, index| 
-        %tr
+        - cl = []; 
+        - cl << "deleted" if user.deleted
+        - cl << "import_inactive" if user.imported && !user.activated_after_import
+        %tr{:class => cl.join(' ')}
           -if selection_boxes
             %td= check_box_tag "selected_users[#{user.id}]", '1', false, :class => 'selected_users'
           %td= index + 1
