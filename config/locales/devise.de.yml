@@ -11,6 +11,7 @@ de:
         one: "1 Fehler ist aufgetreten:"
         other: "%{count} Fehler sind aufgetreten:"
       
+      
   devise:
     failure:
       already_authenticated: 'Sie sind bereits angemeldet.'
@@ -33,6 +34,7 @@ de:
       updated: 'Ihr Passwort wurde geändert. Sie sind angemeldet.'
       confirmed: 'Ihr Zugang wurde aktiviert, Sie sind jetzt angemeldet.'
     registrations:
+      signed_up_but_unconfirmed: 'Sie haben sich erfolgreich registriert. Sie werden in Kürze eine Aktivierungs-E-Mail erhalten.'
       signed_up: 'Sie haben sich erfolgreich registriert. Es kann sein, dass Sie eine Aktivierungs-E-Mail erhalten.'
       inactive_signed_up: 'Sie haben sich erfolgreich registriert. Sie werden in Kürze eine Aktivierungs-E-Mail erhalten.'
       updated: 'Das Passwort wurde erfolgreich geändert.'
