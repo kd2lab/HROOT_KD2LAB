@@ -96,7 +96,7 @@ protected
     
     if @user 
       if @user.imported && !@user.activated_after_import
-        redirect_to activate_url, :notice => "Ihr bestehender Zugang aus Orsee wurde im neuen System noch nicht aktiviert."
+        redirect_to activate_url, :notice => "Ihr bestehender Zugang wurde im neuen System noch nicht aktiviert."
       end
     else
       redirect_to root_url, :alert => "Für diesen Bereich ist ein Login erforderlich. "

@@ -1,0 +1,26 @@
+
+später:
+
+- import datenbank angeben
+- todos suchen
+- vernünftige fehlerseite / nicht erlaubt seite / redirect_back?
+- versand der "session unvollständig"-Meldungen optional
+- versandinfo ändern?
+- benachrichtigungsinfo ändern?
+- alle rechte setzen button
+- begruessungsseite info ausblenden implementieren
+- bei enroll link: login
+- test: was passiert mit eingeladenen nicth aktivierten?
+- zentral email umleiten
+- zentral mail konfigurieren
+- versandberichte an experimentleiter
+- cl << optimieren
+- mail bild hover effect 
+- Texte aus user.load schon mal entfernen
+
+zukunftsmusik
+
+
+- späteres feature: ausschluss anderer experimente
+- übersetzen
+- account deaktivieren

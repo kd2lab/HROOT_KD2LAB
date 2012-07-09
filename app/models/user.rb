@@ -315,12 +315,12 @@ EOSQL
         # limit to users of a certain session
         if filter[:session]
           # load session_participation and join reference sessions
-          session_participation_join = "JOIN (sessions s JOIN session_participations sps ON s.id = sps.session_id AND s.id = #{filter[:session].to_i}) ON s.experiment_id = #{experiment.id} AND sps.user_id = users.id "         
-          session_select = "s.start_at as session_start_at, s.id as session_id, p.invited_at, sps.showup as session_showup, sps.noshow as session_noshow, sps.participated as session_participated, "
+          session_participation_join = "JOIN (sessions sj JOIN session_participations sps ON sj.id = sps.session_id AND sj.id = #{filter[:session].to_i}) ON sj.experiment_id = #{experiment.id} AND sps.user_id = users.id "         
+          session_select = "sps.reminded_at, sj.start_at as session_start_at, sj.id as session_id, p.invited_at, sps.showup as session_showup, sps.noshow as session_noshow, sps.participated as session_participated, "
         else
           # load session_participation and join reference sessions
-          session_participation_join = "LEFT JOIN (sessions s JOIN session_participations sps ON s.id = sps.session_id) ON s.experiment_id = #{experiment.id} AND s.id = s.reference_session_id AND sps.user_id = users.id "         
-          session_select = "s.start_at as session_start_at, s.id as session_id, p.invited_at, sps.showup as session_showup, sps.noshow as session_noshow, sps.participated as session_participated, "
+          session_participation_join = "LEFT JOIN (sessions sj JOIN session_participations sps ON sj.id = sps.session_id) ON sj.experiment_id = #{experiment.id} AND sj.id = sj.reference_session_id AND sps.user_id = users.id "         
+          session_select = "sps.reminded_at, sj.start_at as session_start_at, sj.id as session_id, p.invited_at, sps.showup as session_showup, sps.noshow as session_noshow, sps.participated as session_participated, "
         end
 
         # only select users with a successful participation

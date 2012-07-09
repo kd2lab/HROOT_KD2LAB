@@ -98,7 +98,7 @@
           %td= check_box_tag "selected_users[#{user.id}]", '1', false, :class => 'selected_users'
           %td
             - if !user.deleted && user.imported && !user.activated_after_import
-              %i.icon-warning-sign
+              %i.icon-ban-circle
               
           %td= link_to highlight(truncate(user.lastname, {:length => 15}), params[:search])+', '+highlight(truncate(user.firstname, {:length => 10}), params[:search]), user_path(user)
           %td= {'user' => 'P', 'experimenter' => 'E', 'admin' => 'A'}[user.role]

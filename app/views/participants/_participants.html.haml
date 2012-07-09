@@ -78,8 +78,6 @@
         %th= sortable_for_form 'lastname', 'Name'  
         %th= sortable_for_form 'email', 'E-Mail'
         %th= sortable_for_form 'study_name', 'Fach'
-        //%th= sortable_for_form 'gender',  'Gesch.'
-        //%th= sortable_for_form 'begin_date', 'Beginn'
         %th.qtip_ersch= sortable_for_form 'noshow_count' , '#N'
         %th.qtip_teil= sortable_for_form 'participations_count' , '#T'
         %th= sortable_for_form 'session_start_at' , 'Session'
@@ -92,17 +90,21 @@
         %tr{:class => cl.join(' ')}
           %td
             = check_box_tag "selected_users[#{user.id}]", '1', false, :class => 'selected_users'
-            = image_tag("email_go.png", :alt => "Dieser User wurde bereits eingeladen") unless user.invited_at.nil?
           
+            - unless user.invited_at.nil?
+              %i.icon-envelope{:alt => "Dieser User wurde bereits eingeladen"}
+
             - if !user.deleted && user.imported && !user.activated_after_import
-              %i.icon-warning-sign
+              %i.icon-ban-circle
+          
+            - unless user.reminded_at.nil?
+              %i.icon-user
+          
           
           %td= link_to highlight(truncate(user.lastname, {:length => 15}), params[:search])+', '+highlight(truncate(user.firstname, {:length => 10}), params[:search]), user_path(user)
           %td= link_to highlight(truncate(user.email, {:length => 20}), params[:search]), "mailto:#{user.email}"
           %td.study_name_popup{:'data-text' => user.study_name || 'keine Angabe' }
             =user.study_name ? truncate(user.study_name, {:length => 10}) : 'k. A.'
-          //%td= user.gender
-          //%td= user.begin_date 
           %td= "#{user.noshow_count}" if user.user?
           %td= "#{user.participations_count}" if user.user?
           %td= "#{user.session_start_at.strftime("%d.%m.%Y %H:%M") if user.session_start_at}" 

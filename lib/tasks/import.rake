@@ -44,11 +44,11 @@ Experiment: #experiment_name
 Datum: #session_date
 Startzeit: #session_start_time 
 EOTXT
-    Settings.import_invitation_subject = "Umstellung auf hroot - Neuaktivierung Ihres Accounts aus Orsee"
+    Settings.import_invitation_subject = "Umstellung auf hroot - Neuaktivierung Ihres bestehenden Accounts"
     Settings.import_invitation_text = <<EOTXT
 Hallo #firstname #lastname,
 
-wir haben unsere Verwaltungssoftware zur Organisation von Experimenten aktualisiert. Die neue Software heisst hroot und löst das bestehende System Orsee ab. Bitte aktivieren Sie Ihren Account und folgendem Link:
+wir haben unsere Verwaltungssoftware zur Organisation von Experimenten aktualisiert. Die neue Software heisst hroot und löst das bestehende System ab. Bitte aktivieren Sie Ihren Account und folgendem Link:
 
 #activation_link
 EOTXT

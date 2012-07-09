@@ -1,10 +1,7 @@
 
 
 - participations import verbessern, check auf existenten user
-- studienbeginn in registrierungsprozess, user-pflege und validierung
 
-- session: fehlermeldungen abfangen für nichtnumerische eingaben (minuten, nötige, reserve) - anderer browser
-- zeitzonenunterstützung
 
 
 

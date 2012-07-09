@@ -28,7 +28,7 @@ class ApplicationController < ActionController::Base
       if current_user.imported && !current_user.activated_after_import
         email = current_user.email
         sign_out current_user
-        redirect_to activate_url, :notice => "Ihr bestehender Zugang aus Orsee wurde im neuen System noch nicht aktiviert."
+        redirect_to activate_url, :notice => "Ihr bestehender Zugang wurde im neuen System noch nicht aktiviert."
       end
     end
   end
