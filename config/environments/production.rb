@@ -66,8 +66,11 @@ Hroot::Application.configure do
   config.path_prefix = '/hroot'
 end
 
+ActionMailer::Base.default :from => 'experiments@wiso.uni-hamburg.de'
+
 Rails.application.routes.default_url_options[:host] =  'www.wiso.uni-hamburg.de/hroot'
 Rails.application.routes.default_url_options[:protocol] =  'https'
+Mail.register_interceptor(DevelopmentMailInterceptor)
 
 Hroot::Application.config.middleware.use ExceptionNotifier,
   :email_prefix => "[hroot] ",

@@ -127,7 +127,7 @@ EOSQL
         text = experiment.invitation_text.to_s.mreplace({
           "#firstname" => u.firstname, 
           "#lastname"  => u.lastname,
-          "#sessionlink"  => experiment.open_sessions.map{|s| s.start_at.strftime("%d.%m.%Y, %H:%M Uhr") }.join("\n"),
+          "#sessionlist"  => experiment.open_sessions.map{|s| s.start_at.strftime("%d.%m.%Y, %H:%M Uhr") }.join("\n"),
           "#link"      => link
         })
         

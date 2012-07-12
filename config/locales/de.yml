@@ -1,6 +1,7 @@
 # Sample localization file for English. Add more files in this directory for other locales.
 # See http://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
+
 de:
   errors:
     template:
@@ -88,11 +89,13 @@ de:
             password: 
               confirmation: muss wiederholt werden
               too_short: ist zu kurz (mind. 8 Zeichen)
-              invalid: Sonderzeichen fehlen (mind. eine Zahl und ein Sonderzeichen)!
+              invalid: ungültiges Passwort (mind. eine Zahl, ein Buchstabe, ein Sonderzeichen)
             password_confirmation:
               too_short: ist zu kurz (mind. 8 Zeichen) 
             terms_and_conditions:
               accepted: Bitte bestätigen Sie die Nutzungsbedingungen
+            current_password:
+              invalid: ist ungültig
             
   date:
     formats:

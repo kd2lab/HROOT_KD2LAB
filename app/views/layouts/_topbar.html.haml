@@ -24,9 +24,17 @@
         %ul.nav.pull-right
           %li= link_to "Jetzt registrieren", register_path 
           %li.divider-vertical
-          
-      %a.brand{:href => root_url}
-        hroot
+      
+      - if user_signed_in? 
+        - if current_user.user?
+          %a.brand{:href => account_url}
+            hroot
+        - else
+          %a.brand{:href => dashboard_url}
+            hroot  
+      -else    
+        %a.brand{:href => root_url}
+          hroot
       %p.navbar-text
         Rekrutierungssystem für ökonomische Experimente
       

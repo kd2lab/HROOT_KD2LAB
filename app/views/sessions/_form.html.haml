@@ -18,7 +18,8 @@
   
   
   = f.input :description, :as => :text
-  = f.input :limitations, :as => :text, :hint => 'Dieser Text wird dem Teilnehmer bei Anmeldung angezeigt.'
+  - unless @session.is_subsession?
+    = f.input :limitations, :as => :text, :hint => 'Dieser Text wird dem Teilnehmer bei Anmeldung angezeigt.'
  
   
   = f.input :time_before, :collection =>  (0..12).map{|x| [(x*5).to_s+" Minuten", x*5]}, :include_blank => false

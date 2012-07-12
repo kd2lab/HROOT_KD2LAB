@@ -44,3 +44,5 @@ ActionMailer::Base.smtp_settings = {
   :authentication       => "plain",
   :enable_starttls_auto => true
 }
+ActionMailer::Base.default :from => 'development@wiso.uni-hamburg.de'
+Mail.register_interceptor(DevelopmentMailInterceptor)

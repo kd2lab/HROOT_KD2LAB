@@ -1,6 +1,8 @@
 # encoding:utf-8
 
 class User < ActiveRecord::Base
+  acts_as_taggable_on :tags
+  
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable, :confirmable,
@@ -129,7 +131,8 @@ WHERE
      sp.session_id = s3.id AND sp.user_id=#{self.id} AND 
      s3.end_at > sessions.start_at AND s3.start_at < sessions.end_at
   ) = 0
-  
+ORDER BY sessions.start_at ASC
+ 
 EOSQL
 
     Session.find_by_sql(sql)

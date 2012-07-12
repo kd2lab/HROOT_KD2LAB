@@ -91,6 +91,13 @@ class UsersController < ApplicationController
     redirect_to(users_url) 
   end
   
+  def activate_after_import
+    @user.activated_after_import = true
+    @user.import_token = nil
+    @user.save
+    redirect_to(user_url(@user), :notice => 'Der Benutzer wurde nach dem Import freigeschaltet.') 
+  end
+  
   def login_as
     sign_in @user
     redirect_to account_path

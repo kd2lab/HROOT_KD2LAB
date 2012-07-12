@@ -10,6 +10,8 @@
     %b.caret 
   %ul.dropdown-menu
     %li= link_to "Als #{@user.firstname} #{@user.lastname} einloggen.", login_as_user_path(@user)
+    - if @user.imported && !@user.activated_after_import  
+      %li= link_to "User nach Import aktivieren", activate_after_import_user_path(@user)
 
     / %li= link_to "Nachricht an diesen Nutzer senden", '#', :class => "send-message", :'data-to' => "Markierte Teilnehmer", :'data-mode' => 'selected'
     
@@ -26,7 +28,7 @@
   
 - if @user.deleted
   %span.label.label-important
-    als gelöscht markiert
+    als gelöscht markiert    
 
 %br
 

@@ -56,6 +56,7 @@ Hroot::Application.routes.draw do
     resources :users do
       member do
         get :login_as
+        get :activate_after_import
       end
       collection do
         post :index

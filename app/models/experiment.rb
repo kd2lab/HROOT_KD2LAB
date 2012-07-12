@@ -35,7 +35,7 @@ class Experiment < ActiveRecord::Base
   end
     
   def open_sessions
-    sessions.in_the_future.select{ |s| s.space_left > 0}
+    sessions.in_the_future.order('start_at').select{ |s| s.space_left > 0}
   end
     
   def count_max_invitation_messages_until_now
