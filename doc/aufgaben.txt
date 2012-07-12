@@ -5,11 +5,11 @@ später:
 - todos suchen
 - icons hover
 - vernünftige fehlerseite / nicht erlaubt seite / redirect_back?
-- versand der "session unvollständig"-Meldungen optional
+- versand der "session unvollständig"-Meldungen optional, nervt gerade etwas
 - versandinfo ändern?
 - benachrichtigungsinfo ändern?
 - begruessungsseite info ausblenden implementieren
-- umgang mit leuten, die noch nicht confimiert haben
+- umgang mit leuten, die noch nicht confimiert haben (sicherheit passt, aber anzeige?)
 - test: was passiert mit eingeladenen nicth aktivierten?
 - versandberichte an experimentleiter
 - cl << optimieren

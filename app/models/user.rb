@@ -433,7 +433,6 @@ EOSQL
       pager.replace(objects)
       pager.total_entries = count
     end
-    
   end
   
   def User.load params, options = nil

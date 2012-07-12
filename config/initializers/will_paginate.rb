@@ -10,7 +10,7 @@ module WillPaginate
 
       def page_number(page)
         unless page == current_page
-          link(page, page, :rel => rel_value(page))
+          link(page, page, :rel => rel_value(page), :'data-page' => page)
         else
           link(page, "#", :class => 'active')
         end
@@ -28,7 +28,7 @@ module WillPaginate
 
       def previous_or_next_page(page, text, classname)
         if page
-          link(text, page, :class => classname)
+          link(text, page, :class => classname, :'data-page' => page || '#')
         else
           link(text, "#", :class => classname + ' disabled')
         end
