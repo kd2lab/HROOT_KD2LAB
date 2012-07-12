@@ -1,11 +1,12 @@
 # encoding: utf-8
 
 class EnrollController < ApplicationController
-  before_filter :load_user
+  authorize_resource :class => false, :except => :enroll_sign_in
+  
   before_filter :load_session_and_participation, :only => [:confirm, :register]
   
   def index
-    @availabe_sessions = @user.available_sessions
+    @availabe_sessions = current_user.available_sessions
   end
 
   def confirm
@@ -16,7 +17,7 @@ class EnrollController < ApplicationController
     # create session participation if there is space (a) and user is not in the session already (b)
     sql = <<EOSQL
       INSERT INTO session_participations 
-      SELECT NULL, #{@session.id}, #{@user.id}, NULL, 0, 0, 0, NOW(), NOW() 
+      SELECT NULL, #{@session.id}, #{current_user.id}, NULL, 0, 0, 0, NOW(), NOW() 
       FROM sessions s
       WHERE
         s.id = #{@session.id} AND
@@ -27,7 +28,7 @@ class EnrollController < ApplicationController
         ) > 0 AND
         ( -- (b)
           SELECT count(sps.id) FROM session_participations sps
-          WHERE sps.session_id = s.id AND sps.user_id = #{@user.id}
+          WHERE sps.session_id = s.id AND sps.user_id = #{current_user.id}
         ) = 0
 EOSQL
    
@@ -35,14 +36,14 @@ EOSQL
    
     # check for result - do not use cache :-)
     SessionParticipation.uncached do
-      @session_participation = SessionParticipation.find_by_user_id_and_session_id(@user.id, @session.id)
+      @session_participation = SessionParticipation.find_by_user_id_and_session_id(current_user.id, @session.id)
     end
     
     if @session_participation
       # add user to all following sessions
       sql = <<EOSQL
       INSERT INTO session_participations 
-      SELECT NULL, s.id, #{@user.id}, NULL, 0, 0, 0, NOW(), NOW() 
+      SELECT NULL, s.id, #{current_user.id}, NULL, 0, 0, 0, NOW(), NOW() 
       FROM sessions s
       WHERE
         s.reference_session_id = #{@session.id} AND
@@ -53,16 +54,16 @@ EOSQL
       
       # successful registration - send confirmation mail
       subject = @session.experiment.confirmation_subject.to_s.mreplace({
-        "#firstname" => @user.firstname, 
-        "#lastname"  => @user.lastname,
+        "#firstname" => current_user.firstname, 
+        "#lastname"  => current_user.lastname,
         "#session_date"  => @session.start_at.strftime("%d.%m.%Y"),
         "#session_start_time" => @session.start_at.strftime("%H:%M"),
         "#session_end_time" => @session.end_at.strftime("%H:%M")
       })
       
       text = @session.experiment.confirmation_text.to_s.mreplace({
-        "#firstname" => @user.firstname, 
-        "#lastname"  => @user.lastname,
+        "#firstname" => current_user.firstname, 
+        "#lastname"  => current_user.lastname,
         "#session_date"  => @session.start_at.strftime("%d.%m.%Y"),
         "#session_start_time" => @session.start_at.strftime("%H:%M"),
         "#session_end_time" => @session.end_at.strftime("%H:%M"),
@@ -72,7 +73,7 @@ EOSQL
       UserMailer.email(
         subject,
         text,
-        @user.main_email,
+        current_user.main_email,
         @session.experiment.sender_email
       ).deliver
       
@@ -82,43 +83,39 @@ EOSQL
     end
   end
 
-protected
-
-  def load_user
+  def enroll_sign_in
     if params['code']
       code = LoginCode.find_by_code(params['code'])
       if code && code.user
-        @user = code.user
+        sign_in code.user
       end
-    elsif current_user
-      @user = current_user
     end
     
-    if @user 
-      if @user.imported && !@user.activated_after_import
-        redirect_to activate_url, :notice => "Ihr bestehender Zugang wurde im neuen System noch nicht aktiviert."
-      end
+    if user_signed_in?
+      redirect_to enroll_path
     else
-      redirect_to root_url, :alert => "Für diesen Bereich ist ein Login erforderlich. "
+      redirect_to root_url
     end
   end
+
+protected
 
   def load_session_and_participation
     @session = Session.find_by_id(params[:session])
           
     unless @session
-      redirect_to enroll_path(params[:code])
+      redirect_to enroll_path
       return 
     end
     
-    @session_participation = SessionParticipation.find_by_user_id_and_session_id(@user.id, @session.id)
+    @session_participation = SessionParticipation.find_by_user_id_and_session_id(current_user.id, @session.id)
     if @session_participation
-      redirect_to enroll_path(params[:code])
+      redirect_to enroll_path
       return
     end
     
-    unless @user.available_sessions.include?(@session)
-      redirect_to enroll_path(params[:code]), :alert => "Die Anmeldung wurde abgebrochen, da diese Session bereits voll ist."
+    unless current_user.available_sessions.include?(@session)
+      redirect_to enroll_path, :alert => "Die Anmeldung wurde abgebrochen, da diese Session bereits voll ist."
       return
     end
   end

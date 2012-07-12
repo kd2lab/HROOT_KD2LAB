@@ -38,7 +38,8 @@ class Ability
       end
       
       # all users..
-      can :manage, :account 
+      can :manage, :account
+      can :manage, :enroll 
     end
     
     

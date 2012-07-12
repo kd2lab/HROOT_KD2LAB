@@ -115,7 +115,7 @@ EOSQL
         u = participation.user
         log += "#{Time.zone.now}: Sende Mail an #{u.email}\n"
         
-        link = Rails.application.routes.url_helpers.enroll_url(u.create_code)
+        link = Rails.application.routes.url_helpers.enroll_sign_in_url(u.create_code)
         
         subject = experiment.invitation_subject.to_s.mreplace({
           "#firstname" => u.firstname, 
