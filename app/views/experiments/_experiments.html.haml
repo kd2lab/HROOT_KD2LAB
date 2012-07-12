@@ -24,8 +24,11 @@
           - if experiment.registration_active
             %span.label.label-success Anmeldung ist aktiv
           - else
-            %span.label.label-warning Anmeldung ist nicht aktiv
-      
+            %span.label Anmeldung ist nicht aktiv
+          
+          - if experiment.invitation_start
+            %span.label.label-warning Einladungsversand aktiv
+          
           %br
           %br
           - if experiment.sessions.length > 0

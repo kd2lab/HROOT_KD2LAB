@@ -1,19 +1,21 @@
 
 später:
 
+- bcc eintragen
 - todos suchen
+- icons hover
 - vernünftige fehlerseite / nicht erlaubt seite / redirect_back?
 - versand der "session unvollständig"-Meldungen optional
 - versandinfo ändern?
 - benachrichtigungsinfo ändern?
 - begruessungsseite info ausblenden implementieren
-- bei enroll link: login
 - umgang mit leuten, die noch nicht confimiert haben
 - test: was passiert mit eingeladenen nicth aktivierten?
 - versandberichte an experimentleiter
 - cl << optimieren
 - mail bild hover effect 
 - Texte aus user.load schon mal entfernen
+- filter für nicht confirmirte user
 
 zukunftsmusik
 

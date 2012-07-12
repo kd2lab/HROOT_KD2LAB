@@ -5,7 +5,7 @@ end
 
 source 'http://rubygems.org'
 
-gem 'rails', '3.1.1'
+gem 'rails', '3.2.0'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -26,7 +26,7 @@ gem 'haml'
 gem "rails-settings"   #, :git => "git://github.com/100hz/rails-settings.git"
 gem 'sequel'
 gem 'jquery-rails', '>= 1.0.12'
-gem 'will_paginate', '3.0.pre4' 
+gem 'will_paginate'
 gem 'devise'
 gem 'simple_form'
 gem 'event-calendar', :require => 'event_calendar'
