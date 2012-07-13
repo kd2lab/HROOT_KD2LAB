@@ -1,7 +1,9 @@
-Hallo,
+Hallo <%= "#{@user.firstname} #{@user.lastname}" %>,
 
 bitte bestätigen Sie Ihre neue E-Mail-Adresse durch Klick auf diesen Link:
 
 <%= activation_url(:import_token => @user.import_token, :email_token => @user.import_email_confirmation_token) %>
 
 
+Mit freundlichen Grüßen,
+Ihr WiSo-Forschungslabor

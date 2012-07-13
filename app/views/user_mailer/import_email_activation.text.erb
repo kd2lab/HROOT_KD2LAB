@@ -1,7 +1,10 @@
-Hallo,
+Hallo <%= "#{@user.firstname} #{@user.lastname}" %>,
 
-unter diesem Link können Sie Ihren Account aktivieren:
+mit diesem Link können Sie Ihren hroot-Zugang freischalten:
 
 <%= activation_url(:import_token => @user.import_token) %>
 
+
+Mit freundlichen Grüßen,
+Ihr WiSo-Forschungslabor
 

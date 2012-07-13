@@ -1,13 +1,17 @@
 %h1
-  Aktivierung
+  Freischaltung
 
 %br
-Auf dieser Seite können Sie Ihren Account aktivieren, wenn Ihre Daten aus dem bisherigen System übernommen wurden.
+Auf dieser Seite können Sie Ihren Account freischalten.
 %br
 %br
-Ihre bisherige E-Mail-Adresse kann mit den neuen System nicht verwendet werden. Bitte geben Sie eine gültige E-Mail-Adresse an:
+Ihre bisherige E-Mail-Adresse kann in unserem neuen System nicht verwendet werden.
+%br
+Bitte geben Sie eine gültige E-Mail-Adresse an:
 %br
 %br
+%br
+
 = simple_form_for @activation_user, :html => {:class => "form-horizontal"}, :url => '' do |f| 
   = f.label :email
   = f.text_field :email_prefix, :class => "span1"
@@ -18,4 +22,10 @@ Ihre bisherige E-Mail-Adresse kann mit den neuen System nicht verwendet werden. 
   %br
   = f.submit "E-Mail zur Bestätigung absenden", :class => "btn btn-primary"
 
-
+%br
+%br
+%h3 Kontakt
+%p
+  Bei Fragen oder Wünschen kontaktieren Sie uns bitte:
+%p
+  = link_to 'experiments@wiso.uni-hamburg.de', 'mailto:experiments@wiso.uni-hamburg.de'

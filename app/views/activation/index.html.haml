@@ -1,16 +1,20 @@
 %h1
-  Aktivierung
+  Freischaltung
 
 %br
-Auf dieser Seite können Sie Ihren Account aktivieren, wenn Ihre Daten aus dem bisherigen System übernommen wurden.
-%br
-%br
-%br
-Bitte wählen Sie zur Aktivierung ein neues Passwort:
+
+%p
+  Auf dieser Seite können Sie Ihren Account freischalten.
+
+%p
+  In unserem neuen Rekrutierungs- und Einladungssystem ist es erforderlich, dass Sie sich mit Ihrer E-Mail-Adresse und einem Passwort anmelden.
+%p
+  Wählen Sie dazu bitte ein Passwort:
 %br
 %br
 = simple_form_for @activation_user, :html => {:class => "form-horizontal"}, :url => '' do |f| 
   = f.input :password
   = f.input :password_confirmation, :hint => "mindestens 8 Zeichen, mindestens eine Zahl, ein Buchstabe, ein Sonderzeichen"
-  = f.submit "Passwort speichern und Account aktivieren", :class => "btn btn-primary"
+  %br
+  = f.submit "Passwort speichern und Account freischalten", :class => "btn btn-primary"
 

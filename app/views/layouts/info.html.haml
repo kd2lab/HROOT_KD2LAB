@@ -26,14 +26,13 @@
               hroot
             %p
               Rekrutierungssystem für ökonomische Experimente
-            %p
-              Noch kein Zugang? Jetzt anmelden und an Experimenten teilnehmen.
-              
-            %p          
-              = link_to "Jetzt registrieren", register_path, :class => "btn btn-primary btn-large"
-              /= link_to "Mehr Informationen", register_path, :class => "btn btn-large"
+              %br
+              %br
             
-            %br
+            %p
+              Herzlich willkommen im WiSo-Forschungslabor. Wir haben ein neues Rekrutierungs- und Einladungssystem
+              für ökonomische Experimente. 
+              
             %br
           
             %h3 Waren Sie bereits im Forschungslabor angemeldet?
@@ -41,7 +40,14 @@
               Wenn Sie bereits einen Zugang hatten, sind Ihre Daten bei unserem Systemwechsel übernommen worden. Sie können sich hier Ihren Account
               freischalten lassen.
             %p
-              = link_to "Jetzt freischalten", activate_path, :class => "btn btn-large"
+              = link_to "Jetzt freischalten", activate_path, :class => "btn btn-large btn-primary"
+
+            %br
+            %h3 Kontakt
+            %p
+              Bei Fragen oder Wünschen kontaktieren Sie uns bitte:
+            %p
+              = link_to 'experiments@wiso.uni-hamburg.de', 'mailto:experiments@wiso.uni-hamburg.de'
             
         .span3
           != image_tag("logo-uni-hh.png")

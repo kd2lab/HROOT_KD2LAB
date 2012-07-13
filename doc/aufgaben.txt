@@ -1,25 +1,16 @@
 
-später:
+zu erledigen:
 
-- bcc eintragen
-- todos suchen
-- icons hover
 - vernünftige fehlerseite / nicht erlaubt seite / redirect_back?
-- versand der "session unvollständig"-Meldungen optional, nervt gerade etwas
-- versandinfo ändern?
-- benachrichtigungsinfo ändern?
-- begruessungsseite info ausblenden implementieren
-- umgang mit leuten, die noch nicht confimiert haben (sicherheit passt, aber anzeige?)
-- test: was passiert mit eingeladenen nicth aktivierten?
-- versandberichte an experimentleiter
-- cl << optimieren
-- mail bild hover effect 
-- Texte aus user.load schon mal entfernen
-- filter für nicht confirmirte user
 
 zukunftsmusik
 
-
+- todos suchen
+- icons hover
+- begruessungsseite info ausblenden implementieren
+- cl << optimieren
+- versandberichte an experimentleiter
+- Texte aus user.load schon mal entfernen
 - späteres feature: ausschluss anderer experimente
 - übersetzen
 - account deaktivieren

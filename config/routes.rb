@@ -21,9 +21,9 @@ Hroot::Application.routes.draw do
   match 'account/alternative_email', :controller => 'account', :action => 'alternative_email'  
   match 'home/confirm_alternative_email/:confirmation_token', :controller => 'home', :action => 'confirm_alternative_email', :as => 'secondary_email_confirmation'
 
+  match 'home/info', :controller => 'home', :action => 'info'
   match 'home/activate', :controller => 'home', :action => 'activate', :as => 'activate'
   match 'home/calendar/:key', :controller => 'home', :action => 'calendar', :as => 'public_calendar'
-
 
   devise_for :users, :controllers => {:registrations => "registrations"}, :path_names => { :sign_in => 'login' }, skip: :registrations 
   
