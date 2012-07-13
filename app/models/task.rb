@@ -40,7 +40,8 @@ EOSQL
         "#lastname"  => sp.user.lastname,
         "#session_date"  => sp.session.start_at.strftime("%d.%m.%Y"),
         "#session_start_time" => sp.session.start_at.strftime("%H:%M"),
-        "#session_end_time" => sp.session.end_at.strftime("%H:%M")
+        "#session_end_time" => sp.session.end_at.strftime("%H:%M"),
+        "#session_location" => if sp.session.location then sp.session.location.name else "" end
       })
       
       # only deliver mails with subject and text

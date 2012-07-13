@@ -45,6 +45,11 @@ module Hroot
     config.paths["app/views"] << "app/views/devise"
     
     config.assets.enabled = true
+    
+    # Catch 404s
+    config.after_initialize do |app|
+      app.routes.append{match '*path', :to => 'application#render_404'}
+    end
   end
 end
 

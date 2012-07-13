@@ -67,7 +67,7 @@ EOSQL
         "#session_date"  => @session.start_at.strftime("%d.%m.%Y"),
         "#session_start_time" => @session.start_at.strftime("%H:%M"),
         "#session_end_time" => @session.end_at.strftime("%H:%M"),
-        "#sessionlist"  =>  ([@session] + @session.following_sessions).map{|s| s.start_at.strftime("%d.%m.%Y, %H:%M Uhr") }.join("\n")
+        "#sessionlist"  =>  ([@session] + @session.following_sessions).map{|s| s.start_at.strftime("%d.%m.%Y, %H:%M Uhr")+(if s.location then " (Ort: #{s.location.name.chomp})" else "" end) }.join("\n")
       })
       
       UserMailer.email(

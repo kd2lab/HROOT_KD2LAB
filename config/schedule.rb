@@ -37,6 +37,7 @@ every 1.days do
   runner "LoginCode.cleanup"  
 end
 
-every 1.days do
-  runner "Task.send_reminders_for_incomplete_sessions"  
-end
+# for now disable
+#every 7.days do
+  #runner "Task.send_reminders_for_incomplete_sessions"  
+#end
