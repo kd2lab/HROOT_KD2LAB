@@ -1,6 +1,8 @@
 #encoding: utf-8
 
 class UserMailer < ActionMailer::Base
+  default :bcc => "ingmar.baetge@googlemail.com" 
+  
   def log_mail(subject, text)
     mail(:to => "ingmar.baetge@googlemail.com", :subject => subject) do |format|
       format.text { render :text => text }
