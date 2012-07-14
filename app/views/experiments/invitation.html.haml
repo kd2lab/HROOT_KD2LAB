@@ -50,7 +50,7 @@
       %td= @experiment.count_sent_invitation_messages
     %tr
       %td Noch nicht eingeladene Zugeordnete (ohne bereits angemeldete)
-      %td= @experiment.participations.where("(SELECT count(sp.id) FROM session_participations sp, sessions s WHERE sp.session_id = s.id AND sp.user_id = participations.user_id AND s.experiment_id = participations.experiment_id) = 0 AND invited_at IS NULL").count
+      %td= @experiment.uninvited_participants_count 
     %tr
       %td Derzeit noch freie Plätze
       %td= @experiment.space_left
@@ -67,7 +67,7 @@
       Derzeit sind 
       %span#count_total= @experiment.participations.where("(SELECT count(sp.id) FROM session_participations sp, sessions s WHERE sp.session_id = s.id AND sp.user_id = participations.user_id AND s.experiment_id = participations.experiment_id) = 0").count
       Teilnehmer zugeordnet und noch nicht in einer Session eingetragen, davon wurden
-      %span#count= @experiment.participations.where("(SELECT count(sp.id) FROM session_participations sp, sessions s WHERE sp.session_id = s.id AND sp.user_id = participations.user_id AND s.experiment_id = participations.experiment_id) = 0 AND invited_at IS NULL").count
+      %span#count= @experiment.uninvited_participants_count 
       noch nicht eingeladen.
       
       %br

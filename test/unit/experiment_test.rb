@@ -181,11 +181,20 @@ class ExperimentTest < ActiveSupport::TestCase
       Participation.create(:user => @u6, :experiment => @e1)
       SessionParticipation.create(:user => @u6, :session => @s1)
       
+      # a user who has not confirmed
+      @u7 = Factory(:user,:firstname => "7")
+      @u7.confirmed_at = nil
+      @u7.save
+      
+      Participation.create(:user => @u7, :experiment => @e1)
+      
+      
       @p = @e1.load_random_participations
     end
     
-    should "load 5 users and not contain u6 and u5 should be last" do
+    should "load 5 users and not contain u6, u7 and u5 should be last" do
       assert !@p.map(&:user).include?(@u6)
+      assert !@p.map(&:user).include?(@u7)
       assert_equal 5, @p.count
       assert_equal @u5, @p.last.user
     end

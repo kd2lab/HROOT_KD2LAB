@@ -71,8 +71,21 @@ class Experiment < ActiveRecord::Base
       .where(:invited_at => nil)
       .order(order)
       .includes(:user)
+      .where('users.confirmed_at IS NOT NULL')
       .limit([count_remaining_messages, 50].min)
       .all
+  end
+  
+  # count users who...
+  # ... are not registered in a session
+  # ... have not been invited
+  # ... have confirmed their account
+  def uninvited_participants_count
+    participants
+        .where("participations.invited_at IS NULL")
+        .where(" (SELECT count(sp.id) FROM session_participations sp, sessions s WHERE sp.session_id = s.id AND s.experiment_id = participations.experiment_id AND sp.user_id = users.id) = 0")
+        .where('users.confirmed_at IS NOT NULL')
+        .count  
   end
   
   

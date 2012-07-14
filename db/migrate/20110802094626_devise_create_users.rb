@@ -65,6 +65,8 @@ class DeviseCreateUsers < ActiveRecord::Migration
       t.string  :import_email
       t.string  :import_email_confirmation_token
       
+      t.string :cellphone
+      t.boolean :sms_activated, :default => false
       
       t.timestamps
     end
