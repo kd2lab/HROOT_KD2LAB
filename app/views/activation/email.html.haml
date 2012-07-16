@@ -5,9 +5,11 @@
 Auf dieser Seite können Sie Ihren Account freischalten.
 %br
 %br
-Ihre bisherige E-Mail-Adresse kann in unserem neuen System nicht verwendet werden.
+Ihre bisherige E-Mail-Adresse
+%b{:style => "color:red"}= @activation_user.email
+kann in unserem neuen System nicht verwendet werden.
 %br
-Bitte geben Sie eine gültige E-Mail-Adresse an:
+Bitte geben Sie eine gültige E-Mail-Adresse der Universität Hamburg an:
 %br
 %br
 %br
@@ -22,6 +24,11 @@ Bitte geben Sie eine gültige E-Mail-Adresse an:
   %br
   = f.submit "E-Mail zur Bestätigung absenden", :class => "btn btn-primary"
 
+
+%br
+%br
+Sie müssen diese E-Mail-Adresse einmal bestätigen und in Zukunft diese zum Login verwenden. Zukünftige E-Mails erhalten Sie aber wie gewohnt an die Adresse
+%b= @activation_user.email
 %br
 %br
 %h3 Kontakt
