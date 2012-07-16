@@ -1,6 +1,8 @@
 class DevelopmentMailInterceptor
   def self.delivering_email(message)
-    message.subject = "#{message.to} #{message.subject}"
-    message.to = "hroottest@googlemail.com"
+    unless Rails.env.production?
+      message.subject = "#{message.to} #{message.subject}"
+      message.to = "hroottest@googlemail.com"
+    end
   end
 end
