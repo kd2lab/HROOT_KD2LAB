@@ -208,7 +208,7 @@ class SessionsController < ApplicationController
             if params['showups'] && params['showups'][user_id]
               unless sp.showup && (sp.participated == (params['participations'][user_id] == "1")) && !sp.noshow
                 sp.showup = true
-                sp.participated = params['participations'][user_id]
+                sp.participated = params['participations'][user_id].to_i
                 sp.noshow = false
                 changes += 1
                 sp.save
