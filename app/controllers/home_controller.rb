@@ -14,6 +14,10 @@ class HomeController < ApplicationController
     render :layout => 'info'
   end
   
+  def contact
+    nil.to_is
+  end
+  
   def activate
     if params[:email]
       @user = User.where(:imported => true).where(:activated_after_import => false).where(:email => params[:email]).first

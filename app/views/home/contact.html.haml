@@ -1,0 +1,45 @@
+= content_for :breadcrumb do
+  %ul.breadcrumb
+    %li
+      = link_to "Startseite", root_path
+      %span.divider
+        >
+    %li.active
+      Kontakt 
+      
+%h2 Kontaktinformationen Forschungslabor
+
+%p
+  %b Adresse
+  
+%p 
+  Von-Melle-Park 5
+  %br
+  Raum 2152/2154
+  %br
+  20146 Hamburg, Deutschland
+  %br
+  = link_to "Universität Hamburg", "http://www.uni-hamburg.de"
+  %br
+  = link_to "Fakultät Wirtschafts- und Sozialwissenschaften", "http://www.wiso.uni-hamburg.de"
+
+%p
+  %b Buchungsanfragen: 
+
+%p 
+  E-Mail an 
+  = link_to "experiments@wiso.uni-hamburg.de", "mailto:experiments@wiso.uni-hamburg.de"
+  
+%p 
+  %b Laborleitung
+
+%p
+  Dipl.-Pol. Olaf Bock
+  %br
+  Büro: Allendeplatz 1, Raum 421
+  %br
+  Tel.: 0 40 - 42 83 8 - 37 59, Sekretariat: - 35 51, Fax: - 76 61
+  %br
+  %br
+  E-Mail:
+  = link_to "olaf.bock@wiso.uni-hamburg.de", "mailto:olaf.bock@wiso.uni-hamburg.de"
