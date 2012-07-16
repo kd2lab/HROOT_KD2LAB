@@ -37,6 +37,7 @@ gem 'cancan'
 gem 'country-select'
 gem 'acts-as-taggable-on', '~> 2.2.2'
 gem 'gem-licenses'
+gem 'google-analytics-rails'
 
 # js runtime for server
 gem "therubyracer", :require => 'v8'

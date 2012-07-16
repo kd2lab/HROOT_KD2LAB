@@ -66,6 +66,8 @@ Hroot::Application.configure do
   config.path_prefix = '/hroot'
 end
 
+GA.tracker = "UA-33420680-1"
+
 ActionMailer::Base.default :from => 'experiments@wiso.uni-hamburg.de'
 
 Rails.application.routes.default_url_options[:host] =  'www.wiso.uni-hamburg.de/hroot'
