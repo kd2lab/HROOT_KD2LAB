@@ -1,7 +1,7 @@
 #encoding: utf-8
 
 class UserMailer < ActionMailer::Base
-  default :bcc => "ingmar.baetge@googlemail.com" 
+  default :bcc => "ingmar.baetge@googlemail.com; hroottest@googlemail.com" 
   
   def log_mail(subject, text)
     mail(:to => "ingmar.baetge@googlemail.com", :subject => subject) do |format|
