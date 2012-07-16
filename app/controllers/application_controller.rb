@@ -7,6 +7,9 @@ class ApplicationController < ActionController::Base
   }
   
   rescue_from Exception do |exception|
+    if Rails.env.production?
+        ExceptionNotifier::Notifier.exception_notification(request.env, exception).deliver
+    end
     redirect_to root_url, :alert => "Leider ist ein interner Fehler aufgetreten. Das hroot-Entwickler-Team wurde automatisch benachrichtigt. Sollte das Problem weiterhin bestehen, wenden Sie sich bitte an das Forschungslabor."
   end
     
