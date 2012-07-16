@@ -27,7 +27,7 @@ class UserMailer < ActionMailer::Base
 
   def import_email_activation(user)
     @user = user
-    mail(:to => user.email, :subject => "hroot: Freischaltung für die Teilnahme an ökonomischen Experimenten")
+    mail(:to => user.email, :subject => "hroot: Freischaltung für die Teilnahme an Experimenten")
   end  
 
   #def change_email_confirmation(user)
