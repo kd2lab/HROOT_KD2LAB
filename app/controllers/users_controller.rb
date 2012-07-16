@@ -35,7 +35,7 @@ class UsersController < ApplicationController
         ids =  User.load_ids(params, {:sort_column => sort_column, :sort_direction => sort_direction})
       elsif params[:user_action] == "invite_selected"
         selected_ids = params['selected_users'].keys.map(&:to_i)
-        ids = User.where('activated_after_import=0 AND deleted=0').where("id IN (?)", selected_ids).map(&:id)
+        ids = User.where('activated_after_import=0 AND deleted=0 AND role="user"').where("id IN (?)", selected_ids).map(&:id)
       end
       
       Message.send_message(current_user.id, ids, nil, Settings.import_invitation_subject, Settings.import_invitation_text)
