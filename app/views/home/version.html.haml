@@ -1,0 +1,13 @@
+= content_for :breadcrumb do
+  %ul.breadcrumb
+    %li
+      = link_to "Startseite", root_path
+      %span.divider
+        >
+    %li.active
+      Version
+      
+%h2 Versionsinformation
+
+%p
+  = Rails.env
