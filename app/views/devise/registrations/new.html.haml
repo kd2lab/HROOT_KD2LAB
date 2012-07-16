@@ -64,7 +64,7 @@
       = f.input :degree_id, :collection => Degree.all.map{|s| [s.name, s.id]}
       = f.input :begin_month, :collection => 1..12, :as => :select, :required => false
       = f.input :begin_year, :collection => (Date.today.year-10 .. Date.today.year), :as => :select, :required => false
-      = f.input :profession_id, :collection => Profession.all.map{|s| [s.name, s.id]}
+      /= f.input :profession_id, :collection => Profession.all.map{|s| [s.name, s.id]}
       .checkbox-wrapper
         = f.check_box :experience 
         Ich habe bereits an wirtschaftswissenschaftlichen Experimenten teilgenommen.
@@ -79,7 +79,7 @@
       Ich habe die Nutzerbedingungen gelesen und bin damit einverstanden.
       %br
       %br
-      = text_area_tag "terms_conditions_text", Settings.terms_and_conditions, :disabled => true, :cols => 100, :class => "span8", :rows => 5
+      = text_area_tag "terms_conditions_text", Settings.terms_and_conditions, :readonly => true, :cols => 100, :class => "span8", :rows => 15
   
       %br
       %br

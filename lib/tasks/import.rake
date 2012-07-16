@@ -119,6 +119,8 @@ EOTXT
     end
     
     # import users
+    error_mails = []
+      
     puts  "--------- USERS ------------"
     count = 0
     db[:or_participants].each do |row|
@@ -172,6 +174,7 @@ EOTXT
       
       # set correct creation date
       if !u.valid?
+        error_mails << u.email  
         puts u.email+" "+u.errors.inspect
       else
         u.created_at = Date.new(1970,1,1)+row[:creation_time].seconds
@@ -188,6 +191,11 @@ EOTXT
       j.save
     end
     
+    puts "Error emails"
+    
+    error_mails.each do |mail|
+      puts mail
+    end
   
     # import experiments
     puts "--------- EXPERIMENTS ------------"
