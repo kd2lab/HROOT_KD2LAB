@@ -56,27 +56,31 @@ EOSQL
   # send 50 Mails from regular mail queue
   def self.process_mail_queue
     Recipient.includes(:message, :user).where('sent_at IS NULL').limit(50).each do |recipient|
-      if !recipient.user.import_token.blank?
-        activation_link = Rails.application.routes.url_helpers.activation_url(recipient.user.import_token)
-      else
-        activation_link = ''
+      begin
+        if !recipient.user.import_token.blank?
+          activation_link = Rails.application.routes.url_helpers.activation_url(recipient.user.import_token)
+        else
+          activation_link = ''
+        end
+      
+        message = recipient.message.message.to_s.mreplace({
+          "#firstname" => recipient.user.firstname, 
+          "#lastname"  => recipient.user.lastname,
+          '#activation_link' => activation_link
+        })
+      
+        if recipient.message.experiment
+          sender = recipient.message.experiment.sender_email
+        else
+          sender = nil
+        end
+      
+        UserMailer.email(recipient.message.subject, message, recipient.user.main_email, sender).deliver
+        recipient.sent_at = Time.zone.now
+        recipient.save
+      rescue
+        UserMailer.log_mail("Problem mit Mailversand", "Die Mail mit der id #{recipient.message.id} an \n#{recipient.user.inspect}\n kann nicht versendet werden.").deliver
       end
-      
-      message = recipient.message.message.to_s.mreplace({
-        "#firstname" => recipient.user.firstname, 
-        "#lastname"  => recipient.user.lastname,
-        '#activation_link' => activation_link
-      })
-      
-      if recipient.message.experiment
-        sender = recipient.message.experiment.sender_email
-      else
-        sender = nil
-      end
-      
-      UserMailer.email(recipient.message.subject, message, recipient.user.main_email, sender).deliver
-      recipient.sent_at = Time.zone.now
-      recipient.save
     end
   end  
   
