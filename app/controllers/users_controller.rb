@@ -31,7 +31,7 @@ class UsersController < ApplicationController
       session[:filter] = params[:filter]
       
       if params[:user_action] == "invite_all"
-        params[:filter] = params[:filter].merge({:activated_after_import => false})
+        params[:filter] = params[:filter].merge({:activated_after_import => false, :role => 'user'})
         ids =  User.load_ids(params, {:sort_column => sort_column, :sort_direction => sort_direction})
       elsif params[:user_action] == "invite_selected"
         selected_ids = params['selected_users'].keys.map(&:to_i)
