@@ -68,6 +68,7 @@ GEM
       factory_girl (~> 2.2.0)
       railties (>= 3.0.0)
     gem-licenses (0.1.2)
+    google-analytics-rails (0.0.3)
     haml (3.1.6)
     highline (1.6.2)
     hike (1.2.1)
@@ -195,6 +196,7 @@ DEPENDENCIES
   exception_notification
   factory_girl_rails
   gem-licenses
+  google-analytics-rails
   haml
   icalendar
   jquery-rails (>= 1.0.12)
