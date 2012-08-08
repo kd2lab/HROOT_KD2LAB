@@ -62,8 +62,8 @@ Hroot::Application.configure do
     :host => 'www.wiso.uni-hamburg.de/hroot'
   }
   
-  config.assets.prefix = "assettest"
-  config.path_prefix = nil
+  #config.assets.prefix = "assettest"
+  config.path_prefix = ''
 end
 
 GA.tracker = "UA-33420680-1"
