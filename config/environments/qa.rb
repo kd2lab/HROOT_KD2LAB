@@ -63,7 +63,7 @@ Hroot::Application.configure do
   }
   
   #config.assets.prefix = "assettest"
-  config.path_prefix = ''
+  config.path_prefix = nil
 end
 
 GA.tracker = "UA-33420680-1"
