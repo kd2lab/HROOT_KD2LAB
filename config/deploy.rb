@@ -10,8 +10,8 @@ set :bundle_flags, ""
 require "bundler/capistrano"
 
 # multistage integration
-set :stages, %w(production staging)
-set :default_stage, "staging"
+set :stages, %w(production qa)
+set :default_stage, "qa"
 require 'capistrano/ext/multistage'
 
 
