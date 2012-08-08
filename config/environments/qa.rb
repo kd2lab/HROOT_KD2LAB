@@ -63,7 +63,7 @@ Hroot::Application.configure do
   }
   
   #config.assets.prefix = "/hroot/assets"
-  #config.path_prefix = '/hroot'
+  config.path_prefix = ''
 end
 
 GA.tracker = "UA-33420680-1"
