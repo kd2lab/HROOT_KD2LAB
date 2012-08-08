@@ -47,7 +47,7 @@ namespace :deploy do
   #end
   
   task :compile_assets do
-    run "cd #{release_path}; RAILS_ENV=production rake assets:precompile"
+    run "cd #{release_path}; RAILS_ENV=#{rails_env} rake assets:precompile"
   end
   
 end
