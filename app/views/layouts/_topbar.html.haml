@@ -2,7 +2,7 @@
   .navbar-inner
     .container
       - if user_signed_in? 
-        = link_to "Logout", logout_path, :method => :delete, :id => "logout", :class => "btn btn-small pull-right"
+        = link_to "Logout", logout_path, :method => :delete, :id => "logout", :class => "btn btn-small pull-right navbar-form"
         
         %ul.nav.pull-right
           
@@ -19,6 +19,8 @@
               Eingeloggt als
               = current_user.email
           %li.divider-vertical
+          
+          
       - else
         = link_to "Login", login_path, :class => "btn btn-small pull-right"
         %ul.nav.pull-right

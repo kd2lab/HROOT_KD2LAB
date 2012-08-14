@@ -192,15 +192,13 @@ EOSQL
         where << 'users.activated_after_import=0'
       end
     end
-        
+    
     #studienbeginn
     if (1..12).include?(filter[:begin_von_month].to_i) && filter[:begin_von_year].to_i > 1990
-      begin_select = "str_to_date(CONCAT_WS('-', COALESCE(begin_year, 1990), COALESCE(begin_month,1), '1'), '%Y-%m-%d') as begin_date, "
       where << "((begin_month >= #{filter[:begin_von_month].to_i} AND begin_year=#{filter[:begin_von_year].to_i}) OR (begin_year>#{filter[:begin_von_year].to_i}))"
     end
 
     if (1..12).include?(filter[:begin_bis_month].to_i) && filter[:begin_bis_year].to_i > 1990
-      begin_select = "str_to_date(CONCAT_WS('-', COALESCE(begin_year, 1990), COALESCE(begin_month,1), '1'), '%Y-%m-%d') as begin_date, "
       where << "((begin_month <= #{filter[:begin_bis_month].to_i} AND begin_year=#{filter[:begin_bis_year].to_i}) OR (begin_year<#{filter[:begin_bis_year].to_i}))"
     end
   
@@ -347,7 +345,7 @@ EOSQL
       SELECT 
           #{user_select}
           #{session_select} 
-          #{begin_select}
+          str_to_date(CONCAT_WS('-', COALESCE(begin_year, 1990), COALESCE(begin_month,1), '1'), '%Y-%m-%d') as begin_date, 
           
           (SELECT studies.name
               FROM studies
