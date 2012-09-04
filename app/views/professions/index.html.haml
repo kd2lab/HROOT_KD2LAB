@@ -2,7 +2,7 @@
 
 %br
 
-= link_to "Neuen Beruf anlegen", new_profession_path, :class => "btn btn-primary"
+= link_to t('professions.create_new_profession'), new_profession_path, :class => "btn btn-primary"
 
 %br
 %br
@@ -17,8 +17,8 @@
       %tr
         %td= truncate(profession.name, :maxlength => 30)
         %td
-          = link_to 'Bearbeiten', edit_profession_path(profession), :class => "btn btn-primary"
-          = link_to 'Löschen', profession, :confirm => 'Sind Sie sich sicher, dass Sie diesen Beruf entfernen möchten?', :method => :delete, :class => "btn"
+          = link_to t(:edit), edit_profession_path(profession), :class => "btn btn-primary"
+          = link_to t(:delete), profession, :confirm => t('professions.confirm'), :method => :delete, :class => "btn"
   
 %br
 

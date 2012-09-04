@@ -1,23 +1,21 @@
+- users
+- user_mailer
+- shared
+- devise
+- sessions
+- controller
 
 
-- participations import verbessern, check auf existenten user
 
 
 
-
+ALT:
 
 
 
 - htaccess: guest dj!d38dFghj
 
 
-- calendar test
-
-https://guest:dj!d38dFghj@hroot.ingmar.net/home/calendar
-
-- coverage messung
-- unit tests
-- controller tests
 
 
 
@@ -34,22 +32,4 @@ https://guest:dj!d38dFghj@hroot.ingmar.net/home/calendar
   Teilnehmer
 
 
-- raumname laenge beschränken
 
-
-
-
-- Session löschen: anmeldungen überprüfen
-- Experimentliste ordentlich
-- Menü nur als Admin sichtbar
-- fix utf issue experiment type
-- Rollen einbauen
-- Übersicht Experimente besser
-- Übersicht User besser
-- User dem Experiment zuordnen
-- Sessions pflegen
-- Accountbereich
-- tests
-
-
-- Semesteranzahl und Studiengang bei wechsel von orsee zu hroot abfrage

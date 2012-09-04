@@ -4,18 +4,17 @@
 
 
 .filter
-  Suche in Name, Vorname, E-Mail-Adresse:
+  =t 'filter.search_text'
   %br
   = text_field_tag 'filter[search]', params[:filter][:search] 
   %br
   %br
   
-  Filter: 
+  =t 'filter.header' 
   %br
-  - { 'gender' => 'Geschlecht', 'noshow' => 'Nichterscheinen', 'participated' => 'Teilnahmen', 'begin' => 'Studienbeginn', 'birthday' => "Alter", |
-      'experience' => 'Erfahrung', 'study' => 'Fächer', 'degree' => 'Abschlüsse', 'language' => 'Sprachen', 'tags' => 'Tags', 'experiment' => 'Experimente', |  
-      'preference' => 'Experiment-Präferenz'}.each do |key, value|
-    %a.open-link{:href => '#f'+key}=value
+  - [ 'gender', 'noshow', 'participated', 'begin', 'birthday', 'experience', |
+      'study', 'degree', 'language', 'tags', 'experiment', 'preference'].each do |key|
+    %a.open-link{:href => '#f'+key}=t("filter.#{key}")
     = '|' unless key == 'preference'
     
   %br
@@ -36,12 +35,12 @@
 
 
 .searchinfo
-  = submit_tag "Filter anwenden und Ergebnis aktualisieren", :name => 'submit_mode', :class => "btn btn-primary"    
-  Zeige
+  = submit_tag t('filter.submit'), :name => 'submit_mode', :class => "btn btn-primary"    
+  =t 'filter.showing1'
   %b= @users.total_entries
-  von
+  =t 'filter.showing2'
   %b= @user_count
-  Poolmitgliedern, bereits zugeordnet:
+  =t 'filter.showing3'
   %b= @participants_count
 
 
@@ -53,8 +52,8 @@
   = will_paginate @users,  :renderer => WillPaginate::ActionView::BootstrapLinkRenderer , :previous_label => "&lt;&lt;&nbsp;", :next_label => "&nbsp;&gt;&gt;"
   
   .menu
-    = submit_tag "Alle Poolmitglieder der aktuellen Filterung zuordnen", :name => 'submit_all', :class => "btn" 
-    = submit_tag "Markierte Poolmitglieder zuordnen", :name => 'submit_marked', :class => "btn context-menu"
+    = submit_tag t('.add_all'), :name => 'submit_all', :class => "btn" 
+    = submit_tag t('.add_marked'), :name => 'submit_marked', :class => "btn context-menu"
   
   %br
   %br
@@ -67,8 +66,8 @@
         %th
         %th= sortable_for_form 'lastname', 'Name'  
         -#%th= sortable_for_form 'firstname', 'Vorname'
-        %th= sortable_for_form 'email', 'E-Mail'
-        %th= sortable_for_form 'study_name', 'Fach'
+        %th= sortable_for_form 'email', t(:email)
+        %th= sortable_for_form 'study_name', t('.study')
         //%th= sortable_for_form 'gender',  'Gesch.'
         //%th= sortable_for_form 'begin_date', 'Beginn' 
         %th.qtip_ersch= sortable_for_form 'noshow_count' , '#N'
@@ -87,7 +86,7 @@
           
           %td= link_to highlight(truncate(user.lastname, {:length => 15}), params[:search])+', '+highlight(truncate(user.firstname, {:length => 10}), params[:search]), user_path(user)
           %td= link_to highlight(truncate(user.email, {:length => 20}), params[:search]), "mailto:#{user.email}"
-          %td.study_name_popup{:'data-text' => user.study_name || 'keine Angabe' }
+          %td.study_name_popup{:'data-text' => user.study_name || t(:no_info) }
             =user.study_name ? truncate(user.study_name, {:length => 10}) : 'k. A.'
           //%td= user.gender
           //%td= user.begin_date 
@@ -95,10 +94,10 @@
           %td= "#{user.participations_count}" if user.user?
 - else
   %br
-  %b
-    Kein Poolmitglied gefunden
+  %b=t '.none_found'
+
   %br  
-  Entweder wurden bereits alle Poolmitglieder zugeordnet, oder die Filtereinstellungen müssen geändert werden.
+  =t '.none_found_reason'
   %br
   %br
   %br
