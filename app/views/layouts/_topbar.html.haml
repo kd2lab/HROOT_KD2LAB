@@ -2,7 +2,7 @@
   .navbar-inner
     .container
       - if user_signed_in? 
-        = link_to "Logout", logout_path, :method => :delete, :id => "logout", :class => "btn btn-small pull-right navbar-form"
+        = link_to t(:logout), logout_path, :method => :delete, :id => "logout", :class => "btn btn-small pull-right navbar-form"
         
         %ul.nav.pull-right
           
@@ -11,20 +11,20 @@
             - if count > 0 
               %li
                 %p.navbar-text
-                  Mailqueue
+                  =t :mailqueue
                   %span.badge.badge-info=count
               %li.divider-vertical
           %li
             %p.navbar-text
-              Eingeloggt als
+              =t :logged_in_as
               = current_user.email
           %li.divider-vertical
           
           
       - else
-        = link_to "Login", login_path, :class => "btn btn-small pull-right"
+        = link_to t(:login), login_path, :class => "btn btn-small pull-right"
         %ul.nav.pull-right
-          %li= link_to "Jetzt registrieren", register_path 
+          %li= link_to t(:register_now), register_path 
           %li.divider-vertical
       
       - if user_signed_in? 
@@ -38,6 +38,6 @@
         %a.brand{:href => root_url}
           hroot
       %p.navbar-text
-        Rekrutierungssystem für Experimente
+        =t :recruitment_system
      
         

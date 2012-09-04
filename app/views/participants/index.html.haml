@@ -13,7 +13,7 @@
   
 = render :partial => "experiments/tabs", :locals => {:selected => :participants} 
 
-%h2 Bereits zugeordnete Teilnehmer
+%h2=t '.already_added_users'
 %br
 = form_tag experiment_participants_path(@experiment), :method => 'post', :id => "user_search" do
   #participants

@@ -6,20 +6,20 @@
 
 
 .filter
-  Suche in Name, Vorname, E-Mail-Adresse:
+  =t 'filter.search_text'
   %br
   = text_field_tag 'filter[search]', params[:filter][:search] 
   %br
   %br
 
-  Filter: 
+  =t 'filter.header' 
   %br
-  - { 'gender' => 'Geschlecht', 'noshow' => 'Nichterscheinen', 'participated' => 'Teilnahmen', 'begin' => 'Studienbeginn', 'birthday' => "Alter", |
-      'experience' => 'Erfahrung', 'study' => 'Fächer', 'degree' => 'Abschlüsse', 'language' => 'Sprachen', 'tags' => 'Tags', 'experiment' => 'Experimente', |
-      'participation' => 'Sessionteilnahme', 'preference' => 'Experiment-Präferenz'}.each do |key, value|
-    %a.open-link{:href => '#f'+key}=value
+  
+  - [ 'gender', 'noshow', 'participated', 'begin', 'birthday', 'experience', |
+      'study', 'degree', 'language', 'tags', 'experiment', 'participation', 'preference'].each do |key|
+    %a.open-link{:href => '#f'+key}=t("filter.#{key}")
     = '|' unless key == 'preference'
- 
+
   %br
   %br
 
@@ -38,10 +38,10 @@
   = render :partial => 'shared/filter_preference'
 
 .searchinfo
-  = submit_tag "Filter anwenden und Ergebnis aktualisieren", :name => 'submit_mode', :class => "btn btn-primary"
-  Zeige
+  = submit_tag t('filter.submit'), :name => 'submit_mode', :class => "btn btn-primary"
+  =t 'filter.showing1'
   %b= @users.total_entries
-  von
+  =t 'filter.showing2'
   %b= @user_count
   
 %br
@@ -52,20 +52,20 @@
   .menu
     .btn-group{:style => "float:left"}
       %a.btn.dropdown-toggle{:'data-toggle' => "dropdown", :href => "#"}
-        Aktuelle Filterung
+        =t '.current_filtered'
         %b.caret 
       %ul.dropdown-menu
-        %li= link_to "Nachricht an alle Teilnehmer der aktuellen Filterung", '#', :class => "send-message", :'data-to' => "Alle Teilnehmer der aktuellen Filterung", :'data-mode' => 'all'
-        %li= link_to "Alle Teilnehmer der aktuellen Filterung aus dem Experiment austragen", '#',  :'data-confirm' => "Sind Sie sicher, dass alle Teilnehmer der aktuellen Filterung aus dem Experiment entfernt werden sollen?", :class => 'user_action_link', :'data-value' => 'remove_all'
+        %li= link_to t('.message_all_filtered'), '#', :class => "send-message", :'data-to' => t('.to_all_filtered'), :'data-mode' => 'all'
+        %li= link_to t('.remove_filtered'), '#',  :'data-confirm' => t('.remove_filtered_confirm'), :class => 'user_action_link', :'data-value' => 'remove_all'
     .btn-group.context-menu{:style => "float:left"}
       %a.btn.dropdown-toggle{:'data-toggle' => "dropdown", :href => "#"}
-        Markierte Teilnehmer
+        =t '.marked_participants'
         %b.caret 
       %ul.dropdown-menu
-        %li= link_to "Nachricht an alle markierten Teilnehmer", '#', :class => "send-message", :'data-to' => "Markierte Teilnehmer", :'data-mode' => 'selected'
-        %li= link_to "Alle markierten Teilnehmer aus dem Experiment austragen.", '#', :class => 'user_action_link', :'data-value' => 0
+        %li= link_to t('.message_all_filtered'), '#', :class => "send-message", :'data-to' => t('.to_all_marked'), :'data-mode' => 'selected'
+        %li= link_to t('.remove_marked'), '#', :'data-confirm' => t('.remove_marked_confirm'), :class => 'user_action_link', :'data-value' => 0
         - @experiment.sessions.main_sessions.each do |s|
-          %li= link_to "Markierte Teilnehmer in Session #{s.time_str} verschieben", '#', :class => 'user_action_link', :'data-value' => s.id
+          %li= link_to t('.move_marked1')+" #{s.time_str} "+t('.move_marked2'), '#', :class => 'user_action_link', :'data-value' => s.id
   
   %br
   %br
@@ -76,11 +76,11 @@
       %tr
         %th= check_box_tag "", "", false, :id => "select_all_users"
         %th= sortable_for_form 'lastname', 'Name'  
-        %th= sortable_for_form 'email', 'E-Mail'
-        %th= sortable_for_form 'study_name', 'Fach'
+        %th= sortable_for_form 'email', t(:email)
+        %th= sortable_for_form 'study_name', t('.study')
         %th.qtip_ersch= sortable_for_form 'noshow_count' , '#N'
         %th.qtip_teil= sortable_for_form 'participations_count' , '#T'
-        %th= sortable_for_form 'session_start_at' , 'Session'
+        %th= sortable_for_form 'session_start_at' , t(:session)
     
     %tbody  
       - @users.each do |user| 
@@ -92,7 +92,7 @@
             = check_box_tag "selected_users[#{user.id}]", '1', false, :class => 'selected_users'
           
             - unless user.invited_at.nil?
-              %i.icon-envelope{:alt => "Dieser User wurde bereits eingeladen"}
+              %i.icon-envelope
 
             - if !user.deleted && user.imported && !user.activated_after_import
               %i.icon-ban-circle
@@ -103,17 +103,18 @@
           
           %td= link_to highlight(truncate(user.lastname, {:length => 15}), params[:search])+', '+highlight(truncate(user.firstname, {:length => 10}), params[:search]), user_path(user)
           %td= link_to highlight(truncate(user.email, {:length => 20}), params[:search]), "mailto:#{user.email}"
-          %td.study_name_popup{:'data-text' => user.study_name || 'keine Angabe' }
-            =user.study_name ? truncate(user.study_name, {:length => 10}) : 'k. A.'
+          %td.study_name_popup{:'data-text' => user.study_name || t(:no_info) }
+            =user.study_name ? truncate(user.study_name, {:length => 10}) : t(:no_info)
           %td= "#{user.noshow_count}" if user.user?
           %td= "#{user.participations_count}" if user.user?
           %td= "#{user.session_start_at.strftime("%d.%m.%Y %H:%M") if user.session_start_at}" 
 - else
   %br
-  %b
-    Keine zugeordneten Teilnehmer gefunden
+  %b= t'.none_found'
   %br  
-  Entweder wurden noch keine Poolmitglieder zugeordnet, oder die Filtereinstellungen müssen geändert werden.
+  
+  = t'.none_found_reason'
+  
   %br
   %br
   %br

@@ -1,30 +1,30 @@
 %ul.nav.nav-list
   - if current_user
     - if current_user.user?
-      %li.nav-header Allgemein
-      %li= link_to "Home", account_path
-      %li= link_to "Account-Optionen", account_data_path
+      %li.nav-header=t :common_menu
+      %li= link_to t(:homepage), account_path
+      %li= link_to t(:account_options), account_data_path
     - else
-      %li.nav-header Allgemein
-      %li= link_to "Account-Optionen", account_data_path
+      %li.nav-header=t :common_menu
+      %li= link_to t(:account_options), account_data_path
     
     - if current_user.experimenter?
-      %li.nav-header Admin-Menü
-      %li= link_to "Dashboard", dashboard_path
-      %li= link_to "Kalender", calendar_path
+      %li.nav-header=t :admin_menu
+      %li= link_to t(:dashboard), dashboard_path
+      %li= link_to t(:calendar), calendar_path
       %li= link_to t(:experiments_header), experiments_path
       
     - if current_user.admin?
-      %li.nav-header Admin-Menü
-      %li= link_to "Dashboard", dashboard_path
-      %li= link_to "Kalender", calendar_path
+      %li.nav-header=t :admin_menu
+      %li= link_to t(:dashboard), dashboard_path
+      %li= link_to t(:calendar), calendar_path
       %li= link_to t(:experiments_header), experiments_path
-      %li= link_to "Benutzer", users_path
+      %li= link_to t(:user), users_path
       %li= link_to t(:settings), options_path
   
   - else
-    %li.nav-header Allgemein
-    %li= link_to "Home", root_path
-    %li= link_to "Login", login_path
-    %li= link_to "Registrieren", register_path 
+    %li.nav-header=t :common_menu
+    %li= link_to t(:homepage), root_path
+    %li= link_to t(:login), login_path
+    %li= link_to t(:register), register_path 
     

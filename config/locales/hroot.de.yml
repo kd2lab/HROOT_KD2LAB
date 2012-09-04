@@ -5,13 +5,16 @@ de:
   save_data: Daten speichern
   activation_title: Aktivierung
   administration: Administration
+  homepage: Home
   dashboard: Dashboard
+  calendar: Kalender
   settings: Einstellungen
   edit: Bearbeiten
   delete: Löschen
   save: Speichern
   save_changes: Änderungen speichern
   back: zurück
+  session: Session
   sessions: Sessions
   experiments_header: Experimente
   experimenters_header: Experimentatoren
@@ -28,7 +31,15 @@ de:
   root_page: Startseite
   copyright_html: '&copy; 2011-2013 Universität Hamburg'
   login: Login
-  
+  logout: Logout
+  register: Registrieren
+  user: Benutzer
+  common_menu: Allgemein
+  admin_menu: Admin-Menü
+  mailqueue: Mailqueue
+  logged_in_as: Eingeloggt als
+  register_now: Jetzt registrieren
+  recruitment_system: Rekrutierungssystem für Experimente
   form_values:
     interested_in: Interesse an
     type_both: Präsenz- und Online-Experimenten
@@ -133,7 +144,20 @@ de:
     create_new_language: Neue Sprache anlegen
     edit_language: Sprache bearbeiten
     confirm: Sind Sie sich sicher, dass Sie diese Sprache entfernen möchten?
-  
+  professions:
+    create_new_profession: Neuen Beruf anlegen
+    edit_profession: Beruf bearbeiten
+    confirm: Sind Sie sich sicher, dass Sie diesen Beruf entfernen möchten?
+  studies:
+    create_new_study: Neuen Studiengang anlegen
+    edit_study: Studien bearbeiten
+    confirm: Sind Sie sich sicher, dass Sie diesen Studiengang entfernen möchten?
+  locations:
+    create_new_location: Neuen Raum anlegen
+    edit_location: Raum bearbeiten
+    confirm: Sind Sie sich sicher, dass Sie diesen Raum entfernen möchten?
+    description: Beschreibung
+    notice: 'Hinweis: Es können nur Räume gelöscht werden, die nicht belegt wurden.'
   enroll:
     notes: Teilnahmehinweise
     alert1: Experiment mit Folgesessions
@@ -247,6 +271,61 @@ Für weiteren Fragen zur Software besuchen Sie bitte unsere Projektseite unter t
       activate_now: Jetzt freischalten
       contact: Kontakt
       questions: 'Bei Fragen oder Wünschen kontaktieren Sie uns bitte:'
+      for_registered_users: für bereits registrierte Nutzer
+  filter:
+    search_text: 'Suche in Name, Vorname, E-Mail-Adresse:'
+    header: 'Filter:'
+    gender: Geschlecht
+    noshow: Nichterscheinen
+    participated: Teilnahmen
+    begin: Studienbeginn
+    birthday: Alter
+    experience: Erfahrung
+    study: Fächer
+    degree: Abschlüsse
+    language: Sprachen
+    tags: Tags
+    experiment: Experimente
+    participation: Sessionteilnahme
+    preference: Experiment-Präferenz
+    
+    submit: Filter anwenden und Ergebnis aktualisieren
+    showing1: Zeige
+    showing2: von
+    showing3: 'Poolmitgliedern, bereits zugeordnet:'
+  participants:    
+    manage:
+      study: Fach
+      add_all: Alle Poolmitglieder der aktuellen Filterung zuordnen
+      add_marked: Markierte Poolmitglieder zuordnen
+    
+      none_found: Kein Poolmitglied gefunden
+      none_found_reason: Entweder wurden bereits alle Poolmitglieder zugeordnet, oder die Filtereinstellungen müssen geändert werden.
+      add_participants: Teilnehmer zuordnen
+      add_new_participants: Neue Teilnehmer zuordnen
       
-              
+    participants:
+      current_filtered: Aktuelle Filterung
+      marked_participants: Markierte Teilnehmer
+    
+      study: Fach
+      message_all_filtered: Nachricht an alle Teilnehmer der aktuellen Filterung
+      to_all_filtered: Alle Teilnehmer der aktuellen Filterung
+      remove_filtered: Alle Teilnehmer der aktuellen Filterung aus dem Experiment austragen
+      remove_filtered_confirm: Sind Sie sicher, dass alle Teilnehmer der aktuellen Filterung aus dem Experiment entfernt werden sollen?
+    
+      message_all_marked: Nachricht an alle markierten Teilnehmer
+      to_all_marked: Markierte Teilnehmer
+      remove_marked: Alle markierten Teilnehmer aus dem Experiment austragen.
+      remove_marked_confirm: Sind Sie sicher, dass alle markierten Teilnehmer aus dem Experiment entfernt werden sollen?
+      move_marked1: Markierte Teilnehmer in Session
+      move_marked2: verschieben
+    
+      none_found: Kein Poolmitglied gefunden
+      none_found_reason: Entweder wurden bereits alle Poolmitglieder zugeordnet, oder die Filtereinstellungen müssen geändert werden.
+    index:
+      already_added_users: Bereits zugeordnete Teilnehmer
+    
+    
+    
     

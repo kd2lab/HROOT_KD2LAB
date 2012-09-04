@@ -2,7 +2,7 @@
 
 %br
 
-= link_to "Neuen Studiengang anlegen", new_study_path, :class => "btn btn-primary"
+= link_to t('studies.create_new_study'), new_study_path, :class => "btn btn-primary"
 
 %br
 %br
@@ -17,8 +17,8 @@
       %tr
         %td= truncate(study.name, :maxlength => 30)
         %td
-          = link_to 'Bearbeiten', edit_study_path(study), :class => "btn btn-primary"
-          = link_to 'Löschen', study, :confirm => 'Sind Sie sich sicher, dass Sie diesen Studiengang entfernen möchten?', :method => :delete, :class => "btn"
+          = link_to t(:edit), edit_study_path(study), :class => "btn btn-primary"
+          = link_to t(:delete), study, :confirm => t('studies.confirm'), :method => :delete, :class => "btn"
   
 %br
 
