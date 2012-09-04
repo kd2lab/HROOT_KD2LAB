@@ -1,13 +1,14 @@
 = content_for :breadcrumb do
   %ul.breadcrumb
     %li
-      = link_to "Startseite", root_path
+      = link_to t(:root_page), root_path
       %span.divider
-        >
+        &gt;
     %li.active
       Version
       
-%h2 Versionsinformation
+%h2 Version
 
 %p
+  /todo display branch and hash, and all git info
   = Rails.env

@@ -1,53 +1,52 @@
 = content_for :breadcrumb do
   %ul.breadcrumb
     %li
-      =link_to "Login-Bereich", :controller => "account", :action => "index"
+      =link_to t('login_area'), :controller => "account", :action => "index"
       %span.divider
         &gt;
     %li.active
-      Account-Optionen
+      =t 'account_options'
 
-%h3 Account-Optionen
+%h3=t 'account_options'
 
-= render :partial => "tabs", :locals => {:selected => "Alternative E-Mail"} 
+= render :partial => "tabs", :locals => {:selected => :alternative_email} 
 
-%h3 Alternative E-Mail-Adresse
+%h3=t '.alternative_email'
 
 - if !current_user.secondary_email.blank?
   - if current_user.secondary_email_confirmed_at
     .success
       
-      Ihre alternative E-Mail-Adresse 
+      =t '.your_current_alternative_email' 
       %br
       %br
       %b= current_user.secondary_email
       %br
       %br
-      wurde bestätigt und wird jetzt verwendet.
+      =t '.was_not_confirmed'
       %br
       %br
-      = button_to "Alternative E-Mail löschen", {:delete => 1}, :class => "btn btn-primary", :confirm => "Sind Sie sicher, dass Sie Ihre alternative E-Mail-Adresse löschen möchten?"
+      = button_to t('.delete_alternative_email'), {:delete => 1}, :class => "btn btn-primary", :confirm => t('.confirm_delete_alternative_email')
       %br
   - else
     .notice
-      Ihre alternative E-Mail-Adresse 
+      =t '.your_current_alternative_email' 
       %br
       %br
       %b= current_user.secondary_email
       %br
       %br
-      ist derzeit noch nicht bestätigt.
-      Es wurde Ihnen eine E-Mail mit einem Link zur Bestätigung Ihrer alternativen E-Mail-Adresse zugesendet.
+      =t '.was_not_confirmed'
       %br
       %br
-      = link_to "Alternative E-Mail löschen", {:delete => 1}, :class => "btn btn-primary", :confirm => "Sind Sie sicher, dass Sie Ihre alternative E-Mail-Adresse löschen möchten?"
-      = link_to "Bestätigungsemail erneut senden", {:resend => 1}, :class => "btn"
+      = link_to t('.delete_alternative_email'), {:delete => 1}, :class => "btn btn-primary", :confirm => t('.confirm_delete_alternative_email')
+      = link_to t('.resend_confirmation_mail'), {:resend => 1}, :class => "btn"
       %br
 - else    
   = simple_form_for current_user, :html => {:class => "guarded_form form-horizontal"}, :url => '' do |f| 
     %br
     = f.input :secondary_email, :placeholder => 'name@domain.com'
-    = f.submit "Alternative E-Mail speichern", :class => "btn btn-primary guarded_form_save"
+    = f.submit t('.save_alternative_email'), :class => "btn btn-primary guarded_form_save"
 
 %br
 %br

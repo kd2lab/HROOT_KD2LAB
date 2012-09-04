@@ -1,25 +1,24 @@
 = content_for :breadcrumb do
   %ul.breadcrumb
     %li
-      =link_to "Administration", :controller => "admin", :action => "index"
+      =link_to t(:administration), :controller => "admin", :action => "index"
       %span.divider
         &gt;
     %li
-      = link_to "Experimente", experiments_path
+      = link_to t(:experiments_header), experiments_path
       - if @tag
         %span.divider
           &gt;
     - if @tag
       %li
-        =  link_to("Tag: "+@tag.name, tagged_experiment_path(@tag.id))  
+        =  link_to(t(:tag)+": "+@tag.name, tagged_experiment_path(@tag.id))  
 
 
 
 - if current_user.admin?
-  = link_to 'Neues Experiment', new_experiment_path, :class => "btn btn-primary", :style => "float:right"
+  = link_to t('experiments.new_experiment'), new_experiment_path, :class => "btn btn-primary", :style => "float:right"
 
-%h1
-  Experimente
+%h1=t :experiments_header
 
 
 %br
@@ -27,7 +26,7 @@
 = form_tag experiments_path, :method => 'get', :id => "experiment_search" do
   %p  
     = text_field_tag :search, params[:search] 
-    = submit_tag "Suche", :name => nil  
+    = submit_tag t(:search), :name => nil  
 
 #experiments
   = render 'experiments'

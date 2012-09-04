@@ -1,15 +1,15 @@
 = content_for :breadcrumb do
   %ul.breadcrumb
     %li
-      =link_to "Login-Bereich", :controller => "account", :action => "index"
+      =link_to t('login_area'), :controller => "account", :action => "index"
       %span.divider
         &gt;
     %li.active
-      Account-Optionen
+      =t 'account_options'
 
-%h3 Account-Optionen
+%h3=t 'account_options'
 
-= render :partial => "account/tabs", :locals => {:selected => "Passwort"} 
+= render :partial => "account/tabs", :locals => {:selected => :password} 
 
 %h3 Passwort ändern
 

@@ -1,6 +1,7 @@
 !!!
 %html
   %head
+    / todo remove in stable branch
     = analytics_init if Rails.env.production?
     %title Hroot
     %meta{:"http-equiv" => "content-type", :content => "text/html;charset=UTF-8"}
@@ -13,7 +14,7 @@
     
     
     
-    
+  / todo maybe this info page is obsolete?  
   %body
     .container
       = render :partial => 'layouts/topbar'
@@ -31,51 +32,48 @@
             %br
             %br
             
-            %p
-              Herzlich willkommen im WiSo-Forschungslabor. Wir haben ein neues Rekrutierungs- und Einladungssystem
-              für Experimente. 
+            %p=t '.welcome'
               
             %br
           
-            %h3 Waren Sie bereits im Forschungslabor angemeldet?
-            %p
-              Wenn Sie bereits einen Zugang hatten, sind Ihre Daten bei unserem Systemwechsel übernommen worden. Sie können sich hier Ihren Account
-              freischalten lassen.
-            %p
-              = link_to "Jetzt freischalten", activate_path, :class => "btn btn-large btn-primary"
+            %h3=t '.already_registered'
+            %p=t '.activate_account'
 
+            %p
+              = link_to t('.activate_now'), activate_path, :class => "btn btn-large"
+            
             %br
-            %h3 Kontakt
+            %h3=t '.contact'
+            %p=t '.questions'
+              
             %p
-              Bei Fragen oder Wünschen kontaktieren Sie uns bitte:
-            %p
+              / todo remove this for stable branch
               = link_to 'experiments@wiso.uni-hamburg.de', 'mailto:experiments@wiso.uni-hamburg.de'
             
         .span3
+          /todo whatup??
           != image_tag("logo-uni-hh.png")
           %br
           %br
           %br
-          %h1
-            Login
+          %h1=t :login
           
-          %p
-            für bereits registrierte Nutzer
+          %p=t '.for_registered_users'
             
           %p
             %br
             = form_for(:user, :url => user_session_path) do |f|
               %p
-                E-Mail
+                =t :email
                 %br
                 = f.email_field :email
 
               %p
-                Passwort
+                =t :password
                 %br
                 = f.password_field :password 
 
-              %p= f.submit "Login", :class => "btn"
+              %p= f.submit t(:login), :class => "btn"
         
         
      

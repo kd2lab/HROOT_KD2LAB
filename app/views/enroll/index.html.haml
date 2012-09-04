@@ -1,17 +1,17 @@
 = content_for :breadcrumb do
   %ul.breadcrumb
     %li
-      =link_to "Login-Bereich", :controller => "account", :action => "index"
+      =link_to t('login_area'), :controller => "account", :action => "index"
       %span.divider
         &gt;
     %li.active
-      Neuanmeldung zu Experiment-Sessions
+      =t '.new_enrollment'
 
 
-%h3 Neuanmeldungen zu Experiment-Sessions
+%h3=t '.new_enrollment'
 
 - if @availabe_sessions.count > 0
-  Sie können sich für folgende Termine anmelden:
+  =t '.available_sessions'
   %br
   %br
 
@@ -36,7 +36,7 @@
             
             - unless s.limitations.blank?
               %b
-                Teilnahmehinweise: 
+                =t('enroll.notes')+':' 
               %br
               = s.limitations
               %br
@@ -44,15 +44,14 @@
       
             - if s.following_sessions.count > 0
               .alert.alert-block
-                %b Experiment mit Folgesessions:
+                %b=t 'enroll.alert1' 
                 %br
-                Dieses Experiment hat mehrere Termine, bitte überprüfen Sie, ob Sie an 
-                %b allen
-                angezeigten Terminen Zeit haben.
+                =t 'enroll.alert2'
                 %br
-      
-    = submit_tag 'Zu den gewählten Sessions anmelden', :class => "btn btn-primary"
+    
+    = submit_tag t('.register_for_sessions'), :class => "btn btn-primary"
     
     
 - else    
-  Derzeit können Sie sich für keine weiteren Sessions anmelden.
+  =t '.no_sessions_available'
+  

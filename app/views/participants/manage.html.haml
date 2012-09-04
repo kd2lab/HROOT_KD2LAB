@@ -1,6 +1,6 @@
 = content_for :breadcrumb do
   = render :partial => "layouts/crumb", :object => [           |
-      link_to("Experimente", experiments_path),                |
+      link_to(t(:experiments_header), experiments_path),                |
       link_to(@experiment.name,experiment_sessions_path(@experiment)), |
       "Teilnehmer zuordnen"]
   
@@ -9,7 +9,7 @@
 %h1
   = @experiment.name  
 
-= render :partial => "experiments/tabs", :locals => {:selected => "Teilnehmer"} 
+= render :partial => "experiments/tabs", :locals => {:selected => :participants} 
 
 %h2 Neue Teilnehmer zuordnen
 %br

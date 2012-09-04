@@ -1,6 +1,6 @@
 %ul.nav.nav-tabs
   -links.each do |link|
-    - class_str = if link[:title] == selected then "active" else "" end
+    - class_str = if link[:id] == selected then "active" else "" end
   
     %li{:class => class_str}= link_to link[:title], link[:url]
   

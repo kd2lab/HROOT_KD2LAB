@@ -23,7 +23,6 @@ Hroot::Application.routes.draw do
 
   match 'home/info', :controller => 'home', :action => 'info'
   match 'home/about', :controller => 'home', :action => 'about'
-  match 'home/contact', :controller => 'home', :action => 'contact'
   match 'home/version', :controller => 'home', :action => 'version'
   match 'home/activate', :controller => 'home', :action => 'activate', :as => 'activate'
   match 'home/calendar/:key', :controller => 'home', :action => 'calendar', :as => 'public_calendar'

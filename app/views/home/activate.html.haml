@@ -1,23 +1,22 @@
 = content_for :breadcrumb do
   %ul.breadcrumb
     %li
-      = link_to "Startseite", root_path
+      = link_to t(:root_page), root_path
       %span.divider
-        >
+        &gt;
     %li.active
-      Aktivierung 
+      =t '.activation'
       
-%h2 Freischaltung für die Teilnahme an Experimenten
+%h2=t '.activation_for_experiments'
 
 %br
-Wenn Sie bereits Zugang zum bisherigen System hatten, sind Ihre Daten übertragen worden. Sie können hier Ihren Zugang zum neuen Einladungssystem freischalten.
-
+=t '.activation_info1'
 %br
 %br
 
 = form_tag '' do
-  %h3 Bitte geben Sie die E-Mail-Adresse an, mit der Sie beim bisherigen System angemeldet waren:
+  %h3=t '.activation_info2'
   %br
   = text_field_tag :email, params[:email_insert]
 
-  = submit_tag "E-Mail zur Freischaltung senden", :class => "btn btn-primary"
+  = submit_tag t('send_email'), :class => "btn btn-primary"

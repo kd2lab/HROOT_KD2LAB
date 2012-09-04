@@ -1,0 +1,252 @@
+de:
+  login_area: Login-Bereich
+  account_options: Account-Optionen
+  no_info: keine Angabe
+  save_data: Daten speichern
+  activation_title: Aktivierung
+  administration: Administration
+  dashboard: Dashboard
+  settings: Einstellungen
+  edit: Bearbeiten
+  delete: Löschen
+  save: Speichern
+  save_changes: Änderungen speichern
+  back: zurück
+  sessions: Sessions
+  experiments_header: Experimente
+  experimenters_header: Experimentatoren
+  rights: Rechte
+  search: Suche
+  tag: Tag
+  hour: Stunde
+  hours: Stunden
+  email: E-Mail
+  password: Passwort
+  emails: E-Mails
+  subject: Betreff  
+  site_credits_and_contact: Impressum und Kontakt
+  root_page: Startseite
+  copyright_html: '&copy; 2011-2013 Universität Hamburg'
+  login: Login
+  
+  form_values:
+    interested_in: Interesse an
+    type_both: Präsenz- und Online-Experimenten
+    type_presence: nur Präsenz-Experimente
+    type_online: nur Online-Experimente
+    male: männlich
+    female: weiblich
+    no_experience: Ich habe noch nie an Experimenten teilgenommen.
+    has_experience: Ich habe bereits an Experimenten teilgenommen.
+  account:
+    index:
+      welcome: Willkommen
+      available_registrations:  Neuanmeldung zu Experiment-Sessions
+      available_registrations_text: Sie können sich derzeit zu Experiment-Sessions anmelden.
+      enroll_now_button: Jetzt anmelden
+      currently_no_sessions: Derzeit gibt es keine Experiment-Sessions, zu denen Sie eingeladen wurden.
+      current_sessions:  Bestehende Sessionanmeldungen
+      current_sessions_text: 'Sie sind zu folgenden Experiment-Sessions verbindlich angemeldet:'
+      no_current_sessions_text: Sie sind derzeit zu keinen Experiment-Sessions angemeldet.    
+      incomplete_data: Unvollständige Daten
+      incomplete_data_text: Sie werden im Moment nicht zu allen möglichen Experiment-Sessions eingeladen, da Sie Ihre Daten nicht vollständig angegeben haben. Die Angabe der Daten ist freiwillig, wenn Sie mehr Informationen angeben, werden Sie allerdings häufiger zu Experimenten eingeladen.
+      complete_data_link: Weitere Daten angeben
+    tabs:
+      overview: Datenübersicht
+      password: Passwort
+      alternative_email: Alternative E-Mail
+      phone: Telefonnummer
+    alternative_email:
+      alternative_email: Alternative E-Mail
+      your_current_alternative_email: Ihre alternative E-Mail-Adresse 
+      was_confirmed: wurde bestätigt und wird jetzt verwendet.
+      was_not_confirmed: ist derzeit noch nicht bestätigt. Es wurde Ihnen eine E-Mail mit einem Link zur Bestätigung Ihrer alternativen E-Mail-Adresse zugesendet.
+      delete_alternative_email: Alternative E-Mail löschen
+      confirm_delete_alternative_email: Sind Sie sicher, dass Sie Ihre alternative E-Mail-Adresse löschen möchten?
+      resend_confirmation_mail: Bestätigungsemail erneut senden
+      save_alternative_email: Alternative E-Mail speichern
+    data:
+      overview: Datenübersicht
+      data_stored_text: Folgende Daten sind bei hroot gespeichert, bitte wenden Sie sich zu Datenänderungen an die Laborleitung.
+    edit:
+      incomplete_data: Unvollständige Daten
+      incomplete_data_text: 'Sie werden im Moment nicht zu allen möglichen Experiment-Sessions eingeladen, da Sie Ihre Daten nicht vollständig angegeben haben. Die Angabe der Daten ist freiwillig, wenn Sie mehr Informationen angeben, werden Sie allerdings häufiger zu Experimenten eingeladen. Hier können Sie Ihre Daten ergänzen:'
+    phone:
+      phone_number: Telefonnummer
+      phone_number_text: Die Angabe Ihrer Telefonnummer ist freiwillig. Wenn Sie Ihre Telefonnummer angeben, können wir Sie bei kurzfristigen Terminveränderungen schnell erreichen.
+      save_phone_number: Telefonnummer speichern
+  activation:
+    email:
+      activation_text_1: Auf dieser Seite können Sie Ihren Account freischalten.
+      activation_text_2: Ihre bisherige E-Mail-Adresse
+      activation_text_3: kann in unserem neuen System nicht verwendet werden.
+      activation_text_4: 'Bitte geben Sie eine gültige E-Mail-Adresse der Universität Hamburg an:'
+      activation_text_5: Sie müssen diese E-Mail-Adresse einmal bestätigen und in Zukunft diese zum Login verwenden. Zukünftige E-Mails erhalten Sie aber wie gewohnt an die Adresse
+      activation_text_6: 'Wenn Sie keine E-Mail-Adresse der Uni Hamburg haben, dann kontaktieren Sie uns bitte unter:'
+      activation_text_7: 'Bei Fragen oder Wünschen kontaktieren Sie uns bitte:'
+      contact: Kontakt
+      send_activation_email: E-Mail zur Bestätigung absenden
+        
+    email_delivered:
+      delivered_text_1: Es wurde soeben eine E-Mail an Ihre Adresse
+      delivered_text_2: gesendet. Bitte bestätigen Sie Ihre E-Mail-Adresse, in dem Sie den Link in der E-Mail in Ihrem Browser aufrufen.
+
+    index:
+      activation_text_1: Auf dieser Seite können Sie Ihren Account freischalten.
+      activation_text_2: In unserem neuen Rekrutierungs- und Einladungssystem ist es erforderlich, dass Sie sich mit Ihrer E-Mail-Adresse und einem Passwort anmelden.
+      activation_text_3: 'Wählen Sie dazu bitte ein Passwort:'
+      password_hint: mindestens 8 Zeichen, mindestens eine Zahl, ein Buchstabe, ein Sonderzeichen
+      save_and_activate_link: Passwort speichern und Account freischalten
+      
+  admin:
+    calendar:
+      cal_title: Kalender
+      calender_text_1: 'In diesem Monat gibt es Terminkollisionen:'
+      overlaps: überschneidet sich mit
+      as_ics: 'Diesen Kalender als ICS:'
+    index:
+      sessions_today: 'Heute anstehende Sessions:'
+      participants: Teilnehmer
+      latest_experiments: 'Zuletzt angelegte Experimente:'
+      no_experiments: Es wurden noch keine Experimente angelegt.
+      statistic: 'Statistik:'
+      active_members: 'Aktive Poolteilnehmer:'
+      new_members_last_30_days: 'Neuanmeldungen in den letzten 30 Tagen:'
+      incomplete_sessions: 'Durchgeführte, aber nicht abgeschlossene Sessions:'
+      missing1: Es fehlen
+      missing2: Angaben
+  options:
+    tabs:
+      general: Allgemein
+      rooms: Räume
+      emails: E-Mails
+      professions: Berufe
+      languages: Sprachen
+      studies: Studiengänge
+      degrees: Abschlüsse
+      texts: Texte
+  degrees:
+    create_new_degree: Neuen Abschluss anlegen
+    edit_degree: Abschluss bearbeiten
+    confirm: Sind Sie sich sicher, dass Sie diesen Abschluss entfernen möchten?
+  languages:
+    create_new_language: Neue Sprache anlegen
+    edit_language: Sprache bearbeiten
+    confirm: Sind Sie sich sicher, dass Sie diese Sprache entfernen möchten?
+  
+  enroll:
+    notes: Teilnahmehinweise
+    alert1: Experiment mit Folgesessions
+    alert2: Dieses Experiment hat mehrere Termine, bitte überprüfen Sie, ob Sie an allen angezeigten Terminen Zeit haben.
+    index:
+      new_enrollment: Neuanmeldung zu Experiment-Sessions
+      available_sessions: 'Sie können sich für folgende Termine anmelden:'
+      no_sessions_available: Derzeit können Sie sich für keine weiteren Sessions anmelden.
+      register_for_sessions: Zu den gewählten Sessions anmelden
+    confirm:
+      confirm_enrollment: Experiment-Anmeldung bestätigen    
+      confirm_enrollment_question: Möchten Sie sich hiermit verbindlich zu folgendem Experiment anmelden?
+      dates: Termine
+      enroll_for_sure: Verbindlich anmelden
+  experiments:
+    registration_active: Anmeldung ist aktiv
+    registration_inactive: Anmeldung ist nicht aktiv
+    invitation_active: Einladungsversand aktiv
+    participants: Teilnehmer
+    new_experiment: Neues Experiment
+    experiments:
+      organizers: 'Experiment-Organisation:'
+      no_sessions: keine Sessions
+      assigned_participants: Zugeordnete Teilnehmer
+      
+    form:
+      create_experiment: Experiment anlegen
+      default_address_is: Die Standard-Adresse ist
+      experiment_finished: Dieses Experiment ist abgeschlossen
+      experiment_in_statistic: Dieses Experiment in der Statistik berücksichtigen
+    tabs:
+      mail_texts: E-Mail-Texte
+      reminder_sending: Einladungsversand
+      data_and_options: Daten und Einstellungen
+      common_data: Allgemeine Daten
+      reminders: Experiment-Erinnerung
+      experimenters: Experimentatoren  
+      invitations: Einladungen
+      add_participants: Neue Teilnehmer zuordnen
+      view_participants: Bereits zugeordnete Teilnehmer 
+    experimenters:
+      add_people: Personen hinzufügen...
+    invitation:
+      sending: Versand
+      reload1: (Aktualisierung in
+      reload2: Sekunden)
+      invitation_active: Der Einladungsversand ist im Moment aktiv.
+      invitation_row1: Start dieses Einladungsversands
+      invitation_row2: Einladungsmodus
+      invitation_row3: Zugeordnete Personen (Gesamt)
+      invitation_row4: davon vor dem Start dieses Einladungsversands bereits eingeladen
+      invitation_row5: Maximalgrenze zu versendender Einladungen bis jetzt 
+      invitation_row6: Bereits versendete Einladungen 
+      invitation_row7: Noch nicht eingeladene Zugeordnete (ohne bereits angemeldete)
+      invitation_row8: Derzeit noch freie Plätze
+      invitation_stop: Einladungsversand stoppen
+      invitation_confirm: Sind Sie sich sicher, dass der Versand gestoppt werden soll?
+      count_info1: Derzeit sind 
+      count_info2: Teilnehmer zugeordnet und noch nicht in einer Session eingetragen, davon wurden
+      count_info3: noch nicht eingeladen
+      choose_per_interval: 'Bitte wählen Sie die Anzahl der E-Mails pro Zeitintervall:'
+      choose_interval: 'Bitte wählen Sie die Länge eines Zeitintervalls:'
+      prefer_new_users: Teilnehmer mit wenig Teilnahmen bevorzugen
+      start_sending1: Versand starten und Experiment zur Anmeldung freigeben
+      sending_confirm1: Sind Sie sich sicher, dass der Versand gestartet werden soll?
+      start_sending2: Versand AN ALLE TEILNEHMER starten
+      sending_confirm2: Sind Sie sich sicher, dass der Versand gestartet werden soll? Damit werden AUCH BEREITS EINGELADENE Teilnehmer eingeladen
+    mail:
+      mailtexts: Mailtexte
+      mail_for_invitation: E-Mail zur Einladung
+      invitation_text: Einladungstext
+      mail_for_confirmation: E-Mail zur Anmeldebestätigung
+      confirmation_text: Bestätigungstext
+    reminders:
+      reminder: Erinnerung
+      reminder_email: E-Mail zur Erinnerung
+      activate_automatic_reminder: automatischen Erinnerungsversand aktivieren
+      reminder_info1: Der Versand der Erinnerungen soll
+      reminder_info2: Stunden vor dem Beginn der jeweiligen Session erfolgen.
+      reminder_text: Erinnerungstext
+  home:
+    about:
+      legal_notes: Haftungsausschluss
+      software: Entwicklerteam und Software
+      software_html: '
+      
+hroot wurde von der Universität Hamburg unter Leitung von Prof. Dr. Andreas Nicklisch und Dipl.-Pol. Olaf Bock entwickelt. Die Softwareentwicklung und technische Konzeption wurde von Dipl.-Inf. Ingmar Baetge durchgeführt.
+<br/><br/>      
+hroot wurde mit Ruby on Rails implementiert. 
+<br/><br/>
+Für weiteren Fragen zur Software besuchen Sie bitte unsere Projektseite unter todo.
+'
+    activate:
+      activation: Aktivierung
+      activation_for_experiments: Freischaltung für die Teilnahme an Experimenten
+      activation_info1: Wenn Sie bereits Zugang zum bisherigen System hatten, sind Ihre Daten übertragen worden. Sie können hier Ihren Zugang zum neuen Einladungssystem freischalten.
+      activation_info2: 'Bitte geben Sie die E-Mail-Adresse an, mit der Sie beim bisherigen System angemeldet waren:'
+      send_email: E-Mail zur Freischaltung senden
+  layouts:
+    landing:
+      no_account: Noch kein Zugang? Jetzt anmelden und an Experimenten teilnehmen.
+      register_now: Jetzt registrieren
+      already_registered: Waren Sie bereits im Forschungslabor angemeldet?
+      activate_account: Wenn Sie bereits einen Zugang hatten, sind Ihre Daten bei unserem Systemwechsel übernommen worden. Sie können sich hier Ihren Account freischalten lassen.
+      activate_now: Jetzt freischalten
+      for_registered_users: für bereits registrierte Nutzer
+    info:
+      welcome: Herzlich willkommen im WiSo-Forschungslabor. Wir haben ein neues Rekrutierungs- und Einladungssystem für Experimente. 
+      already_registered: Waren Sie bereits im Forschungslabor angemeldet?
+      activate_account: Wenn Sie bereits einen Zugang hatten, sind Ihre Daten bei unserem Systemwechsel übernommen worden. Sie können sich hier Ihren Account freischalten lassen.
+      activate_now: Jetzt freischalten
+      contact: Kontakt
+      questions: 'Bei Fragen oder Wünschen kontaktieren Sie uns bitte:'
+      
+              
+    

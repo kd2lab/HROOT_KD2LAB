@@ -6,7 +6,7 @@
   = f.input :description, :as => :text, :input_html => {:class => "span5", :rows => 4} 
   
   = f.input :contact, :as => :text, :input_html => {:class => "span5", :rows => 4} 
-  = f.input :sender_email, :hint => "(Standardadresse ist #{UserMailer.default[:from]})", :input_html => {:class => "span5"} 
+  = f.input :sender_email, :hint => "("+t('.default_address_is')+" #{UserMailer.default[:from]})", :input_html => {:class => "span5"} 
   
   %br
   
@@ -14,19 +14,19 @@
   - unless @experiment.new_record?
     .checkbox-wrapper
       = f.input :finished, :wrapper => :none, :as => :boolean, :label => false, :boolean_style => :inline
-      Dieses Experiment ist abgeschlossen
+      =t '.experiment_finished'
     %br
   .checkbox-wrapper
     = f.input :show_in_stats, :wrapper => :none, :label => false, :boolean_style => :inline 
-    Dieses Experiment in der Statistik berücksichtigen
-  
+    =t '.experiment_in_statistic'
+    
   %br
   %br
   .checkbox-wrapper
     - if @experiment.new_record?
-      = f.submit "Experiment anlegen", :class => "guarded_form_save btn btn-primary"
+      = f.submit t('.create_experiment'), :class => "guarded_form_save btn btn-primary"
     - else
-      = f.submit "Experiment speichern", :class => "guarded_form_save btn btn-primary"
+      = f.submit t(:save), :class => "guarded_form_save btn btn-primary"
   
   %br
   %br

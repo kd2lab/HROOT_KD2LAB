@@ -1,0 +1,87 @@
+de:
+  # ---------------
+  # This information is displayed on the 'site credits' ('Impressum' in german) page
+  # Here you should inform visitors about the organisations and people
+  # who are legally responsible for the site.
+  # These might not be the same people who 
+  #
+  # Please note: If you are german, please do NOT translate 'Impressum' with 'Imprint'
+  # The correct translation is something like 'site credits')
+  contact_information_html: '<h2>Kontakt Forschungslabor</h2>
+<p>
+  <b>Adresse</b>
+</p>
+<p>
+  <a href="http://www.uni-hamburg.de">Universität Hamburg</a>
+  <br>
+  <a href="http://www.wiso.uni-hamburg.de">Fakultät Wirtschafts- und Sozialwissenschaften</a>
+  <br>
+  <a href="http://www.wiso.uni-hamburg.de/forschung/forschungslabor">WiSo-Forschungslabor</a>
+  <br>
+  Von-Melle-Park 5
+  <br>
+  Raum 1080 c-f, Aufgang C
+  <br>
+  20146 Hamburg, Deutschland
+</p>
+<p>
+  <b>Homepage</b>
+</p>
+<p>
+  <a href="http://www.wiso.uni-hamburg.de/forschung/forschungslabor">http://www.wiso.uni-hamburg.de/forschung/forschungslabor</a>
+</p>
+<p>
+  <b>Laborleitung</b>
+</p>
+<p>
+  Olaf Bock
+  <br>
+  Tel.: 0 40 - 42 83 8 - 37 59
+  <br>
+  E-Mail:
+  <a href="mailto:olaf.bock@wiso.uni-hamburg.de">olaf.bock@wiso.uni-hamburg.de</a>
+</p>  
+Bei technischen Problemen mit dieser Webseiten: 
+<a href="mailto:jan.papmeier@wiso.uni-hamburg.de">jan.papmeier@wiso.uni-hamburg.de</a>
+<br/>
+Anregungen, Korrekturen oder Hinweise zum Inhalt:
+<a href="mailto:experiments@wiso.uni-hamburg.de">experiments@wiso.uni-hamburg.de</a>
+<br/>
+<br/>
+
+<h2>Anbieter</h2>
+Universität Hamburg
+<br>
+Fakultät für Wirtschafts- und Sozialwissenschaften
+<br>
+WiSo-Forschungslabor
+<br>
+Von-Melle-Park 5
+<br>
+20146 Hamburg
+<br>
+Deutschland
+<br/>
+<br/>
+Vertreten durch die Dekanin
+<br>
+Prof. Dr. Gabriele Löschper
+<br/>
+<br/>
+Die Universität Hamburg ist eine Körperschaft des Öffentlichen Rechts.
+<br/>
+<br/>
+Zuständige Aufsichtsbehörde:
+<br>
+Behörde für Wissenschaft und Forschung
+<br>
+Hamburger Straße 37
+<br>
+D-22083 Hamburg
+<br>
+Umsatzsteuer ID: DE 245 584 140.  
+<br/>
+<br/>
+<h3>Haftungsausschluss:</h3>
+Trotz sorgfältiger inhaltlicher Kontrolle übernehmen wir keine Haftung für die Richtigkeit, Vollständigkeit und Aktualität unserer Webseiten sowie für die Inhalte externer Links. Von den Inhalten der verlinkten Seiten - auf deren Gestaltung wir keinen Einfluss haben - distanzieren wir uns ausdrücklich. Diese Erklärung gilt für alle auf den Webseiten angebrachten Links und für alle Inhalte der Seiten, zu denen Links oder Banner führen.  
+'

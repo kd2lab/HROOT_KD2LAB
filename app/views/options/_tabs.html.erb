@@ -2,14 +2,14 @@
            :locals => {
              :selected => selected,
              :links => [
-               { :title => "Allgemein", :url=>options_path }, 
-               { :title => "Räume", :url => locations_path},
-               { :title => "E-Mails", :url => options_emails_path},
-               { :title => "Berufe", :url => professions_path},
-               { :title => "Sprachen", :url => languages_path},
-               { :title => "Studiengänge", :url => studies_path},
-               { :title => "Abschlüsse", :url => degrees_path},
-               { :title => "Texte", :url => options_texts_path}
+               {:id => :general, :title => t('.general'), :url=>options_path }, 
+               {:id=> :rooms, :title => t('.rooms'), :url => locations_path},
+               {:id=> :emails, :title => t('.emails'), :url => options_emails_path},
+               {:id=> :professions, :title => t('.professions'), :url => professions_path},
+               {:id=> :languages, :title => t('.languages'), :url => languages_path},
+               {:id=> :studies, :title => t('.studies'), :url => studies_path},
+               {:id=> :degrees, :title => t('.degrees'), :url => degrees_path},
+               {:id=> :texts, :title => t('.texts'), :url => options_texts_path}
              ]
            }
 %>
