@@ -1,14 +1,14 @@
 = content_for :breadcrumb do
   %ul.breadcrumb
     %li
-      =link_to "Login-Bereich", :controller => "account", :action => "index"
+      =link_to t('login_area'), :controller => "account", :action => "index"
       %span.divider
         >
     %li.active
-      Experiment-Anmeldung bestätigen
+      =t '.confirm_enrollment'
 
-%h3 Experiment-Anmeldung bestätigen
-Möchten Sie sich hiermit verbindlich zu folgendem Experiment anmelden?
+%h3=t '.confirm_enrollment'
+=t '.confirm_enrollment_question'
 %br
 %br
 
@@ -16,7 +16,8 @@ Möchten Sie sich hiermit verbindlich zu folgendem Experiment anmelden?
   = hidden_field_tag("session", @session.id)
   
   .well
-    Termine:
+    =t('.dates')+':'
+    
     %br
     %b= @session.time_str
     = @session.location.name if @session.location
@@ -31,22 +32,19 @@ Möchten Sie sich hiermit verbindlich zu folgendem Experiment anmelden?
     %br
 
     - unless @session.limitations.blank?
-      %b
-        Teilnahmehinweise: 
+      %b=t('enroll.notes')+':'
       %br
       = @session.limitations
           
   - if @session.following_sessions.count > 0
     .alert.alert-block
-      %b Experiment mit Folgesessions:
+      %b=t 'enroll.alert1' 
       %br
-      Dieses Experiment hat mehrere Termine, bitte überprüfen Sie, ob Sie an 
-      %b allen
-      angezeigten Terminen Zeit haben.
+      =t 'enroll.alert2'
       %br
           
   %br
-  = submit_tag 'Verbindlich anmelden', :class => "btn btn-danger"
+  = submit_tag t('.enroll_for_sure'), :class => "btn btn-danger"
   oder
-  = link_to "zurück", enroll_path(params[:code])
+  = link_to t(:back), enroll_path(params[:code])
 

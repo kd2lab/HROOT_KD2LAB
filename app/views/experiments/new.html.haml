@@ -1,10 +1,10 @@
 = content_for :breadcrumb do
   = render :partial => "layouts/crumb", :object => [           |
-      link_to("Experimente", experiments_path),                 |
-      "Neues Experiment"]
+      link_to(t(:experiments_header), experiments_path),                 |
+      t('experiments.new_experiment')]
 
 
-%h1 Neues Experiment
+%h1=t 'experiments.new_experiment'
 
 %br
 %br

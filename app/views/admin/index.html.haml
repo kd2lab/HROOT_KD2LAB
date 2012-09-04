@@ -1,20 +1,19 @@
 = content_for :breadcrumb do
   %ul.breadcrumb
     %li
-      =link_to "Administration", :controller => "admin", :action => "index"
+      =link_to t(:administration), :controller => "admin", :action => "index"
       %span.divider
         &gt;
     %li.active
-      Dashboard  
+      =t 'dashboard'
 
 
-
-%h1 Dashboard
+%h1=t 'dashboard'
 %br
 
 - if @today_sessions.count > 0  
   .well
-    %h3 Heute anstehende Sessions:
+    %h3=t '.sessions_today' 
     %table.table
       %tbody
         - @today_sessions.each do |s|
@@ -28,12 +27,12 @@
                 = s.location.name
               %br
               = s.session_participations.count
-              Teilnehmer
+              =t '.participants'
 
 .row
   .span6
     .well
-      %h3 Zuletzt angelegte Experimente:
+      %h3=t '.latest_experiments'
       
       - if @latest_experiments.count > 0
         %table.table
@@ -42,21 +41,21 @@
               %tr
                 %td= link_to e.name, experiment_sessions_path(e)
       - else
-        Es wurden noch keine Experimente angelegt.
+        =t '.no_experiments'
                 
   - if current_user.admin?
     .span4
       .well
-        %h3 Statistik:
-        Aktive Poolteilnehmer: 
+        %h3=t '.statistic'
+        =t '.active_members'
         = User.where("role='user'").where('deleted=0').count
         %br
-        Neuanmeldungen in den letzten 30 Tagen:
+        =t '.new_members_last_30_days'
         = User.where('DATE(confirmed_at) >= DATE_SUB(DATE(NOW()), INTERVAL 30 DAY)').where("role='user'").where('deleted=0').count
 
 - if @incomplete_sessions.count > 0
   .well
-    %h3 Durchgeführte, aber nicht abgeschlossene Sessions:
+    %h3=t '.incomplete_sessions'
     %table.table
       %tbody
         - @incomplete_sessions.each do |s|
@@ -69,7 +68,7 @@
               - u = s.experiment.experimenters.all
               = u.collect{|x| "#{x.firstname} #{x.lastname}"}.join(', ')
             %td
-              Es fehlen
+              =t '.missing1'
               = s.session_participations.where("showup=0 AND participated=0 AND noshow=0").count
-              Angaben
+              =t '.missing2'
 

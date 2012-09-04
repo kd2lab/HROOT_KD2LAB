@@ -3,10 +3,10 @@
            :locals => {                                                                                         |
              :selected => selected,                                                                             |
              :links => [                                                                                        |
-               {:title => "Datenüberblick", :url => account_data_path},                                                |
-               {:title => "Alternative E-Mail", :url=>account_alternative_email_path},                          |
-               {:title => "Passwort", :url => edit_user_registration_path},                                            |
-               {:title => "Telefonnummer", :url => account_phone_path}                                            |
+               {:id => :overview, :title => t('.overview'), :url => account_data_path},                                                |
+               {:id => :alternative_email, :title => t('.alternative_email'), :url=>account_alternative_email_path},                          |
+               {:id => :password, :title => t('.password'), :url => edit_user_registration_path},                                            |
+               {:id => :phone, :title => t('.phone'), :url => account_phone_path}                                            |
              ]                                                                                                  |
            }                                                                                                    |
 

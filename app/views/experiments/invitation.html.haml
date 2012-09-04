@@ -1,15 +1,15 @@
 = content_for :breadcrumb do
   = render :partial => "layouts/crumb", :object => [           |
-      link_to("Experimente", experiments_path),                |
+      link_to(t(:experiments_header), experiments_path),                |
       link_to(@experiment.name, experiment_sessions_path(@experiment)), |
-      "Versand"]
+      t('.sending')]
 
 = render :partial => "experiments/enrollment"
   
 %h1
   = @experiment.name
 
-= render :partial => "tabs", :locals => {:selected => "Einladungen"} 
+= render :partial => "tabs", :locals => {:selected => :invitations} 
 
 
 
@@ -19,44 +19,44 @@
       $(reload());
       
   %small{:style => 'float:right'}
-    (Aktualisierung in 
+    =t '.reload1' 
     %span#time_info
       60
-    Sekunden)
-  
-  Der Einladungsversand ist im Moment aktiv.
+    =t '.reload1' 
+    
+  = t '.invitation_active'
   %br
   %br
   
   %table.table
     %tr
-      %td Start dieses Einladungsversands
-      %td= @experiment.invitation_start.strftime("%d.%m.%Y, %H:%M Uhr") 
+      %td=t '.invitation_row1'
+      %td= @experiment.invitation_start.strftime("%d.%m.%Y, %H:%M") 
 
     %tr
-      %td Einladungsmodus
-      %td= "#{@experiment.invitation_size} / #{@experiment.invitation_hours} Stunden"
+      %td=t '.invitation_row2'
+      %td= "#{@experiment.invitation_size} / #{@experiment.invitation_hours} #{t(:hours)}"
     %tr
-      %td Zugeordnete Personen (Gesamt)
+      %td=t '.invitation_row3'
       %td= @experiment.participants.count
     %tr
-      %td davon vor dem Start dieses Einladungsversands bereits eingeladen
+      %td=t '.invitation_row4'
       %td= @experiment.participants.where(["participations.invited_at < ?", @experiment.invitation_start]).count
     %tr
-      %td Maximalgrenze zu versendender Einladungen bis jetzt 
+      %td=t '.invitation_row5'
       %td= @experiment.count_max_invitation_messages_until_now
     %tr
-      %td Bereits versendete Einladungen 
+      %td=t '.invitation_row6'
       %td= @experiment.count_sent_invitation_messages
     %tr
-      %td Noch nicht eingeladene Zugeordnete (ohne bereits angemeldete)
+      %td=t '.invitation_row7'
       %td= @experiment.uninvited_participants_count 
     %tr
-      %td Derzeit noch freie Plätze
+      %td=t '.invitation_row8'
       %td= @experiment.space_left
     
   %br  
-  = link_to "Einladungsversand stoppen", invitation_experiment_path(:stop => true), :confirm => "Sind Sie sich sicher, dass der Versand gestoppt werden soll?", :class => 'btn btn-danger'
+  = link_to t('.invitation_stop'), invitation_experiment_path(:stop => true), :confirm => t('.invitation_confirm'), :class => 'btn btn-danger'
   
 - else 
 
@@ -64,34 +64,35 @@
     %br
     
     .info{:style => "float:right; width:300px"}
-      Derzeit sind 
+      =t '.count_info1' 
+      / todo: remove query from view
       %span#count_total= @experiment.participations.where("(SELECT count(sp.id) FROM session_participations sp, sessions s WHERE sp.session_id = s.id AND sp.user_id = participations.user_id AND s.experiment_id = participations.experiment_id) = 0").count
-      Teilnehmer zugeordnet und noch nicht in einer Session eingetragen, davon wurden
+      =t '.count_info2' 
       %span#count= @experiment.uninvited_participants_count 
-      noch nicht eingeladen.
+      =t '.count_info3'
       
       %br
       %br
       %span#info_text 
     
-    Bitte wählen Sie die Anzahl der E-Mails pro Zeitintervall:
+    =t '.choose_per_interval'
     %br
-    = f.select :invitation_size, options_for_select([50, 100, 150, 200, 300, 400, 500, 1000, 2000].map{|u| ["#{u} E-Mails",u]}, 200)
+    = f.select :invitation_size, options_for_select([50, 100, 150, 200, 300, 400, 500, 1000, 2000].map{|u| ["#{u} #{t(:emails)}",u]}, 200)
     
     %br
     %br
+    =t '.choose_interval'
     
-    Bitte wählen Sie die Länge eines Zeitintervalls:
     %br
-    = f.select :invitation_hours, options_for_select((1..24).map{|u| [if u==1 then "1 Stunde" else "#{u} Stunden" end, u]}, 4)
+    = f.select :invitation_hours, options_for_select((1..24).map{|u| [if u==1 then "1 #{t(:hour)}" else "#{u} #{t(:hours)}" end, u]}, 4)
     %br
     %br
     = f.check_box :invitation_prefer_new_users
-    Teilnehmer mit wenig Teilnahmen bevorzugen
+    =t '.prefer_new_users'
     %br
     %br
-    = f.submit "Versand starten und Experiment zur Anmeldung freigeben", :confirm => "Sind Sie sich sicher, dass der Versand gestartet werden soll?", :class => "guarded_form_save btn btn-success"
-    = f.submit "Versand AN ALLE TEILNEHMER starten", :confirm => "Sind Sie sich sicher, dass der Versand gestartet werden soll? Damit werden AUCH BEREITS EINGELADENE Teilnehmer eingeladen", :class => "guarded_form_save btn btn-warning"
+    = f.submit t('.start_sending1'), :confirm => t('.sending_conirm1'), :class => "guarded_form_save btn btn-success"
+    = f.submit t('.start_sending2'), :confirm => t('.sending_conirm1'), :class => "guarded_form_save btn btn-warning"
     %span#info_text2
     
 %br

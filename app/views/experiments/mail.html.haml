@@ -1,15 +1,15 @@
 = content_for :breadcrumb do
   = render :partial => "layouts/crumb", :object => [           |
-      link_to("Experimente", experiments_path),                |
+      link_to(t(:experiments_header), experiments_path),                |
       link_to(@experiment.name,experiment_sessions_path(@experiment)), |
-      "Mailtexte"]
+      t('.mailtexts')]
       
 = render :partial => "experiments/enrollment"
 
 %h1
   = @experiment.name
       
-= render :partial => "tabs", :locals => {:selected => "Einladungen"} 
+= render :partial => "tabs", :locals => {:selected => :invitations} 
 
 
 = form_for @experiment, :url => {:action => "mail"}, :html => {:method => :post, :class => "guarded_form"} do |f|
@@ -18,11 +18,10 @@
       %td 
         %i.icon-chevron-right.btn-mini.accordion-icon
            
-        %h3
-          E-Mail zur Einladung
+        %h3=t '.mail_for_invitation'
         .toggle
           %br
-          Betreff
+          =t :subject
           %br
           = f.text_field :invitation_subject, :class => "span8"
           %br
@@ -32,18 +31,17 @@
             = render :partial => 'shared/text_templates', :locals => {:data => current_user.settings.templates, :element_id => 'experiment_invitation_text' }
             = render :partial => 'shared/text_insertions', :locals => {:data => ['#firstname', '#lastname', '#sessionlist', '#link'], :element_id => 'experiment_invitation_text' }
 
-            Einladungstext
+            =t '.invitation_text'
           = f.text_area :invitation_text, :rows => 5, :class => "span8"
           %br
     %tr
       %td  
         %i.icon-chevron-right.btn-mini.accordion-icon
         
-        %h3
-          E-Mail zur Anmeldebestätigung
+        %h3=t '.mail_for_confirmation'
         .toggle
           %br
-          Betreff
+          =t :subject
           %br
           = f.text_field :confirmation_subject, :class => "span8"
           %br
@@ -52,14 +50,14 @@
           .templated-field-header.span10
             = render :partial => 'shared/text_templates', :locals => {:data => current_user.settings.templates, :element_id => 'experiment_confirmation_text' }
             = render :partial => 'shared/text_insertions', :locals => {:data => ['#firstname', '#lastname', '#session_date', '#session_start_time', '#session_end_time', '#session_location', '#sessionlist'], :element_id => 'experiment_confirmation_text' }
-
-            Bestätigungstext
+            
+            =t '.confirmation_text'
   
           = f.text_area :confirmation_text, :rows => 5, :class => "span8"
           %br
           %br
     
-  = f.submit "Mailtexte speichern", :name => "test", :class => "guarded_form_save btn btn-primary"
+  = f.submit t(:save), :name => "test", :class => "guarded_form_save btn btn-primary"
   
 
    

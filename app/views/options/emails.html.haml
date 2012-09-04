@@ -1,13 +1,13 @@
 = content_for :breadcrumb do
   %ul.breadcrumb
     %li
-      =link_to "Administration", :controller => "admin", :action => "index"
+      =link_to t(:administration), :controller => "admin", :action => "index"
       %span.divider
         &gt;
     %li.active
-      Einstellungen
+      =t :settings
   
-= render :partial => "tabs", :locals => {:selected => "E-Mails"} 
+= render :partial => "tabs", :locals => {:selected => :emails} 
 
 
 = form_tag options_emails_path, :method => "post", :class => "form-horizontal" do

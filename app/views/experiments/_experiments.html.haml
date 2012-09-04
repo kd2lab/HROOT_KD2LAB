@@ -15,37 +15,36 @@
           
           %br  
           %br
-          Experiment-Organisation:
+          =t '.organizers'
           %br
           = highlight(experiment.experimenters.collect{|u| u.firstname+" "+u.lastname}.join(', '), params[:search])
           %br  
         
         %td
           - if experiment.registration_active
-            %span.label.label-success Anmeldung ist aktiv
+            %span.label.label-success=t 'experiments.registration_active'
           - else
-            %span.label Anmeldung ist nicht aktiv
+            %span.label=t 'experiments.registration_inactive'
           
           - if experiment.invitation_start
-            %span.label.label-warning Einladungsversand aktiv
+            %span.label.label-warning=t 'experiments.invitation_active'
           
           %br
           %br
           - if experiment.sessions.length > 0
             = experiment.sessions.length
-            Sessions
+            =t :sessions
             %br
             =experiment.sessions.collect{|d| d.start_at.to_date}.min
             bis
             =experiment.sessions.collect{|d| d.start_at.to_date}.max.to_s
           - else
-            keine Sessions
+            =t '.no_sessions'
             %br
         
           %br
           =experiment.participants.where(:deleted => false, :role => 'user').count
-          zugeordnete Teilnehmer
-  
+          =t '.assigned_participants'
           %br
     
   

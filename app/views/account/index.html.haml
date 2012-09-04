@@ -1,46 +1,40 @@
 = content_for :breadcrumb do
   %ul.breadcrumb
     %li
-      =link_to "Login-Bereich", :controller => "account", :action => "index"
+      =link_to t('login_area'), :controller => "account", :action => "index"
       %span.divider
         &gt;
     %li.active
-      Willkommen
-
+      = t('.welcome')
 
 - if current_user.show_greeting
   .alert.alert-success
   
-    %h3 Willkommen!
+    %h3= t('.welcome')
     %br
     - if current_user.imported
-      = Settings.welcome_text_after_import
+      = Settings.welcome_text_after_import # todo i18n
     - else
-      = Settings.welcome_text
+      = Settings.welcome_text #todo i18n
     %br
     %br
-    /= link_to "Information ausblenden", '?hide', :class => "btn"
-    /%br
-    /%br
     
 .well
-  %h3 Neuanmeldung zu Experiment-Sessions
+  %h3=t('.available_registrations')
   - if current_user.available_sessions.count > 0
-    Sie können sich derzeit zu Experiment-Sessions anmelden.
+    =t('.available_registrations_text')
     %br
     %br
-    = link_to "Jetzt anmelden", enroll_path, :class => "btn btn-primary"
+    = link_to t('.enroll_now_button'), enroll_path, :class => "btn btn-primary"
   - else
-    Derzeit gibt es keine Experiment-Sessions, zu denen Sie eingeladen wurden.
-    
-    
+    =t('.currently_no_sessions')
   
 .well
-  %h3 Bestehende Sessionanmeldungen
+  %h3= t('.current_sessions')
 
   - @session_participations_in_the_future = current_user.session_participations.includes(:session).where("sessions.start_at > NOW() AND sessions.reference_session_id = sessions.id").order('start_at ASC')
   - if @session_participations_in_the_future.count > 0
-    Sie sind zu folgenden Experiment-Sessions verbindlich angemeldet:
+    = t('.current_sessions_text')
     %br
     %br
     %table.table
@@ -58,15 +52,15 @@
           
           
   - else
-    Sie sind derzeit zu keinen Experiment-Sessions angemeldet.    
-
+    = t('.no_current_sessions_text')
+    
 - if current_user.is_missing_data?
   .well
-    %h3 Unvollständige Daten
-    Sie werden im Moment nicht zu allen möglichen Experiment-Sessions eingeladen, da Sie Ihre Daten nicht vollständig angegeben haben. Die Angabe der Daten ist freiwillig, wenn Sie mehr Informationen angeben, werden Sie allerdings häufiger zu Experimenten eingeladen.
+    %h3= t('.incomplete_data')
+    = t('.incomplete_data_text')
     %br
     %br
-    = link_to "Weitere Daten angeben", account_edit_path, :class => "btn"
+    = link_to t('.complete_data_link'), account_edit_path, :class => "btn"
     
     
     

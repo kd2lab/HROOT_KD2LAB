@@ -2,7 +2,7 @@
 
 %br
 
-= link_to "Neuen Abschluss anlegen", new_degree_path, :class => "btn btn-primary"
+= link_to t('degrees.create_new_degree'), new_degree_path, :class => "btn btn-primary"
 
 %br
 %br
@@ -17,8 +17,8 @@
       %tr
         %td= truncate(degree.name, :maxlength => 30)
         %td
-          = link_to 'Bearbeiten', edit_degree_path(degree), :class => "btn btn-primary"
-          = link_to 'Löschen', degree, :confirm => 'Sind Sie sich sicher, dass Sie diesen Abschluss entfernen möchten?', :method => :delete, :class => "btn"
+          = link_to t(:edit), edit_degree_path(degree), :class => "btn btn-primary"
+          = link_to t(:delete), degree, :confirm => t('degrees.confirm'), :method => :delete, :class => "btn"
   
 %br
 

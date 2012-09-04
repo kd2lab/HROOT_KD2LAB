@@ -1,11 +1,11 @@
 = content_for :breadcrumb do
   %ul.breadcrumb
     %li
-      =link_to "Administration", :controller => "admin", :action => "index"
+      =link_to t(:administration), :controller => "admin", :action => "index"
       %span.divider
         &gt;
     %li.active
-      Einstellungen
+      =t :settings
   
-= render :partial => "options/tabs", :locals => {:selected => "Berufe"}
+= render :partial => "options/tabs", :locals => {:selected => :professions}
 

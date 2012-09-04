@@ -1,8 +1,8 @@
 = content_for :breadcrumb do
   = render :partial => "layouts/crumb", :object => [           |
-      link_to("Experimente", experiments_path),                |
+      link_to(t(:experiments_header), experiments_path),                |
       link_to(@experiment.name,experiment_sessions_path(@experiment)), |
-      "Sessions"]
+      t(:sessions)]
       
 
 = render :partial => "experiments/enrollment"
@@ -11,7 +11,7 @@
   = @experiment.name
 
 
-= render :partial => "experiments/tabs", :locals => {:selected => "Sessions"}
+= render :partial => "experiments/tabs", :locals => {:selected => :sessions}
 
 - if current_user.has_right?(@experiment, 'manage_sessions')
   = link_to 'Neue Session anlegen', new_experiment_session_path(@experiment), :class => "btn btn-primary"

@@ -1,15 +1,15 @@
 %h1
-  Freischaltung
+  =t('activation_title')
 
 %br
-Auf dieser Seite können Sie Ihren Account freischalten.
+=t('.activation_text_1')
 %br
 %br
-Ihre bisherige E-Mail-Adresse
+=t('.activation_text_2')
 %b{:style => "color:red"}= @activation_user.email
-kann in unserem neuen System nicht verwendet werden.
+=t('.activation_text_3')
 %br
-Bitte geben Sie eine gültige E-Mail-Adresse der Universität Hamburg an:
+=t('.activation_text_4')
 %br
 %br
 %br
@@ -22,26 +22,26 @@ Bitte geben Sie eine gültige E-Mail-Adresse der Universität Hamburg an:
   = f.error :email
   %br
   %br
-  = f.submit "E-Mail zur Bestätigung absenden", :class => "btn btn-primary"
+  = f.submit t('.send_activation_email'), :class => "btn btn-primary"
 
 
 %br
 %br
-Sie müssen diese E-Mail-Adresse einmal bestätigen und in Zukunft diese zum Login verwenden. Zukünftige E-Mails erhalten Sie aber wie gewohnt an die Adresse
+=t('.activation_text_5')
 = @activation_user.email
 = '.'
 %br
 %br
 %p
-  Wenn Sie keine E-Mail-Adresse der Uni Hamburg haben, dann kontaktieren Sie uns bitte unter:
+  =t('.activation_text_6')
 %p
   = link_to 'experiments@wiso.uni-hamburg.de', 'mailto:experiments@wiso.uni-hamburg.de'
 
 
 %br
 %br
-%h3 Kontakt
+%h3= t('.contact') 
 %p
-  Bei Fragen oder Wünschen kontaktieren Sie uns bitte:
+  =t('.activation_text_7')
 %p
   = link_to 'experiments@wiso.uni-hamburg.de', 'mailto:experiments@wiso.uni-hamburg.de'

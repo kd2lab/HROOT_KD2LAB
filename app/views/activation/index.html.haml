@@ -1,20 +1,16 @@
-%h1
-  Freischaltung
+%h1=t 'activation_title' 
 
 %br
 
-%p
-  Auf dieser Seite können Sie Ihren Account freischalten.
-
-%p
-  In unserem neuen Rekrutierungs- und Einladungssystem ist es erforderlich, dass Sie sich mit Ihrer E-Mail-Adresse und einem Passwort anmelden.
-%p
-  Wählen Sie dazu bitte ein Passwort:
+%p=t '.activation_text_1'
+%p=t '.activation_text_2'
+%p=t '.activation_text_3'
+  
 %br
 %br
 = simple_form_for @activation_user, :html => {:class => "form-horizontal"}, :url => '' do |f| 
   = f.input :password
-  = f.input :password_confirmation, :hint => "mindestens 8 Zeichen, mindestens eine Zahl, ein Buchstabe, ein Sonderzeichen"
+  = f.input :password_confirmation, :hint => t('.password_hint')
   %br
-  = f.submit "Passwort speichern und Account freischalten", :class => "btn btn-primary"
+  = f.submit t('.save_and_activate_link'), :class => "btn btn-primary"
 

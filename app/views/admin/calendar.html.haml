@@ -3,14 +3,14 @@
 = content_for :breadcrumb do
   %ul.breadcrumb
     %li
-      =link_to "Administration", :controller => "admin", :action => "index"
+      =link_to t('administration'), :controller => "admin", :action => "index"
       %span.divider
         &gt;
     %li.active
-      Kalender
+      =t '.cal_title'
 
 %h1
-  Kalender
+  =t '.cal_title'
 
 %br
 
@@ -18,7 +18,7 @@
 
 - if overlaps.count > 0
   .alert.alert-danger
-    In diesem Monat gibt es Terminkollisionen:
+    =t '.calender_text_1'
     %br
     %br
     %ul
@@ -27,7 +27,7 @@
           - s = Session.find(id)
           %li
             = link_to session.full_name, edit_experiment_session_path(session.experiment, session)
-            überschneidet sich mit
+            =t '.overlaps'
             = link_to s.full_name, edit_experiment_session_path(s.experiment, s)
 
 %br
@@ -37,7 +37,7 @@
 
 - if current_user.admin? || current_user.experimenter?
   .calendar_url
-    Diesen Kalender als ICS:
+    =t '.as_ics'
     %span.url= public_calendar_url(current_user.calendar_key)
    
 %br

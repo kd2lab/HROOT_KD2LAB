@@ -6,4 +6,4 @@
 = simple_form_for @language, {:html => {:class => "guarded_form form-horizontal"}, :url => url} do |f| 
   = f.input :name, :required => false, :input_html => { :class => 'span4' }
   %br
-  = f.submit "Sprache speichern", :class => "guarded_form_save btn btn-primary"
+  = f.submit t(:save), :class => "guarded_form_save btn btn-primary"

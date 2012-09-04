@@ -1,79 +1,17 @@
+/ todo i18n und auslagern
 = content_for :breadcrumb do
   %ul.breadcrumb
     %li
-      = link_to "Startseite", root_path
+      = link_to t(:root_page), root_path
       %span.divider
-        >
+        &gt;
     %li.active
-      Impressum 
+      =t :site_credits_and_contact 
       
-%h2 Impressum
+%p=t :contact_information_html  
 
-
-
-%h3 Kontakt
-
-%p
-  WiSo-Laborleitung:
-  %br
-  Olaf Bock
-  %br
-  E-Mail:
-  = link_to "olaf.bock@wiso.uni-hamburg.de", "mailto:olaf.bock@wiso.uni-hamburg.de"
-
-%p
-  Bei technischen Problemen mit dieser Webseiten: 
-  = link_to "jan.papmeier@wiso.uni-hamburg.de", "mailto:jan.papmeier@wiso.uni-hamburg.de"
-  %br  
-  Anregungen, Korrekturen oder Hinweise zum Inhalt:
-  = link_to "experiments@wiso.uni-hamburg.de", "mailto:experiments@wiso.uni-hamburg.de"
-  
-
-%h3 Anschrift
-
-%p
-  Universität Hamburg
-  %br
-  Fakultät für Wirtschafts- und Sozialwissenschaften
-  %br
-  WiSo-Forschungslabor
-  %br
-  Von-Melle-Park 5
-  %br
-  20146 Hamburg
-  %br
-  Deutschland
-
-%p
-  Vertreten durch die Dekanin
-  %br
-  Prof. Dr. Gabriele Löschper
-
-%p
-  Die Universität Hamburg ist eine Körperschaft des Öffentlichen Rechts.
-
-%p
-  Zuständige Aufsichtsbehörde: 
-  %br
-  Behörde für Wissenschaft und Forschung 
-  %br
-  Hamburger Straße 37 
-  %br
-  D-22083 Hamburg 
-  %br
-  Umsatzsteuer ID: DE 245 584 140.
-
-%h3 Haftungsausschluss
-
-%p
-  Trotz sorgfältiger inhaltlicher Kontrolle übernehmen wir keine Haftung für die Richtigkeit, Vollständigkeit und Aktualität unserer Webseiten sowie für die Inhalte externer Links. Von den Inhalten der verlinkten Seiten - auf deren Gestaltung wir keinen Einfluss haben - distanzieren wir uns ausdrücklich. Diese Erklärung gilt für alle auf den Webseiten angebrachten Links und für alle Inhalte der Seiten, zu denen Links oder Banner führen.
-
-
-%h3 Software
-%papmeier
-  hroot wurde mit 
-  = link_to "Ruby on Rails", "http://rubyonrails.org"
-  implementiert.
+%h2=t '.software'
+%p=t '.software_html'
 
 
 

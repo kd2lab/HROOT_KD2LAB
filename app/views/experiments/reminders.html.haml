@@ -1,33 +1,32 @@
 = content_for :breadcrumb do
   = render :partial => "layouts/crumb", :object => [           |
-      link_to("Experimente", experiments_path),                |
+      link_to(t(:experiments_header), experiments_path),                |
       link_to(@experiment.name,experiment_sessions_path(@experiment)), |
-      "Erinnerung"]
+      t('.reminder')]
       
 = render :partial => "experiments/enrollment"
 
 %h1
   = @experiment.name
       
-= render :partial => "tabs", :locals => {:selected => "Daten und Einstellungen"} 
+= render :partial => "tabs", :locals => {:selected => :options} 
 
 
 = form_for @experiment, :url => {:action => "reminders"}, :html => {:method => :post, :class => "guarded_form"} do |f|
-  %h3
-    E-Mail zur Erinnerung
+  %h3=t '.reminder_email'
   
   %br  
     
   = f.check_box :reminder_enabled, :id => "reminder_check"
-  automatischen Erinnerungsversand aktivieren
+  =t '.activate_automatic_reminder'
   %br
   %br
   .subpart
-    Der Versand der Erinnerungen soll
+    =t '.reminder_info1'
     = f.text_field :reminder_hours, :class => 'span1'
-    Stunden vor dem Beginn der jeweiligen Session erfolgen.
+    =t '.reminder_info2'
     %br
-    Betreff
+    =t :subject
     %br
     = f.text_field :reminder_subject, :class => "span8"
     %br
@@ -38,11 +37,11 @@
       = render :partial => 'shared/text_templates', :locals => {:data => current_user.settings.templates, :element_id => 'experiment_reminder_text' }
       = render :partial => 'shared/text_insertions', :locals => {:data => ['#firstname', '#lastname', '#session_date', '#session_start_time', '#session_end_time', '#session_location'], :element_id => 'experiment_reminder_text' }
 
-      Erinnerungstext
+      =t '.reminder_text'
     = f.text_area :reminder_text, :rows => 5, :class => "span8"
     %br
     %br
-  = f.submit "Erinnerungseinstellungen speichern", :name => "test", :class => "guarded_form_save btn btn-primary"
+  = f.submit t(:save), :name => "test", :class => "guarded_form_save btn btn-primary"
   
 
    

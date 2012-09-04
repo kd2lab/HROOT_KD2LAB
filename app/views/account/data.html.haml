@@ -1,67 +1,67 @@
 = content_for :breadcrumb do
   %ul.breadcrumb
     %li
-      =link_to "Login-Bereich", :controller => "account", :action => "index"
+      =link_to t('login_area'), :controller => "account", :action => "index"
       %span.divider
         &gt;
     %li.active
-      Account-Optionen
+      =t 'account_options'
 
-%h3 Account-Optionen
+%h3=t 'account_options'
 
-= render :partial => "tabs", :locals => {:selected => "Datenüberblick"} 
+= render :partial => "tabs", :locals => {:selected => :overview} 
 
-%h3 Datenübersicht 
-Folgende Daten sind bei hroot gespeichert, bitte wenden Sie sich zu Datenänderungen an die Laborleitung.
+%h3= t '.overview' 
+= t('.data_stored_text')
 %br
 %br
 
 %table.table
   %thead
     %tr
-      %td Name
+      %td= t('active_record.attributes.user.name')
       %td
         = "#{current_user.lastname}, #{current_user.firstname}"      
   %tbody
     %tr
-      %td E-Mail
+      %td= t('active_record.attributes.user.email')
       %td= current_user.email
     %tr
-      %td Geschlecht
-      %td= {'m' => 'männlich', 'f' => 'weiblich', '?' => "keine Angabe" }[current_user.gender]
+      %td= t('active_record.attributes.user.gender')
+      %td= {'m' => t('form_values.male'), 'f' => t('form_values.female'), '?' => t('no_info') }[current_user.gender]
     %tr
-      %td Geburtsdatum
-      %td= current_user.birthday ? current_user.birthday.strftime('%d.%m.%Y') : "Keine Angabe"
+      %td=t('active_record.attributes.user.birthday')
+      %td= current_user.birthday ? current_user.birthday.strftime('%d.%m.%Y') : t('no_info')
     %tr
-      %td Matrikelnummer
+      %td=t('active_record.attributes.user.matrikel') 
       %td= current_user.matrikel
     - unless current_user.country_name.blank?
       %tr
-        %td Land
+        %td= t('active_record.attributes.user.country_name')
         %td= current_user.country_name
     - if current_user.preference
       %tr
-        %td Interesse an
-        %td= ['Präsenz- und Online-Experimenten', 'nur Präsenz-Experimente', 'nur Online-Experimente'][current_user.preference]
+        %td= t('active_record.attributes.user.preference')
+        %td= [t('form_values.type_both'), t('form_values.type_presence'), t('form_values.type_online')][current_user.preference]
     
     - if current_user.study
       %tr
-        %td Studiengang
+        %td=t('active_record.attributes.user.study_id')
         %td= current_user.study.name
     
     %tr
-      %td Sprachkenntnisse
+      %td=t('active_record.attributes.user.lang1')
       %td= current_user.languages.join(',')
 
     - if current_user.degree
       %tr
-        %td Abschluss(-ziel)
+        %td=t('active_record.attributes.user.degree_id')
         %td= current_user.degree.name   
     - if current_user.begin_month.to_i > 0
       %tr
-        %td Studienbeginn
+        %td= t('active_record.attributes.user.begin')
         %td= "#{current_user.begin_month}/#{current_user.begin_year}"
     - if current_user.profession
       %tr
-        %td Beruf
+        %td= t('active_record.attributes.user.profession_id')
         %td=  current_user.profession.name
