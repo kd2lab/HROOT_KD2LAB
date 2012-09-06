@@ -1,4 +1,4 @@
 #frole.filter-block{is_enabled(:role)}
-  Rolle:
+  =t('filter.title_role')
   %br
   = select_tag 'filter[role]', options_for_select(User.roles, params[:filter][:role])

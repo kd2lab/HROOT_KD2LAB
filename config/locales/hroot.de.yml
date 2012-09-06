@@ -15,7 +15,7 @@ de:
   save_changes: Änderungen speichern
   back: zurück
   session: Session
-  sessions: Sessions
+  sessions_label: Sessions
   experiments_header: Experimente
   experimenters_header: Experimentatoren
   rights: Rechte
@@ -40,6 +40,8 @@ de:
   logged_in_as: Eingeloggt als
   register_now: Jetzt registrieren
   recruitment_system: Rekrutierungssystem für Experimente
+  text_templates: Textvorlagen
+  insert_data: Daten einfügen
   form_values:
     interested_in: Interesse an
     type_both: Präsenz- und Online-Experimenten
@@ -293,6 +295,51 @@ Für weiteren Fragen zur Software besuchen Sie bitte unsere Projektseite unter t
     showing1: Zeige
     showing2: von
     showing3: 'Poolmitgliedern, bereits zugeordnet:'
+    
+    title_sessions_with_tags1: 'Nur Teilnehmer mit folgenden Teilnahmen an Sessions von Experimenten mit Tags:'
+    title_sessions_with_tags2: mal an einer Session eines Experiments mit Tag
+    title_sessions_with_tags3: teilgenommen
+    title_study: 'Teilnehmer aus folgenden Studienfächern:'
+    title_role: 'Rolle:'
+    title_preference: Experiment_Präferenz
+    title_participation_count: Anzahl Teilnahmen
+    title_noshow_count: Anzahl Nichterscheinen
+    title_language: 'Nur Teilnehmer mit Kenntnissen in einer der folgenden Sprachen:'
+    title_gender: 'Geschlecht:'
+    title_experience: 'Externe Experimenterfahrung:'
+    title_experiment: 'Teilnehmer,'
+    title_degrees: 'Teilnehmer mit folgenden Abschlüssen:' 
+    title_birthday: Geburtstag
+    title_begin: Studienbeginn
+    hint_studies: Studienfächer...
+    hint_languages: Sprachen...
+    hint_experiment: Experimente...
+    hint_degrees: Abschlüsse...
+    at_least: Mindestens
+    at_most: Höchstens
+    only: Nur
+    without: Ohne
+    from: von
+    to: bis
+    only_with_presence_preference: Nur Teilnehmer, die an Präsenz-Experimenten teilnehmen wollen
+    only_with_online_preference: Nur Teilnehmer, die an Online-Experimenten teilnehmen wollen
+    participation_select1: Nur Zugeordnete, die teilgenommen haben
+    participation_select2: Nur Zugeordnete, die bereits in eine Session eingetragen sind
+    participation_select3: Nur Zugeordnete ohne Session
+    experience_select1: Ohne Teilnehmer, die bereits externe Experimenterfahrung haben
+    experience_select2: Nur Teilnehmer, die bereits externe Experimenterfahrung haben
+      
+    experiment_select1: die zu einem der folgenden Experimente zugeordnet sind
+    experiment_select2: die zu allen der folgenden Experimente zugeordnet sind
+    experiment_select3: die zu keinem der folgenden Experimente zugeordnet sind
+    experiment_select4: die an mindestens einer Session eines der folgenden Experimente teilgenommen haben
+    experiment_select5: die an mindestens einer Session von jedem der folgenden Experimente teilgenommen haben
+    experiment_select6: die an keiner Session der folgenden Experimente teilgenommen haben
+    
+    
+      
+      
+    
   participants:    
     manage:
       study: Fach
@@ -325,7 +372,88 @@ Für weiteren Fragen zur Software besuchen Sie bitte unsere Projektseite unter t
       none_found_reason: Entweder wurden bereits alle Poolmitglieder zugeordnet, oder die Filtereinstellungen müssen geändert werden.
     index:
       already_added_users: Bereits zugeordnete Teilnehmer
+  shared:
+    text_templates_items:
+      save: Text speichern    
+      new: Neu...
+      insert: Einfügen
+      delete: Löschen
+    messaging:
+      send: Nachricht senden
+      to: 'An:'
+      subject: 'Betreff:'
+      text: Text
+  sessions:
+    new_session_link: Neue Session anlegen
+    back_link: Zurück zur Session-Übersicht
+    session: Session
+    following_session: Folgesession
+    reminders:
+      session_at: Session am
+      email_title: E-Mail zur Erinnerung für diese Session
+      activate_sending: automatischen Erinnerungsversand für diese Session aktivieren
+      sending_label1: Der Versand der Erinnerungen soll
+      sending_label2: Stunden vor dem Beginn der jeweiligen Session erfolgen.
+      reminder_text: Erinnerungstext
+    print:
+      header: Session am
+      lastname: Name
+      firstname: Vorname
+      phone: Telefon
+      gender: G.
+      showup: E
+      participated: T
+      noshow: N
+    new:
+      new_label1: Neue
+      new_label1: anlegen
+    edit:
+      at_label: am
+    tabs:
+      reminders: Session-Erinnerung
+      common_data: Allgemeine Daten
+    session_participants:
+      header: Session am
+      print: Drucken
+      send_to_all: Nachricht an alle Session-Teilnehmer
+      send_to_marked: Nachricht an alle markierten Teilnehmer
+      remove_marked: Markierte Teilnehmer aus dieser Session austragen.
+      marked: Markierte Teilnehmer
+      move_marked1: Markierte Teilnehmer in Session
+      move_marked2: verschieben
+      
+      th_name: Name
+      th_email: E-Mail
+      th_study: Fach
+      th_gender: Gesch.
+      th_begin: Beginn
+      save_changes_now: Änderungen jetzt speichern
+      no_participants: Diese Session hat keine Teilnehmer
+    overlaps:
+      with: Überschneidung mit
+    line:
+      participants_label: 'Teilnehmer:'
+      participants_link: 'Teilnehmer'
+      incomplete: Teilnahmeliste noch nicht vollständig
+      actions: Aktionen
+      following_session: Folgesession
+      duplicate: Duplizieren
+      delete: Löschen
+      group_size: 'Gruppengröße:'
+      delete_confirm: Soll diese Session wirklich gelöscht werden?
+    form:
+      new_session: Session anlegen
+      save_session: Session speichern
+      limitations_hint: Dieser Text wird dem Teilnehmer bei Anmeldung angezeigt.
+      minutes: Minuten
     
     
+    
+    
+    
+    
+    
+    
+      
     
     

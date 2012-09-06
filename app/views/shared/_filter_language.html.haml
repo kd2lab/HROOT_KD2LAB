@@ -1,5 +1,4 @@
 #flanguage.filter-block{is_enabled(:language)}
-  %p
-    Nur Teilnehmer mit Kenntnissen in einer der folgenden Sprachen:
-  
-  = select_tag 'filter[language]', options_for_select(Language.all.map{|l| [l.name, l.id]}, params[:filter][:language]), {:include_blank => true, :multiple => true, :class => "chzn-select", :'data-placeholder' => "Sprachen...", :style=>"width:650px"}
+  %p=t 'filter.title_language'
+    
+  = select_tag 'filter[language]', options_for_select(Language.all.map{|l| [l.name, l.id]}, params[:filter][:language]), {:include_blank => true, :multiple => true, :class => "chzn-select", :'data-placeholder' => t('filter.hint_languages'), :style=>"width:650px"}

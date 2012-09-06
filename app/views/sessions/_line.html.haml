@@ -20,27 +20,28 @@
         else                            |
           "participants-green"          |
         end                             |
-      = link_to "Teilnehmer: #{r.session_participations.count} (#{r.needed},#{r.reserve})#{", Gruppengröße: "+session.group_size.to_s if session.group_size}", participants_experiment_session_path(@experiment, session), :class => css_class
+      = link_to "#{t('.participants_label')} #{r.session_participations.count} (#{r.needed},#{r.reserve})#{", #{t('.group_size')} "+session.group_size.to_s if session.group_size}", participants_experiment_session_path(@experiment, session), :class => css_class
   
       - if session.end_at < Time.zone.now then
+        / todo remoce sql from view
         - if session.session_participations.where('showup=0 AND participated=0 AND noshow=0').count > 0
           %span.session-warning
-            Teilnahmeliste noch nicht vollständig
+            =t '.incomplete'
   
   %td
     .btn-group{:style => 'float:left'}
       - if current_user.has_right?(@experiment, 'manage_sessions')
-        = link_to "Bearbeiten", edit_experiment_session_path(@experiment, session), :class => 'btn btn-primary'
-      = link_to "Teilnehmer", participants_experiment_session_path(@experiment, session), :class => 'btn'
+        = link_to t(:edit), edit_experiment_session_path(@experiment, session), :class => 'btn btn-primary'
+      = link_to t('.participants_link'), participants_experiment_session_path(@experiment, session), :class => 'btn'
     
     
     - if current_user.has_right?(@experiment, 'manage_sessions')
       .btn-group{:style => 'float:left'}
         %a.btn.dropdown-toggle{:'data-toggle' => "dropdown", :href => "#"}
-          Aktionen
+          =t '.actions'
           %b.caret
         %ul.dropdown-menu
           - unless session.is_subsession?
-            %li= link_to 'Folgesession', new_experiment_session_path(:experiment_id => @experiment, :reference_session_id => session.id), :class => "session_new_subsession"
-          %li= link_to "Duplizieren", duplicate_experiment_session_path(@experiment, session)
-          %li= link_to "Löschen", experiment_session_path(@experiment, session), :method => :delete, :confirm => "Soll diese Session wirklich gelöscht werden?"
+            %li= link_to t('.following_session'), new_experiment_session_path(:experiment_id => @experiment, :reference_session_id => session.id), :class => "session_new_subsession"
+          %li= link_to t('.duplicate'), duplicate_experiment_session_path(@experiment, session)
+          %li= link_to t('.delete'), experiment_session_path(@experiment, session), :method => :delete, :confirm => t('.delete_confirm')

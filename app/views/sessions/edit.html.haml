@@ -2,7 +2,7 @@
   = render :partial => "layouts/crumb", :object => [           |
       link_to(t(:experiments_header), experiments_path),                |
       link_to(@experiment.name,experiment_sessions_path(@experiment)), |
-      t(:sessions)]
+      t(:sessions_label)]
       
 
 = render :partial => "experiments/enrollment"
@@ -13,15 +13,16 @@
 
 = render :partial => "experiments/tabs", :locals => {:selected => :sessions}
 
-= link_to "Zurück zur Session-Übersicht", experiment_sessions_path(@experiment), :class => "btn"
+= link_to t('sessions.back_link'), experiment_sessions_path(@experiment), :class => "btn"
 
 %br
 %br
-%h2
-  = "#{@session.is_subsession? ? "Folgesession" : "Session"} am #{@session.time_str}"
+
+
+%h2= "#{@session.is_subsession? ? t('sessions.following_session') : t('sessions.session')} #{t('.at_label')} #{@session.time_str}"
 %br
 
-= render :partial => "sessions/tabs", :locals => {:selected => "Allgemeine Daten"}
+= render :partial => "sessions/tabs", :locals => {:selected => :common_data}
 
 
 

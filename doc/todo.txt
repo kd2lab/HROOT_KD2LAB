@@ -1,12 +1,13 @@
 - users
 - user_mailer
-- shared
 - devise
-- sessions
 - controller
 
 
 
+- filter anpassen für mindestens und höchstens
+- filter anpassen für nur und ohne
+- filter anpassen für experimenttexte
 
 
 ALT:

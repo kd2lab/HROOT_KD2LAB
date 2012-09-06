@@ -1,10 +1,8 @@
 
-
-
 .text-templates{:'data-element-id' => element_id}
   .btn-group
     %a.btn.dropdown-toggle{:'data-toggle' => 'dropdown', :href => '#'}
-      Textvorlagen
+      =t :text_templates
       %span.caret
     
     = render :partial => 'shared/text_templates_items', :locals => {:data => data}

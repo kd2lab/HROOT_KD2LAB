@@ -2,8 +2,8 @@
            :locals => {                                                                                         |
              :selected => selected,                                                                             |
              :links => [                                                                                        |
-               {:title => "Allgemeine Daten", :url=> edit_experiment_session_path(@experiment, @session)},        |
-               {:title => "Session-Erinnerung", :url => reminders_experiment_session_path(@experiment, @session)}  |
+               {:id => :common_data, :title => t('.common_data'), :url=> edit_experiment_session_path(@experiment, @session)},        |
+               {:id => :reminders, :title => t('.reminders'), :url => reminders_experiment_session_path(@experiment, @session)}  |
              ]                                                                                                  |
            }                                                                                                    |
 

@@ -1,4 +1,3 @@
 #fpreference.filter-block{is_enabled(:preference)}
-  %p
-    Experiment-Präferenz:
-  = select_tag 'filter[preference]', options_for_select({"Nur Teilnehmer, die an Präsenz-Experimenten teilnehmen wollen" => 1, "Nur Teilnehmer, die an Online-Experimenten teilnehmen wollen" => 2}, params[:filter][:preference]), {:style => "width: 650px"}
+  %p=t 'filter.title_preference'
+  = select_tag 'filter[preference]', options_for_select({t('filter.only_with_presence_preference') => 1, t('filter.only_with_online_preference') => 2}, params[:filter][:preference]), {:style => "width: 650px"}

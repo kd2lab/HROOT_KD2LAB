@@ -5,7 +5,7 @@
 %br
 
 %h2
-  Session am
+  =t '.header'
   = @session.time_str
 
 - if @session.location
@@ -20,20 +20,20 @@
   
 - if @users.count > 0
   .menu
-    = link_to "Drucken", print_experiment_session_path(@experiment, @session), :class => "btn new-window", :style => "float:right"
+    = link_to t('.print'), print_experiment_session_path(@experiment, @session), :class => "btn new-window", :style => "float:right"
     - if current_user.has_right?(@experiment, 'send_session_messages')
-      = link_to "Nachricht an alle Session-Teilnehmer", '#', :class => "btn send-message", :'data-to' => "Alle Sessionteilnehmer", :'data-subject'=> "Experiment-Session am "+ @session.time_str, :'data-mode' => 'all',  :style => "float:left"
-      = link_to "Nachricht an alle markierten Teilnehmer", '#', :class => "btn send-message context-menu", :'data-to' => "Markierte Sessionteilnehmer", :'data-subject'=> "Experiment-Session am "+ @session.time_str, :'data-mode' => 'selected', :style => "float:left"
+      = link_to t('.send_to_all'), '#', :class => "btn send-message", :'data-to' => "Alle Sessionteilnehmer", :'data-subject'=> "Experiment-Session am "+ @session.time_str, :'data-mode' => 'all',  :style => "float:left"
+      = link_to t('.send_to_marked'), '#', :class => "btn send-message context-menu", :'data-to' => "Markierte Sessionteilnehmer", :'data-subject'=> "Experiment-Session am "+ @session.time_str, :'data-mode' => 'selected', :style => "float:left"
   
     - if current_user.has_right?(@experiment, 'manage_participants')
       .btn-group.context-menu{:style => "float:left"}
         %a.btn.dropdown-toggle{:'data-toggle' => "dropdown", :href => "#"}
-          Markierte Teilnehmer
+          =t '.marked'
           %b.caret 
         %ul.dropdown-menu
-          %li= link_to "Markierte Teilnehmer aus dieser Session austragen.", '#', :class => 'user_action_link', :'data-value' => 0
+          %li= link_to t('.remove_marked'), '#', :class => 'user_action_link', :'data-value' => 0
           - @session.alternative_sessions.each  do |s|
-            %li= link_to "Markierte Teilnehmer in Session #{s.time_str} verschieben", '#', :class => 'user_action_link', :'data-value' => s.id
+            %li= link_to "#{t('.move_marked1')} #{s.time_str} #{t('.move_marked2')}", '#', :class => 'user_action_link', :'data-value' => s.id
   
   
     %br
@@ -46,11 +46,11 @@
         %th
           = check_box_tag "", "", false, :id => "select_all_users" if selection_boxes
         %th
-        %th= sortable_for_form 'lastname', 'Name'  
-        %th= sortable_for_form 'email', 'E-Mail'
-        %th= sortable_for_form 'study_name', 'Fach'
-        %th= sortable_for_form 'gender',  'Gesch.'
-        %th= sortable_for_form 'begin_date', 'Beginn'
+        %th= sortable_for_form 'lastname', t('.th_name')
+        %th= sortable_for_form 'email', t('.th_email')
+        %th= sortable_for_form 'study_name', t('.th_study')
+        %th= sortable_for_form 'gender',  t('.th_gender')
+        %th= sortable_for_form 'begin_date', t('.th_begin')
         %th 
           E
           - if participation_boxes
@@ -86,8 +86,8 @@
       
           %td= link_to highlight(truncate(user.lastname, {:length => 15}), params[:search])+', '+highlight(truncate(user.firstname, {:length => 10}), params[:search]), user_path(user)
           %td= link_to highlight(truncate(user.email, {:length => 20}), params[:search]), "mailto:#{user.email}"
-          %td.study_name_popup{:'data-text' => user.study_name || 'keine Angabe' }
-            =user.study_name ? truncate(user.study_name, {:length => 10}) : 'k. A.'
+          %td.study_name_popup{:'data-text' => user.study_name || t(:no_info) }
+            =user.study_name ? truncate(user.study_name, {:length => 10}) : t(:no_info)
           %td= user.gender
           %td= user.begin_date 
           %td= check_box_tag "showups[#{user.id}]", "1", user.session_showup == 1, :class => "show_checkbox", :disabled => !participation_boxes, :'data-id' => user.id
@@ -97,12 +97,12 @@
             = hidden_field_tag "ids[#{user.id}]", "1"
                 
   - if participation_boxes     
-    = button_tag "Änderungen jetzt speichern", :name => "save", :class => "btn btn-primary"
+    = button_tag t('.save_changes_now'), :name => "save", :class => "btn btn-primary"
         
 - else
   %br
   %b
-    Diese Session hat keine Teilnehmer
+    =t('.no_participants')
   %br  
   %br
 %br

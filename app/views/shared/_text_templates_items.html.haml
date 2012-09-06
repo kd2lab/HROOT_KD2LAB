@@ -1,15 +1,15 @@
 %ul.dropdown-menu.template-menu
-  %li Text speichern
+  %li=t '.save'
   - data = {} unless data
   - data.keys.sort.each do |name|
     %li= link_to name, "", :class => 'save_template', :'data-name' => name
-  %li= link_to "Neu...", "", :class => 'save_template'
+  %li= link_to t('.new'), t('.new'), :class => 'save_template'
 
   - if data.count > 0
     %li Einfügen
     - data.keys.sort.each do |name|
-      %li= link_to name, "", :class => 'load_template', :'data-name' => name
+      %li= link_to name, t('.insert'), :class => 'load_template', :'data-name' => name
 
     %li Löschen
     - data.keys.sort.each do |name|
-      %li= link_to name, "", :class => 'delete_template', :'data-name' => name
+      %li= link_to name, t('.delete'), :class => 'delete_template', :'data-name' => name

@@ -2,7 +2,7 @@
   = render :partial => "layouts/crumb", :object => [           |
       link_to(t(:experiments_header), experiments_path),                |
       link_to(@experiment.name,experiment_sessions_path(@experiment)), |
-      t(:sessions)]
+      t(:sessions_label)]
 
 
 = render :partial => "experiments/enrollment"
@@ -16,7 +16,7 @@
 = render :partial => "experiments/tabs", :locals => {:selected => :sessions}
 
 
-= link_to "Zurück zur Session-Übersicht", experiment_sessions_path(@experiment), :class => "btn"
+= link_to t('sessions.back_link'), experiment_sessions_path(@experiment), :class => "btn"
 %br
 
 = form_tag participants_experiment_session_path(@experiment, @session), :method => 'post', :id => "user_search" do

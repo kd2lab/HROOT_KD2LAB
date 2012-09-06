@@ -1,9 +1,9 @@
 #fbegin.filter-block{is_enabled('begin_von_month')}
-  Studienbeginn
+  =t 'filter.title_begin'
   %br
-  von
+  =t 'filter.from'
   = select_tag 'filter[begin_von_month]', options_for_select((1..12), params[:filter][:begin_von_month]), {:include_blank => true, :class => "span1"}
   = select_tag 'filter[begin_von_year]', options_for_select((Time.now.year-10..Time.now.year), params[:filter][:begin_von_year]), {:include_blank => true, :class => "span1"}
-  bis
+  =t 'filter.from'
   = select_tag 'filter[begin_bis_month]', options_for_select((1..12), params[:filter][:begin_bis_month]), {:include_blank => true, :class => "span1"}
   = select_tag 'filter[begin_bis_year]', options_for_select((Time.now.year-10..Time.now.year), params[:filter][:begin_bis_year]), {:include_blank => true, :class => "span1"}

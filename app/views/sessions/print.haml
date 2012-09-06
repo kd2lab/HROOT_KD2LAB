@@ -2,7 +2,7 @@
 - index = 1
 .page    
   %h3
-    Session am
+    =t '.header'
     = @session.time_str
 
   - if @session.location
@@ -14,18 +14,14 @@
       %thead
         %tr
           %th
-          %th Name
-          %th Vorname
-          %th Telefon
-          /%th Fach
-          %th G.
-          %th 
-            E
-          %th 
-            T
-          %th
-            N
-        
+          %th=t '.lastname'
+          %th=t '.firstname'
+          %th=t '.phone'
+          %th=t '.gender'
+          %th=t '.showup' 
+          %th=t '.participated'
+          %th=t '.noshow'
+          
       %tbody  
         - @users.each do |user| 
           %tr

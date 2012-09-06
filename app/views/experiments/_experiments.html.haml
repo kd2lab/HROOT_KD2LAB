@@ -33,7 +33,7 @@
           %br
           - if experiment.sessions.length > 0
             = experiment.sessions.length
-            =t :sessions
+            =t :sessions_label
             %br
             =experiment.sessions.collect{|d| d.start_at.to_date}.min
             bis
