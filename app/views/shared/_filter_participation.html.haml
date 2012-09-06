@@ -1,2 +1,4 @@
 #fparticipation.filter-block{is_enabled(:participation)}
-  = select_tag 'filter[participation]', options_for_select({"Nur Zugeordnete, die teilgenommen haben" => 1, "Nur Zugeordnete, die bereits in eine Session eingetragen sind" => 2, "Nur Zugeordnete ohne Session" => 3}, params[:filter][:participation].to_i), {:style=>"width:650px"}
+  = select_tag 'filter[participation]',      | 
+    options_for_select({t('filter.participation_select1') => 1, t('filter.participation_select2') => 2, t('filter.participation_select3') => 3}, params[:filter][:participation].to_i), |
+    {:style=>"width:650px"} |

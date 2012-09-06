@@ -2,7 +2,7 @@
   = render :partial => "layouts/crumb", :object => [           |
       link_to(t(:experiments_header), experiments_path),                |
       link_to(@experiment.name,experiment_sessions_path(@experiment)), |
-      t(:sessions)]
+      t(:sessions_label)]
       
 
 = render :partial => "experiments/enrollment"
@@ -13,34 +13,33 @@
 
 = render :partial => "experiments/tabs", :locals => {:selected => :sessions}
 
-= link_to "Zurück zur Session-Übersicht", experiment_sessions_path(@experiment), :class => "btn"
+= link_to t('sessions.back_link'), experiment_sessions_path(@experiment), :class => "btn"
 
 %br
 %br
 %h2
-  Session am
+  =t '.session_at'
   = @session.time_str
 %br
 
-= render :partial => "sessions/tabs", :locals => {:selected => "Session-Erinnerung"}
+= render :partial => "sessions/tabs", :locals => {:selected => :reminders}
 
 
 = form_for @session, :url => {:action => "reminders"}, :html => {:method => :post, :class => "guarded_form"} do |f|
-  %h3
-    E-Mail zur Erinnerung für diese Session
-  
+  %h3=t '.email_title'
+    
   %br  
     
   = f.check_box :reminder_enabled, :id => "reminder_check"
-  automatischen Erinnerungsversand für diese Session aktivieren
+  =t '.activate_sending'
   %br
   %br
   .subpart
-    Der Versand der Erinnerungen soll
+    =t '.sending_label1'
     = f.text_field :reminder_hours, :class => 'span1'
-    Stunden vor dem Beginn der jeweiligen Session erfolgen.
+    =t '.sending_label1'
     %br
-    Betreff
+    =t :subject
     %br
     = f.text_field :reminder_subject, :class => "span8"
     %br
@@ -51,11 +50,11 @@
       = render :partial => 'shared/text_templates', :locals => {:data => current_user.settings.templates, :element_id => 'session_reminder_text' }
       = render :partial => 'shared/text_insertions', :locals => {:data => ['#firstname', '#lastname', '#session_date', '#session_start_time', '#session_end_time', '#session_location'], :element_id => 'session_reminder_text' }
 
-      Erinnerungstext
+      =t '.reminder_text'
     = f.text_area :reminder_text, :rows => 5, :class => "span8"
     %br
     %br
-  = f.submit "Erinnerungseinstellungen speichern", :name => "test", :class => "guarded_form_save btn btn-primary"
+  = f.submit t(:save), :name => "test", :class => "guarded_form_save btn btn-primary"
   
  
    

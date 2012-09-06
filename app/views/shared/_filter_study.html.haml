@@ -1,5 +1,5 @@
 #fstudy.filter-block{is_enabled(:study_op)}
-  = select_tag 'filter[study_op]', options_for_select(["Nur", "Ohne"], params[:filter][:study_op])
-  Teilnehmer aus folgenden Studienfächern:
+  = select_tag 'filter[study_op]', options_for_select([[t('filter.only'),1], [t('filter.without'),2]], params[:filter][:study_op])
+  =t 'filter.title_study'
   %br
-  = select_tag 'filter[study]', options_for_select(Study.all.map{|s| [s.name, s.id]}, params[:filter][:study]), {:include_blank => true, :multiple => true, :class => "chzn-select", :'data-placeholder' => "Studienfächer...", :style=>"width:650px"}
+  = select_tag 'filter[study]', options_for_select(Study.all.map{|s| [s.name, s.id]}, params[:filter][:study]), {:include_blank => true, :multiple => true, :class => "chzn-select", :'data-placeholder' => t('filter.hint_studies'), :style=>"width:650px"}

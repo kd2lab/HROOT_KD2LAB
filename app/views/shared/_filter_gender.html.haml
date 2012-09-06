@@ -1,4 +1,4 @@
 #fgender.filter-block{is_enabled(:gender)}
-  Geschlecht:
+  =t 'filter.title_gender'
   %br
-  = select_tag 'filter[gender]', options_for_select({"männlich" => 'm', "weiblich" => 'f', 'keine Angabe' => '?'}, params[:filter][:gender]), :class => "span2"
+  = select_tag 'filter[gender]', options_for_select({t('form_values.male') => 'm', t('form_values.female') => 'f', t(:no_info) => '?'}, params[:filter][:gender]), :class => "span2"

@@ -6,17 +6,17 @@
   
   = hidden_field_tag 'filter[exp_tag_count]', count
   
-  Nur Teilnehmer mit folgenden Teilnahmen an Sessions von Experimenten mit Tags:
+  =t 'filter.title_sessions_with_tags1'
   %br
   %br
   
   - 10.times do |i|
     %div{:id => "exp_filter_#{i}", :style => i < count ? "" : "display:none"}
-      = select_tag "filter[exp_tag_op1][]", options_for_select(["Mindestens", "Höchstens"], tag_ops1[i]), :class => "span2"
+      = select_tag "filter[exp_tag_op1][]", options_for_select([[t('filter.at_least'), 1], [t('filter.at_most'), 2]], tag_ops1[i]), :class => "span2"
       = select_tag "filter[exp_tag_op2][]", options_for_select((0..10), tag_ops2[i]), :class => "span1"
-      mal an einer Session eines Experiments mit Tag
+      =t 'filter.title_sessions_with_tags2'      
       = select_tag "filter[exp_tag#{i}]", options_for_select(ActsAsTaggableOn::Tag.order(:name).map{|s| [s.name, s.name]}, params[:filter]["exp_tag#{i}"]), {:include_blank => true, :class => "chzn-select", :'data-placeholder' => "Tags...", :style=>"width:150px"}
-      teilgenommen
+      =t 'filter.title_sessions_with_tags3'
       %br
   
   

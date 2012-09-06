@@ -4,7 +4,7 @@
 
 
 %ul.nav.nav-tabs
-  %li{:class => if selected == :sessions then 'active' else '' end}= link_to t(:sessions), experiment_sessions_path(@experiment)
+  %li{:class => if selected == :sessions then 'active' else '' end}= link_to t(:sessions_label), experiment_sessions_path(@experiment)
   
   - if current_user.has_right? @experiment, 'manage_participants'
     %li.dropdown{:class => if selected == :participants then 'active' else '' end}

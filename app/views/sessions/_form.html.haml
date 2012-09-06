@@ -1,11 +1,11 @@
 - if @session.new_record?
   - url = experiment_sessions_path(@experiment)
   - id = ""
-  - button_text = "Session anlegen"
+  - button_text = t('.new_session')
 - else
   - url = experiment_session_path(@experiment, @session)
   - id = @session.id.to_s
-  - button_text = "Session speichern"
+  - button_text = t('.save_session')
   
 = simple_form_for @session, {:html => {:class => "guarded_form session_update form-horizontal"}, :url => url } do |f|   
   = f.input :reference_session_id, :as => :hidden
@@ -19,11 +19,11 @@
   
   = f.input :description, :as => :text
   - unless @session.is_subsession?
-    = f.input :limitations, :as => :text, :hint => 'Dieser Text wird dem Teilnehmer bei Anmeldung angezeigt.'
+    = f.input :limitations, :as => :text, :hint => t('.limitations_hint')
  
   
-  = f.input :time_before, :collection =>  (0..12).map{|x| [(x*5).to_s+" Minuten", x*5]}, :include_blank => false
-  = f.input :time_after, :collection =>  (0..12).map{|x| [(x*5).to_s+" Minuten", x*5]}, :include_blank => false
+  = f.input :time_before, :collection =>  (0..12).map{|x| [(x*5).to_s+" #{t('.minutes')}", x*5]}, :include_blank => false
+  = f.input :time_after, :collection =>  (0..12).map{|x| [(x*5).to_s+" #{t('.minutes')}", x*5]}, :include_blank => false
   = f.input :group_size, :collection => (1..20), :include_blank => true
   
 

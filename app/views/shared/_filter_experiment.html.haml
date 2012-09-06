@@ -1,5 +1,5 @@
 #fexperiment.filter-block{is_enabled(:exp_op)}
-  Teilnehmer,
-  = select_tag 'filter[exp_op]', options_for_select(["die zu einem der folgenden Experimente zugeordnet sind", "die zu allen der folgenden Experimente zugeordnet sind", "die zu keinem der folgenden Experimente zugeordnet sind", "die an mindestens einer Session eines der folgenden Experimente teilgenommen haben", "die an mindestens einer Session von jedem der folgenden Experimente teilgenommen haben", "die an keiner Session der folgenden Experimente teilgenommen haben"], params[:filter][:exp_op]), {:class => "span7"}
+  =t 'filter.title_experiment'
+  = select_tag 'filter[exp_op]', options_for_select([[t('filter.experiment_select1'), 1], [t('filter.experiment_select2'), 2], [t('filter.experiment_select3'), 3], [t('filter.experiment_select4'), 4], [t('filter.experiment_select5'), 5], [t('filter.experiment_select6'), 6]], params[:filter][:exp_op]), {:class => "span7"}
   %br
-  = select_tag 'filter[experiment]', options_for_select(Experiment.order(:name).map{|s| [truncate(s.name), s.id]}, params[:filter][:experiment]), {:include_blank => true, :multiple => true, :class => "chzn-select", :'data-placeholder' => "Experimente...", :style=>"width:650px"}
+  = select_tag 'filter[experiment]', options_for_select(Experiment.order(:name).map{|s| [truncate(s.name), s.id]}, params[:filter][:experiment]), {:include_blank => true, :multiple => true, :class => "chzn-select", :'data-placeholder' => t('filter.hint_experiment'), :style=>"width:650px"}
