@@ -51,6 +51,9 @@ de:
     female: weiblich
     no_experience: Ich habe noch nie an Experimenten teilgenommen.
     has_experience: Ich habe bereits an Experimenten teilgenommen.
+    user_is_active: Benutzer ist aktiv
+    user_is_marked_as_deleted: Benutzer wurde als gelöscht markiert
+    
   account:
     index:
       welcome: Willkommen
@@ -446,11 +449,105 @@ Für weiteren Fragen zur Software besuchen Sie bitte unsere Projektseite unter t
       save_session: Session speichern
       limitations_hint: Dieser Text wird dem Teilnehmer bei Anmeldung angezeigt.
       minutes: Minuten
-    
-    
-    
-    
-    
+  users:
+    users:
+      message_all_filtered: Nachricht an alle User der aktuellen Filterung
+      send_activation_invitation: Aktivierungseinladung an alle noch nicht aktivierten User dieser Filterung schicken
+      send_activation_confirm: Sind Sie sicher, dass diese E-Mails versendet werden sollen?
+      
+      message_all_marked: Nachricht an alle markierten User
+      send_activation_invitation_marked: Aktivierungseinladung an alle markierten User schicken
+      to_all_filtered: Aktuell gefilterte User
+      to_all_marked: Markierte User
+      
+      role: Rolle
+      study: Fach
+      gender: 'G.'
+      begin: Beginn
+      created_at: 'Anmeld.'
+      no_show_count: '#N'
+      participations_count: '#T'
+      no_users: Kein User gefunden
+      marked_users: Markierte User
+    edit:
+      edit_user: bearbeiten
+    index:
+      new_user: Neuer Benutzer
+    new:
+      create_new_user: Neuen Benutzer anlegen
+    show:
+      more_functions: Weitere Funktionen
+      activate_user_after_import: User nach Import aktivieren
+      not_activated: nicht aktiviert nach Import
+      marked_as_deleted: als gelöscht markiert
+      login_as1: Als
+      login_as2: einloggen
+      
+      
+      
+      
+      gender: Geschlecht
+      phone: Telefon
+      matrikel: Matrikelnummer
+      role: Rolle
+      study: Studiengang
+      degree: Abschluss(-ziel)
+      begin: Studienbeginn
+      country: Land
+      languages: Sprachkenntnisse
+      profession: Beruf
+      
+      participations_so_far: 'Bisherige Experimentteilnahmen:'
+      showup: Erschienen
+      noshow: Nicht erschienen
+      participated: Teilgenommen
+  devise:
+    confirmations:
+      new:
+      resend_email: E-Mail zur Registrierung erneut senden 
+      email_for_registration: E-Mail zur Registrierung
+      resend: erneut senden
+      resend_link: E-Mail erneut senden
+    passwords:
+      new:
+        breadcrumb_forgot_password: Passwort vergessen
+        forgot_password: Passwort vergessen?
+        forgot_link: E-Mail für Passwortänderung senden
+      edit:
+        breadcrumb_forgot_password: Password vergessen
+        change_password: Passwort ändern
+        password_hint: mindestens 8 Zeichen, mindestens eine Zahl, ein Buchstabe, ein Sonderzeichen
+        change_password_link: Passwort ändern
+      shared:
+        links:
+          login: Login
+          register: Registrierung
+          forgot_password: Passwort vergessen?
+          no_email: E-Mail zur Registrierung nicht erhalten?
+      sessions:
+        new:
+          login_breadcrumb: Login
+          login: Login
+          for_registered_users: für bereits registrierte Nutzer
+          login_link: Login
+      registrations:
+        new:
+          breadcrumb_register: Registrierung
+          register: Registrierung
+          enter_email: "Bitte geben Sie Ihre E-Mail-Adresse und ein Passwort an - diese Daten dienen als Zugangsdaten. Das Passwort muss mindestens 8 Zeichen lang sein und einen Buchstaben, eine Zahl und ein Sonderzeichen enthalten."
+          password_hint: mindestens 8 Zeichen, mindestens eine Zahl, ein Buchstabe, ein Sonderzeichen
+          please_provide_data: 'Bitte geben Sie folgende Daten an:'
+          optional_data: Die folgenden Felder sind optional. Je mehr dieser Felder Sie jedoch ausfüllen, umso höher ist die Wahrscheinlichkeit, dass wir Sie zu bestimmten Experimenten einladen.
+          phone_hint: "Eine Angabe erlaubt es uns, Sie schnell zu erreichen, wenn z.B. ein Experiment abgesagt werden muss."
+          experience: Ich habe bereits an wirtschaftswissenschaftlichen Experimenten teilgenommen.
+          terms_and_conditions: Ich habe die Nutzerbedingungen gelesen und bin damit einverstanden.
+          send_link: Anmeldung absenden
+        edit:
+          change_password: Passwort ändern
+          change_password_link: Passwort ändern
+          please_confirm_password: 'Bitte geben Sie das aktuelle Passwort zur Bestätigung ein:'
+  
+          
     
     
     

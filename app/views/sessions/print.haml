@@ -31,7 +31,7 @@
             %td= truncate(user.lastname, {:length => 20})
             %td= truncate(user.firstname, {:length => 20})
             %td= user.phone
-            %td= user.gender
+            %td={'m' => t('form_values.male'), 'f' => t('form_values.female'), '?' => t(:no_info)}[user.gender]
             %td= check_box_tag "showups[#{user.id}]", "1", user.session_showup == 1, :disabled => 'disabled'
             %td= check_box_tag "participations[#{user.id}]", "1", user.session_participated == 1, :disabled => 'disabled'
             %td{:style=> "background-color: #FAACAC"}

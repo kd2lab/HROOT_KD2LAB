@@ -3,24 +3,24 @@
     %li
       = link_to t(:root_page), root_path
       %span.divider
-        >
+        &gt;
     %li.active
-      E-Mail zur Registrierung erneut senden 
+      =t '.resend_email'
+      
 
 
 .row
   .span4
-    %h1
-      E-Mail zur Registrierung
-    %p
-      erneut senden
+    %h1=t '.email_for_registration'
+      
+    %p=t '.resend'
     %br
     = simple_form_for(resource, :as => resource_name, :url => confirmation_path(resource_name), :html => { :method => :post, :class => 'form-vertical' }) do |f|
-      E-Mail
+      =t :email
       %br
       = f.input :email, :label => false
       %br
-      = f.submit "E-Mail erneut senden", :class => "btn btn-primary"
+      = f.submit t('.resend_link'), :class => "btn btn-primary"
 
   .span4
     = render :partial => "devise/shared/links" 

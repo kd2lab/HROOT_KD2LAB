@@ -1,10 +1,10 @@
 = content_for :breadcrumb do
-  = render :partial => "layouts/crumb", :object => [           |
+  = render :partial => "layouts/crumb", :object => [                     |
       link_to(t(:settings), :controller => "admin", :action => "index"), |
-      link_to("Benutzer", users_path),                         |
-      "Neuen Benutzer anlegen" ]
+      link_to("Benutzer", users_path),                                   |
+      t('.create_new_user') ]
   
 %h1
-  Neuen Benutzer anlegen
+  =t '.create_new_user'
 
 = render 'form' 

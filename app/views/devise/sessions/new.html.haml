@@ -3,14 +3,14 @@
     %li
       = link_to t(:root_page), root_path
       %span.divider
-        >
+        &gt;
     %li.active
-      Login 
+      =t '.breadcrumb_login' 
 
 .row
   .span4
-    %h1 Login
-    %p für bereits registrierte Nutzer
+    %h1=t '.login'
+    %p=t '.for_registered_users'
     %br
     = form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f|
       = f.label :email 
@@ -20,7 +20,7 @@
       = f.password_field :password 
 
       %br
-      = f.submit "Login", :class => "btn btn-primary"
+      = f.submit t('.login_link'), :class => "btn btn-primary"
 
   .span4
     = render :partial => "devise/shared/links" 

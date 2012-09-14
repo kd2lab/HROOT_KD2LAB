@@ -10,7 +10,7 @@
 = simple_form_for @user, :url => url, :method => method, :html => {:class => "guarded_form form-horizontal"} do |f| 
   = f.input :firstname, :required => false
   = f.input :lastname, :required => false
-  = f.input :gender, :collection => {'männlich' => 'm', 'weiblich' => 'f', "keine Angabe" => '?' }, :as => :select, :required => false
+  = f.input :gender, :collection => {t('form_values.male') => 'm', t('form_values.female') => 'f', t(:no_info) => '?'}, :as => :select, :required => false
   = f.input :birthday, :include_blank => "true", :order => [:day, :month, :year], :required => false, :start_year => Date.today.year-16, :end_year => 1900
   = f.input :phone
   = f.input :matrikel, :required => false
@@ -21,24 +21,24 @@
   %br
   = f.input :country_name, :priority => [ "Germany" ], :include_blank => true
   %br
-  = f.input :study_id, :collection => Study.all.map{|s| [s.name, s.id]}, :include_blank => "keine Angabe"
-  = f.input :degree_id, :collection => Degree.all.map{|s| [s.name, s.id]}, :include_blank => "keine Angabe"
+  = f.input :study_id, :collection => Study.all.map{|s| [s.name, s.id]}, :include_blank => t(:no_info)
+  = f.input :degree_id, :collection => Degree.all.map{|s| [s.name, s.id]}, :include_blank => t(:no_info)
   = f.input :begin_month, :collection => (1..12)
   = f.input :begin_year, :collection => (Time.now.year-10..Time.now.year)
   %br
-    = f.input :preference, :collection => {'Präsenz- und Online-Experimenten' => 0, 'nur Präsenz-Experimente' => 1, 'nur Online-Experimente' => 2}
+    = f.input :preference, :collection => {t('form_values.type_both')=>0, t('form_values.type_presence')=>1, t('form_values.type_online')=>2}
   = f.input :lang1, :collection => Language.all.map{|s| [s.name, s.id]}, :as => :select, :required => false
   = f.input :lang2, :collection => Language.all.map{|s| [s.name, s.id]}, :as => :select, :required => false, :wrapper_html => {:style => "display:none", :id => "lang2"}
   = f.input :lang3, :collection => Language.all.map{|s| [s.name, s.id]}, :as => :select, :required => false, :wrapper_html => {:style => "display:none", :id => 'lang3'}
   %br
   = f.input :profession_id, :collection => Profession.all.map{|s| [s.name, s.id]}
   %br
-  = f.input :experience, :collection => [["Benutzer hat keine Experimenterfahrung", false], ["Benutzer hat bereits Experimenterfahrung", true]], :label => "Experimenterfahrung" 
+  = f.input :experience, :collection => [[t('form_values.no_experience'), false], [t('form_values.has_experience'), true]] #, :label => "Experimenterfahrung" 
   %br
-  = f.input :deleted, :collection => [["Benutzer ist aktiv", false],["Benutzer ist als gelöscht markiert", true]], :include_blank => false,  :label => "Löschen" 
+  = f.input :deleted, :collection => [[t('form_values.user_is_active'), false],[t('form_values.user_is_marked_as_deleted'), true]], :include_blank => false,  :label => t(:delete) 
    
   %br
-  = f.submit "Benutzer speichern", :class => "guarded_form_save btn btn-primary"
+  = f.submit t(:save), :class => "guarded_form_save btn btn-primary"
   %br
   %br
   
