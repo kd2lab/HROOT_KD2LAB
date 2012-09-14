@@ -5,20 +5,20 @@
       %span.divider
         &gt;
     %li.active
-      Passwort vergessen
+      =t '.breadcrumb_forgot_password'
       
 .row
   .span6
     %h1
-      Passwort ändern
+      =t '.change_password'
     %br
     = simple_form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :put, :class => 'form-horizontal'}) do |f|
       = f.hidden_field :reset_password_token 
 
       = f.input :password  
-      = f.input :password_confirmation, :hint => "mindestens 8 Zeichen, mindestens eine Zahl, ein Buchstabe, ein Sonderzeichen"
+      = f.input :password_confirmation, :hint => t('.password_hint')
          
-      = f.submit "Passwort ändern", :class => "btn btn-primary"
+      = f.submit t('.change_password_link'), :class => "btn btn-primary"
 
   .span4
     = render :partial => "devise/shared/links"       

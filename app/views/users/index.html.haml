@@ -5,14 +5,14 @@
       %span.divider
         &gt;
     %li.active
-      Benutzer
+      =t :user
   
 = render :partial => "shared/messaging"   
 
-= link_to 'Neuer Benutzer', new_user_path, :class =>"btn btn-primary", :style => "float:right"
+= link_to t('.new_user'), new_user_path, :class =>"btn btn-primary", :style => "float:right"
 
 %h1
-  Benutzer
+  =t :user
   
 %br
 

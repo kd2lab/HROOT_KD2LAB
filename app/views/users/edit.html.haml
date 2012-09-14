@@ -1,13 +1,13 @@
 = content_for :breadcrumb do
-  = render :partial => "layouts/crumb", :object => [           |
-      link_to("Benutzer", users_path),                         |
+  = render :partial => "layouts/crumb", :object => [                 |
+      link_to(t(:user), users_path),                                 |
       link_to(@user.firstname+' '+@user.lastname, user_path(@user)), |
-      "Bearbeiten" ]
+      t(:edit) ]
 
   
 %h1
   = @user.firstname+' '+@user.lastname
-  bearbeiten
+  =t '.edit_user'
 
 
 = render 'form'

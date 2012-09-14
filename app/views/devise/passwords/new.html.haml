@@ -5,19 +5,19 @@
       %span.divider
         &gt;
     %li.active
-      Passwort vergessen
+      =t '.breadcrumb_forgot_password'
 
 .row
   .span4
     %h1
-      Passwort vergessen?
+      =t '.forgot_password'
     %br
     = simple_form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post }) do |f|
-      E-Mail
+      =t :email
       %br
       = f.input  :email, :label => false
       %br
-      = f.submit "E-Mail für Passwortänderung senden", :class => "btn btn-primary"
+      = f.submit t('.forgot_link'), :class => "btn btn-primary"
 
   .span4
     = render :partial => "devise/shared/links" 
