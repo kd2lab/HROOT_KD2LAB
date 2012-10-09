@@ -1,26 +1,192 @@
 # Sample localization file for English. Add more files in this directory for other locales.
 # See http://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
+
 en:
-  hello: "Hello world"
-  authlogic:
-    error_messages:
-      login_blank: can not be blank
-      login_not_found: is not valid
-      login_invalid: should use only letters, numbers, spaces, and .-_@ please.
-      consecutive_failed_logins_limit_exceeded: Consecutive failed logins limit exceeded, account is disabled.
-      email_invalid: should look like an email address.
-      password_blank: can not be blank
-      password_invalid: is not valid
-      not_active: Your account is not active
-      not_confirmed: Your account is not confirmed
-      not_approved: Your account is not approved
-      no_authentication_details: You did not provide any details for authentication.
+  errors:
+    template:
+      body: "An error has occured:"
+  activerecord:
     models:
-      user_session: UserSession
+      user: User
+      experiment: Experiment
+      session: Session
     attributes:
-      user_session:
-        login: login
-        email: email
-        password: password
-        remember_me: remember me
+      session:
+        group_size: Group size
+        start_date: Start date
+        start_time: Start time
+        description: Description
+        limitations: Participation info
+        duration: Duration in minutes
+        needed: Needed participants
+        reserve: Reserve participants
+        location: Location
+        finished: Session closed
+        time_before: Preparation time
+        time_after: Preparation time after
+      location:
+        description: Description
+        
+      user: 
+        name: Name
+        firstname: First name
+        lastname: Last name
+        matrikel: Student Nr.
+        country_name: Nationality
+        role: Role
+        phone: Cell phone
+        begin: Begin of studies
+        begin_month: Month of birth
+        begin_year: Year of birth
+        email: Email
+        secondary_email: Secondary email
+        lang1: Language
+        lang2: Additional Language
+        lang3: Additional Language
+        study_id: Field of studies
+        profession_id: Profession
+        degree_id: Degree
+        gender: Gender
+        birthday: Birthday
+        password: Password
+        password_confirmation: Password confirmation
+        preference: Preference for
+        change_email: Change email
+        current_password: Current password
+        experience: Experimental experience
+        
+      experiment:
+        tag_list: Tags
+        description: Description
+        contact: Contact information
+        sender_email: Email sender
+        confirmation_subject: Subject
+        confirmation_text: Text
+        reminder_hours: Reminder
+    errors:
+      models:
+        profession:
+          blank: must be provided
+        language:
+          blank: must be provided
+        experiment:
+          blank: must be provided
+        session:
+          blank: must be provided
+          not_a_number: must be an integer number
+        location:
+          blank: must be provided
+        user:
+          blank: must be provided
+          attributes:
+            firstname:
+            lastname:
+            matrikel:
+            email:
+              taken: is already taken.
+              invalid: is invalid
+            secondary_email:
+              invalid: is invalid
+            password: 
+              confirmation: must be confirmed
+              too_short: is to short (at least 8 characters)
+              invalid: Invalid password (at least one digit, one letter, on special char)
+            password_confirmation:
+              too_short: is to short (at least 8 characters)
+            terms_and_conditions:
+              accepted: Please accept our terms and conditions.
+            current_password:
+              invalid: is invalid
+            
+  time:
+    am: am
+    formats:
+      default: ! '%a, %d %b %Y %H:%M:%S %z'
+      long: ! '%B %d, %Y %H:%M'
+      short: ! '%d %b %H:%M'
+    pm: pm
+    
+  date:
+    date:
+    abbr_day_names:
+    - Sun
+    - Mon
+    - Tue
+    - Wed
+    - Thu
+    - Fri
+    - Sat
+    abbr_month_names:
+    - 
+    - Jan
+    - Feb
+    - Mar
+    - Apr
+    - May
+    - Jun
+    - Jul
+    - Aug
+    - Sep
+    - Oct
+    - Nov
+    - Dec
+    day_names:
+    - Sunday
+    - Monday
+    - Tuesday
+    - Wednesday
+    - Thursday
+    - Friday
+    - Saturday
+    formats:
+      default: ! '%Y-%m-%d'
+      long: ! '%B %d, %Y'
+      short: ! '%b %d'
+    month_names:
+    - 
+    - January
+    - February
+    - March
+    - April
+    - May
+    - June
+    - July
+    - August
+    - September
+    - October
+    - November
+    - December
+    order:
+    - :year
+    - :month
+    - :day 
+    
+  will_paginate:
+    previous_label: "&lt; &lt;"
+    next_label: "&gt; &gt;"
+    page_gap: "&hellip;"
+
+#en:
+#  hello: "Hello world"
+#  authlogic:
+#    error_messages:
+#      login_blank: can not be blank
+#      login_not_found: is not valid
+#      login_invalid: should use only letters, numbers, spaces, and .-_@ please.
+#      consecutive_failed_logins_limit_exceeded: Consecutive failed logins limit exceeded, account is disabled.
+#      email_invalid: should look like an email address.
+#      password_blank: can not be blank
+#      password_invalid: is not valid
+#      not_active: Your account is not active
+#      not_confirmed: Your account is not confirmed
+#      not_approved: Your account is not approved
+#      no_authentication_details: You did not provide any details for authentication.
+#    models:
+#      user_session: UserSession
+#    attributes:
+#      user_session:
+#        login: login
+#        email: email
+#        password: password
+#        remember_me: remember me

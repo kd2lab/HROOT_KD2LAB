@@ -1,5 +1,6 @@
 = content_for :breadcrumb do
   = render :partial => "layouts/crumb", :object => [                    |
+      link_to(t('administration'), :controller => "admin", :action => "index"), |
       link_to(t(:user), users_path),                                    |
       link_to(@user.firstname+' '+@user.lastname, user_path(@user)) ]
 
@@ -9,7 +10,7 @@
     =t '.more_functions'
     %b.caret 
   %ul.dropdown-menu
-    %li= link_to "#{t('.login_as1')} #{@user.firstname} #{@user.lastname} t('.login_as2')", login_as_user_path(@user)
+    %li= link_to t('.login_as', :user => "#{@user.firstname} #{@user.lastname}"), login_as_user_path(@user)
     - if @user.imported && !@user.activated_after_import  
       %li= link_to t('.activate_user_after_import'), activate_after_import_user_path(@user)
     

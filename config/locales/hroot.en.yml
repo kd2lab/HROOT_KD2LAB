@@ -5,15 +5,15 @@ en:
   save_data: Save data
   activation_title: activation
   administration: Administration
-  homepage: home
+  homepage: Home
   dashboard: Dashboard
   calendar: Calendar
   settings: Options
-  edit: edit
-  delete: delete
-  save: save
+  edit: Edit
+  delete: Delete
+  save: Save
   save_changes: Save changes
-  back: back
+  back: Back
   session: Session
   sessions_label: Sessions
   experiments_header: Experiments
@@ -28,7 +28,7 @@ en:
   emails: emails
   subject: Subject  
   site_credits_and_contact: Site credits and contact information
-  root_page: start page
+  root_page: Start page
   copyright_html: '&copy; 2011-2013 University of Hamburg'
   login: Login
   logout: Logout
@@ -289,7 +289,7 @@ For further questions about this software please visit our project page todo
     showing2: of
     showing3: 'pool members, already assigned:'
     
-    title_sessions_with_tags1: 'Only show users, who have participated in experiment sessions with the follwing tags:'
+    title_sessions_with_tags1: 'Only show users, who have participated in experiment sessions with the following tags:'
     title_sessions_with_tags2: participations in sessions of experiments with tag
     title_sessions_with_tags3: ' '
     title_study: 'users with field of studies:'
@@ -498,7 +498,7 @@ For further questions about this software please visit our project page todo
       current_filtered: Current filtering
       marked_users: Checked users
     edit:
-      edit_user: Edit
+      edit_user: 'Edit %{name}'
     index:
       new_user: New user
     new:
@@ -508,12 +508,8 @@ For further questions about this software please visit our project page todo
       activate_user_after_import: Activate user after import
       not_activated: not activated after import
       marked_as_deleted: marked as deleted
-      login_as1: Login as
-      login_as2: ' '
-      
-      
-      
-      
+      login_as: 'Login as %{user}'
+
       gender: Gender
       phone: Phone
       matrikel: Student nr.
@@ -529,13 +525,14 @@ For further questions about this software please visit our project page todo
       showup: Showup
       noshow: Non-show
       participated: Participated
+      
   devise:
     confirmations:
       new:
-      resend_email: Resend email for Signup
-      email_for_registration: Email for signup
-      resend: Resend
-      resend_link: Resend email
+        resend_email: Resend email for Signup
+        email_for_registration: Email for signup
+        resend: Resend
+        resend_link: Resend email
     passwords:
       new:
         breadcrumb_forgot_password: Forgot password
@@ -546,34 +543,34 @@ For further questions about this software please visit our project page todo
         change_password: Change password
         password_hint: at least 8 characters, at least one numerical digit, at least one letter, at least one special character
         change_password_link: Change Password
-      shared:
-        links:
-          login: Login
-          register: Signup
-          forgot_password: Forgot password?
-          no_email: "Didn't receive signup email?"
-      sessions:
-        new:
-          login_breadcrumb: Login
-          login: Login
-          for_registered_users: for registered Users
-          login_link: Login
-      registrations:
-        new:
-          breadcrumb_register: Signup
-          register: Signup
-          enter_email: "Please enter you email and a password - these values will be used to login. The password should be at least 8 characters, and it should contain at least one numerical digit, at least one letter, and at least one special character."
-          password_hint: at least 8 characters, at least one numerical digit, at least one letter, at least one special character
-          please_provide_data: 'Please provide the follwing fields:'
-          optional_data: The following fields are optional. The more fields you enter, the higher the probaility of being invited to experiment sessions.
-          phone_hint: "Providing a phone number helps us contact you faster in case of last minute changes."
-          experience: I already have participated in economic experiments.
-          terms_and_conditions: I have read the terms and conditions and I agree with them.
-          send_link: Signup
-        edit:
-          change_password: Change password
-          change_password_link: Change password
-          please_confirm_password: 'Please enter you current password:'
+    shared:
+      links:
+        login: Login
+        register: Signup
+        forgot_password: Forgot password?
+        no_email: "Didn't receive signup email?"
+    sessions:
+      new:
+        breadcrumb_login: Login
+        login: Login
+        for_registered_users: for registered Users
+        login_link: Login
+    registrations:
+      new:
+        breadcrumb_register: Signup
+        register: Signup
+        enter_email: "Please enter you email and a password - these values will be used to login. The password should be at least 8 characters, and it should contain at least one numerical digit, at least one letter, and at least one special character."
+        password_hint: at least 8 characters, at least one numerical digit, at least one letter, at least one special character
+        please_provide_data: 'Please provide the following fields:'
+        optional_data: The following fields are optional. The more fields you enter, the higher the probaility of being invited to experiment sessions.
+        phone_hint: "Providing a phone number helps us contact you faster in case of last minute changes."
+        experience: I already have participated in economic experiments.
+        terms_and_conditions: I have read the terms and conditions and I agree with them.
+        send_link: Signup
+      edit:
+        change_password: Change password
+        change_password_link: Change password
+        please_confirm_password: 'Please enter you current password:'
   options:
     tabs:
       general: Options

@@ -1,14 +1,12 @@
 = content_for :breadcrumb do
   = render :partial => "layouts/crumb", :object => [                 |
+      link_to(t('administration'), :controller => "admin", :action => "index"), |
       link_to(t(:user), users_path),                                 |
       link_to(@user.firstname+' '+@user.lastname, user_path(@user)), |
       t(:edit) ]
 
   
-%h1
-  = @user.firstname+' '+@user.lastname
-  =t '.edit_user'
-
+%h1=t '.edit_user', :name =>  "#{@user.firstname} #{@user.lastname}" 
 
 = render 'form'
 
