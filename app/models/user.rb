@@ -43,9 +43,10 @@ class User < ActiveRecord::Base
   
   with_options :if => :is_not_admin_update? do |import_user|
     import_user.validates_presence_of :birthday, :on => :create
+    import_user.validates_presence_of :matrikel
   end
   
-  validates_presence_of :firstname, :lastname, :matrikel, :gender
+  validates_presence_of :firstname, :lastname, :gender
   
   validates_uniqueness_of :calendar_key
   validates_acceptance_of :terms_and_conditions
