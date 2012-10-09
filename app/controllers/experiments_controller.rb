@@ -51,7 +51,7 @@ class ExperimentsController < ApplicationController
     @experiment.reminder_text = Settings.reminder_text
     
     if @experiment.save
-      redirect_to(experiment_sessions_path(@experiment), :notice => 'Das Experiment wurde erfolgreich angelegt.') 
+      redirect_to experiment_sessions_path(@experiment), :notice => t('controllers.experiments.notice_created')
     else
       render :action => "new"
     end
@@ -81,7 +81,7 @@ class ExperimentsController < ApplicationController
         ExperimenterAssignment.update_experiment_rights @experiment, params[:rights]  
       end
       
-      redirect_to(experimenters_experiment_path(@experiment), :notice => 'Die Zuordnung der Experimentatoren wurde erfolgreich geändert.')
+      redirect_to experimenters_experiment_path(@experiment), :notice => t('controllers.notice_saved_changes')
     end  
   end  
   
@@ -93,7 +93,7 @@ class ExperimentsController < ApplicationController
     end  
     
     if @experiment.update_attributes(params[:experiment])
-      redirect_to(edit_experiment_url(@experiment), :notice => 'Das Experiment wurde erfolgreich geändert.')
+      redirect_to edit_experiment_url(@experiment), :notice => t('controllers.notice_saved_changes')
     else
       render :action => "edit"
     end
@@ -131,7 +131,7 @@ class ExperimentsController < ApplicationController
       @experiment.invitation_start = Time.zone.now
       @experiment.save
       
-      if params[:commit].include?("AN ALLE TEILNEHMER")
+      if params[:button] == 'send_all'
         @experiment.participations.where("invited_at IS NOT NULL").each do |p|
           p.invited_at = nil
           p.save
@@ -142,7 +142,7 @@ class ExperimentsController < ApplicationController
   end
   
   def save_mail_text
-    render :text => "Der Text wurde erfolgreich gespeichert."
+    render :text => t('controllers.notice_saved_changes')
   end
   
   def reminders
@@ -151,14 +151,14 @@ class ExperimentsController < ApplicationController
       params[:experiment][:reminder_hours] = 48 if params[:experiment][:reminder_hours].to_i == 0
        
       if @experiment.update_attributes(params[:experiment])
-        flash[:notice] = 'Die Einstellungen zur Erinnerung wurden erfolgreich gespeichert.'
+        flash[:notice] = t('controllers.notice_saved_changes')
       end
     end
   end
   
   def mail
     if params[:experiment] && @experiment.update_attributes(params[:experiment])
-      flash[:notice] = 'Die Mailtexte wurden gespeichert'
+      flash[:notice] = t('controllers.notice_saved_changes')
     end
   end
   

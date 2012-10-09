@@ -1,0 +1,680 @@
+en:
+  login_area: Login area
+  account_options: Account options
+  no_info: no info
+  save_data: Save data
+  activation_title: activation
+  administration: Administration
+  homepage: home
+  dashboard: Dashboard
+  calendar: Calendar
+  settings: Options
+  edit: edit
+  delete: delete
+  save: save
+  save_changes: Save changes
+  back: back
+  session: Session
+  sessions_label: Sessions
+  experiments_header: Experiments
+  experimenters_header: Experimenters
+  rights: Rights
+  search: Search
+  tag: Day
+  hour: Hour
+  hours: Hours
+  email: Email
+  password: Password
+  emails: emails
+  subject: Subject  
+  site_credits_and_contact: Site credits and contact information
+  root_page: start page
+  copyright_html: '&copy; 2011-2013 University of Hamburg'
+  login: Login
+  logout: Logout
+  register: Register
+  user: Users
+  common_menu: General
+  admin_menu: Admin menu
+  mailqueue: mailqueue
+  logged_in_as: Logged in as
+  register_now: Register now
+  recruitment_system: Recruitment sytem for experiments
+  text_templates: text templates
+  insert_data: Insert data
+  form_values:
+    interested_in: interested in
+    type_both: presence and online experiments
+    type_presence: only presence experimente
+    type_online: only online experimente
+    male: male
+    female: female
+    no_experience: I have never participated in economic experiments.
+    has_experience: I have already participated in economic experiments.
+    user_is_active: User is active
+    user_is_marked_as_deleted: User was marked as deleted
+    
+  account:
+    index:
+      welcome: Welcome
+      available_registrations: register for new sessions
+      available_registrations_text: You can currenty register for experiment sessions.
+      enroll_now_button: Register now
+      currently_no_sessions: You are currently not invited to experiment sessions.
+      current_sessions:  Current session registrations
+      current_sessions_text: 'You are registered for the following experiment sessions:'
+      no_current_sessions_text: You are currently not registered for experiment sessions.    
+      incomplete_data: Incomplete information
+      incomplete_data_text: Currently you are not invited to all possible experiment sessions, as you have not completed all necessary data. Providing personal information is optional, if you provide more personal information, you will be invited to more eperiment sessions. 
+      complete_data_link: Enter additional information
+    tabs:
+      overview: Overview of stored data
+      password: Password
+      alternative_email: Secondary email
+      phone: Phone 
+    alternative_email:
+      alternative_email: Secondary E-Mail
+      your_current_alternative_email: Your secondary email address 
+      was_confirmed: was confirmed and will now be used.
+      was_not_confirmed: is currently not conirmed. An email was sent to your secondary email address with a confirmation link.
+      delete_alternative_email: Delete secondary email
+      confirm_delete_alternative_email: Are you sure you want to delete you secondary email?
+      resend_confirmation_mail: Resend confirmation email
+      save_alternative_email: Save secondary email
+    data:
+      overview: Overview
+      data_stored_text: This information is stored about you. If you want to change the information, please contact the laboratory management staff.
+    edit:
+      incomplete_data: Incomplete data
+      incomplete_data_text: 'Currently you are not invited to all possible experiment sessions, as you have not completed all necessary data. Providing personal information is optional, if you provide more personal information, you will be invited to more eperiment sessions. '
+    phone:
+      phone_number: phone number
+      phone_number_text: Providing a phone number is optional. If you provide a phone number, we will be able reach you in case of short term changes
+      save_phone_number: Save phone number
+  activation:
+    email:
+      activation_text_1: You can activate your account here
+      activation_text_2: Your current email address
+      activation_text_3: can not be used in our new system.
+      activation_text_4: 'Please provide a valid email of the University of Hamburg'
+      activation_text_5: 'You have to confirm your email address und use this address for future logins. You will get email notifications o this address:'
+      activation_text_6: "If you don't have a valid email address of the University of Hamburg, please contact us:"
+      activation_text_7: 'For questions and feedback please contact:'
+      contact: cantact
+      send_activation_email: Send confirmation emai
+        
+    email_delivered:
+      delivered_text_1: An email was sent to the address
+      delivered_text_2: Please confirm you email by navigating to the link in the confirmation email.
+
+    index:
+      activation_text_1: You can activate your account here.
+      activation_text_2: In the new recruitment and invitation system you have to login using an email and a passwort.
+      activation_text_3: 'Please enter a password:'
+      password_hint: at least 8 characters, at least one numerical digit, at least one letter, at least one special character
+      save_and_activate_link: save password and activate account
+      
+  admin:
+    calendar:
+      cal_title: Calendar
+      calender_text_1: 'There are collisions in this month:'
+      overlaps: overlaps with
+      as_ics: 'Download this calendar in ICS format:'
+    index:
+      sessions_today: 'Sessions today'
+      participants: Participants
+      latest_experiments: 'Latest experiments:'
+      no_experiments: No experiments have been created
+      statistic: 'Statistics:'
+      active_members: 'Active pool members:'
+      new_members_last_30_days: 'New registrations in the last 30 days:'
+      incomplete_sessions: 'Finished, but not closed sessions:'
+      missing: '%{count} entries missing'
+  degrees:
+    create_new_degree: Create new degree
+    edit_degree: Edit degree
+    confirm: Are you sure you want to delete this degree?
+  languages:
+    create_new_language: Create new language
+    edit_language: Edit language
+    confirm: Are you sure you want to delete this language?
+  professions:
+    create_new_profession: Create new profession
+    edit_profession: Edit profession
+    confirm: Are you sure you want to delete this profession?
+  studies:
+    create_new_study: Create new study programme
+    edit_study: Edit study programme
+    confirm: Are you sure you want to delete this study programme?
+  locations:
+    create_new_location: Create new location
+    edit_location: Edit location
+    confirm: Are you sure you want to delete this location?
+    description: description
+    notice: 'Notice: you can only delete locations which are not used.'
+  enroll:
+    notes: Participation notices
+    alert1: experiment with following sessions
+    alert2: This experiment has following sessions. Please check, if you can participate in all sessions of this experiment.
+    index:
+      new_enrollment: Register for experiment sessions
+      available_sessions: 'You can register for the following sessions:'
+      no_sessions_available: Currently you can't register for experiment sessions.'.
+      register_for_sessions: Register for selected experiment sessions.
+    confirm:
+      confirm_enrollment: Confirm experiment registration
+      confirm_enrollment_question: Do you really want to register to the selected sessions?
+      dates: session date and time
+      enroll_for_sure: Register for session
+  experiments:
+    registration_active: Registration is active
+    registration_inactive: Registration is inactive
+    invitation_active: currently sending invitations
+    participants: Participants
+    new_experiment: New experiment
+    experiments:
+      organizers: 'experiment organizers:'
+      no_sessions: No sessions
+      assigned_participants: Assigned participants
+    form:
+      create_experiment: Create Experiment
+      default_address_is: The default email is
+      experiment_finished: Experiment is closed
+      experiment_in_statistic: Include this experiment in statistics
+    tabs:
+      mail_texts: Email texts
+      reminder_sending: Send invitations
+      data_and_options: Options
+      common_data: General
+      reminders: Experiment reminders
+      experimenters: Experimenters  
+      invitations: Invitations
+      add_participants: Assign new participants
+      view_participants: Assigned participants 
+      history_participants: History of participant assignment
+    experimenters:
+      add_people: Add people...
+    invitation:
+      sending: Send invitations
+      reload_html: '(update in <span id="time_info">%{seconds}</span> seconds)'
+      invitation_active: Currently sending invitatations.
+      invitation_row1: Start sending invitations
+      invitation_row2: mode of invitation
+      invitation_row3: Assigned participants
+      invitation_row4: already invited
+      invitation_row5: Maximum of invitations until now
+      invitation_row6: Invitations sent
+      invitation_row7: Uninvited participants
+      invitation_row8: open session seats
+      invitation_stop: stop invitations
+      invitation_confirm: Are you sure you want to stop the invitation process?
+      count_info1: Currently there
+      count_info2: assigned participants who are not registered in a session, 
+      count_info3: of them where not invited so far.
+      choose_per_interval: 'Please choose the number of emails per interval:'
+      choose_interval: 'Please choose the duration of a time interval:'
+      prefer_new_users: Invite participants with lesser registrations first.
+      start_sending1: Start sending invitations and open experiment for registration.
+      sending_confirm1: Are you sure you want to start sending invitations?
+      start_sending2: Start sending invitations TO ALL participants.
+      sending_confirm2: Are you sure you want to start sending invitations? With this option, you will send invitations also to people who where already invited to this experiment previously.
+    mail:
+      mailtexts: Email texts
+      mail_for_invitation: Invitation email
+      invitation_text: Invitation text
+      mail_for_confirmation: Confirmation email
+      confirmation_text: Confirmation text
+    reminders:
+      reminder: Reminder
+      reminder_email: Reminder email
+      activate_automatic_reminder: activate automatic reminder
+      reminder_info1: Reminders will be send
+      reminder_info2: hours before session begin.
+      reminder_text: Reminder text
+  home:
+    about:
+      legal_notes: Legal notes
+      software: Developers and Software
+      software_html: '
+      
+hroot was developed by the University of Hamburg led by Prof. Dr. Andreas Nicklisch and Dipl.-Pol. Olaf Bock. The software was developed by Dipl.-Inf. Ingmar Baetge.
+<br/><br/>      
+hroot was developed with Ruby on Rails.
+<br/><br/>
+For further questions about this software please visit our project page todo
+'
+    activate:
+      activation: Activation
+      activation_for_experiments: Activate account for experiment participation
+      activation_info1: Did you already have an account for the registration system? In this case, your data was imported to this system. You can activate your account in the new system here.
+      activation_info2: 'Please enter the email address of your existing account:'
+      send_email: Send activation email
+  layouts:
+    landing:
+      no_account: "Don't have an account? Register now to participate in economic experiments:"
+      register_now: Register now
+      already_registered: Did you already have an account?
+      activate_account: Did you already have an account for the registration system? In this case, your data was imported to this system. You can activate your account in the new system here.
+      activate_now: Activate your account now
+      for_registered_users: for registered users
+    info:
+      welcome: Welcome to the WiSo research lab. We implemented a new experiment recruitment and invitation system
+      already_registered: Did you already have an account? 
+      activate_account: Did you already have an account for the registration system? In this case, your data was imported to this system. You can activate your account in the new system here.
+      activate_now: Activate you account now
+      contact: contact
+      questions: 'If you have any questions, please contact us:'
+      for_registered_users: for registered users
+  filter:
+    search_text: 'Search in name or email address:'
+    header: 'Filter:'
+    gender: gender
+    noshow: no shows
+    participated: participation
+    begin: begin of studies
+    birthday: age
+    experience: experience
+    study: field of studies
+    degree: degrees
+    role: role
+    language: languages
+    tags: tags
+    experiment: experiments
+    participation: session participation
+    preference: experiment preference
+    show_deleted: deleted users
+    
+    submit: Filter and show results
+    showing1: Showing
+    showing2: of
+    showing3: 'pool members, already assigned:'
+    
+    title_sessions_with_tags1: 'Only show users, who have participated in experiment sessions with the follwing tags:'
+    title_sessions_with_tags2: participations in sessions of experiments with tag
+    title_sessions_with_tags3: ' '
+    title_study: 'users with field of studies:'
+    title_role: 'Role:'
+    title_preference: Experiment preference
+    title_participation_count: Participation count
+    title_noshow_count: No show count
+    title_language: 'Only participants speaking the following languages:'
+    title_gender: 'Gender:'
+    title_experience: 'Previous experiment experience:'
+    title_experiment: 'Users,'
+    title_degrees: 'users having a degree:' 
+    title_birthday: Birthday
+    title_begin: Begin of studies
+    title_deleted: Deleted users
+    hint_studies: Fields of study...
+    hint_languages: Languages...
+    hint_experiment: Experiments...
+    hint_degrees: Degrees...
+    at_least: At least
+    at_most: At most
+    only: Only
+    without: Without
+    from: from
+    to: to
+    only_with_presence_preference: Only users, who want to participate in presence experiments
+    only_with_online_preference: Only users, who want to participate in online experiments
+    participation_select1: Only assigned users who have particiüated
+    participation_select2: Only assigned users who are registered in a session
+    participation_select3: Only assigned users without session
+    experience_select1: Without users with previous experiment experience
+    experience_select2: Only users with previous experiment experience
+      
+    experiment_select1: who are assigned to one of the following experiments
+    experiment_select2: who are assigned to all of the following experiments
+    experiment_select3: who are not assigned to any of the following experiments
+    experiment_select4: who have participated in at least one session of one of the following experiments
+    experiment_select5: who have participated in at least one session of all of the following experiments
+    experiment_select6: who have not participated in any session of the following experiments
+    
+    deleted_hidden: are hidden
+    deleted_show: are shown
+  
+  filter_summary:
+    header_time: Time
+    header_action: Action
+    header_filter: Filter settings
+    add_text: "%{count} users added"
+    remove_text: "%{count} users removed"
+    search: Search for
+    gender: gender
+    preference: preference
+    only_with_online_preference: only online
+    only_with_presence_preference: only presence
+    noshow_count: no shows
+    participation_count: participations
+    begin_after: begin after
+    begin_before: begin before
+    birthday_after: birthday after
+    birthday_before: birthday before
+    and: and
+    without_experienced: exclude users with experience
+    with_experienced: only users with experience
+    study: 'include field of studies: '
+    not_study: 'exclude field of studies: '
+    degree: 'include degree: '
+    not_degree: 'exclude degree: '
+    exp1: Assigned to one of 
+    exp2: Assigned to all of
+    exp3: Assigned to none of
+    exp4: Participated in one of
+    exp5: Participated in all of
+    exp6: Participated in none of
+    language: 'Languages: '
+
+
+  participants:    
+    history:
+      history_title: History of participant assignment
+      breadcrumb_history: History of participant assignment
+    
+    manage:
+      study: field of studies
+      add_all: Assign all users of the current filtering
+      add_marked: Assign checked users
+    
+      none_found: No users were gefunden
+      none_found_reason: Please change filter settings.
+      add_participants: Assign participants
+      add_new_participants: Assign new participants
+      
+    participants:
+      current_filtered: Current filtering
+      marked_participants: Checked participants
+    
+      study: Field of studies
+      message_all_filtered: Send message to all currently filtered users
+      to_all_filtered: All currently filtered users
+      remove_filtered: Remove all currently filtered users from the experiment
+      remove_filtered_confirm: Are you sure you want to remove all currently filtered users?
+    
+      message_all_marked: Send message to all checked users
+      to_all_marked: Checked users
+      remove_marked: Remove all checked users from the experiment.
+      remove_marked_confirm: Are you sure you want to remove all checked users from the experiment?
+      move_marked1: Move all checked users to session
+      move_marked2: ' '
+    
+      none_found: No pool members found
+      none_found_reason: Please change filter settings.
+    index:
+      already_added_users: Assigned users
+  shared:
+    text_templates_items:
+      save: Save text
+      new: New...
+      insert: Insert
+      delete: Delete
+    messaging:
+      send: Send message
+      to: 'To:'
+      subject: 'Subject:'
+      text: Text
+  sessions:
+    new_session_link: Create new session
+    back_link: Back to session overview
+    session: Session
+    following_session: Following session
+    reminders:
+      session_at: Session at
+      email_title: reminder email for this session
+      activate_sending: activate automatic reminder emails for this session
+      sending_label1: Send reminder mails 
+      sending_label2: hours before session begin
+      reminder_text: Reminder text
+    print:
+      header: Session at
+      lastname: Name
+      firstname: First name
+      phone: Phone
+      gender: G.
+      showup: S
+      participated: P
+      noshow: N
+    new:
+      new_label1: Create new
+      new_label2: ' '
+    edit:
+      at_label: at
+    tabs:
+      reminders: Session reminders
+      common_data: options
+    session_participants:
+      header: Session at
+      print: Print
+      send_to_all: Send message to all session participants
+      send_to_marked: Send message to all checked users
+      remove_marked: Remove checked users from this session
+      marked: Checked users
+      move_marked1: Move checked users to session
+      move_marked2: ' '
+      
+      th_name: Name
+      th_email: Email
+      th_study: Field of studies
+      th_gender: Gender
+      th_begin: Begin
+      save_changes_now: Save changes now
+      no_participants: This session has no participants
+    overlaps:
+      with: Overlap with
+    line:
+      participants_label: 'Participants:'
+      participants_link: 'Participants'
+      incomplete: Participation list is not complete.
+      actions: Actions
+      following_session: Following session
+      duplicate: Duplicate
+      delete: Delete
+      group_size: 'Group size:'
+      delete_confirm: Are you sure you want to delete this session?
+    form:
+      new_session: Create session
+      save_session: Save session
+      limitations_hint: This text will be shown to users during session registration
+      minutes: minutes
+  users:
+    users:
+      message_all_filtered: Send message to all currently filtered users.
+      send_activation_invitation: Send activation invitation to all users who are not yet activated.
+      send_activation_confirm: Are you sure you want to send the activation emails?
+      
+      message_all_marked: Send messageto all checked users
+      send_activation_invitation_marked: Send activation invitation to all checkd users.
+      to_all_filtered: Currently filtered users
+      to_all_marked: Checked users
+      
+      role: Role
+      study: Field of studies
+      gender: Gender
+      begin: Begin
+      created_at: Register date
+      no_show_count: '#N'
+      participations_count: '#P'
+      no_users: No user was found
+      current_filtered: Current filtering
+      marked_users: Checked users
+    edit:
+      edit_user: Edit
+    index:
+      new_user: New user
+    new:
+      create_new_user: Create new user
+    show:
+      more_functions: Additional functions
+      activate_user_after_import: Activate user after import
+      not_activated: not activated after import
+      marked_as_deleted: marked as deleted
+      login_as1: Login as
+      login_as2: ' '
+      
+      
+      
+      
+      gender: Gender
+      phone: Phone
+      matrikel: Student nr.
+      role: Role
+      study: Field of studies
+      degree: Degree
+      begin: Begin of studies
+      country: Country
+      languages: Languages
+      profession: Profession
+      
+      participations_so_far: 'Experiment participation history:'
+      showup: Showup
+      noshow: Non-show
+      participated: Participated
+  devise:
+    confirmations:
+      new:
+      resend_email: Resend email for Signup
+      email_for_registration: Email for signup
+      resend: Resend
+      resend_link: Resend email
+    passwords:
+      new:
+        breadcrumb_forgot_password: Forgot password
+        forgot_password: Forgot password?
+        forgot_link: Send email for password change
+      edit:
+        breadcrumb_forgot_password: Forgot password
+        change_password: Change password
+        password_hint: at least 8 characters, at least one numerical digit, at least one letter, at least one special character
+        change_password_link: Change Password
+      shared:
+        links:
+          login: Login
+          register: Signup
+          forgot_password: Forgot password?
+          no_email: "Didn't receive signup email?"
+      sessions:
+        new:
+          login_breadcrumb: Login
+          login: Login
+          for_registered_users: for registered Users
+          login_link: Login
+      registrations:
+        new:
+          breadcrumb_register: Signup
+          register: Signup
+          enter_email: "Please enter you email and a password - these values will be used to login. The password should be at least 8 characters, and it should contain at least one numerical digit, at least one letter, and at least one special character."
+          password_hint: at least 8 characters, at least one numerical digit, at least one letter, at least one special character
+          please_provide_data: 'Please provide the follwing fields:'
+          optional_data: The following fields are optional. The more fields you enter, the higher the probaility of being invited to experiment sessions.
+          phone_hint: "Providing a phone number helps us contact you faster in case of last minute changes."
+          experience: I already have participated in economic experiments.
+          terms_and_conditions: I have read the terms and conditions and I agree with them.
+          send_link: Signup
+        edit:
+          change_password: Change password
+          change_password_link: Change password
+          please_confirm_password: 'Please enter you current password:'
+  options:
+    tabs:
+      general: Options
+      rooms: Locations
+      emails: Emails
+      professions: Professions
+      languages: Languages
+      studies: Field of studies
+      degrees: Degrees
+      texts: Texts
+    texts:
+      privacy_header: Text for Terms and Conditions
+      privacy_info: This text has to accepted by all users during signup.      
+  
+      welcome_header: Welcome text for users.
+      welcome_info: This text will be shown to users after login.
+      
+      submit_link: Save texts
+    index:
+      email_formats_header: Valid email formats
+      email_formats_info: "Configure valid email formats for user signup. You can limit domainds and you can require a prefix substring before the '@'-Symbol."
+    emails:
+      header1: Email for experiment invitation
+      header2: Email for registration confirmation
+      header3: Reminder email
+      header4: Reminder email for session completion
+      header5: Email for activatin invitation after import.
+      text: Email texts
+  controllers:
+    notice_saved_changes: The changes have been saved.
+    account:
+      notice_phone: The phone number was saved.
+      notice_alternative_mail1: Your secondary email was deleted.
+      notice_alternative_mail2: Die confirmation email for you secondary email has been sent again.
+      notice_all_data: Your data is now complete
+      notice_data_changed: Data was successfully changed.
+    activation:
+      notice_email_sent: An email was sent to validate you email address.
+      notice_invalid_email: This email address is invalid.
+    application:
+      notice_login_required: A login is required for this area.
+      notice_account_not_activated: Your current account has not been activated yet.
+      notice_invalid_url: Invalid url.
+    location:
+      notice_location_created: The location was created.
+      notice_location_changed: The location was changed
+      notice_location_deleted: The location was deleted.
+      notice_location_not_deleted: The location can not be deleted, because there are sessions in this location.
+      
+    degree:
+      notice_degree_created: The degree was created.
+      notice_degree_changed: The degree was changed.
+      notice_degree_deleted: The degree was deleted.
+      notice_degree_not_deleted: The degree can not be deleted, since there are users with this degree.
+    language:
+      notice_language_created: The language was created.
+      notice_language_changed: The language was changed.
+      notice_language_deleted: The language was deleted.  
+    study:
+      notice_study_created: The field of studies was created.
+      notice_study_changed: The field of studies was changed.
+      notice_study_deleted: The field of studies was deleted.
+      notice_study_not_deleted: The field of studies can not be deleted, since there are users with this field of studies.
+    profession:
+      notice_profession_created: The profession was created.
+      notice_profession_changed: The profession was changed.
+      notice_profession_deleted: The profession was deleted.
+      notice_profession_not_deleted: The profession can not be deleted, since there are users with this profession.
+    enroll:
+      location: "Location:"
+      notice_registered: You have been registered. If you are invited to multiple experiments, you can register for further sessions.
+      notice_not_registered: You have NOT been registered, the session is full.
+      notice_abort: The registration was aborted, the session is now full.
+    experiments:
+      notice_created:The experiment was created.
+    home:
+      notice_mail_sent: An email was sent for confirmation.
+      notice_invalid_email: No account with this email address was found.
+      notice_alternative_mail: Your secondary email address was confirmed. It will now be used to
+    participants:
+      notice_mailqueue: Messages have been queued.
+      notice_session1: The checked users have been moved to the session
+      notice_session2: ' '
+      notice_not_moved: The users could not be moved, since there is not enough space in the target session.
+      notice_added_members: The users have been assigned.
+    sessions:
+      notice_new_session: A new session was created.
+      notice_cant_delete_following: Sessions with following sessions can not be deleted.
+      notice_cant_delete_participants: Sessions with participants can not be deleted.
+      notice_deleted: The session was deleted.
+      notice_removed_from_session: The checked users were removed from the session.
+      notice_moved_to_session1: The checked users have been move to the session
+      notice_moved_to_session2: ' '
+      notice_moving_failed: The users could not be moved, since there is not enough space in the target session.
+    users:
+      notice_mailqueue:  Messages have been queued.
+      notice_mailqueue_activation:  Activation messages have been queued.
+      notice_created_user: User was successfully created.
+      notice_activated_after_import: The user was activated after import.
+           
+      
+         
+    
+    

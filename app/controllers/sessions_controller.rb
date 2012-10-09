@@ -54,7 +54,7 @@ class SessionsController < ApplicationController
           SessionParticipation.create(:session => @session, :user => sp.user)
         end
       end  
-      redirect_to(experiment_sessions_path(@experiment), :notice => "Es wurde eine neue Session angelegt")
+      redirect_to experiment_sessions_path(@experiment), :notice => t('controllers.sessions.notice_new_session')
     else
       render :action => "new" 
     end
@@ -80,7 +80,7 @@ class SessionsController < ApplicationController
     params[:session].delete :duration
     
     if @session.update_attributes(params[:session])
-      redirect_to(experiment_sessions_path(@experiment), :notice => "Die Session-Änderungen wurden gespeichert.")
+      redirect_to experiment_sessions_path(@experiment), :notice => t('controllers.notice_saved_changes')
     else
       render :action => "edit" 
     end
@@ -89,7 +89,7 @@ class SessionsController < ApplicationController
   def reminders
     @session = Session.find(params[:id])    
     if params[:session] && @session.update_attributes(params[:session])
-      flash[:notice] = 'Die Einstellungen zur Erinnerung wurden erfolgreich gespeichert.'
+      flash[:notice] = t('controllers.notice_saved_changes')
     end
   end
   
@@ -109,12 +109,12 @@ class SessionsController < ApplicationController
     # only delete sessions without subsessions and without participants
     if @session
       if @session.following_sessions.count > 0 
-        message = "Sessions mit Folgesessions können nicht gelöscht werden."
+        message = t('controllers.sessions.notice_cant_delete_following')
       elsif @session.session_participations.count.to_i > 0
-        message = "Sessions mit Teilnehmern können nicht gelöscht werden."
+        message = t('controllers.sessions.notice_cant_delete_participants')
       else  
         @session.destroy
-        message = "Die Session wurde gelöscht."
+        message = t('controllers.sessions.notice_deleted')
       end
     end
     
@@ -172,17 +172,17 @@ class SessionsController < ApplicationController
       if current_user.has_right?(@experiment, 'manage_participants')
         if params[:user_action] == "0"
           Session.move_members(params['selected_users'].keys.map(&:to_i), @experiment)
-          flash[:notice] = "Die gewählen Teilnehmer wurden aus der Session ausgetragen"
+          flash[:notice] = t('controllers.sessions.notice_removed_from_session')
           User.update_noshow_calculation(params['selected_users'].keys)  
         else
           target = Session.find(params[:user_action].to_i)
         
           if target
             if Session.move_members(params['selected_users'].keys.map(&:to_i), @experiment, target)
-              flash[:notice] = "Die gewählen Teilnehmer wurden in die Session #{target.time_str} verschoben"
+              flash[:notice] = "#{t('controllers.sessions.notice_moved_to_session1')} #{target.time_str} #{t('controllers.sessions.notice_moved_to_session2')}"
               User.update_noshow_calculation(params['selected_users'].keys)
             else
-              flash[:alert] = "Die Mitglieder konnten nicht verschoben werden, da nicht mehr genug freie Plätze in der Session sind."
+              flash[:alert] = t('controllers.sessions.notice_moving_failed')
             end
           end
         end
@@ -235,7 +235,7 @@ class SessionsController < ApplicationController
         end
 
         if changes > 0
-          flash[:notice] = "#{ActionController::Base.helpers.pluralize(changes, "Änderung", "Änderungen")} gespeichert"
+          flash[:notice] = t('controllers.notice_saved_changes')
           User.update_noshow_calculation(params["ids"].keys)
         end 
       end

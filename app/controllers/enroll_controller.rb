@@ -62,6 +62,7 @@ EOSQL
         "#session_location" => if @session.location then @session.location.name else "" end
       })
       
+      # todo date format i18n
       text = @session.experiment.confirmation_text.to_s.mreplace({
         "#firstname" => current_user.firstname, 
         "#lastname"  => current_user.lastname,
@@ -69,7 +70,7 @@ EOSQL
         "#session_start_time" => @session.start_at.strftime("%H:%M"),
         "#session_end_time" => @session.end_at.strftime("%H:%M"),
         "#session_location" => if @session.location then @session.location.name else "" end,
-        "#sessionlist"  =>  ([@session] + @session.following_sessions).map{|s| s.start_at.strftime("%d.%m.%Y, %H:%M Uhr")+(if s.location then " (Ort: #{s.location.name.chomp})" else "" end) }.join("\n")
+        "#sessionlist"  =>  ([@session] + @session.following_sessions).map{|s| s.start_at.strftime("%d.%m.%Y, %H:%M Uhr")+(if s.location then " (#{t('controllers.enroll.location')} #{s.location.name.chomp})" else "" end) }.join("\n")
       })
       
       UserMailer.email(
@@ -79,9 +80,9 @@ EOSQL
         @session.experiment.sender_email
       ).deliver
       
-      redirect_to enroll_path(params[:code]), :notice => "Sie wurden verbindlich angemeldet. Wenn noch weitere Anmeldungen möglich sind, können Sie sich erneut anmelden."
+      redirect_to enroll_path(params[:code]), :notice => t('controllers.enroll.notice_registered')
     else
-      redirect_to enroll_path(params[:code]), :alert => "Die Anmeldung war NICHT erfolgreich, da keine Plätze mehr frei waren."
+      redirect_to enroll_path(params[:code]), :alert => t('controllers.enroll.notice_not_registered')
     end
   end
 
@@ -117,7 +118,7 @@ protected
     end
     
     unless current_user.available_sessions.include?(@session)
-      redirect_to enroll_path, :alert => "Die Anmeldung wurde abgebrochen, da diese Session bereits voll ist."
+      redirect_to enroll_path, :alert => t('controllers.enroll.notice_abort')
       return
     end
   end

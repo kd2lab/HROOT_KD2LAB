@@ -4,7 +4,7 @@ class LoginCodeTest < ActiveSupport::TestCase
   
   context "Login Codes" do
     setup do
-      @user = Factory(:user)
+      @user = FactoryGirl.create(:user)
       @l1 = LoginCode.create(:user => @user, :code => rand(36**10).to_s(36), :created_at => Time.now - 40.days)
       @l2 = LoginCode.create(:user => @user, :code => rand(36**10).to_s(36), :created_at => Time.now - 32.days)
       @l3 = LoginCode.create(:user => @user, :code => rand(36**10).to_s(36))

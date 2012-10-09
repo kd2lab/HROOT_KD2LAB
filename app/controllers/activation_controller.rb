@@ -50,13 +50,13 @@ class ActivationController < ApplicationController
           @activation_user.import_email_confirmation_token = SecureRandom.hex(16)
           @activation_user.save
           UserMailer.import_email_confirmation(@activation_user).deliver
-          redirect_to({:action => :email_delivered}, :notice => "Es wurde Ihnen eine E-Mail zur Bestätigung Ihrer neuen Adresse gesendet.")
+          redirect_to({:action => :email_delivered}, :notice => t('controllers.activation.notice_email_sent'))
           return
         end
       end
       
       # in all other cases display error
-      flash[:alert] = "Diese E-Mail-Adresse ist nicht gültig."
+      flash[:alert] = t('controllers.activation.notice_invalid_email')
     end
   end
   
@@ -68,6 +68,6 @@ protected
 
   def load_user
     @activation_user = User.find_by_import_token(params['import_token'])
-    redirect_to root_url, :alert => "Ungültige Url" unless @activation_user
+    redirect_to root_url unless @activation_user
   end
 end

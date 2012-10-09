@@ -2,23 +2,23 @@ require 'test_helper'
 
 class AdminControllerTest < ActionController::TestCase
   setup do
-    @admin = Factory(:admin)
+    @admin = FactoryGirl.create(:admin)
     sign_in @admin
     
-    @e1 = Factory(:experiment)
-    @e2 = Factory(:experiment)
-    @e3 = Factory(:experiment)
+    @e1 = FactoryGirl.create(:experiment)
+    @e2 = FactoryGirl.create(:experiment)
+    @e3 = FactoryGirl.create(:experiment)
       
-    @e1_s1 = Factory(:future_session, :experiment => @e1)
-    @e1_s2 = Factory(:past_session  , :experiment => @e1, :reference_session_id => @e1_s1.id)
-    @e1_s3 = Factory(:future_session, :experiment => @e1, :reference_session_id => @e1_s1.id)
-    @e1_s4 = Factory(:past_session  , :experiment => @e1)
-    @e1_s5 = Factory(:future_session, :experiment => @e1, :reference_session_id => @e1_s4.id)
-    @e2_s1 = Factory(:past_session  , :experiment => @e2)
-    @e2_s2 = Factory(:future_session, :experiment => @e2, :reference_session_id => @e2_s1.id)
-    @e3_s1 = Factory(:past_session  , :experiment => @e3)
-    @e3_s2 = Factory(:future_session, :experiment => @e3, :reference_session_id => @e3_s1.id)
-    @e3_s3 = Factory(:past_session  , :experiment => @e3)
+    @e1_s1 = FactoryGirl.create(:future_session, :experiment => @e1)
+    @e1_s2 = FactoryGirl.create(:past_session  , :experiment => @e1, :reference_session_id => @e1_s1.id)
+    @e1_s3 = FactoryGirl.create(:future_session, :experiment => @e1, :reference_session_id => @e1_s1.id)
+    @e1_s4 = FactoryGirl.create(:past_session  , :experiment => @e1)
+    @e1_s5 = FactoryGirl.create(:future_session, :experiment => @e1, :reference_session_id => @e1_s4.id)
+    @e2_s1 = FactoryGirl.create(:past_session  , :experiment => @e2)
+    @e2_s2 = FactoryGirl.create(:future_session, :experiment => @e2, :reference_session_id => @e2_s1.id)
+    @e3_s1 = FactoryGirl.create(:past_session  , :experiment => @e3)
+    @e3_s2 = FactoryGirl.create(:future_session, :experiment => @e3, :reference_session_id => @e3_s1.id)
+    @e3_s3 = FactoryGirl.create(:past_session  , :experiment => @e3)
       
   end
   

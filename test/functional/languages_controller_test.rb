@@ -2,8 +2,8 @@ require 'test_helper'
 
 class LanguagesControllerTest < ActionController::TestCase
   setup do
-    @language = Factory(:language)
-    sign_in Factory(:admin)
+    @language = FactoryGirl.create(:language)
+    sign_in FactoryGirl.create(:admin)
   end
 
   test "should get index" do

@@ -3,8 +3,8 @@ require 'test_helper'
 class UsersControllerTest < ActionController::TestCase
   context "the users controller" do
     setup do
-      @user = Factory(:user)
-      sign_in Factory(:admin)
+      @user = FactoryGirl.create(:user)
+      sign_in FactoryGirl.create(:admin)
     end
     
     context "get on index" do
@@ -25,7 +25,7 @@ class UsersControllerTest < ActionController::TestCase
     
     context "creating" do
       should "create a user" do
-        @user2 = Factory.build(:user)
+        @user2 = FactoryGirl.build(:user)
         
         assert_difference('User.count') do
           post :create_user, :user => @user2.attributes.merge(:password => "testtest_8", :password_confirmation => "testtest_8")
@@ -35,7 +35,7 @@ class UsersControllerTest < ActionController::TestCase
       end
       
       should "create a user, when suffix validation is active" do
-        @user2 = Factory.build(:user)
+        @user2 = FactoryGirl.build(:user)
         Settings.mail_restrictions = [{"prefix"=>"test", "suffix"=>"uni-hamburg.de"}, {"prefix"=>"test2", "suffix"=>"uni-magdeburg.de"}]
         
         assert_difference('User.count') do

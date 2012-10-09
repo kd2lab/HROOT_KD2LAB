@@ -3,7 +3,7 @@ require 'test_helper'
 class SessionTest < ActiveSupport::TestCase
   context "Sessions" do
     setup do
-      @e1 = Factory(:experiment)   
+      @e1 = FactoryGirl.create(:experiment)   
       @session = Session.create(:experiment => @e1, :start_at => Time.zone.parse("1.1.2011 14:00"), :end_at => Time.zone.parse("1.1.2011 16:00"), :needed => 20, :reserve => 4)
     end  
     
@@ -25,9 +25,9 @@ class SessionTest < ActiveSupport::TestCase
   
   context "Overlapping Sessions" do
     setup do
-      @e1 = Factory(:experiment)   
-      @l1 = Factory(:location)
-      @l2 = Factory(:location)
+      @e1 = FactoryGirl.create(:experiment)   
+      @l1 = FactoryGirl.create(:location)
+      @l2 = FactoryGirl.create(:location)
     
       @session1 = Session.create(:experiment => @e1, :start_at => Time.zone.parse("1.1.2011 14:00"), :end_at => Time.zone.parse("1.1.2011 16:00"), :needed => 20, :reserve => 4, :location => @l1)
       @session2 = Session.create(:experiment => @e1, :start_at => Time.zone.parse("1.1.2011 15:00"), :end_at => Time.zone.parse("1.1.2011 17:00"), :needed => 20, :reserve => 4, :location => @l1)

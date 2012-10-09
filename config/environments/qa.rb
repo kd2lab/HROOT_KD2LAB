@@ -62,6 +62,11 @@ Hroot::Application.configure do
     :host => 'www.wiso.uni-hamburg.de/hroot'
   }
   
+  # list of supported locales
+  config.locales = [:de, :en]
+  config.locale_names = {:de => 'Deutsch (de)', :en => 'English (en)'}
+
+  
   #config.assets.prefix = "assettest"
   config.path_prefix = nil
 end

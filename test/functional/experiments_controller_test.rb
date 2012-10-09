@@ -3,8 +3,8 @@ require 'test_helper'
 class ExperimentsControllerTest < ActionController::TestCase
   context "the experiments controller" do
     setup do
-      @experiment = Factory(:experiment)
-      sign_in Factory(:admin)
+      @experiment = FactoryGirl.create(:experiment)
+      sign_in FactoryGirl.create(:admin)
     end
     
     context "get on index" do
@@ -63,7 +63,7 @@ class ExperimentsControllerTest < ActionController::TestCase
     
     context "creating" do
       should "create an experiment" do
-        @exp = Factory.build(:experiment)
+        @exp = FactoryGirl.build(:experiment)
         assert_difference('Experiment.count') do
           post :create, :experiment => @exp.attributes
         end

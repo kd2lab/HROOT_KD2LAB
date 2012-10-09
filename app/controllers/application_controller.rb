@@ -3,19 +3,19 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   
   rescue_from(ActiveRecord::RecordNotFound) {
-    redirect_to root_url, :alert => "Für diesen Bereich ist ein Login erforderlich. "
+    redirect_to root_url, :alert => t('controllers.application.notice_login_required')
   }
   
-  rescue_from Exception do |exception|
-    if Rails.env.production?
-        ExceptionNotifier::Notifier.exception_notification(request.env, exception).deliver
-    end
-    redirect_to root_url, :alert => "Leider ist ein interner Fehler aufgetreten. Das hroot-Entwickler-Team wurde automatisch benachrichtigt. Sollte das Problem weiterhin bestehen, wenden Sie sich bitte an das Forschungslabor."
-  end
+  #rescue_from Exception do |exception|
+  #  if Rails.env.production?
+  #      ExceptionNotifier::Notifier.exception_notification(request.env, exception).deliver
+  #  end
+  #  redirect_to root_url, :alert => "Leider ist ein interner Fehler aufgetreten. Das hroot-Entwickler-Team wurde automatisch benachrichtigt. Sollte das Problem weiterhin bestehen, wenden Sie sich bitte an das Forschungslabor."
+  #end
     
   rescue_from CanCan::AccessDenied do |exception|
     #flash[:error] = exception.message
-    redirect_to root_url, :alert => "Für diesen Bereich ist ein Login erforderlich. "
+    redirect_to root_url, :alert => t('controllers.application.notice_login_required')
   end
   
   rescue_from ActionController::RoutingError, with: :render_404
@@ -33,9 +33,10 @@ class ApplicationController < ActionController::Base
   before_filter :set_locale
  
   def set_locale
-    I18n.locale = params[:locale] || I18n.default_locale
-    I18n.locale = params[:locale] || 'en'
     
+    cookies[:locale] = params[:locale] if params[:locale]
+    #I18n.locale = params[:locale] || I18n.default_locale
+    I18n.locale = cookies[:locale] || 'en'
   end
   
   def redirect_imported_users
@@ -43,12 +44,12 @@ class ApplicationController < ActionController::Base
       if current_user.imported && !current_user.activated_after_import
         email = current_user.email
         sign_out current_user
-        redirect_to activate_url(:email_insert => email),:notice => "Ihr bestehender Zugang wurde im neuen System noch nicht aktiviert.", 
+        redirect_to activate_url(:email_insert => email), :notice => t('controllers.application.notice_account_not_activated'), 
       end
     end
   end
   
   def render_404
-    redirect_to root_url, :alert => "Die von Ihnen aufgerufene Url ist nicht gültig."
+    redirect_to root_url, :alert => t('controllers.application.notice_invalid_url')
   end
 end

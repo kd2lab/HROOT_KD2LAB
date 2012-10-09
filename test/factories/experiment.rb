@@ -1,5 +1,7 @@
-Factory.define :experiment do |e|
-  e.sequence(:name) {|n| "Experiment #{n}"}
-  e.invitation_hours 1
-  e.invitation_size 2
+FactoryGirl.define do
+  factory :experiment do 
+    sequence(:name) {|n| "Experiment #{n}"}
+    invitation_hours 1
+    invitation_size 2
+  end
 end

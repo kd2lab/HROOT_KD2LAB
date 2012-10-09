@@ -10,7 +10,7 @@
 = simple_form_for @session, {:html => {:class => "guarded_form session_update form-horizontal"}, :url => url } do |f|   
   = f.input :reference_session_id, :as => :hidden
   = f.input :start_date, :required => false
-  = f.input :duration, :collection => (1..16).map{|x| x*15}, :default => 15
+  = f.input :duration, :collection => (1..16).map{|x| x*15}+[360, 720, 1440], :default => 15
   
   - unless @session.is_subsession?
     = f.input :needed, :default => 20

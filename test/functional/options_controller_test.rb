@@ -3,7 +3,7 @@ require 'test_helper'
 class OptionsControllerTest < ActionController::TestCase
   context "the experiments controller" do
     setup do
-      sign_in Factory(:admin)
+      sign_in FactoryGirl.create(:admin)
     end
     
     context "get on index" do

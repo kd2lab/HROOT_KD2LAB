@@ -3,9 +3,9 @@ require 'test_helper'
 class SessionsControllerTest < ActionController::TestCase
   context "the sessions controller" do
     setup do
-      @experiment = Factory(:experiment)
+      @experiment = FactoryGirl.create(:experiment)
       @session = Session.create(:experiment => @experiment, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 20, :reserve => 4)
-      sign_in Factory(:admin)
+      sign_in FactoryGirl.create(:admin)
     end
     
     context "get on index" do
@@ -18,9 +18,9 @@ class SessionsControllerTest < ActionController::TestCase
     
     context "get on participants to remove users" do
       setup do
-        @user1 = Factory(:user)
-        @user2 = Factory(:user)
-        @user3 = Factory(:user)
+        @user1 = FactoryGirl.create(:user)
+        @user2 = FactoryGirl.create(:user)
+        @user3 = FactoryGirl.create(:user)
         
         SessionParticipation.create(:user => @user1, :session => @session)
         SessionParticipation.create(:user => @user2, :session => @session)
@@ -36,9 +36,9 @@ class SessionsControllerTest < ActionController::TestCase
   
     context "get on participants to move users" do
       setup do
-        @user1 = Factory(:user)
-        @user2 = Factory(:user)
-        @user3 = Factory(:user)
+        @user1 = FactoryGirl.create(:user)
+        @user2 = FactoryGirl.create(:user)
+        @user3 = FactoryGirl.create(:user)
         
         SessionParticipation.create(:user => @user1, :session => @session)
         SessionParticipation.create(:user => @user2, :session => @session)
@@ -60,9 +60,9 @@ class SessionsControllerTest < ActionController::TestCase
     
     context "get on participants to save participation info" do
       setup do
-        @u1 = Factory(:user)
-        @u2 = Factory(:user)
-        @u3 = Factory(:user)
+        @u1 = FactoryGirl.create(:user)
+        @u2 = FactoryGirl.create(:user)
+        @u3 = FactoryGirl.create(:user)
         
         SessionParticipation.create(:user => @u1, :session => @session)
         SessionParticipation.create(:user => @u2, :session => @session)
@@ -159,7 +159,7 @@ class SessionsControllerTest < ActionController::TestCase
     context "deleting a session with participants" do
       setup do
         @session2 = Session.create(:experiment => @experiment, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 20, :reserve => 4)
-        @u = Factory(:user)
+        @u = FactoryGirl.create(:user)
         SessionParticipation.create(:session => @session2, :user => @u)
       end
       

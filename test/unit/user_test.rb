@@ -5,7 +5,7 @@ require 'test_helper'
 class UserTest < ActiveSupport::TestCase
   context "a valid user" do
     setup do
-      @user = Factory(:user)
+      @user = FactoryGirl.create(:user)
     end
 
     #should validate_uniqueness_of(:email)
@@ -39,7 +39,7 @@ class UserTest < ActiveSupport::TestCase
     end
     
     should "require password_confirmation to match password2" do
-      @user = Factory.build(:user)
+      @user = FactoryGirl.build(:user)
       @user.password = "foobar12"
       @user.password_confirmation = "foobar12"
       assert !@user.valid?
@@ -60,14 +60,14 @@ class UserTest < ActiveSupport::TestCase
 
   context "finding available users" do
     setup do
-      @u1 = Factory(:user)
+      @u1 = FactoryGirl.create(:user)
       
-      @e1 = Factory(:experiment, :registration_active => true)
-      @e2 = Factory(:experiment, :registration_active => true)
-      @e3 = Factory(:experiment, :registration_active => true)
-      @e4 = Factory(:experiment)
-      @e5 = Factory(:experiment, :registration_active => true)
-      @e6 = Factory(:experiment, :registration_active => true)
+      @e1 = FactoryGirl.create(:experiment, :registration_active => true)
+      @e2 = FactoryGirl.create(:experiment, :registration_active => true)
+      @e3 = FactoryGirl.create(:experiment, :registration_active => true)
+      @e4 = FactoryGirl.create(:experiment)
+      @e5 = FactoryGirl.create(:experiment, :registration_active => true)
+      @e6 = FactoryGirl.create(:experiment, :registration_active => true)
       
       Participation.create(:user => @u1, :experiment => @e1)
       Participation.create(:user => @u1, :experiment => @e2)
@@ -125,28 +125,28 @@ class UserTest < ActiveSupport::TestCase
       @d1 = Degree.create(:name => "Degree 1")
       @d2 = Degree.create(:name => "Degree 2")
       
-      @u1 = Factory(:user, :firstname => "Hugo", :study => @s1, :experience => true, :degree => @d1)
-      @u2 = Factory(:user, :lastname => "Boss", :study => @s1, :experience => false, :degree => @d2)
-      @u3 = Factory(:user, :email => "somebody@somewhere.net", :study => @s2, :degree => @d1)
-      @u4 = Factory(:user, :gender => 'f', :begin_month => 12, :begin_year => 2010, :study => @s2, :degree => @d2)
-      @u5 = Factory(:user, :gender => 'f', :begin_month => 3, :begin_year => 2011)
-      @u6 = Factory(:user, :gender => 'm', :begin_month => 6, :begin_year => 2011)
-      @u7 = Factory(:user, :gender => 'm', :begin_month => 9, :begin_year => 2011)
-      @u8 = Factory(:user, :deleted => true)
-      @u9 = Factory(:user)
+      @u1 = FactoryGirl.create(:user, :firstname => "Hugo", :study => @s1, :experience => true, :degree => @d1)
+      @u2 = FactoryGirl.create(:user, :lastname => "Boss", :study => @s1, :experience => false, :degree => @d2)
+      @u3 = FactoryGirl.create(:user, :email => "somebody@somewhere.net", :study => @s2, :degree => @d1)
+      @u4 = FactoryGirl.create(:user, :gender => 'f', :begin_month => 12, :begin_year => 2010, :study => @s2, :degree => @d2)
+      @u5 = FactoryGirl.create(:user, :gender => 'f', :begin_month => 3, :begin_year => 2011)
+      @u6 = FactoryGirl.create(:user, :gender => 'm', :begin_month => 6, :begin_year => 2011)
+      @u7 = FactoryGirl.create(:user, :gender => 'm', :begin_month => 9, :begin_year => 2011)
+      @u8 = FactoryGirl.create(:user, :deleted => true)
+      @u9 = FactoryGirl.create(:user)
       
-      @admin = Factory(:admin)
-      @experimenter = Factory(:experimenter)
+      @admin = FactoryGirl.create(:admin)
+      @experimenter = FactoryGirl.create(:experimenter)
       
       @tag1= "Tag1"
       @tag2= "Tag2"
       @tag3= "Tag3"
       
-      @e1 = Factory(:experiment, :tag_list => @tag1, :finished => true, :registration_active => true)
-      @e2 = Factory(:experiment, :tag_list => @tag2)
-      @e3 = Factory(:experiment, :tag_list => @tag3)
-      @e4 = Factory(:experiment, :tag_list => @tag3)
-      @e5 = Factory(:experiment, :tag_list => @tag3)
+      @e1 = FactoryGirl.create(:experiment, :tag_list => @tag1, :finished => true, :registration_active => true)
+      @e2 = FactoryGirl.create(:experiment, :tag_list => @tag2)
+      @e3 = FactoryGirl.create(:experiment, :tag_list => @tag3)
+      @e4 = FactoryGirl.create(:experiment, :tag_list => @tag3)
+      @e5 = FactoryGirl.create(:experiment, :tag_list => @tag3)
 
       @sess1 = Session.create(:experiment => @e1, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 20, :reserve => 4)
       @sess2 = Session.create(:experiment => @e1, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 20, :reserve => 4)
@@ -237,28 +237,28 @@ class UserTest < ActiveSupport::TestCase
     
     should "filter for study" do
       assert_same_elements [@u1, @u2, @u3, @u4], User.load({ :filter => {:study => [@s1.id, @s2.id]}})
-      assert_same_elements [@u5, @u6, @u7, @u9], User.load({ :filter => {:study => [@s1.id, @s2.id], :study_op => "Ohne", :role => 'user'} })
+      assert_same_elements [@u5, @u6, @u7, @u9], User.load({ :filter => {:study => [@s1.id, @s2.id], :study_op => 2, :role => 'user'} })
     end
     
     should "filter for degree" do
       assert_same_elements [@u1, @u2, @u3, @u4], User.load({ :filter => {:degree => [@d1.id, @d2.id]}})
-      assert_same_elements [@u5, @u6, @u7, @u9], User.load({ :filter => {:degree => [@d1.id, @d2.id], :degree_op => "Ohne", :role => 'user'} })
+      assert_same_elements [@u5, @u6, @u7, @u9], User.load({ :filter => {:degree => [@d1.id, @d2.id], :degree_op => 2, :role => 'user'} })
     end
     
     should "filter tags" do      
-      assert_same_elements [], User.load({ :filter => {"exp_tag0" => @tag1, "exp_tag_op1" => ["Mindestens"], "exp_tag_op2" => ["5"], :exp_tag_count => "1"}})
-      assert_same_elements [@u5, @u6], User.load({ :filter => {"exp_tag0" => @tag1, "exp_tag1" => @tag3, "exp_tag_op1" => ["Mindestens", "Mindestens"], "exp_tag_op2" => ["1", "1"], :exp_tag_count => "2"} })
-      assert_same_elements [@u1, @u2, @u3, @u4, @u7, @u9], User.load({ :filter => {"exp_tag0" => @tag1, "exp_tag_op1" => ["Höchstens"], "exp_tag_op2" => ["0"], :exp_tag_count => "1", :role => 'user'} })    
+      assert_same_elements [], User.load({ :filter => {"exp_tag0" => @tag1, "exp_tag_op1" => [1], "exp_tag_op2" => ["5"], :exp_tag_count => "1"}})
+      assert_same_elements [@u5, @u6], User.load({ :filter => {"exp_tag0" => @tag1, "exp_tag1" => @tag3, "exp_tag_op1" => [1, 1], "exp_tag_op2" => ["1", "1"], :exp_tag_count => "2"} })
+      assert_same_elements [@u1, @u2, @u3, @u4, @u7, @u9], User.load({ :filter => {"exp_tag0" => @tag1, "exp_tag_op1" => [2], "exp_tag_op2" => ["0"], :exp_tag_count => "1", :role => 'user'} })    
     end
     
     should "filter for experiments" do
-      assert_same_elements [@u1, @u2, @u3, @u4, @u5, @u6, @u9], User.load({ :filter => {:experiment => [@e1.id, @e2.id], :exp_op => "die zu einem der folgenden Experimente zugeordnet sind"} })
-      assert_same_elements [@u5, @u9], User.load({ :filter => {:experiment => [@e1.id, @e3.id], :exp_op => "die zu allen der folgenden Experimente zugeordnet sind"} })
-      assert_same_elements [@u7], User.load({ :filter => {:experiment => [@e1.id, @e2.id], :exp_op => "die zu keinem der folgenden Experimente zugeordnet sind", :role => "user"} })
+      assert_same_elements [@u1, @u2, @u3, @u4, @u5, @u6, @u9], User.load({ :filter => {:experiment => [@e1.id, @e2.id], :exp_op => 1} })
+      assert_same_elements [@u5, @u9], User.load({ :filter => {:experiment => [@e1.id, @e3.id], :exp_op => 2} })
+      assert_same_elements [@u7], User.load({ :filter => {:experiment => [@e1.id, @e2.id], :exp_op => 3, :role => "user"} })
       
-      assert_same_elements [@u3, @u4, @u5, @u6], User.load({ :filter => {:experiment => [@e1.id, @e2.id], :exp_op => "die an mindestens einer Session eines der folgenden Experimente teilgenommen haben"} })
-      assert_same_elements [@u5], User.load({ :filter => {:experiment => [@e1.id, @e3.id], :exp_op => "die an mindestens einer Session von jedem der folgenden Experimente teilgenommen haben"} })
-      assert_same_elements [@u1, @u2, @u7, @u9], User.load({ :filter => {:experiment => [@e1.id, @e2.id], :exp_op => "die an keiner Session der folgenden Experimente teilgenommen haben", :role => "user"} })
+      assert_same_elements [@u3, @u4, @u5, @u6], User.load({ :filter => {:experiment => [@e1.id, @e2.id], :exp_op => 4} })
+      assert_same_elements [@u5], User.load({ :filter => {:experiment => [@e1.id, @e3.id], :exp_op => 5} })
+      assert_same_elements [@u1, @u2, @u7, @u9], User.load({ :filter => {:experiment => [@e1.id, @e2.id], :exp_op => 6, :role => "user"} })
     end
     
     should "in- or exclude experiment members" do
@@ -273,26 +273,26 @@ class UserTest < ActiveSupport::TestCase
   
   context "filtering users when having multisessions" do
     setup do
-      @u1 = Factory(:user, :firstname => "Hugo")
-      @u2 = Factory(:user, :lastname => "Boss")
+      @u1 = FactoryGirl.create(:user, :firstname => "Hugo")
+      @u2 = FactoryGirl.create(:user, :lastname => "Boss")
       
-      @admin = Factory(:admin)
-      @experimenter = Factory(:experimenter)
+      @admin = FactoryGirl.create(:admin)
+      @experimenter = FactoryGirl.create(:experimenter)
             
-      @e1 = Factory(:experiment)
-      @e2 = Factory(:experiment)
-      @e3 = Factory(:experiment)
+      @e1 = FactoryGirl.create(:experiment)
+      @e2 = FactoryGirl.create(:experiment)
+      @e3 = FactoryGirl.create(:experiment)
       
-      @e1_s1 = Factory(:future_session, :experiment => @e1)
-      @e1_s2 = Factory(:past_session  , :experiment => @e1, :reference_session_id => @e1_s1.id)
-      @e1_s3 = Factory(:future_session, :experiment => @e1, :reference_session_id => @e1_s1.id)
-      @e1_s4 = Factory(:past_session  , :experiment => @e1)
-      @e1_s5 = Factory(:future_session, :experiment => @e1, :reference_session_id => @e1_s4.id)
-      @e2_s1 = Factory(:past_session  , :experiment => @e2)
-      @e2_s2 = Factory(:future_session, :experiment => @e2, :reference_session_id => @e2_s1.id)
-      @e3_s1 = Factory(:past_session  , :experiment => @e3)
-      @e3_s2 = Factory(:future_session, :experiment => @e3, :reference_session_id => @e3_s1.id)
-      @e3_s3 = Factory(:past_session  , :experiment => @e3)
+      @e1_s1 = FactoryGirl.create(:future_session, :experiment => @e1)
+      @e1_s2 = FactoryGirl.create(:past_session  , :experiment => @e1, :reference_session_id => @e1_s1.id)
+      @e1_s3 = FactoryGirl.create(:future_session, :experiment => @e1, :reference_session_id => @e1_s1.id)
+      @e1_s4 = FactoryGirl.create(:past_session  , :experiment => @e1)
+      @e1_s5 = FactoryGirl.create(:future_session, :experiment => @e1, :reference_session_id => @e1_s4.id)
+      @e2_s1 = FactoryGirl.create(:past_session  , :experiment => @e2)
+      @e2_s2 = FactoryGirl.create(:future_session, :experiment => @e2, :reference_session_id => @e2_s1.id)
+      @e3_s1 = FactoryGirl.create(:past_session  , :experiment => @e3)
+      @e3_s2 = FactoryGirl.create(:future_session, :experiment => @e3, :reference_session_id => @e3_s1.id)
+      @e3_s3 = FactoryGirl.create(:past_session  , :experiment => @e3)
       
       Participation.create(:user => @u1, :experiment => @e1)
       SessionParticipation.create(:user => @u1, :session_id => @e1_s1.id, :showup => true, :participated => true)

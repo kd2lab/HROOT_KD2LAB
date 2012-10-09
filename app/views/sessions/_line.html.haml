@@ -1,5 +1,5 @@
 %tr{:class =>if session.is_subsession? then "subsession" else "" end}
-  %td
+  %td.span8
     %span.time{:class => if session.end_at < Time.zone.now then "past" end}
    
       = '+' if session.is_subsession?
@@ -28,20 +28,20 @@
           %span.session-warning
             =t '.incomplete'
   
-  %td
-    .btn-group{:style => 'float:left'}
+  %td.span4
+    .btn-group
       - if current_user.has_right?(@experiment, 'manage_sessions')
         = link_to t(:edit), edit_experiment_session_path(@experiment, session), :class => 'btn btn-primary'
       = link_to t('.participants_link'), participants_experiment_session_path(@experiment, session), :class => 'btn'
     
     
-    - if current_user.has_right?(@experiment, 'manage_sessions')
-      .btn-group{:style => 'float:left'}
-        %a.btn.dropdown-toggle{:'data-toggle' => "dropdown", :href => "#"}
-          =t '.actions'
-          %b.caret
-        %ul.dropdown-menu
-          - unless session.is_subsession?
-            %li= link_to t('.following_session'), new_experiment_session_path(:experiment_id => @experiment, :reference_session_id => session.id), :class => "session_new_subsession"
-          %li= link_to t('.duplicate'), duplicate_experiment_session_path(@experiment, session)
-          %li= link_to t('.delete'), experiment_session_path(@experiment, session), :method => :delete, :confirm => t('.delete_confirm')
+      - if current_user.has_right?(@experiment, 'manage_sessions')
+        .btn-group{:style => 'float:left'}
+          %a.btn.dropdown-toggle{:'data-toggle' => "dropdown", :href => "#"}
+            =t '.actions'
+            %b.caret
+          %ul.dropdown-menu
+            - unless session.is_subsession?
+              %li= link_to t('.following_session'), new_experiment_session_path(:experiment_id => @experiment, :reference_session_id => session.id), :class => "session_new_subsession"
+            %li= link_to t('.duplicate'), duplicate_experiment_session_path(@experiment, session)
+            %li= link_to t('.delete'), experiment_session_path(@experiment, session), :method => :delete, :confirm => t('.delete_confirm')

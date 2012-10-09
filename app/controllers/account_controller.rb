@@ -11,7 +11,7 @@ class AccountController < ApplicationController
     if params[:phone]
       current_user.phone = params[:phone]
       current_user.save
-      redirect_to({:action => 'phone'}, :notice => "Ihre Telefonnummer wurde gespeichert.")
+      redirect_to({:action => 'phone'}, :notice => t('controllers.account.notice_phone'))
     end  
   end
   
@@ -21,12 +21,12 @@ class AccountController < ApplicationController
       current_user.secondary_email_confirmation_token = nil
       current_user.secondary_email_confirmed_at = nil
       current_user.save
-      redirect_to({:action => :alternative_email}, :notice => "Ihre alternative E-Mail-Adresse wurde gelöscht")
+      redirect_to({:action => :alternative_email}, :notice =>  t('controllers.account.notice_alternative_mail1'))
     end  
 
     if params[:resend] && !current_user.secondary_email_confirmation_token.blank?
       UserMailer.secondary_email_confirmation(current_user).deliver
-      redirect_to({:action => :alternative_email}, :notice => "Die E-Mail zur Bestätigung Ihrer alternativen E-Mail-Adresse wurde Ihnen erneut zugesendet.")
+      redirect_to({:action => :alternative_email}, :notice => t('controllers.account.notice_alternative_mail2'))
     end  
       
     if params[:user]
@@ -43,13 +43,13 @@ class AccountController < ApplicationController
   
   # todo secure this
   def edit
-    redirect_to(account_path, :notice => 'Es wurde alle Daten angegeben.') unless current_user.is_missing_data?
+    redirect_to(account_path, :notice => t('controllers.account.notice_all_data')) unless current_user.is_missing_data?
     
     if params[:user]
       params[:user][:country_name] = nil if params[:user][:country_name] == ''
       
       if current_user.update_attributes(params[:user])
-        redirect_to(account_edit_path, :notice => 'Der Benutzer wurde erfolgreich geändert') 
+        redirect_to(account_edit_path, :notice => t('controllers.account.notice_data_changed')) 
       end
     end
   end

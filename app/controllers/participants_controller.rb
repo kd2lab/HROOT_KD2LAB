@@ -26,27 +26,38 @@ class ParticipantsController < ApplicationController
       
       # store filters in session to enable redirect
       session[:filter] = params[:filter]
-      redirect_to(experiment_participants_path(@experiment), :flash => {:notice => "Nachricht(en) wurden in die Mailqueue eingetragen."})
+      redirect_to experiment_participants_path(@experiment), :flash => {:notice => t('controllers.participants.notice_mailqueue')}
     elsif !params[:user_action].blank?
       if params[:user_action] == "remove_all"
         ids =  User.load_ids(params, {:experiment => @experiment, :sort_column => sort_column, :sort_direction => sort_direction, :exclude_non_participants => 1})
         
-        # aus allen sessions austragen, session participations löschen
-        Session.move_members(ids, @experiment)
+        if ids.length > 0   
+          # aus allen sessions austragen, session participations löschen
+          Session.move_members(ids, @experiment)
         
-        # participation auch löschen
-        ids.each do |id|
-          p = Participation.find_by_user_id_and_experiment_id(id, @experiment.id)
-          p.destroy if p
+          # store all changes to the user base
+          history_entry = HistoryEntry.create(:filter_settings => params[:filter].to_json, :experiment_id => @experiment.id, :action => "remove_filtered_users", :user_count => ids.length, :user_ids => ids.to_json)
+      
+          # participation auch löschen
+          ids.each do |id|
+            p = Participation.find_by_user_id_and_experiment_id(id, @experiment.id)
+            p.destroy if p
+          end
         end
       elsif params[:user_action] == "0" && params[:selected_users]
         # aus allen sessions austragen, session participations löschen
-        Session.move_members(params[:selected_users].keys.map(&:to_i), @experiment)
+        if params[:selected_users].length > 0   
+          Session.move_members(params[:selected_users].keys.map(&:to_i), @experiment)
         
-        # participation auch löschen
-        params[:selected_users].keys.map(&:to_i).each do |id|
-          p = Participation.find_by_user_id_and_experiment_id(id, @experiment.id)
-          p.destroy if p
+          # store all changes to the user base
+          history_entry = HistoryEntry.create(:filter_settings => params[:filter].to_json, :experiment_id => @experiment.id, :action => "remove_selected_users", :user_count => params[:selected_users].length, :user_ids => params[:selected_users].keys.map(&:to_i).to_json)
+      
+        
+          # participation auch löschen
+          params[:selected_users].keys.map(&:to_i).each do |id|
+            p = Participation.find_by_user_id_and_experiment_id(id, @experiment.id)
+            p.destroy if p
+          end
         end  
       elsif params[:user_action].to_i > 0 && params[:selected_users]
         target = Session.find(params[:user_action].to_i)
@@ -56,9 +67,9 @@ class ParticipantsController < ApplicationController
           session[:filter] = params[:filter]
     
           if Session.move_members(params[:selected_users].keys.map(&:to_i), @experiment, target)
-            redirect_to(experiment_participants_path(@experiment), :flash => {:notice => "Die gewählen Teilnehmer wurden in die Session #{target.time_str} eingetragen"})            
+            redirect_to experiment_participants_path(@experiment), :flash => {:notice => "#{t('controllers.participants.notice_session1')} #{target.time_str} #{t('controllers.participants.notice_session2')}"}
           else
-            redirect_to(experiment_participants_path(@experiment), :flash => {:alert => "Die Teilnehmer konnten nicht verschoben werden, da nicht mehr genug freie Plätze in der Session sind."})
+            redirect_to experiment_participants_path(@experiment), :flash => {:alert => t('controllers.participants.notice_not_moved')}
           end    
         end
       end
@@ -74,32 +85,45 @@ class ParticipantsController < ApplicationController
     
     # create participation relation
     if params[:submit_all]
-      # persist filter settings
-      filter_settings = Filter.create(:settings => params[:filter].to_json)
+      # load filtered users without those already in the experiment (and without deleted users)
+      ids =  User.load_ids(params, {:sort_column => sort_column, :sort_direction => sort_direction, :exclude_experiment_participants => 1, :experiment => @experiment})
+
+      # did we find users?
+      if ids.length > 0      
+        # store all changes to the user base    
+        history_entry = HistoryEntry.create(:filter_settings => params[:filter].to_json, :experiment_id => @experiment.id, :action => "add_filtered_users", :user_count => ids.length, :user_ids => ids.to_json)
       
-      ids =  User.load_ids(params, {:sort_column => sort_column, :sort_direction => sort_direction, :exclude_experiment_participants => 1})
-      ids.each do |id|
-        p = Participation.find_or_create_by_user_id_and_experiment_id(id, @experiment.id)
-        p.filter_id = filter_settings.id
-        p.save
+        ids.each do |id|
+          p = Participation.find_or_create_by_user_id_and_experiment_id(id, @experiment.id)
+          p.filter_id = history_entry.id
+          p.save
+        end
+        flash[:notice] = t('controllers.participants.notice_added_members')
       end
-      flash[:notice] = "Die Poolmitglieder wurden zugeordnet"  
     elsif (params[:submit_marked]) && params[:selected_users]
-      # persist filter settings
-      filter_settings = Filter.create(:settings => params[:filter].to_json)
-      params[:selected_users].keys.each do |id|
-        p = Participation.find_or_create_by_user_id_and_experiment_id(id, @experiment.id)
-        p.filter_id = filter_settings.id
-        p.save
-      end
-      flash[:notice] = "Die Poolmitglieder wurden zugeordnet"
-    end  
-    
+      # did we find users?
+      if params[:selected_users].length > 0      
+        # store all changes to the user base
+        history_entry = HistoryEntry.create(:filter_settings => params[:filter].to_json, :experiment_id => @experiment.id, :action => "add_selected_users", :user_count => params[:selected_users].length, :user_ids => params[:selected_users].keys.map(&:to_i).to_json)
+
+        params[:selected_users].keys.each do |id|
+          p = Participation.find_or_create_by_user_id_and_experiment_id(id, @experiment.id)
+          p.filter_id = history_entry.id
+          p.save
+        end
+        flash[:notice] = t('controllers.participants.notice_added_members')
+      end  
+    end
     
     @users = User.paginate(params, {:experiment => @experiment, :sort_column => sort_column, :sort_direction => sort_direction, :exclude_experiment_participants => 1})
     @user_count = User.where('users.role' => 'user', 'users.deleted' => false).count
     @participants_count = @experiment.participations.includes(:user).where('users.role' => 'user', 'users.deleted' => false).count
   end
+  
+  def history
+    
+  end
+  
   
   protected
   

@@ -1,5 +1,6 @@
 = content_for :breadcrumb do
   = render :partial => "layouts/crumb", :object => [           |
+      link_to(t('administration'), :controller => "admin", :action => "index"), |
       link_to(t(:experiments_header), experiments_path),                |
       link_to(@experiment.name, experiment_sessions_path(@experiment)), |
       t('.sending')]
@@ -19,10 +20,7 @@
       $(reload());
       
   %small{:style => 'float:right'}
-    =t '.reload1' 
-    %span#time_info
-      60
-    =t '.reload1' 
+    =t '.reload_html', :seconds => '60' 
     
   = t '.invitation_active'
   %br
@@ -91,8 +89,8 @@
     =t '.prefer_new_users'
     %br
     %br
-    = f.submit t('.start_sending1'), :confirm => t('.sending_conirm1'), :class => "guarded_form_save btn btn-success"
-    = f.submit t('.start_sending2'), :confirm => t('.sending_conirm1'), :class => "guarded_form_save btn btn-warning"
+    = f.button t('.start_sending1'), :confirm => t('.sending_confirm1'), :class => "guarded_form_save btn btn-success", :value => ''
+    = f.button t('.start_sending2'), :confirm => t('.sending_confirm2'), :class => "guarded_form_save btn btn-warning", :value => :send_all
     %span#info_text2
     
 %br

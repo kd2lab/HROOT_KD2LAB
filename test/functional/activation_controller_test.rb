@@ -6,13 +6,13 @@ class ActivationControllerTest < ActionController::TestCase
       Settings.mail_restrictions = [{"prefix"=>"sdf", "suffix"=>"uni-hamburg.de"}, {"prefix"=>"", "suffix"=>"studium.uni-hamburg.de"}]
       
       @import_token1 = "sdjfhsdfkwefu238h23fksjdhf"
-      @u1 = Factory(:user, :email => "test@test.test", :import_token => @import_token1, :imported => true, :activated_after_import => false)
+      @u1 = FactoryGirl.create(:user, :email => "test@test.test", :import_token => @import_token1, :imported => true, :activated_after_import => false)
       
       @import_token2 = "asdfasfwesdjfhsdfkwefu238h23fksjdhf"
-      @u2 = Factory(:user, :email => "xxxsdfxxx@uni-hamburg.de", :import_token => @import_token2, :imported => true, :activated_after_import => false)
+      @u2 = FactoryGirl.create(:user, :email => "xxxsdfxxx@uni-hamburg.de", :import_token => @import_token2, :imported => true, :activated_after_import => false)
 
       @import_token3 = "cweesdfasfwesdjfhsdfkwefefksjdhf"
-      @u3 = Factory(:user, :email => "blubber@studium.uni-hamburg.de", :import_token => @import_token3, :imported => true, :activated_after_import => false)
+      @u3 = FactoryGirl.create(:user, :email => "blubber@studium.uni-hamburg.de", :import_token => @import_token3, :imported => true, :activated_after_import => false)
     end
     
     context "get on index with wrong token" do
@@ -123,7 +123,7 @@ class ActivationControllerTest < ActionController::TestCase
     
     context "post on index with correct password" do
       setup do
-        @u4 = Factory(:user, 
+        @u4 = FactoryGirl.create(:user, 
           :email => "test5@test5.de", 
           :import_token => "ebpoi44n8nvkwje", 
           :imported => true, 

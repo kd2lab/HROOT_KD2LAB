@@ -25,7 +25,9 @@ class UsersController < ApplicationController
       
       # store filters in session to enable redirect
       session[:filter] = params[:filter]
-      redirect_to(users_path, :flash => {:notice => "Nachricht(en) wurden in die Mailqueue eingetragen."})
+      
+      # todo flash -> notice?
+      redirect_to users_path, :flash => {:notice => t('controllers.users.notice_mailqueue')}
     elsif !params[:user_action].blank?  
       # store filters in session to enable redirect
       session[:filter] = params[:filter]
@@ -40,10 +42,11 @@ class UsersController < ApplicationController
       
       Message.send_message(current_user.id, ids, nil, Settings.import_invitation_subject, Settings.import_invitation_text)
       
-      redirect_to(users_path, :flash => {:notice => "Die Aktivierungs-Einladungen(en) wurden in die Mailqueue eingetragen."})
+      #todo flash -> notice?
+      redirect_to users_path, :flash => {:notice => t('controllers.users.notice_mailqueue_activated')}
     end
-    
-    @users = User.paginate(params, {:sort_column => sort_column, :sort_direction => sort_direction, :include_deleted_users => 1})
+        
+    @users = User.paginate(params, {:sort_column => sort_column, :sort_direction => sort_direction, :include_deleted_users => (params[:filter][:show_deleted].to_s == "1")})
     @user_count = User.count
   end
   
@@ -66,7 +69,7 @@ class UsersController < ApplicationController
     @user.admin_update = true
     
     if @user.save
-      redirect_to(users_url, :notice => 'Der Benutzer wurde erfolgreich angelegt.') 
+      redirect_to users_url, :notice => t('controllers.users.created_user')
     else
       render :action => "new" 
     end
@@ -79,7 +82,7 @@ class UsersController < ApplicationController
     end
       
     if @user.update_attributes(params[:user])
-      redirect_to(user_url(@user), :notice => 'Der Benutzer wurde erfolgreich geändert') 
+      redirect_to user_url(@user), :notice => t('controllers.notice_saved_changes') 
     else
       render :action => "edit" 
     end
@@ -95,7 +98,7 @@ class UsersController < ApplicationController
     @user.activated_after_import = true
     @user.import_token = nil
     @user.save
-    redirect_to(user_url(@user), :notice => 'Der Benutzer wurde nach dem Import freigeschaltet.') 
+    redirect_to user_url(@user), :notice => t('controllers.users.notice_activated_after_import')
   end
   
   def login_as

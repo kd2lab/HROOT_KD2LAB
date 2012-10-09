@@ -9,6 +9,7 @@ class Experiment < ActiveRecord::Base
   has_many :participants, :through => :participations, :source => :user
   
   has_many :sessions, :order => "start_at"
+  has_many :history_entries, :order => :created_at
   
   validates_presence_of :name
   
