@@ -19,7 +19,7 @@ class LanguagesController < ApplicationController
     @language = Language.new(params[:language])
 
     if @language.save
-      redirect_to(languages_path, :notice => 'Die Sprache wurde angelegt.') 
+      redirect_to languages_path, :notice => t('controllers.language.notice_language_created') 
     else
       render :action => "new"
     end
@@ -27,7 +27,7 @@ class LanguagesController < ApplicationController
 
   def update
     if @language.update_attributes(params[:language])
-      redirect_to(languages_path, :notice => 'Die Sprache wurde geändert') 
+      redirect_to languages_path, :notice => t('controllers.language.notice_language_changed')
     else
       render :action => "edit"
     end
@@ -35,6 +35,6 @@ class LanguagesController < ApplicationController
 
   def destroy
     @language.destroy
-    redirect_to languages_url, :notice => "Die Sprache wurde entfernt"
+    redirect_to languages_url, :notice => t('controllers.language.notice_language_deleted')
   end
 end

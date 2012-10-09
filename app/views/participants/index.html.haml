@@ -1,5 +1,6 @@
 = content_for :breadcrumb do
   = render :partial => "layouts/crumb", :object => [           |
+      link_to(t('administration'), :controller => "admin", :action => "index"), |  
       link_to(t(:experiments_header), experiments_path),                |
       link_to(@experiment.name,experiment_sessions_path(@experiment)), |
       t('experiments.participants')]
@@ -15,6 +16,8 @@
 
 %h2=t '.already_added_users'
 %br
+
+
 = form_tag experiment_participants_path(@experiment), :method => 'post', :id => "user_search" do
   #participants
     = render 'participants'

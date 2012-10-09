@@ -68,7 +68,5 @@
               - u = s.experiment.experimenters.all
               = u.collect{|x| "#{x.firstname} #{x.lastname}"}.join(', ')
             %td
-              =t '.missing1'
-              = s.session_participations.where("showup=0 AND participated=0 AND noshow=0").count
-              =t '.missing2'
+              =t '.missing', :count => s.session_participations.where("showup=0 AND participated=0 AND noshow=0").count
 

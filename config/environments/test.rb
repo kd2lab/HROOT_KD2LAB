@@ -37,6 +37,10 @@ Hroot::Application.configure do
 
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
+  
+  # list of supported locales
+  config.locales = [:de, :en]
+  config.locale_names = {:de => 'Deutsch (de)', :en => 'English (en)'}
 end
 
 Rails.application.routes.default_url_options[:host] =  'test.host'

@@ -19,7 +19,7 @@ class ProfessionsController < ApplicationController
     @profession = Profession.new(params[:profession])
 
     if @profession.save
-      redirect_to(professions_path, :notice => 'Der Beruf wurde angelegt.') 
+      redirect_to professions_path, :notice => t('controllers.profession.notice_profession_created') 
     else
       render :action => "new"
     end
@@ -27,7 +27,7 @@ class ProfessionsController < ApplicationController
 
   def update
     if @profession.update_attributes(params[:profession])
-      redirect_to(professions_path, :notice => 'Der Beruf wurde geändert') 
+      redirect_to professions_path, :notice => t('controllers.profession.notice_profession_changed') 
     else
       render :action => "edit"
     end
@@ -35,10 +35,10 @@ class ProfessionsController < ApplicationController
 
   def destroy
     if @profession.users.count > 0
-      redirect_to(professions_url, :notice => "Der Beruf kann nicht gelöscht werden, da User mit diesem Beruf existieren.") 
+      redirect_to professions_url, :notice => t('controllers.profession.notice_profession_not_deleted') 
     else
       @profession.destroy
-      redirect_to professions_url, :notice => "Der Beruf wurde entfernt"
+      redirect_to professions_url, :notice => t('controllers.profession.notice_profession_deleted') 
     end
     
   end

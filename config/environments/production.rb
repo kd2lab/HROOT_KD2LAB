@@ -64,6 +64,11 @@ Hroot::Application.configure do
   
   #config.assets.prefix = "/hroot/assets"
   config.path_prefix = '/hroot'
+  
+  # list of supported locales
+  config.locales = [:de, :en]
+  config.locale_names = {:de => 'Deutsch (de)', :en => 'English (en)'}
+
 end
 
 GA.tracker = "UA-33420680-1"

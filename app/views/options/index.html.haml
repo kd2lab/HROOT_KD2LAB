@@ -12,11 +12,9 @@
 .row
   .span6
     = form_tag(options_index_path, :method => "post", :class => "form-horizontal") do 
-      %h3
-        Gültige E-Mail-Formate
-      
-      Hier kann festgelegt werden, welche E-Mail-Formate bei der Registrierung gültig sind. Dabei kann ein Prefix gefordert werden (ein Substring vor dem @-Zeichen), und es kann definiert werden, welche Domain die Adressen haben müssen.  
-  
+      %h3=t '.email_formats_header'
+        
+      =t '.email_formats_info'
       %br
       %br
       #url-tags
@@ -41,4 +39,4 @@
     
       %br
       %br
-      =submit_tag "Änderungen speichern", :class => "btn btn-primary"
+      =submit_tag t(:save), :class => "btn btn-primary"

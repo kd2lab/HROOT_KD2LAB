@@ -25,6 +25,16 @@ module CalendarHelper
     # args is an argument hash containing :event, :day, and :options
     calendar(event_calendar_opts) do |args|
       session = args[:event]
+      surplus = session.session_participations.count - session.needed
+
+      part_css_class = if surplus < 0 then 
+          "participants-red-marker"            
+        elsif surplus < session.reserve then
+          "participants-yellow-marker"         
+        else                            
+          "participants-green-marker"          
+        end                             
+      
 
       if can? :read, session.experiment 
         links = %(<a href="#{participants_experiment_session_path(session.experiment, session)}">#{session.start_at.strftime("%H:%M")}</a>
@@ -42,7 +52,8 @@ module CalendarHelper
           data-sessionid="#{session.id}"
           data-count="#{session.session_participations.count} (#{session.needed},#{session.reserve})"
           data-exp="#{session.experiment.experimenters.collect{|u| u.firstname[0]+". "+u.lastname}.join(' | ')}">
-          #{links}
+            <div class="participation-marker #{part_css_class}"></div>
+            #{links}
           </div>)
     end
   end

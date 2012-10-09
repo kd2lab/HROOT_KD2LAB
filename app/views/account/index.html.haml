@@ -12,10 +12,7 @@
   
     %h3= t('.welcome')
     %br
-    - if current_user.imported
-      = Settings.welcome_text_after_import # todo i18n
-    - else
-      = Settings.welcome_text #todo i18n
+    = Settings.welcome_text #todo i18n
     %br
     %br
     

@@ -5,6 +5,7 @@
         = link_to t(:logout), logout_path, :method => :delete, :id => "logout", :class => "btn btn-small pull-right navbar-form"
         
         %ul.nav.pull-right
+                
           
           - if current_user.admin?
             - count = Recipient.where('sent_at IS NULL').count
@@ -20,13 +21,34 @@
               = current_user.email
           %li.divider-vertical
           
+          %li.dropdown
+            %a.dropdown-toggle{:href => '#', :'data-toggle' => 'dropdown'}
+              %span.badge
+                = I18n.locale
+                %b.caret
+            %ul.dropdown-menu
+              - Hroot::Application.config.locales.each do |loc|
+                %li  
+                  %a{:href => dashboard_url+"?locale=#{loc}"}
+                    = Hroot::Application.config.locale_names[loc]
+            
           
       - else
         = link_to t(:login), login_path, :class => "btn btn-small pull-right"
         %ul.nav.pull-right
           %li= link_to t(:register_now), register_path 
           %li.divider-vertical
-      
+          %li.dropdown
+            %a.dropdown-toggle{:href => '#', :'data-toggle' => 'dropdown'}
+              %span.badge
+                = I18n.locale
+                %b.caret
+            %ul.dropdown-menu
+              - Hroot::Application.config.locales.each do |loc|
+                %li  
+                  %a{:href => root_url+"?locale=#{loc}"}
+                    = Hroot::Application.config.locale_names[loc]
+          
       - if user_signed_in? 
         - if current_user.user?
           %a.brand{:href => account_url}

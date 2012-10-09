@@ -3,16 +3,16 @@ require 'test_helper'
 class ParticipantsControllerTest < ActionController::TestCase
   context "the participants controller" do
     setup do
-      @experiment = Factory(:experiment)
+      @experiment = FactoryGirl.create(:experiment)
       @session = Session.create(:experiment => @experiment, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 20, :reserve => 4)
-      sign_in Factory(:admin)      
+      sign_in FactoryGirl.create(:admin)      
     end
     
     context "get on index" do
       setup do
-        @user1 = Factory(:user)
-        @user2 = Factory(:user)
-        @user3 = Factory(:user)
+        @user1 = FactoryGirl.create(:user)
+        @user2 = FactoryGirl.create(:user)
+        @user3 = FactoryGirl.create(:user)
        
         Participation.create(:user => @user1, :experiment => @experiment)
         Participation.create(:user => @user2, :experiment => @experiment)
@@ -30,9 +30,9 @@ class ParticipantsControllerTest < ActionController::TestCase
     
     context "get on index to remove users" do
       setup do
-        @user1 = Factory(:user)
-        @user2 = Factory(:user)
-        @user3 = Factory(:user)
+        @user1 = FactoryGirl.create(:user)
+        @user2 = FactoryGirl.create(:user)
+        @user3 = FactoryGirl.create(:user)
         
         SessionParticipation.create(:user => @user1, :session => @session)
         SessionParticipation.create(:user => @user2, :session => @session)
@@ -48,9 +48,9 @@ class ParticipantsControllerTest < ActionController::TestCase
     
     context "get on index to move users" do
       setup do
-        @user1 = Factory(:user)
-        @user2 = Factory(:user)
-        @user3 = Factory(:user)
+        @user1 = FactoryGirl.create(:user)
+        @user2 = FactoryGirl.create(:user)
+        @user3 = FactoryGirl.create(:user)
         
         SessionParticipation.create(:user => @user1, :session => @session)
         SessionParticipation.create(:user => @user2, :session => @session)
@@ -72,9 +72,9 @@ class ParticipantsControllerTest < ActionController::TestCase
     
     context "get on index to move users when target session is full" do
       setup do
-        @user1 = Factory(:user)
-        @user2 = Factory(:user)
-        @user3 = Factory(:user)
+        @user1 = FactoryGirl.create(:user)
+        @user2 = FactoryGirl.create(:user)
+        @user3 = FactoryGirl.create(:user)
 
         @session2 = Session.create(:experiment => @experiment, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 2, :reserve => 0)
         
@@ -106,9 +106,9 @@ class ParticipantsControllerTest < ActionController::TestCase
     
     context "get on manage with users to add to experiment" do
       setup do
-        @user1 = Factory(:user)
-        @user2 = Factory(:user)
-        @user3 = Factory(:user)
+        @user1 = FactoryGirl.create(:user)
+        @user2 = FactoryGirl.create(:user)
+        @user3 = FactoryGirl.create(:user)
         get :manage, :experiment_id => @experiment.id, :submit_marked => true, :selected_users => {@user1.id => "1", @user2.id => "1"}
       end
     

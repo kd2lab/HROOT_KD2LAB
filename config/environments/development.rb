@@ -27,7 +27,13 @@ Hroot::Application.configure do
     :port => 3000
   }
   
+  # set a site-wide path prefix here if hroot is supposed to run 
+  # in a subdirectory like http://youdomain.com/subdirectory/hroot
   config.path_prefix = nil
+  
+  # list of supported locales
+  config.locales = [:de, :en]
+  config.locale_names = {:de => 'Deutsch (de)', :en => 'English (en)'}
 end
 
 Rails.application.routes.default_url_options[:host] =  'localhost:3000'

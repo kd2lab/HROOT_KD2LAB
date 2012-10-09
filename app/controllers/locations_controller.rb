@@ -19,7 +19,7 @@ class LocationsController < ApplicationController
     @location = Location.new(params[:location])
 
     if @location.save
-      redirect_to(locations_path, :notice => 'Der Raum wurde angelegt.') 
+      redirect_to(locations_path, :notice => t('controllers.location.notice_location_created')) 
     else
       render :action => "new"
     end
@@ -27,7 +27,7 @@ class LocationsController < ApplicationController
 
   def update
     if @location.update_attributes(params[:location])
-      redirect_to(locations_path, :notice => 'Der Raum wurde geändert') 
+      redirect_to(locations_path, :notice => t('controllers.location.notice_location_changed')) 
     else
       render :action => "edit"
     end
@@ -35,10 +35,10 @@ class LocationsController < ApplicationController
 
   def destroy
     if @location.sessions.count > 0
-      redirect_to(locations_url, :notice => "Der Raum kann nicht gelöscht werden, da Sessions für diesen Raum eingetragen sind.") 
+      redirect_to locations_url, :notice => t('controllers.location.notice_location_not_deleted')
     else
       @location.destroy
-      redirect_to locations_url, :notice => "Der Raum wurde entfernt"
+      redirect_to locations_url, :notice => t('controllers.location.notice_location_deleted')
     end
   end
 end

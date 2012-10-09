@@ -115,6 +115,7 @@ Hroot::Application.routes.draw do
           get :manage
           post :manage
           post :index
+          get :history
         end
       end
     end

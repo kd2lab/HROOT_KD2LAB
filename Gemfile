@@ -23,7 +23,7 @@ gem 'capistrano-ext'
 # gem 'ruby-debug'
 gem 'ruby-debug19', :require => 'ruby-debug'
 gem 'haml'
-gem "rails-settings"   #, :git => "git://github.com/100hz/rails-settings.git"
+gem 'ledermann-rails-settings', :require => 'rails-settings'
 gem 'sequel'
 gem 'jquery-rails', '>= 1.0.12'
 gem 'will_paginate'
@@ -53,7 +53,7 @@ gem 'twitter-bootstrap-rails'
 group :development, :test do
   gem 'simplecov', :require => false
   gem 'jslint_on_rails'
-  gem 'factory_girl_rails'
+  gem "factory_girl_rails", "~> 4.0"
   gem 'shoulda'
   #gem 'shoulda-matchers'
   #gem 'shoulda-context'

@@ -10,17 +10,17 @@
 = render :partial => "tabs", :locals => {:selected => :emails} 
 
 
-= form_tag options_emails_path, :method => "post", :class => "form-horizontal" do
+= form_tag options_emails_path, :method => "post", :class => "guarded_form form-horizontal" do
   %table.table.accordion  
     %tr
       %td 
         %i.icon-chevron-right.btn-mini.accordion-icon
            
-        %h3
-          E-Mail zur Experiment-Einladung
+        %h3=t '.header1'
+          
         .toggle
           %br
-          Betreff
+          =t(:subject)
           %br
           = text_field_tag :invitation_subject, Settings.invitation_subject, :class => "span8"
           %br
@@ -29,18 +29,19 @@
           .templated-field-header.span10 
             = render :partial => 'shared/text_insertions', :locals => {:data => ['#firstname', '#lastname', '#sessionlist', '#link'], :element_id => 'invitation_text' }
 
-            Einladungstext
+            =t '.text'
+            
           = text_area_tag :invitation_text, Settings.invitation_text, :rows => 5, :class => "span8"
           %br
     %tr
       %td  
         %i.icon-chevron-right.btn-mini.accordion-icon
         
-        %h3
-          E-Mail zur Anmeldebestätigung
+        %h3=t '.header2'
+          
         .toggle
           %br
-          Betreff
+          =t(:subject)
           %br
           = text_field_tag :confirmation_subject, Settings.confirmation_subject, :class => "span8"
           %br
@@ -49,7 +50,7 @@
           .templated-field-header.span10
             = render :partial => 'shared/text_insertions', :locals => {:data => ['#firstname', '#lastname', '#session_date', '#session_start_time', '#session_end_time', '#session_location', '#sessionlist'], :element_id => 'confirmation_text' }
 
-            Bestätigungstext
+            =t '.text'
   
           = text_area_tag :confirmation_text, Settings.confirmation_text, :rows => 5, :class => "span8"
           %br
@@ -57,11 +58,11 @@
       %td  
         %i.icon-chevron-right.btn-mini.accordion-icon
         
-        %h3
-          E-Mail zur Session-Erinnerung
+        %h3=t '.header3'
+          
         .toggle
           %br
-          Betreff
+          =t(:subject)
           %br
           = text_field_tag :reminder_subject, Settings.reminder_subject, :class => "span8"
           %br
@@ -70,7 +71,7 @@
           .templated-field-header.span10
             = render :partial => 'shared/text_insertions', :locals => {:data => ['#firstname', '#lastname', '#session_date', '#session_start_time', '#session_end_time', '#session_location'], :element_id => 'reminder_text' }
 
-            Bestätigungstext
+            =t '.text'
   
           = text_area_tag :reminder_text, Settings.reminder_text, :rows => 5, :class => "span8"
           %br
@@ -78,11 +79,11 @@
       %td  
         %i.icon-chevron-right.btn-mini.accordion-icon
         
-        %h3
-          E-Mail zur Erinnerung des Sessionabschluss
+        %h3=t '.header4'
+          
         .toggle
           %br
-          Betreff
+          =t(:subject)
           %br
           = text_field_tag :session_finish_subject, Settings.session_finish_subject, :class => "span8"
           %br
@@ -91,8 +92,8 @@
           .templated-field-header.span10
             = render :partial => 'shared/text_insertions', :locals => {:data => ['#experiment_name', '#session_date', '#session_start_time', '#session_end_time'], :element_id => 'session_finish_text' }
 
-            Bestätigungstext
-  
+            =t '.text'
+            
           = text_area_tag :session_finish_text, Settings.session_finish_text, :rows => 5, :class => "span8"
           %br
     
@@ -100,11 +101,11 @@
       %td  
         %i.icon-chevron-right.btn-mini.accordion-icon
         
-        %h3
-          E-Mail zur Aktivierungseinladung nach dem Import
+        %h3=t '.header5'
+          
         .toggle
           %br
-          Betreff
+          =t(:subject)
           %br
           = text_field_tag :import_invitation_subject, Settings.import_invitation_subject, :class => "span8"
           %br
@@ -112,12 +113,13 @@
 
           .templated-field-header.span10
             = render :partial => 'shared/text_insertions', :locals => {:data => ['#firstname', '#lastname', '#activation_link'], :element_id => 'import_invitation_text' }
-            Text
+            
+            =t '.text'
   
           = text_area_tag :import_invitation_text, Settings.import_invitation_text, :rows => 5, :class => "span8"
           %br
     
-  = submit_tag "Mailtexte speichern", :name => "test", :class => "guarded_form_save btn btn-primary"
+  = submit_tag t(:save), :name => "test", :class => "guarded_form_save btn btn-primary"
   
 
    

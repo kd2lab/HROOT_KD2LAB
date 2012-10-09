@@ -6,10 +6,10 @@ class LocationsControllerTest < ActionController::TestCase
     
   context "the location controller" do
     setup do
-      @l1 = Factory(:location)
-      @l2 = Factory(:location)
+      @l1 = FactoryGirl.create(:location)
+      @l2 = FactoryGirl.create(:location)
       
-      sign_in Factory(:admin)
+      sign_in FactoryGirl.create(:admin)
     end
     
     context "get on index" do
@@ -30,7 +30,7 @@ class LocationsControllerTest < ActionController::TestCase
     
     context "creating" do
       should "create a location" do
-        @location = Factory.build(:location)
+        @location = FactoryGirl.build(:location)
         assert_difference('Location.count') do
           post :create, :location => @location.attributes
         end

@@ -129,18 +129,7 @@ de:
       active_members: 'Aktive Poolteilnehmer:'
       new_members_last_30_days: 'Neuanmeldungen in den letzten 30 Tagen:'
       incomplete_sessions: 'Durchgeführte, aber nicht abgeschlossene Sessions:'
-      missing1: Es fehlen
-      missing2: Angaben
-  options:
-    tabs:
-      general: Allgemein
-      rooms: Räume
-      emails: E-Mails
-      professions: Berufe
-      languages: Sprachen
-      studies: Studiengänge
-      degrees: Abschlüsse
-      texts: Texte
+      missing: 'Es fehlen %{count} Angaben'
   degrees:
     create_new_degree: Neuen Abschluss anlegen
     edit_degree: Abschluss bearbeiten
@@ -203,12 +192,12 @@ de:
       invitations: Einladungen
       add_participants: Neue Teilnehmer zuordnen
       view_participants: Bereits zugeordnete Teilnehmer 
+      history_participants: Verlauf der Teilnehmerzuordnung
     experimenters:
       add_people: Personen hinzufügen...
     invitation:
       sending: Versand
-      reload1: (Aktualisierung in
-      reload2: Sekunden)
+      reload_html: '(Aktualisierung in <span id="time_info">%{seconds}</span> Sekunden)'
       invitation_active: Der Einladungsversand ist im Moment aktiv.
       invitation_row1: Start dieses Einladungsversands
       invitation_row2: Einladungsmodus
@@ -287,12 +276,14 @@ Für weiteren Fragen zur Software besuchen Sie bitte unsere Projektseite unter t
     birthday: Alter
     experience: Erfahrung
     study: Fächer
+    role: Rolle
     degree: Abschlüsse
     language: Sprachen
     tags: Tags
     experiment: Experimente
     participation: Sessionteilnahme
     preference: Experiment-Präferenz
+    show_deleted: Gelöschte Benutzer
     
     submit: Filter anwenden und Ergebnis aktualisieren
     showing1: Zeige
@@ -314,6 +305,7 @@ Für weiteren Fragen zur Software besuchen Sie bitte unsere Projektseite unter t
     title_degrees: 'Teilnehmer mit folgenden Abschlüssen:' 
     title_birthday: Geburtstag
     title_begin: Studienbeginn
+    title_deleted: Gelöschte Benutzer
     hint_studies: Studienfächer...
     hint_languages: Sprachen...
     hint_experiment: Experimente...
@@ -339,11 +331,47 @@ Für weiteren Fragen zur Software besuchen Sie bitte unsere Projektseite unter t
     experiment_select5: die an mindestens einer Session von jedem der folgenden Experimente teilgenommen haben
     experiment_select6: die an keiner Session der folgenden Experimente teilgenommen haben
     
-    
+    deleted_hidden: verstecken
+    deleted_show: anzeigen
       
-      
+  filter_summary:
+    header_time: Zeit
+    header_action: Aktion
+    header_filter: Filterkriterien
+    add_text: "%{count} Teilnehmer hinzugefügt"
+    remove_text: "%{count} Teilnehmer entfernt"
+    search: Suche nach
+    gender: Geschlecht
+    preference: Präferenz
+    only_with_online_preference: Nur Online-Experimente
+    only_with_presence_preference: Nur Präsenz-Experimente
+    noshow_count: Nicht erschienen
+    participation_count: Teilnahmen
+    begin_after: Studienbeginn nach
+    begin_before: Studienbeginn vor
+    birthday_after: Geburtsdatum nach
+    birthday_before: Geburtsdatum vor
+    and: und
+    without_experienced: Nutzer mit Experimenterfahrung ausschliessen
+    with_experienced: Nur Nutzer mit Experimenterfahrung
+    study: 'Nutzer aus folgenden Studiengängen: '
+    not_study: 'Keine Nutzer aus folgenden Studiengängen: '
+    degree: 'Nutzer mit folgenden Abschlusszielen: '
+    not_degree: 'Keine Nutzer mit folgenden Abschlusszielen: '
+    exp1: "Einem der folgenden zugewiesen: "
+    exp2: "Allen der folgenden zugewiesen: "
+    exp3: "Keinem der folgenden zugewiesen: "
+    exp4: "An einem der folgenden teilgenommen: "
+    exp5: "An allen der folgenden teilgenommen: "
+    exp6: "An keinem der folgenden teilgenommen: "
+    language: 'Sprachen: '
+     
     
   participants:    
+    history:
+      history_title: Verlauf der Teilnehmerzuordnung
+      breadcrumb_history: Verlauf der Teilnehmerzuordnung
+
     manage:
       study: Fach
       add_all: Alle Poolmitglieder der aktuellen Filterung zuordnen
@@ -468,6 +496,7 @@ Für weiteren Fragen zur Software besuchen Sie bitte unsere Projektseite unter t
       no_show_count: '#N'
       participations_count: '#T'
       no_users: Kein User gefunden
+      current_filtered: Aktuelle Filterung
       marked_users: Markierte User
     edit:
       edit_user: bearbeiten
@@ -546,11 +575,106 @@ Für weiteren Fragen zur Software besuchen Sie bitte unsere Projektseite unter t
           change_password: Passwort ändern
           change_password_link: Passwort ändern
           please_confirm_password: 'Bitte geben Sie das aktuelle Passwort zur Bestätigung ein:'
+  options:
+    tabs:
+      general: Allgemein
+      rooms: Räume
+      emails: E-Mails
+      professions: Berufe
+      languages: Sprachen
+      studies: Studiengänge
+      degrees: Abschlüsse
+      texts: Texte
+    texts:
+      privacy_header: Text der Datenschutzvereinbarung
+      privacy_info: Hier kann der Text festgelegt werden, der für die Datenschutzvereinbarung von neuen Teilnehmern akzeptiert werden muss.      
   
-          
-    
-    
-    
+      welcome_header: Begrüßungstext für Teilnehmer nach Login
+      welcome_info: Der folgende Text wird den Teilnehmern nach dem Login angezeigt  
+      submit_link: Texte speichern
+    index:
+      email_formats_header: Gültige E-Mail-Formate
+      email_formats_info: Hier kann festgelegt werden, welche E-Mail-Formate bei der Registrierung gültig sind. Dabei kann ein Prefix gefordert werden (ein Substring vor dem @-Zeichen), und es kann definiert werden, welche Domain die Adressen haben müssen.  
+    emails:
+      header1: E-Mail zur Experiment-Einladung
+      header2: E-Mail zur Anmeldebestätigung
+      header3: E-Mail zur Session-Erinnerung
+      header4: E-Mail zur Erinnerung des Sessionabschluss
+      header5: E-Mail zur Aktivierungseinladung nach dem Import
+      text: E-Mail-Text
+  controllers:
+    notice_saved_changes: Die Änderungen wurden gespeichert.
+    account:
+      notice_phone: Ihre Telefonnummer wurde gespeichert
+      notice_alternative_mail1: Ihre alternative E-Mail-Adresse wurde gelöscht
+      notice_alternative_mail2: Die E-Mail zur Bestätigung Ihrer alternativen E-Mail-Adresse wurde Ihnen erneut zugesendet.
+      notice_all_data: Es wurden alle Daten eingegeben.
+      notice_data_changed: Die Daten wurden erfolgreich geändert 
+    activation:
+      notice_email_sent: Es wurde Ihnen eine E-Mail zur Bestätigung Ihrer neuen Adresse gesendet.
+      notice_invalid_email: Diese E-Mail-Adresse ist nicht gültig.
+    application:
+      notice_login_required: Für diesen Bereich ist ein Login erforderlich.
+      notice_account_not_activated: Ihr bestehender Zugang wurde im neuen System noch nicht aktiviert.
+      notice_invalid_url: Die von Ihnen aufgerufene Url ist nicht gültig.
+    location:
+      notice_location_created: Der Raum wurde angelegt.
+      notice_location_changed: Der Raum wurde geändert.
+      notice_location_deleted: Der Raum wurde gelöscht.
+      notice_location_not_deleted: Der Raum kann nicht gelöscht werden, da Sessions für diesen Raum eingetragen sind.
       
+    degree:
+      notice_degree_created: Das Abschlussziel wurde angelegt.
+      notice_degree_changed: Das Abschlussziel wurde geändert.
+      notice_degree_deleted: Das Abschlussziel wurde gelöscht.
+      notice_degree_not_deleted: Das Abschlussziel kann nicht gelöscht werden, da User mit diesem Abschlussziel existieren.
+    language:
+      notice_language_created: Die Sprache wurde angelegt.
+      notice_language_changed: Die Sprache wurde geändert.
+      notice_language_deleted: Die Sprache wurde gelöscht.  
+    study:
+      notice_study_created: Der Studiengang wurde angelegt.
+      notice_study_changed: Der Studiengang wurde geändert.
+      notice_study_deleted: Der Studiengang wurde gelöscht.   
+      notice_study_not_deleted: Der Studiengang kann nicht gelöscht werden, da User mit diesem Studiengang existieren.
+    profession:
+      notice_profession_created: Der Beruf wurde angelegt.
+      notice_profession_changed: Der Beruf wurde geändert.
+      notice_profession_deleted: Der Beruf wurde gelöscht.
+      notice_profession_not_deleted: Der Beruf kann nicht gelöscht werden, da User mit diesem Beruf existieren.
+    enroll:
+      location: "Ort:"
+      notice_registered: Sie wurden verbindlich angemeldet. Wenn noch weitere Anmeldungen möglich sind, können Sie sich erneut anmelden.
+      notice_not_registered: Die Anmeldung war NICHT erfolgreich, da keine Plätze mehr frei waren.
+      notice_abort: Die Anmeldung wurde abgebrochen, da diese Session bereits voll ist.
+    experiments:
+      notice_created: Das Experiment wurde erfolgreich angelegt.
+    home:
+      notice_mail_sent: Es wurde Ihnen eine E-Mail mit einem Link zur Freischaltung zugesendet.
+      notice_invalid_email: Zu dieser E-Mail-Adresse gibt es keinen Account
+      notice_alternative_mail: Ihre alternative E-Mail-Adresse wurde bestätigt.
+    participants:
+      notice_mailqueue: Nachricht(en) wurden in die Mailqueue eingetragen.
+      notice_session1: Die gewählen Teilnehmer wurden in die Session
+      notice_session2: eingetragen
+      notice_not_moved: Die Teilnehmer konnten nicht verschoben werden, da nicht mehr genug freie Plätze in der Session sind.
+      notice_added_members: Die Poolmitglieder wurden zugeordnet
+    sessions:
+      notice_new_session: Es wurde eine neue Session angelegt
+      notice_cant_delete_following: Sessions mit Folgesessions können nicht gelöscht werden.
+      notice_cant_delete_participants: Sessions mit Teilnehmern können nicht gelöscht werden.
+      notice_deleted: Die Session wurde gelöscht.
+      notice_removed_from_session: Die gewählen Teilnehmer wurden aus der Session ausgetragen
+      notice_moved_to_session1: Die gewählen Teilnehmer wurden in die Session
+      notice_moved_to_session2: verschoben
+      notice_moving_failed: Die Mitglieder konnten nicht verschoben werden, da nicht mehr genug freie Plätze in der Session sind.
+    users:
+      notice_mailqueue: Nachricht(en) wurden in die Mailqueue eingetragen.
+      notice_mailqueue_activation: Die Aktivierungs-Einladungen(en) wurden in die Mailqueue eingetragen.
+      notice_created_user: Der Benutzer wurde erfolgreich angelegt.
+      notice_activated_after_import: Der Benutzer wurde nach dem Import freigeschaltet.
+           
+      
+         
     
     

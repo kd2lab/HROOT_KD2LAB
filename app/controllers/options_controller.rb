@@ -18,7 +18,7 @@ class OptionsController < ApplicationController
         Settings.mail_restrictions = nil
       end
       
-      flash[:notice] = "Die Änderungen wurden gespeichert"  
+      flash[:notice] = t('controllers.notice_saved_changes') 
     end
   end
 
@@ -34,7 +34,7 @@ class OptionsController < ApplicationController
       Settings.session_finish_text = params[:session_finish_text]
       Settings.import_invitation_subject = params[:import_invitation_subject]
       Settings.import_invitation_text = params[:import_invitation_text]
-      redirect_to options_emails_path, :notice => "Die Mailtexte wurden gespeichert"
+      redirect_to options_emails_path, :notice => t('controllers.notice_saved_changes')
     end
   end
   
@@ -42,9 +42,8 @@ class OptionsController < ApplicationController
     if params[:terms_and_conditions]
       Settings.terms_and_conditions = params[:terms_and_conditions]
       Settings.welcome_text = params[:welcome_text]
-      Settings.welcome_text_after_import = params[:welcome_text_after_import]
       
-      redirect_to options_texts_path, :notice => "Die Texte wurden gespeichert"
+      redirect_to options_texts_path, :notice => t('controllers.notice_saved_changes')
     end  
   end
 

@@ -1,0 +1,36 @@
+= content_for :breadcrumb do
+  = render :partial => "layouts/crumb", :object => [           |
+      link_to(t('administration'), :controller => "admin", :action => "index"), |
+      link_to(t(:experiments_header), experiments_path),                |
+      link_to(@experiment.name,experiment_sessions_path(@experiment)), |
+      t('.breadcrumb_history')]
+  
+= render :partial => "experiments/enrollment"
+  
+%h1
+  = @experiment.name  
+
+= render :partial => "experiments/tabs", :locals => {:selected => :participants} 
+
+%h2=t '.history_title'
+%br
+
+%table.table
+
+  %thead
+    %tr
+      %th=t 'filter_summary.header_time'
+      %th=t 'filter_summary.header_action'
+      %th=t 'filter_summary.header_filter'
+
+  %tbody    
+    - @experiment.history_entries.each do |entry|
+      %tr{:class => if entry.is_adding_entry? then "history-green" else "history-red" end}
+        %td.span2=l entry.created_at, :format => :short
+        %td.span3= entry.to_s
+        %td.span2
+          - entry.get_filter_setting_string.each do |tx|
+            %span.badge= tx
+%br
+
+

@@ -16,9 +16,9 @@
   %br
   
   - [ 'gender', 'noshow', 'participated', 'role', 'begin', 'birthday', 'experience', |
-      'study', 'degree', 'language', 'tags', 'experiment', 'preference'].each do |key|
+      'study', 'degree', 'language', 'tags', 'experiment', 'preference', 'show_deleted'].each do |key|
     %a.open-link{:href => '#f'+key}=t("filter.#{key}")
-    = '|' unless key == 'preference'
+    = '|' unless key == 'show_deleted'
    
   %br
   %br
@@ -36,6 +36,7 @@
   = render :partial => 'shared/filter_tags' 
   = render :partial => 'shared/filter_experiment' 
   = render :partial => 'shared/filter_preference'
+  = render :partial => 'shared/filter_show_deleted'
 
 .searchinfo
   = submit_tag t('filter.submit'), :name => 'submit_mode', :class => "btn btn-primary"
@@ -45,6 +46,7 @@
   %b= @user_count
   
 %hr
+
 
 - if @users.count > 0
   = will_paginate @users,  :renderer => WillPaginate::ActionView::BootstrapLinkRenderer , :previous_label => "&lt;&lt;&nbsp;", :next_label => "&nbsp;&gt;&gt;"

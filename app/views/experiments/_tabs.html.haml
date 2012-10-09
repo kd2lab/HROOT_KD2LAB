@@ -14,6 +14,7 @@
       %ul.dropdown-menu
         %li= link_to t('.add_participants'), manage_experiment_participants_path(@experiment)
         %li= link_to t('.view_participants'), experiment_participants_path(@experiment)
+        %li= link_to t('.history_participants'), history_experiment_participants_path(@experiment)
   
   -if can?(:invitation, @experiment)
     %li.dropdown{:class => if selected == :invitations then 'active' else '' end}

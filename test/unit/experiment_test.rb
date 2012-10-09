@@ -4,10 +4,10 @@ class ExperimentTest < ActiveSupport::TestCase
   
   context "the scope search" do
     setup do
-      @user = Factory(:user, :firstname => "John", :lastname => "smith")
-      @e1 = Factory(:experiment, :name => 'test', :description => "s sample description")
-      @e2 = Factory(:experiment, :name => 'bla')
-      @e3 = Factory(:experiment, :name => 'blubb')
+      @user = FactoryGirl.create(:user, :firstname => "John", :lastname => "smith")
+      @e1 = FactoryGirl.create(:experiment, :name => 'test', :description => "s sample description")
+      @e2 = FactoryGirl.create(:experiment, :name => 'bla')
+      @e3 = FactoryGirl.create(:experiment, :name => 'blubb')
     
       @e1.experimenters << @user
       @e2.experimenters << @user
@@ -26,11 +26,11 @@ class ExperimentTest < ActiveSupport::TestCase
   
   context "updating roles" do
     setup do
-      @user1 = Factory(:user)
-      @user2 = Factory(:user)
-      @user3 = Factory(:user)
+      @user1 = FactoryGirl.create(:user)
+      @user2 = FactoryGirl.create(:user)
+      @user3 = FactoryGirl.create(:user)
       
-      @e = Factory(:experiment)
+      @e = FactoryGirl.create(:experiment)
       
       ExperimenterAssignment.create(:experiment => @e, :user => @user1, :rights => "edit")
       ExperimenterAssignment.create(:experiment => @e, :user => @user2, :rights => "send_session_messages")
@@ -57,29 +57,29 @@ class ExperimentTest < ActiveSupport::TestCase
   
   context "given a complex setting with sessions and experiments" do
     setup do
-      @u1 = Factory(:user, :firstname => "1")
-      @u2 = Factory(:user, :firstname => "2")
-      @u3 = Factory(:user, :firstname => "3")
-      @u4 = Factory(:user, :firstname => "4")
-      @u5 = Factory(:user, :firstname => "5")
-      @u6 = Factory(:user, :firstname => "6")
-      @u7 = Factory(:user, :firstname => "7")
-      @u8 = Factory(:user, :firstname => "8")
-      @u9 = Factory(:user, :firstname => "9")
-      @u10 = Factory(:user,:firstname => "10")
+      @u1 = FactoryGirl.create(:user, :firstname => "1")
+      @u2 = FactoryGirl.create(:user, :firstname => "2")
+      @u3 = FactoryGirl.create(:user, :firstname => "3")
+      @u4 = FactoryGirl.create(:user, :firstname => "4")
+      @u5 = FactoryGirl.create(:user, :firstname => "5")
+      @u6 = FactoryGirl.create(:user, :firstname => "6")
+      @u7 = FactoryGirl.create(:user, :firstname => "7")
+      @u8 = FactoryGirl.create(:user, :firstname => "8")
+      @u9 = FactoryGirl.create(:user, :firstname => "9")
+      @u10 = FactoryGirl.create(:user,:firstname => "10")
           
-      @e0 = Factory(:experiment)
+      @e0 = FactoryGirl.create(:experiment)
   
-      @e1 = Factory(:experiment, :invitation_text => "#firstname #lastname #link #sessions")
-      @s1 = Factory(:future_session, :experiment => @e1)
-      @s2 = Factory(:future_session, :experiment => @e1)
-      @s3 = Factory(:future_session, :experiment => @e1)
-      @s4 = Factory(:past_session, :experiment => @e1)
-      @s5 = Factory(:past_session, :experiment => @e1)
+      @e1 = FactoryGirl.create(:experiment, :invitation_text => "#firstname #lastname #link #sessions")
+      @s1 = FactoryGirl.create(:future_session, :experiment => @e1)
+      @s2 = FactoryGirl.create(:future_session, :experiment => @e1)
+      @s3 = FactoryGirl.create(:future_session, :experiment => @e1)
+      @s4 = FactoryGirl.create(:past_session, :experiment => @e1)
+      @s5 = FactoryGirl.create(:past_session, :experiment => @e1)
       
-      @e2 = Factory(:experiment, :invitation_start => Time.zone.now - 1.hour)
-      @s6 = Factory(:future_session, :experiment => @e2)
-      @s7 = Factory(:past_session, :experiment => @e2)
+      @e2 = FactoryGirl.create(:experiment, :invitation_start => Time.zone.now - 1.hour)
+      @s6 = FactoryGirl.create(:future_session, :experiment => @e2)
+      @s7 = FactoryGirl.create(:past_session, :experiment => @e2)
       Participation.create(:experiment => @e2, :user => @u1, :invited_at => Time.zone.now)
       Participation.create(:experiment => @e2, :user => @u2)
       Participation.create(:experiment => @e2, :user => @u3)
@@ -96,10 +96,10 @@ class ExperimentTest < ActiveSupport::TestCase
       SessionParticipation.create(:session => @s6, :user => @u4)
       SessionParticipation.create(:session => @s6, :user => @u5)
       
-      @e3 = Factory(:experiment, :invitation_start => Time.zone.now - 5.minutes, :invitation_size => 5)
-      @s8 = Factory(:future_session, :experiment => @e3)
-      @s9 = Factory(:future_session, :experiment => @e3)
-      @s10 = Factory(:past_session, :experiment => @e3)
+      @e3 = FactoryGirl.create(:experiment, :invitation_start => Time.zone.now - 5.minutes, :invitation_size => 5)
+      @s8 = FactoryGirl.create(:future_session, :experiment => @e3)
+      @s9 = FactoryGirl.create(:future_session, :experiment => @e3)
+      @s10 = FactoryGirl.create(:past_session, :experiment => @e3)
       Participation.create(:experiment => @e3, :user => @u1, :invited_at => Time.zone.now)
       Participation.create(:experiment => @e3, :user => @u2)
       Participation.create(:experiment => @e3, :user => @u3)
@@ -118,8 +118,8 @@ class ExperimentTest < ActiveSupport::TestCase
       Participation.create(:experiment => @e3, :user => @u9)
       Participation.create(:experiment => @e3, :user => @u10)   
       
-      @e4 = Factory(:experiment, :invitation_start => Time.zone.now - 5.minutes, :invitation_size => 5)
-      @s11 = Factory(:future_session, :experiment => @e4)
+      @e4 = FactoryGirl.create(:experiment, :invitation_start => Time.zone.now - 5.minutes, :invitation_size => 5)
+      @s11 = FactoryGirl.create(:future_session, :experiment => @e4)
       Participation.create(:experiment => @e4, :user => @u10, :invited_at => Time.zone.now)
        
       
@@ -158,37 +158,37 @@ class ExperimentTest < ActiveSupport::TestCase
   
   context "loading of users prefering new users" do
     setup do
-      @e1 = Factory(:experiment, :invitation_prefer_new_users => true, :invitation_start => Time.zone.now - 1.hour, :invitation_size => 7)
-      @s1 = Factory(:future_session, :experiment => @e1)
+      @e1 = FactoryGirl.create(:experiment, :invitation_prefer_new_users => true, :invitation_start => Time.zone.now - 1.hour, :invitation_size => 7)
+      @s1 = FactoryGirl.create(:future_session, :experiment => @e1)
 
-      @e2 = Factory(:experiment)
-      @s2 = Factory(:past_session, :experiment => @e2)
+      @e2 = FactoryGirl.create(:experiment)
+      @s2 = FactoryGirl.create(:past_session, :experiment => @e2)
 
       
       # a user with participations_count > 0 
-      @u5 = Factory(:user, :firstname => "XXXXX")
+      @u5 = FactoryGirl.create(:user, :firstname => "XXXXX")
       Participation.create(:user => @u5, :experiment => @e1)
       Participation.create(:user => @u5, :experiment => @e2)
       SessionParticipation.create(:user => @u5, :session => @s2, :participated => true)    
            
       4.times do |i|
-        u = Factory(:user, :firstname => i.to_s)
+        u = FactoryGirl.create(:user, :firstname => i.to_s)
         Participation.create(:user => u, :experiment => @e1)
       end
       
       # a user already registered for a session
-      @u6 = Factory(:user)
+      @u6 = FactoryGirl.create(:user)
       Participation.create(:user => @u6, :experiment => @e1)
       SessionParticipation.create(:user => @u6, :session => @s1)
       
       # a user who has not confirmed
-      @u7 = Factory(:user,:firstname => "7")
+      @u7 = FactoryGirl.create(:user,:firstname => "7")
       Participation.create(:user => @u7, :experiment => @e1)
 
       @u7.confirmed_at = nil
       @u7.save
       
-      @u8 = Factory(:user,:deleted => 1)
+      @u8 = FactoryGirl.create(:user,:deleted => 1)
       Participation.create(:user => @u8, :experiment => @e1)
       
       @p = @e1.load_random_participations

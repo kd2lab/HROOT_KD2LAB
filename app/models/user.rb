@@ -220,7 +220,7 @@ EOSQL
     if filter[:study]
       s = "users.study_id IN (#{filter[:study].map(&:to_i).join(', ')})"
       
-      if filter[:study_op] == "Ohne"
+      if filter[:study_op].to_i == 2
         where << "(NOT(#{s}) OR users.study_id IS NULL)"
       else
         where << s
@@ -231,7 +231,7 @@ EOSQL
     if filter[:degree]
       s = "users.degree_id IN (#{filter[:degree].map(&:to_i).join(', ')})"
       
-      if filter[:degree_op] == "Ohne"
+      if filter[:degree_op].to_i == 2
         where << "(NOT(#{s}) OR users.degree_id IS NULL)"
       else
         where << s
@@ -265,9 +265,9 @@ EOSQL
 EOSQL
         
         
-        if filter['exp_tag_op1'][i] == "Mindestens"
+        if filter['exp_tag_op1'][i].to_i == 1
           experiment_tag_subquery += " >= #{filter["exp_tag_op2"][i].to_i}"
-        elsif filter['exp_tag_op1'][i] == "Höchstens"
+        elsif filter['exp_tag_op1'][i].to_i == 2
           experiment_tag_subquery += " <= #{filter["exp_tag_op2"][i].to_i}"
         end
         where << experiment_tag_subquery
@@ -280,20 +280,20 @@ EOSQL
       ids = filter[:experiment].map(&:to_i).join(',')
     
       # at least one ...
-      case filter[:exp_op]
-      when "die zu einem der folgenden Experimente zugeordnet sind"
+      case filter[:exp_op].to_i
+      when 1
         experiment_join = "JOIN participations ON participations.user_id = users.id AND participations.experiment_id IN (#{ids})"  
-      when "die zu allen der folgenden Experimente zugeordnet sind"
+      when 2
         experiment_join = filter[:experiment].map(&:to_i).collect{|id| "JOIN participations as p#{id} ON p#{id}.user_id = users.id AND p#{id}.experiment_id = #{id}"}.join(' ')
-      when "die zu keinem der folgenden Experimente zugeordnet sind"
+      when 3
         where << "(SELECT COUNT(participations.id) FROM participations WHERE user_id = users.id AND participations.experiment_id IN (#{ids})) = 0"
-      when "die an mindestens einer Session eines der folgenden Experimente teilgenommen haben"
+      when 4
         experiment_join = "JOIN sessions s ON s.experiment_id IN (#{ids}) JOIN session_participations sp ON sp.participated=1 AND s.id = sp.session_id AND sp.user_id = users.id "  
-      when "die an mindestens einer Session von jedem der folgenden Experimente teilgenommen haben"
+      when 5
         experiment_join = filter[:experiment].map(&:to_i).collect do |id| 
           "JOIN sessions s#{id} ON s#{id}.experiment_id=#{id} JOIN session_participations p#{id} ON p#{id}.user_id = users.id AND p#{id}.session_id = s#{id}.id "
         end.join(' ')
-      when "die an keiner Session der folgenden Experimente teilgenommen haben"
+      when 6
         where << "(SELECT COUNT(sp.id) FROM sessions s, session_participations sp WHERE sp.participated = 1 AND sp.user_id = users.id AND s.id = sp.session_id AND s.experiment_id IN (#{ids})) = 0"
       end
     end

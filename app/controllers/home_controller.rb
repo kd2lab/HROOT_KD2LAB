@@ -19,9 +19,9 @@ class HomeController < ApplicationController
       @user = User.where(:imported => true).where(:activated_after_import => false).where(:email => params[:email]).first
       if @user
         UserMailer.import_email_activation(@user).deliver
-        redirect_to activate_path, :notice => "Es wurde Ihnen eine E-Mail mit einem Link zur Freischaltung zugesendet."
+        redirect_to activate_path, :notice => t('controllers.home.notice_mail_sent')
       else
-        redirect_to activate_path, :alert => "Zu dieser E-Mail-Adresse gibt es keinen Account"
+        redirect_to activate_path, :alert => t('controllers.home.notice_invalid_email')
       end
     end
   end
@@ -34,9 +34,9 @@ class HomeController < ApplicationController
       u.secondary_email_confirmed_at = Time.zone.now
       u.save
       if current_user
-        redirect_to account_alternative_email_url, :notice => "Ihre alternative E-Mail-Adresse wurde bestätigt."
+        redirect_to account_alternative_email_url, :notice => t('controllers.home.notice_alternative_email')
       else
-        redirect_to root_url, :notice => "Ihre alternative E-Mail-Adresse wurde bestätigt."  
+        redirect_to root_url, :notice => t('controllers.home.notice_alternative_email')
       end
     else
       redirect_to account_url

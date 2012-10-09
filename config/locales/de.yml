@@ -99,6 +99,12 @@ de:
             current_password:
               invalid: ist ungültig
             
+  time:
+    formats:
+      default: ! '%A, %d. %B %Y, %H:%M Uhr'
+      long: ! '%A, %d. %B %Y, %H:%M Uhr'
+      short: ! '%d. %B, %H:%M Uhr'
+    
   date:
     formats:
       default: "%d.%m.%Y"

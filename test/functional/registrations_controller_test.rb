@@ -7,7 +7,7 @@ class RegistrationsControllerTest < ActionController::TestCase
   context "A request with POST to create" do
     should "create a user, when suffix validation is inactive" do
       @request.env["devise.mapping"] = Devise.mappings[:user]
-      @user = Factory.build(:user)
+      @user = FactoryGirl.build(:user)
       
       assert_difference('User.count') do
         post :create, :user => @user.attributes.merge(:password => "testtest_8", :password_confirmation => "testtest_8")
@@ -19,7 +19,7 @@ class RegistrationsControllerTest < ActionController::TestCase
     
     should "not create a user, when suffix validation is active and a wrong mailadress is given" do
       @request.env["devise.mapping"] = Devise.mappings[:user]
-      @user = Factory.build(:user)
+      @user = FactoryGirl.build(:user)
       Settings.mail_restrictions = [{"prefix"=>"test", "suffix"=>"uni-hamburg.de"}, {"prefix"=>"", "suffix"=>"uni-magdeburg.de"}]
       
       post :create, :user => @user.attributes.merge(:password => "testtest_8", :password_confirmation => "testtest_8")
@@ -31,8 +31,8 @@ class RegistrationsControllerTest < ActionController::TestCase
     
     should "create a user, when suffix validation is active and a correct mailadress is given" do
       @request.env["devise.mapping"] = Devise.mappings[:user]
-      @user1 = Factory.build(:user)
-      @user2 = Factory.build(:user)
+      @user1 = FactoryGirl.build(:user)
+      @user2 = FactoryGirl.build(:user)
       
       Settings.mail_restrictions = [{"prefix"=>"test", "suffix"=>"uni-hamburg.de"}, {"prefix"=>"", "suffix"=>"uni-magdeburg.de"}]
       
