@@ -336,21 +336,23 @@ EOSQL
       
     # counting or selecting?
     if counting
-      user_select = "count(DISTINCT users.id),"     
+      final_select = "count(DISTINCT users.id) "     
     else
-      user_select = "DISTINCT users.*,"
-    end
-          
-    sql = <<EOSQL
-      SELECT 
-          #{user_select}
-          #{session_select} 
+      final_select = <<EOSQL
+        DISTINCT users.*,
+        #{session_select} 
           str_to_date(CONCAT_WS('-', COALESCE(begin_year, 1990), COALESCE(begin_month,1), '1'), '%Y-%m-%d') as begin_date, 
           
           (SELECT studies.name
               FROM studies
               WHERE studies.id = users.study_id
           ) as study_name
+EOSQL
+    end
+          
+    sql = <<EOSQL
+      SELECT 
+          #{final_select}     
       FROM users
       #{experiment_join}
       #{participation_join}
