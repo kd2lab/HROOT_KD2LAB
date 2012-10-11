@@ -30,9 +30,9 @@ $(function () {
   
   
   // qtip generic
-  $('.qtip-generic').each(function() {
+  $('.popup').each(function() {
     $(this).qtip({
-      content: $(this).attr('data-title'),
+      content: $(this).attr('data-popup'),
       show: 'mouseover',
       hide: 'mouseout',
       position: {
@@ -47,38 +47,6 @@ $(function () {
     })
   });
     
-  // qtip for header
-  $('.qtip_ersch').qtip({
-     content: '#Nicht erschienen',
-     show: 'mouseover',
-     hide: 'mouseout',
-     position: {
-       corner: {
-         target: 'topMiddle',
-         tooltip: 'bottomMiddle'
-       }  
-     },
-     style: { 
-           tip: 'bottomMiddle' // Notice the corner value is identical to the previously mentioned positioning corners
-        }
-  });
-  
-  // qtip for header
-   $('.qtip_teil').qtip({
-      content: '#Teilnahmen',
-      show: 'mouseover',
-      hide: 'mouseout',
-      position: {
-        corner: {
-          target: 'topMiddle',
-          tooltip: 'bottomMiddle'
-        }  
-      },
-      style: { 
-            tip: 'bottomMiddle' // Notice the corner value is identical to the previously mentioned positioning corners
-         }
-   });
-  
   // qtip for study
   // Use the each() method to gain access to each elements attributes
   $('.study_name_popup').each(function() {

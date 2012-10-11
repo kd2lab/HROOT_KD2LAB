@@ -19,12 +19,12 @@
 
   
 - if @users.count > 0
-  .menu
+  .menu    
     = link_to t('.print'), print_experiment_session_path(@experiment, @session), :class => "btn new-window", :style => "float:right"
     - if current_user.has_right?(@experiment, 'send_session_messages')
       = link_to t('.send_to_all'), '#', :class => "btn send-message", :'data-to' => "Alle Sessionteilnehmer", :'data-subject'=> "Experiment-Session am "+ @session.time_str, :'data-mode' => 'all',  :style => "float:left"
       = link_to t('.send_to_marked'), '#', :class => "btn send-message context-menu", :'data-to' => "Markierte Sessionteilnehmer", :'data-subject'=> "Experiment-Session am "+ @session.time_str, :'data-mode' => 'selected', :style => "float:left"
-  
+      
     - if current_user.has_right?(@experiment, 'manage_participants')
       .btn-group.context-menu{:style => "float:left"}
         %a.btn.dropdown-toggle{:'data-toggle' => "dropdown", :href => "#"}
@@ -34,12 +34,10 @@
           %li= link_to t('.remove_marked'), '#', :class => 'user_action_link', :'data-value' => 0
           - @session.alternative_sessions.each  do |s|
             %li= link_to "#{t('.move_marked1')} #{s.time_str} #{t('.move_marked2')}", '#', :class => 'user_action_link', :'data-value' => s.id
-  
-  
+            
     %br
     %br
   
-
   %table.table
     %thead
       %tr
@@ -51,19 +49,19 @@
         %th= sortable_for_form 'study_name', t('.th_study')
         %th= sortable_for_form 'gender',  t('.th_gender')
         %th= sortable_for_form 'begin_date', t('.th_begin')
-        %th 
-          E
+        %th.popup{:'data-popup' => t('popup.showup')} 
+          = t 'session_show_shortcut'
           - if participation_boxes
             %br
             = check_box_tag "", "", false, :id => "all_show"
-        %th 
-          T
+        %th.popup{:'data-popup' => t('popup.participated')} 
+          = t 'session_participated_shortcut'
           - if participation_boxes
             %br
             = check_box_tag "", "", false, :id => "all_participation"
       
-        %th{:style => "color:red"}
-          N
+        %th.popup{:style => "color:red", :'data-popup' => t('popup.noshow')}
+          = t 'session_noshow_shortcut'
           - if participation_boxes
             %br
             = check_box_tag "", "", false, :id => "all_noshow"

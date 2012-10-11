@@ -53,30 +53,23 @@ class Session < ActiveRecord::Base
     end
   end
   
-  def self.move_members(members, experiment, target = nil)
-    if target 
-      if members.size > target.space_left 
-        return false
-      else
-        target_sessions = Session.where(:reference_session_id => target.reference_session_id)
-        members.each do |id|
-          u = User.find(id)
-          if u
-            SessionParticipation.where(:user_id => u.id, :session_id => experiment.sessions).delete_all
-            
-            # put in all target sessions
-            target_sessions.each do |s| 
-              SessionParticipation.create(:user => u, :session => s)
-            end  
-          end
-        end
-        return true
-      end
-    else
-      members.each do |id|
-        u = User.find(id)
-        if u
-          SessionParticipation.where(:user_id => u.id, :session_id => experiment.sessions).delete_all
+  def self.remove_members_from_sessions(members, experiment)
+    members.each do |id|
+      if u = User.find(id)
+        SessionParticipation.where(:user_id => u.id, :session_id => experiment.sessions).delete_all
+      end  
+    end
+  end
+    
+  def self.move_members(members, experiment, target)
+    target_sessions = Session.where(:reference_session_id => target.reference_session_id)
+    members.each do |id|
+      if u = User.find(id)
+        SessionParticipation.where(:user_id => u.id, :session_id => experiment.sessions).delete_all
+          
+        # put in all target sessions
+        target_sessions.each do |s| 
+          SessionParticipation.create(:user => u, :session => s)
         end  
       end
     end

@@ -171,19 +171,16 @@ class SessionsController < ApplicationController
       
       if current_user.has_right?(@experiment, 'manage_participants')
         if params[:user_action] == "0"
-          Session.move_members(params['selected_users'].keys.map(&:to_i), @experiment)
+          Session.remove_members_from_sessions(params['selected_users'].keys.map(&:to_i), @experiment)
           flash[:notice] = t('controllers.sessions.notice_removed_from_session')
           User.update_noshow_calculation(params['selected_users'].keys)  
         else
           target = Session.find(params[:user_action].to_i)
         
           if target
-            if Session.move_members(params['selected_users'].keys.map(&:to_i), @experiment, target)
-              flash[:notice] = "#{t('controllers.sessions.notice_moved_to_session1')} #{target.time_str} #{t('controllers.sessions.notice_moved_to_session2')}"
-              User.update_noshow_calculation(params['selected_users'].keys)
-            else
-              flash[:alert] = t('controllers.sessions.notice_moving_failed')
-            end
+            Session.move_members(params['selected_users'].keys.map(&:to_i), @experiment, target)
+            flash[:notice] = "#{t('controllers.sessions.notice_moved_to_session1')} #{target.time_str} #{t('controllers.sessions.notice_moved_to_session2')}"
+            User.update_noshow_calculation(params['selected_users'].keys)
           end
         end
       end

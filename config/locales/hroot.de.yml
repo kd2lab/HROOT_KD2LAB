@@ -42,6 +42,20 @@ de:
   recruitment_system: Rekrutierungssystem für Experimente
   text_templates: Textvorlagen
   insert_data: Daten einfügen
+  remember_me: eingeloggt bleiben
+  noshow_shortcut: '#N'
+  participations_shortcut: '#T'
+  session_show_shortcut: E
+  session_participated_shortcut: T
+  session_noshow_shortcut: N
+    
+  popup:
+    noshow_count: Anzahl Nichterscheinen
+    participations_count: Anzahl Teilnahmen
+    showup: Erschienen
+    participated: Teilgenommen
+    noshow: Nicht erschienen
+  
   form_values:
     interested_in: Interesse an
     type_both: Präsenz- und Online-Experimenten
@@ -493,8 +507,6 @@ Für weiteren Fragen zur Software besuchen Sie bitte unsere Projektseite unter t
       gender: 'G.'
       begin: Beginn
       created_at: 'Anmeld.'
-      no_show_count: '#N'
-      participations_count: '#T'
       no_users: Kein User gefunden
       current_filtered: Aktuelle Filterung
       marked_users: Markierte User
@@ -521,7 +533,8 @@ Für weiteren Fragen zur Software besuchen Sie bitte unsere Projektseite unter t
       country: Land
       languages: Sprachkenntnisse
       profession: Beruf
-      
+      secondary_email: Alternative E-Mail
+        
       participations_so_far: 'Bisherige Experimentteilnahmen:'
       showup: Erschienen
       noshow: Nicht erschienen
@@ -653,7 +666,6 @@ Für weiteren Fragen zur Software besuchen Sie bitte unsere Projektseite unter t
       notice_mailqueue: Nachricht(en) wurden in die Mailqueue eingetragen.
       notice_session1: Die gewählen Teilnehmer wurden in die Session
       notice_session2: eingetragen
-      notice_not_moved: Die Teilnehmer konnten nicht verschoben werden, da nicht mehr genug freie Plätze in der Session sind.
       notice_added_members: Die Poolmitglieder wurden zugeordnet
     sessions:
       notice_new_session: Es wurde eine neue Session angelegt
@@ -663,7 +675,6 @@ Für weiteren Fragen zur Software besuchen Sie bitte unsere Projektseite unter t
       notice_removed_from_session: Die gewählen Teilnehmer wurden aus der Session ausgetragen
       notice_moved_to_session1: Die gewählen Teilnehmer wurden in die Session
       notice_moved_to_session2: verschoben
-      notice_moving_failed: Die Mitglieder konnten nicht verschoben werden, da nicht mehr genug freie Plätze in der Session sind.
     users:
       notice_mailqueue: Nachricht(en) wurden in die Mailqueue eingetragen.
       notice_mailqueue_activation: Die Aktivierungs-Einladungen(en) wurden in die Mailqueue eingetragen.

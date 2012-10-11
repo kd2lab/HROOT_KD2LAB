@@ -33,7 +33,7 @@ class ParticipantsController < ApplicationController
         
         if ids.length > 0   
           # aus allen sessions austragen, session participations löschen
-          Session.move_members(ids, @experiment)
+          Session.remove_members_from_sessions(ids, @experiment)
         
           # store all changes to the user base
           history_entry = HistoryEntry.create(:filter_settings => params[:filter].to_json, :experiment_id => @experiment.id, :action => "remove_filtered_users", :user_count => ids.length, :user_ids => ids.to_json)
@@ -47,12 +47,12 @@ class ParticipantsController < ApplicationController
       elsif params[:user_action] == "0" && params[:selected_users]
         # aus allen sessions austragen, session participations löschen
         if params[:selected_users].length > 0   
-          Session.move_members(params[:selected_users].keys.map(&:to_i), @experiment)
-        
+          Session.remove_members_from_sessions(params[:selected_users].keys.map(&:to_i), @experiment)
+          User.update_noshow_calculation(params[:selected_users].keys.map(&:to_i))
+
           # store all changes to the user base
           history_entry = HistoryEntry.create(:filter_settings => params[:filter].to_json, :experiment_id => @experiment.id, :action => "remove_selected_users", :user_count => params[:selected_users].length, :user_ids => params[:selected_users].keys.map(&:to_i).to_json)
       
-        
           # participation auch löschen
           params[:selected_users].keys.map(&:to_i).each do |id|
             p = Participation.find_by_user_id_and_experiment_id(id, @experiment.id)
@@ -66,11 +66,10 @@ class ParticipantsController < ApplicationController
           # store filters in session to enable redirect
           session[:filter] = params[:filter]
     
-          if Session.move_members(params[:selected_users].keys.map(&:to_i), @experiment, target)
-            redirect_to experiment_participants_path(@experiment), :flash => {:notice => "#{t('controllers.participants.notice_session1')} #{target.time_str} #{t('controllers.participants.notice_session2')}"}
-          else
-            redirect_to experiment_participants_path(@experiment), :flash => {:alert => t('controllers.participants.notice_not_moved')}
-          end    
+          Session.move_members(params[:selected_users].keys.map(&:to_i), @experiment, target)
+          User.update_noshow_calculation(params[:selected_users].keys.map(&:to_i))
+
+          redirect_to experiment_participants_path(@experiment), :flash => {:notice => "#{t('controllers.participants.notice_session1')} #{target.time_str} #{t('controllers.participants.notice_session2')}"}
         end
       end
     end
