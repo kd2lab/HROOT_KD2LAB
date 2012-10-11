@@ -1,14 +1,11 @@
-- users
 - user_mailer
-- devise
+- devise/mailer
 - controller
 
 
-
-- filter anpassen für mindestens und höchstens
-- filter anpassen für nur und ohne
-- filter anpassen für experimenttexte
-
+- puts bereinigen
+- strftime i18n
+- i18n interpolation
 
 ALT:
 

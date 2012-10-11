@@ -42,6 +42,20 @@ en:
   recruitment_system: Recruitment sytem for experiments
   text_templates: text templates
   insert_data: Insert data
+  remember_me: remember me
+  noshow_shortcut: '#N'
+  participations_shortcut: '#P'
+  session_show_shortcut: S
+  session_participated_shortcut: P
+  session_noshow_shortcut: N
+
+  popup:
+    noshow_count: Number of noshows
+    participations_count: Number of participations
+    showup: "Person showed up"
+    participated: "Person participated"
+    noshow: "Person didn't show up"
+  
   form_values:
     interested_in: interested in
     type_both: presence and online experiments
@@ -492,8 +506,6 @@ For further questions about this software please visit our project page todo
       gender: Gender
       begin: Begin
       created_at: Register date
-      no_show_count: '#N'
-      participations_count: '#P'
       no_users: No user was found
       current_filtered: Current filtering
       marked_users: Checked users
@@ -520,6 +532,7 @@ For further questions about this software please visit our project page todo
       country: Country
       languages: Languages
       profession: Profession
+      secondary_email: Secondary email
       
       participations_so_far: 'Experiment participation history:'
       showup: Showup
@@ -654,7 +667,6 @@ For further questions about this software please visit our project page todo
       notice_mailqueue: Messages have been queued.
       notice_session1: The checked users have been moved to the session
       notice_session2: ' '
-      notice_not_moved: The users could not be moved, since there is not enough space in the target session.
       notice_added_members: The users have been assigned.
     sessions:
       notice_new_session: A new session was created.
@@ -664,7 +676,6 @@ For further questions about this software please visit our project page todo
       notice_removed_from_session: The checked users were removed from the session.
       notice_moved_to_session1: The checked users have been move to the session
       notice_moved_to_session2: ' '
-      notice_moving_failed: The users could not be moved, since there is not enough space in the target session.
     users:
       notice_mailqueue:  Messages have been queued.
       notice_mailqueue_activation:  Activation messages have been queued.

@@ -27,7 +27,8 @@ de:
         time_after: Nachbereitungszeit
       location:
         description: Beschreibung
-        
+      user_session:
+        remember_me: eingeloggt bleiben
       user: 
         name: Name
         firstname: Vorname

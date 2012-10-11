@@ -86,9 +86,9 @@ class ParticipantsControllerTest < ActionController::TestCase
         get :index, :experiment_id => @experiment.id, :user_action => @session2.id, :selected_users => {@user1.id => "1", @user2.id => "1"}
       end
       
-      should "not move selected participations" do
-        assert_equal 1, SessionParticipation.where(:user_id => @user1.id, :session_id => @session.id).count
-        assert_equal 1, SessionParticipation.where(:user_id => @user2.id, :session_id => @session.id).count
+      should "should still move the person, overbooking the session" do
+        assert_equal 1, SessionParticipation.where(:user_id => @user1.id, :session_id => @session2.id).count
+        assert_equal 1, SessionParticipation.where(:user_id => @user2.id, :session_id => @session2.id).count
         assert_equal 1, SessionParticipation.where(:user_id => @user3.id, :session_id => @session2.id).count
         
         assert_equal 3, SessionParticipation.count

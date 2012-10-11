@@ -55,7 +55,6 @@ EOTXT
 
     Settings.terms_and_conditions = "Datenschutz und Nutzungsbedingungen..."
     Settings.welcome_text = "Herzlich willkomen zum internen Bereich von hroot - hier können Sie Ihre persönlichen Daten verwalten und sich zu Experimentsessions anmelden."
-    Settings.welcome_text_after_import =  "Herzlich willkomen zum internen Bereich von hroot - hier können Sie Ihre persönlichen Daten verwalten und sich zu Experimentsessions anmelden. Ihre bestehenden Daten wurden aus dem bisherigen System Orsee übernommen."
     
     db = Sequel.connect(:adapter=>'mysql2', :host=>'localhost', :database=>'controlling_orsee', :user=>'root', :password=>'abc8765')
    

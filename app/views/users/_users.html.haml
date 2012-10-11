@@ -84,8 +84,8 @@
         %th= sortable_for_form 'gender',  t('.gender')
         %th= sortable_for_form 'begin_date', t('.begin')
         %th= sortable_for_form 'created_at', t('.created_at')
-        %th.qtip_ersch= sortable_for_form 'noshow_count' , t('.no_show_count')
-        %th.qtip_teil= sortable_for_form 'participations_count' , t('.participations_count')
+        %th.popup{:'data-popup' => t('popup.noshow_count')}= sortable_for_form 'noshow_count' , t('noshow_shortcut')
+        %th.popup{:'data-popup' => t('popup.participations_count')}= sortable_for_form 'participations_count' , t('participations_shortcut')
 
     %tbody    
       - @users.each do |user| 

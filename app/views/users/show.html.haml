@@ -52,6 +52,10 @@
       %td=t :email
       %td= link_to @user.email, "mailto:#{@user.email}"
     %tr
+      %td=t '.secondary_email'
+      %td
+        = link_to @user.secondary_email, "mailto:#{@user.secondary_email}" unless @user.secondary_email.blank?
+    %tr
       %td=t '.role'
       %td= User.roles.invert[@user.role]
     %tr
@@ -114,3 +118,7 @@
                   %span.label.label-success
                     =t '.participated'
                 %br
+            %td
+              %br
+              - ([sp.session] + sp.session.following_sessions).each do |s|
+                = s.id.to_s+" austragen"
