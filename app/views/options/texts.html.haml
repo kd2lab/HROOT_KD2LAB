@@ -33,8 +33,11 @@
   
   = submit_tag t('.submit_link'), :class => "guarded_form_save btn btn-primary"
   
-
-   
+  %ul#test.nav.nav-tabs
+    - Hroot::Application.config.locales.each_with_index do |loc, i|
+      %li{:class => (i==0 ? 'active' : '')}
+        %a{:href => "#"}= loc          
+        
         
     	
     

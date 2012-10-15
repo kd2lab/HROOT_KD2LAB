@@ -427,6 +427,10 @@ For further questions about this software please visit our project page todo
       to: 'To:'
       subject: 'Subject:'
       text: Text
+      insert_reminder: Insert default reminder text
+      send_button: Send message
+      abort_button: Cancel
+      
   sessions:
     new_session_link: Create new session
     back_link: Back to session overview
@@ -460,8 +464,11 @@ For further questions about this software please visit our project page todo
       header: Session at
       print: Print
       send_to_all: Send message to all session participants
+      send_to_all_recipient: All session participants
       send_to_marked: Send message to all checked users
+      send_to_marked_recipient: Checked session participants
       remove_marked: Remove checked users from this session
+      message_subject: "Experiment session at %{date}"
       marked: Checked users
       move_marked1: Move checked users to session
       move_marked2: ' '

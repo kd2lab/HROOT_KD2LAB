@@ -1,10 +1,14 @@
-#message_dialog{:style => "display:none"}
+#message_dialog{:style => "display:none", :'data-send-button' => t('.send_button'), :'data-abort-button' => t('.abort_button')}
   = hidden_field_tag 'message[action]', ''
   = hidden_field_tag 'message[mode]', ''
   %h2=t '.send'
   %br
   %b=t '.to'
   %br
+
+  - if local_assigns[:reminder_text]
+    = text_field_tag 'reminder_header', reminder_header, :style => "display:none"
+    = text_area_tag 'reminder_text', reminder_text, :style => "display:none"
 
   %span#message_recipients 
   %br
@@ -16,6 +20,13 @@
   %br
 
   .templated-field-header.span8
+    
+    - if local_assigns[:reminder_text]
+      = link_to t('.insert_reminder'), '#', :class => "btn insert-reminder-text", :style => "float:right"
+    
+    - if local_assigns[:session_context]
+      = render :partial => 'shared/text_insertions', :locals => {:data => ['#firstname', '#lastname', '#session_date', '#session_start_time', '#session_end_time', '#session_location'], :element_id => 'message_text' }
+ 
     = render :partial => 'shared/text_templates', :locals => {:data => current_user.settings.templates, :element_id => 'message_text' }
     %b=t '.text'
   %br

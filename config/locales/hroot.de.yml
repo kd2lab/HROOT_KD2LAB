@@ -428,6 +428,9 @@ Für weiteren Fragen zur Software besuchen Sie bitte unsere Projektseite unter t
       to: 'An:'
       subject: 'Betreff:'
       text: Text
+      insert_reminder: Standard-Erinnerungstext einfügen
+      send_button: Nachricht senden
+      abort_button: Abbrechen
   sessions:
     new_session_link: Neue Session anlegen
     back_link: Zurück zur Session-Übersicht
@@ -461,11 +464,16 @@ Für weiteren Fragen zur Software besuchen Sie bitte unsere Projektseite unter t
       header: Session am
       print: Drucken
       send_to_all: Nachricht an alle Session-Teilnehmer
+      send_to_all_recipient: Alle Sessionteilnehmer
       send_to_marked: Nachricht an alle markierten Teilnehmer
+      send_to_marked_recipient: Markierte Sessionteilnehmer
+      message_subject: "Experiment-Session am %{date}"
       remove_marked: Markierte Teilnehmer aus dieser Session austragen.
       marked: Markierte Teilnehmer
       move_marked1: Markierte Teilnehmer in Session
       move_marked2: verschieben
+      
+      
       
       th_name: Name
       th_email: E-Mail

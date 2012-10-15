@@ -22,8 +22,8 @@
   .menu    
     = link_to t('.print'), print_experiment_session_path(@experiment, @session), :class => "btn new-window", :style => "float:right"
     - if current_user.has_right?(@experiment, 'send_session_messages')
-      = link_to t('.send_to_all'), '#', :class => "btn send-message", :'data-to' => "Alle Sessionteilnehmer", :'data-subject'=> "Experiment-Session am "+ @session.time_str, :'data-mode' => 'all',  :style => "float:left"
-      = link_to t('.send_to_marked'), '#', :class => "btn send-message context-menu", :'data-to' => "Markierte Sessionteilnehmer", :'data-subject'=> "Experiment-Session am "+ @session.time_str, :'data-mode' => 'selected', :style => "float:left"
+      = link_to t('.send_to_all'), '#', :class => "btn send-message", :'data-to' => t('.send_to_all_recipient'), :'data-subject'=> t('.message_subject', :date => @session.time_str), :'data-mode' => 'all',  :style => "float:left"
+      = link_to t('.send_to_marked'), '#', :class => "btn send-message context-menu", :'data-to' => t('.send_to_marked_recipient'), :'data-subject'=> t('.message_subject', :date => @session.time_str), :'data-mode' => 'selected', :style => "float:left"
       
     - if current_user.has_right?(@experiment, 'manage_participants')
       .btn-group.context-menu{:style => "float:left"}
@@ -50,24 +50,31 @@
         %th= sortable_for_form 'gender',  t('.th_gender')
         %th= sortable_for_form 'begin_date', t('.th_begin')
         %th.popup{:'data-popup' => t('popup.showup')} 
-          = t 'session_show_shortcut'
+          = sortable_for_form 'session_showup', t('session_show_shortcut')
           - if participation_boxes
             %br
             = check_box_tag "", "", false, :id => "all_show"
         %th.popup{:'data-popup' => t('popup.participated')} 
-          = t 'session_participated_shortcut'
+          = sortable_for_form 'session_participated', t('session_participated_shortcut')
           - if participation_boxes
             %br
             = check_box_tag "", "", false, :id => "all_participation"
       
         %th.popup{:style => "color:red", :'data-popup' => t('popup.noshow')}
-          = t 'session_noshow_shortcut'
+          = sortable_for_form 'session_noshow', t('session_noshow_shortcut')
           - if participation_boxes
             %br
             = check_box_tag "", "", false, :id => "all_noshow"
 
     %tbody  
+      - showup_count = 0; participated_count = 0; noshow_count = 0
+    
       - @users.each_with_index do |user, index| 
+
+        - showup_count += 1 if user.session_showup == 1 
+        - participated_count += 1 if user.session_participated == 1 
+        - noshow_count += 1 if user.session_noshow == 1 
+        
         - cl = []; 
         - cl << "deleted" if user.deleted
         - cl << "import_inactive" if user.imported && !user.activated_after_import
@@ -93,6 +100,18 @@
           %td
             = check_box_tag "noshows[#{user.id}]", "1", user.session_noshow == 1, :class => "noshow_checkbox", :'data-id' => user.id, :disabled => !participation_boxes
             = hidden_field_tag "ids[#{user.id}]", "1"
+      
+      %tr
+        %td
+        %td
+        %td
+        %td
+        %td
+        %td
+        %td
+        %td= showup_count
+        %td= participated_count
+        %td= noshow_count
                 
   - if participation_boxes     
     = button_tag t('.save_changes_now'), :name => "save", :class => "btn btn-primary"

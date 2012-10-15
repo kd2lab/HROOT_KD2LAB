@@ -156,7 +156,7 @@ class SessionsController < ApplicationController
           ids = params['selected_users'].keys.map(&:to_i)
         end  
       
-        Message.send_message(current_user.id, ids, @experiment.id, params[:message][:subject], params[:message][:text])
+        Message.send_message(current_user.id, ids, @experiment.id, params[:message][:subject], params[:message][:text], @session.id)
       
         redirect_to(participants_experiment_session_path(@experiment, @session), :flash => { :id => @session.id, :notice => "Nachricht(en) wurden in die Mailqueue eingetragen."})
       end
@@ -260,7 +260,7 @@ class SessionsController < ApplicationController
   private
 
   def sort_column
-    (User.column_names+['noshow_count', 'study_name', 'begin_date', 'participations_count']).include?(params[:sort]) ? params[:sort] : "lastname"
+    (User.column_names+['noshow_count', 'study_name', 'begin_date', 'participations_count', 'session_showup', 'session_participated', 'session_noshow']).include?(params[:sort]) ? params[:sort] : "lastname"
   end
 
   def sort_direction

@@ -68,7 +68,18 @@ EOSQL
           "#lastname"  => recipient.user.lastname,
           '#activation_link' => activation_link
         })
+        
+        # some messages are sent in context of a session - in this case we allow some variables
+        if recipient.message.session_id && session = Session.find(recipient.message.session_id) 
+          message = message.to_s.mreplace({
+              "#session_date"  => session.start_at.strftime("%d.%m.%Y"),
+              "#session_start_time" => session.start_at.strftime("%H:%M"),
+              "#session_end_time" => session.end_at.strftime("%H:%M"),
+              "#session_location" => if session.location then session.location.name else "" end
+          })
+        end
       
+        # message in context of an experiment
         if recipient.message.experiment
           sender = recipient.message.experiment.sender_email
         else
@@ -78,7 +89,8 @@ EOSQL
         UserMailer.email(recipient.message.subject, message, recipient.user.main_email, sender).deliver
         recipient.sent_at = Time.zone.now
         recipient.save
-      rescue
+      rescue Exception => e
+        puts e.inspect
         UserMailer.log_mail("Problem mit Mailversand", "Die Mail mit der id #{recipient.message.id} an \n#{recipient.user.inspect}\n kann nicht versendet werden.").deliver
       end
     end

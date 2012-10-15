@@ -7,8 +7,14 @@
 
 
 = render :partial => "experiments/enrollment"
-= render :partial => "shared/messaging"  
-  
+
+- if @session.reminder_enabled
+  = render :partial => "shared/messaging", :locals => {:reminder_header => @session.reminder_subject, :reminder_text => @session.reminder_text, :session_context => true}  
+- elsif @session.experiment.reminder_enabled
+  = render :partial => "shared/messaging", :locals => {:reminder_header => @session.experiment.reminder_subject, :reminder_text => @session.experiment.reminder_text, :session_context => true}  
+- else
+  = render :partial => "shared/messaging", :locals => {:session_context => true}    
+
 
 %h1
   = @experiment.name  
