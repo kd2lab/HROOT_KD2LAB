@@ -19,49 +19,49 @@
 %table.table
   %thead
     %tr
-      %td= t('active_record.attributes.user.name')
+      %td= t('activerecord.attributes.user.name')
       %td
         = "#{current_user.lastname}, #{current_user.firstname}"      
   %tbody
     %tr
-      %td= t('active_record.attributes.user.email')
+      %td= t('activerecord.attributes.user.email')
       %td= current_user.email
     %tr
-      %td= t('active_record.attributes.user.gender')
+      %td= t('activerecord.attributes.user.gender')
       %td= {'m' => t('form_values.male'), 'f' => t('form_values.female'), '?' => t('no_info') }[current_user.gender]
     %tr
-      %td=t('active_record.attributes.user.birthday')
+      %td=t('activerecord.attributes.user.birthday')
       %td= current_user.birthday ? current_user.birthday.strftime('%d.%m.%Y') : t('no_info')
     %tr
-      %td=t('active_record.attributes.user.matrikel') 
+      %td=t('activerecord.attributes.user.matrikel') 
       %td= current_user.matrikel
     - unless current_user.country_name.blank?
       %tr
-        %td= t('active_record.attributes.user.country_name')
+        %td= t('activerecord.attributes.user.country_name')
         %td= current_user.country_name
     - if current_user.preference
       %tr
-        %td= t('active_record.attributes.user.preference')
+        %td= t('activerecord.attributes.user.preference')
         %td= [t('form_values.type_both'), t('form_values.type_presence'), t('form_values.type_online')][current_user.preference]
     
     - if current_user.study
       %tr
-        %td=t('active_record.attributes.user.study_id')
+        %td=t('activerecord.attributes.user.study_id')
         %td= current_user.study.name
     
     %tr
-      %td=t('active_record.attributes.user.lang1')
+      %td=t('activerecord.attributes.user.lang1')
       %td= current_user.languages.join(',')
 
     - if current_user.degree
       %tr
-        %td=t('active_record.attributes.user.degree_id')
+        %td=t('activerecord.attributes.user.degree_id')
         %td= current_user.degree.name   
     - if current_user.begin_month.to_i > 0
       %tr
-        %td= t('active_record.attributes.user.begin')
+        %td= t('activerecord.attributes.user.begin')
         %td= "#{current_user.begin_month}/#{current_user.begin_year}"
     - if current_user.profession
       %tr
-        %td= t('active_record.attributes.user.profession_id')
+        %td= t('activerecord.attributes.user.profession_id')
         %td=  current_user.profession.name

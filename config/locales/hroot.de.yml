@@ -67,7 +67,10 @@ de:
     has_experience: Ich habe bereits an Experimenten teilgenommen.
     user_is_active: Benutzer ist aktiv
     user_is_marked_as_deleted: Benutzer wurde als gelöscht markiert
-    
+  user_mailer:
+    subject_secondary_email_confirmation: "Bestätigung der alternativen E-Mail-Adresse"
+    subject_import_email_confirmation: "hroot-Anmeldung: Bestätigung der neuen E-Mail-Adresse"
+    subject_import_email_activation: "hroot: Freischaltung für die Teilnahme an Experimenten"
   account:
     index:
       welcome: Willkommen

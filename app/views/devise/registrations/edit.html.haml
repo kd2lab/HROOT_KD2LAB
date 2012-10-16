@@ -11,7 +11,7 @@
 
 = render :partial => "account/tabs", :locals => {:selected => :password} 
 
-%h3=t '.change_password'
+%h3=t 'devise.registrations.edit.change_password'
 
 %br
 
@@ -25,9 +25,9 @@
 
   %br
   %br
-  =t '.please_confirm_password'
+  =t 'devise.registrations.edit.please_confirm_password'
   %br
   = f.password_field :current_password
   %br
   %br
-  = f.submit t('.change_password_link'), :class => "btn btn-primary"
+  = f.submit t('devise.registrations.edit.change_password_link'), :class => "btn btn-primary"

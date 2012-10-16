@@ -17,17 +17,17 @@ class UserMailer < ActionMailer::Base
     
   def secondary_email_confirmation(user)
     @user = user
-    mail(:to => user.secondary_email, :subject => "Bestätigung der alternativen E-Mail-Adresse")
+    mail(:to => user.secondary_email, :subject => I18n.t('user_mailer.subject_secondary_email_confirmation'))
   end    
   
   def import_email_confirmation(user)
     @user = user
-    mail(:to => user.import_email, :subject => "hroot-Anmeldung: Bestätigung der neuen E-Mail-Adresse")
+    mail(:to => user.import_email, :subject => I18n.t('user_mailer.subject_import_email_confirmation'))
   end  
 
   def import_email_activation(user)
     @user = user
-    mail(:to => user.email, :subject => "hroot: Freischaltung für die Teilnahme an Experimenten")
+    mail(:to => user.email, :subject => I18n.t('user_mailer.subject_import_email_activation'))
   end  
 
   #def change_email_confirmation(user)

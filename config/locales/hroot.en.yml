@@ -67,7 +67,11 @@ en:
     has_experience: I have already participated in economic experiments.
     user_is_active: User is active
     user_is_marked_as_deleted: User was marked as deleted
-    
+  user_mailer:
+    subject_secondary_email_confirmation: "hroot: Please confirm you alternative email address"
+    subject_import_email_confirmation: "hroot signup: Please confirm you new email address"
+    subject_import_email_activation: "hroot: Activation for experiment participation"
+
   account:
     index:
       welcome: Welcome
@@ -90,7 +94,7 @@ en:
       alternative_email: Secondary E-Mail
       your_current_alternative_email: Your secondary email address 
       was_confirmed: was confirmed and will now be used.
-      was_not_confirmed: is currently not conirmed. An email was sent to your secondary email address with a confirmation link.
+      was_not_confirmed: is currently not confirmed. An email was sent to your secondary email address with a confirmation link.
       delete_alternative_email: Delete secondary email
       confirm_delete_alternative_email: Are you sure you want to delete you secondary email?
       resend_confirmation_mail: Resend confirmation email
@@ -624,7 +628,7 @@ For further questions about this software please visit our project page todo
     account:
       notice_phone: The phone number was saved.
       notice_alternative_mail1: Your secondary email was deleted.
-      notice_alternative_mail2: Die confirmation email for you secondary email has been sent again.
+      notice_alternative_mail2: The confirmation email for you secondary email has been sent again.
       notice_all_data: Your data is now complete
       notice_data_changed: Data was successfully changed.
     activation:
