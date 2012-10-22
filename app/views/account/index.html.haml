@@ -12,7 +12,7 @@
   
     %h3= t('.welcome')
     %br
-    = Settings.welcome_text #todo i18n
+    = Settings.welcome_text[I18n.locale.to_s]
     %br
     %br
     

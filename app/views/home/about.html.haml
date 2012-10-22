@@ -7,8 +7,9 @@
         &gt;
     %li.active
       =t :site_credits_and_contact 
-      
-%p=t :contact_information_html  
+   
+- if Settings.credits_text && Settings.credits_text[I18n.locale.to_s]    
+  %p=raw Settings.credits_text[I18n.locale.to_s]    
 
 %h2=t '.software'
 %p=t '.software_html'

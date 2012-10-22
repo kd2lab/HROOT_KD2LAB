@@ -39,9 +39,17 @@ class OptionsController < ApplicationController
   end
   
   def texts
+    Settings.terms_and_conditions = {} unless Settings.terms_and_conditions
+    Settings.welcome_text = {} unless Settings.welcome_text
+    Settings.credits_text = {} unless Settings.credits_text
+    
+    
     if params[:terms_and_conditions]
+      puts params[:terms_and_conditions]
+      
       Settings.terms_and_conditions = params[:terms_and_conditions]
       Settings.welcome_text = params[:welcome_text]
+      Settings.credits_text = params[:credits_text]
       
       redirect_to options_texts_path, :notice => t('controllers.notice_saved_changes')
     end  

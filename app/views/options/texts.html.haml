@@ -16,16 +16,53 @@
   =t '.privacy_info'
   %br
   %br
-  = text_area_tag(:terms_and_conditions, Settings.terms_and_conditions, :rows => 10, :class => "span8")
+  %ul.nav.nav-tabs
+    - Hroot::Application.config.locales.each_with_index do |loc, i|
+      %li{:class => (i==0 ? 'active' : '')}
+        %a{:href => '#'+loc.to_s, :class => "locale_tab", :'data-toggle' => 'tab'}= loc          
+        
+  .tab-content
+    - Hroot::Application.config.locales.each_with_index do |loc, i|
+      .tab-pane{:id => loc.to_s, :class => (i==0 ? 'active' : '')}
+        = text_area_tag("terms_and_conditions[#{loc.to_s}]", Settings.terms_and_conditions[loc.to_s], :rows => 10, :class => "span8")
+  
+  
   %br
   %br
   
   %h3=t '.welcome_header'
 
+  
   =t '.welcome_info'
   %br
   %br
-  = text_area_tag(:welcome_text, Settings.welcome_text, :rows => 10, :class => "span8")
+  %ul.nav.nav-tabs
+    - Hroot::Application.config.locales.each_with_index do |loc, i|
+      %li{:class => (i==0 ? 'active' : '')}
+        %a{:href => '#welcome_'+loc.to_s, :class => "locale_tab", :'data-toggle' => 'tab'}= loc          
+        
+  .tab-content
+    - Hroot::Application.config.locales.each_with_index do |loc, i|
+      .tab-pane{:id => 'welcome_'+loc.to_s, :class => (i==0 ? 'active' : '')}
+        = text_area_tag("welcome_text[#{loc.to_s}]", Settings.welcome_text[loc.to_s], :rows => 10, :class => "span8")
+  %br
+  %br
+  
+
+  %h3=t '.credits_header'
+ 
+  =t '.credits_info'
+  %br
+  %br
+  %ul.nav.nav-tabs
+    - Hroot::Application.config.locales.each_with_index do |loc, i|
+      %li{:class => (i==0 ? 'active' : '')}
+        %a{:href => '#credits_'+loc.to_s, :class => "locale_tab", :'data-toggle' => 'tab'}= loc          
+        
+  .tab-content
+    - Hroot::Application.config.locales.each_with_index do |loc, i|
+      .tab-pane{:id => 'credits_'+loc.to_s, :class => (i==0 ? 'active' : '')}
+        = text_area_tag("credits_text[#{loc.to_s}]", Settings.credits_text[loc.to_s], :rows => 10, :class => "span8")
   %br
   %br
   
@@ -33,11 +70,5 @@
   
   = submit_tag t('.submit_link'), :class => "guarded_form_save btn btn-primary"
   
-  %ul#test.nav.nav-tabs
-    - Hroot::Application.config.locales.each_with_index do |loc, i|
-      %li{:class => (i==0 ? 'active' : '')}
-        %a{:href => "#"}= loc          
-        
-        
-    	
+      
     

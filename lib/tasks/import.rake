@@ -53,8 +53,8 @@ wir haben unsere Verwaltungssoftware zur Organisation von Experimenten aktualisi
 #activation_link
 EOTXT
 
-    Settings.terms_and_conditions = "Datenschutz und Nutzungsbedingungen..."
-    Settings.welcome_text = "Herzlich willkomen zum internen Bereich von hroot - hier können Sie Ihre persönlichen Daten verwalten und sich zu Experimentsessions anmelden."
+    Settings.terms_and_conditions = {}
+    Settings.welcome_text = {}
     
     db = Sequel.connect(:adapter=>'mysql2', :host=>'localhost', :database=>'controlling_orsee', :user=>'root', :password=>'abc8765')
    
