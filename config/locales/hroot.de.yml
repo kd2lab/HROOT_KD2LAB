@@ -550,6 +550,10 @@ Für weiteren Fragen zur Software besuchen Sie bitte unsere Projektseite unter t
       showup: Erschienen
       noshow: Nicht erschienen
       participated: Teilgenommen
+      
+      remove_from_session: Austragen
+      remove_from_session_confirm: Sind Sie sicher, dass der Benutzer aus dieser Session ausgetragen werden soll?
+      
   devise:
     confirmations:
       new:
@@ -691,6 +695,7 @@ Für weiteren Fragen zur Software besuchen Sie bitte unsere Projektseite unter t
       notice_mailqueue_activation: Die Aktivierungs-Einladungen(en) wurden in die Mailqueue eingetragen.
       notice_created_user: Der Benutzer wurde erfolgreich angelegt.
       notice_activated_after_import: Der Benutzer wurde nach dem Import freigeschaltet.
+      notice_removed_from_session: Der Benutzer wurde aus der Session entfernt.
            
       
          

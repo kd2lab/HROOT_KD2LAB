@@ -120,5 +120,4 @@
                 %br
             %td
               %br
-              - ([sp.session] + sp.session.following_sessions).each do |s|
-                = s.id.to_s+" austragen"
+              = link_to t('.remove_from_session'), remove_from_session_user_path(:session_id => sp.session.id), :class => 'btn', :confirm => t('.remove_from_session_confirm')

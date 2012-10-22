@@ -550,6 +550,9 @@ For further questions about this software please visit our project page todo
       noshow: Non-show
       participated: Participated
       
+      remove_from_session: Remove
+      remove_from_session_confirm: Are you sure you want to remove the user from the experiment session?
+      
   devise:
     confirmations:
       new:
@@ -692,7 +695,7 @@ For further questions about this software please visit our project page todo
       notice_mailqueue_activation:  Activation messages have been queued.
       notice_created_user: User was successfully created.
       notice_activated_after_import: The user was activated after import.
-           
+      notice_removed_from_session: The user was removed from the selected session.     
       
          
     

@@ -61,6 +61,7 @@ Hroot::Application.routes.draw do
       member do
         get :login_as
         get :activate_after_import
+        get :remove_from_session
       end
       collection do
         post :index

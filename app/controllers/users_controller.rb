@@ -53,7 +53,15 @@ class UsersController < ApplicationController
   def show
    
   end
-
+  
+  def remove_from_session
+    if params[:session_id] && session = Session.find(params[:session_id])
+      Session.remove_members_from_sessions([@user.id], session.experiment)
+    end
+    
+    redirect_to user_path, :notice => t('controllers.users.notice_removed_from_session')
+  end
+    
   def new
     @user = User.new
     @user.role = "user"
@@ -69,7 +77,7 @@ class UsersController < ApplicationController
     @user.admin_update = true
     
     if @user.save
-      redirect_to users_url, :notice => t('controllers.users.created_user')
+      redirect_to users_url, :notice => t('controllers.users.notice_created_user')
     else
       render :action => "new" 
     end
