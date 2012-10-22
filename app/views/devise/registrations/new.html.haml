@@ -78,7 +78,8 @@
       =t 'devise.registrations.new.terms_and_conditions'
       %br
       %br
-      = text_area_tag "terms_conditions_text", Settings.terms_and_conditions[I18n.locale.to_s], :readonly => true, :cols => 100, :class => "span8", :rows => 15
+      - if Settings.terms_and_conditions
+        = text_area_tag "terms_conditions_text", Settings.terms_and_conditions[I18n.locale.to_s], :readonly => true, :cols => 100, :class => "span8", :rows => 15
   
       %br
       %br
