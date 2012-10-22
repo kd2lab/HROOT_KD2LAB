@@ -337,7 +337,8 @@ EOSQL
       
     # counting or selecting?
     if counting
-      final_select = "count(DISTINCT users.id) "     
+      final_select = "count(DISTINCT users.id) "  
+      order_by = ""   
     else
       final_select = <<EOSQL
         DISTINCT users.*,
@@ -349,6 +350,7 @@ EOSQL
               WHERE studies.id = users.study_id
           ) as study_name
 EOSQL
+      order_by = "ORDER BY #{sort_column + ' ' + sort_direction} "
     end
           
     sql = <<EOSQL
@@ -360,7 +362,7 @@ EOSQL
       #{session_participation_join}
       #{'WHERE' unless where.blank?} 
         #{where.join(' AND ')}
-      ORDER BY #{sort_column + ' ' + sort_direction} 
+      #{order_by}
 EOSQL
   
     return sql
