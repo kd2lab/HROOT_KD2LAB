@@ -615,6 +615,10 @@ For further questions about this software please visit our project page todo
       welcome_header: Welcome text for users.
       welcome_info: This text will be shown to users after login.
       
+      credits_header: Site credits and contact information
+      credits_info: This text is shown on the site credits and contact page. You may use HTML tags here.
+
+      
       submit_link: Save texts
     index:
       email_formats_header: Valid email formats

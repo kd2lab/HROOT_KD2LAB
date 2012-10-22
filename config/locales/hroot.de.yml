@@ -615,6 +615,11 @@ Für weiteren Fragen zur Software besuchen Sie bitte unsere Projektseite unter t
   
       welcome_header: Begrüßungstext für Teilnehmer nach Login
       welcome_info: Der folgende Text wird den Teilnehmern nach dem Login angezeigt  
+      
+      credits_header: Impressum und Kontakt
+      credits_info: Der folgende Text wird auf der Seite Impressum und Kontakt angezeigt. Es darf HTML genutzt werden. 
+      
+      
       submit_link: Texte speichern
     index:
       email_formats_header: Gültige E-Mail-Formate
