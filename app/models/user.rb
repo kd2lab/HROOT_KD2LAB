@@ -331,6 +331,10 @@ EOSQL
           where << "sps.participated = 1" if filter[:participation] == '1'
           where << "sps.session_id > 0" if filter[:participation] == '2'
           where << "(sps.session_id IS NULL)" if filter[:participation] == '3'
+          
+          if filter[:participation] == '4'
+            where << "sps.session_id > 0 AND sj.end_at > NOW()"
+          end
         end  
       end
     end  

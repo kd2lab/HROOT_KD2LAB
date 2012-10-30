@@ -27,7 +27,7 @@ de:
   password: Passwort
   emails: E-Mails
   subject: Betreff  
-  site_credits_and_contact: Impressum und Kontakt
+  site_credits_and_contact: Impressum und Kontaktt
   root_page: Startseite
   copyright_html: '&copy; 2011-2013 Universität Hamburg'
   login: Login
@@ -338,6 +338,7 @@ Für weiteren Fragen zur Software besuchen Sie bitte unsere Projektseite unter t
     participation_select1: Nur Zugeordnete, die teilgenommen haben
     participation_select2: Nur Zugeordnete, die bereits in eine Session eingetragen sind
     participation_select3: Nur Zugeordnete ohne Session
+    participation_select4: Nur Zugeordnete in Sessions, die noch nicht vorbei sind
     experience_select1: Ohne Teilnehmer, die bereits externe Experimenterfahrung haben
     experience_select2: Nur Teilnehmer, die bereits externe Experimenterfahrung haben
       
@@ -384,7 +385,12 @@ Für weiteren Fragen zur Software besuchen Sie bitte unsere Projektseite unter t
     language: 'Sprachen: '
      
     
-  participants:    
+  participants:
+    print:
+      header: Experiment
+      filter_settings: Filtereinstellungen
+      study: Studiengang
+          
     history:
       history_title: Verlauf der Teilnehmerzuordnung
       breadcrumb_history: Verlauf der Teilnehmerzuordnung
@@ -457,7 +463,7 @@ Für weiteren Fragen zur Software besuchen Sie bitte unsere Projektseite unter t
       noshow: N
     new:
       new_label1: Neue
-      new_label1: anlegen
+      new_label2: anlegen
     edit:
       at_label: am
     tabs:
@@ -503,7 +509,17 @@ Für weiteren Fragen zur Software besuchen Sie bitte unsere Projektseite unter t
       limitations_hint: Dieser Text wird dem Teilnehmer bei Anmeldung angezeigt.
       minutes: Minuten
   users:
+    print:
+      role: Rolle
+      study: Fach
+      gender: 'G.'
+      begin: Beginn
+      created_at: 'Anmeld.'
+      no_users: Kein User gefunden
+      header: Nutzerliste
+
     users:
+      store_current_filter: Filtereinstellungen als Standardfilter speichern
       message_all_filtered: Nachricht an alle User der aktuellen Filterung
       send_activation_invitation: Aktivierungseinladung an alle noch nicht aktivierten User dieser Filterung schicken
       send_activation_confirm: Sind Sie sicher, dass diese E-Mails versendet werden sollen?
@@ -617,9 +633,7 @@ Für weiteren Fragen zur Software besuchen Sie bitte unsere Projektseite unter t
       welcome_info: Der folgende Text wird den Teilnehmern nach dem Login angezeigt  
       
       credits_header: Impressum und Kontakt
-      credits_info: Der folgende Text wird auf der Seite Impressum und Kontakt angezeigt. Es darf HTML genutzt werden. 
-      
-      
+      credits_info: Der folgende Text wird auf der Seite Impressum und Kontakt angezeigt. Es darf HTML genutzt werden.       
       submit_link: Texte speichern
     index:
       email_formats_header: Gültige E-Mail-Formate
@@ -701,7 +715,7 @@ Für weiteren Fragen zur Software besuchen Sie bitte unsere Projektseite unter t
       notice_created_user: Der Benutzer wurde erfolgreich angelegt.
       notice_activated_after_import: Der Benutzer wurde nach dem Import freigeschaltet.
       notice_removed_from_session: Der Benutzer wurde aus der Session entfernt.
-           
+      notice_filter_stored: Die aktuellen Filtereinstellungen wurden als Standardeinstellungen gespeichert.
       
          
     

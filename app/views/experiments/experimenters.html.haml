@@ -32,7 +32,7 @@
           %button.close.removeline{:href => '#'} &times;
     %tr
       %td
-        - options = options_for_select(User.where("role = 'admin' OR role='experimenter'").order(:lastname, :firstname).collect do |u| [u.lastname+", "+u.firstname, u.id] end)
+        - options = options_for_select(User.where("role = 'admin' OR role='experimenter'").where(:deleted => false).order(:lastname, :firstname).collect do |u| [u.lastname+", "+u.firstname, u.id] end)
         = select_tag(:add_user, options, {:class => "chzn-select", :'data-placeholder' => t('.add_people'), :include_blank => true})
       %td
         

@@ -66,6 +66,7 @@ Hroot::Application.routes.draw do
       collection do
         post :index
         post :create_user
+        get :print
       end
     end
     

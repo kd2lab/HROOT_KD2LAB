@@ -12,7 +12,7 @@ class ParticipantsController < ApplicationController
       session[:filter] = nil
     end
     
-    params[:filter] = params[:filter] || {}
+    params[:filter] = params[:filter] || Settings.standard_filter || {}
     params[:filter][:role] = 'user' 
     
     if params[:message] && params[:message][:action] == 'send'
@@ -71,6 +71,12 @@ class ParticipantsController < ApplicationController
 
           redirect_to experiment_participants_path(@experiment), :flash => {:notice => "#{t('controllers.participants.notice_session1')} #{target.time_str} #{t('controllers.participants.notice_session2')}"}
         end
+      elsif params[:user_action] == "print_view"
+        #@users = User.load(params, {:sort_column => sort_column, :sort_direction => sort_direction, :include_deleted_users => (params[:filter][:show_deleted].to_s == "1")})
+        @users = User.load(params, {:experiment => @experiment, :sort_column => sort_column, :sort_direction => sort_direction, :exclude_non_participants => 1, :include_deleted_users => 1})
+    
+        render :action => 'print', :layout => 'print'
+        return
       end
     end
     
@@ -79,7 +85,7 @@ class ParticipantsController < ApplicationController
   end
   
   def manage
-    params[:filter] = {} unless params[:filter]
+    params[:filter] = params[:filter] || Settings.standard_filter || {}
     params[:filter][:role] = 'user' 
     
     # create participation relation

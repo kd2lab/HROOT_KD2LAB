@@ -50,6 +50,8 @@
   = will_paginate @users,  :renderer => WillPaginate::ActionView::BootstrapLinkRenderer , :previous_label => "&lt;&lt;&nbsp;", :next_label => "&nbsp;&gt;&gt;"
   
   .menu
+    = link_to t('.print'), '#', :class => "user_action_link btn", :style => "float:right",  :'data-value' => 'print_view', :'data-target' => "_blank"
+    
     .btn-group{:style => "float:left"}
       %a.btn.dropdown-toggle{:'data-toggle' => "dropdown", :href => "#"}
         =t '.current_filtered'

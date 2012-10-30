@@ -335,9 +335,11 @@ For further questions about this software please visit our project page todo
     to: to
     only_with_presence_preference: Only users, who want to participate in presence experiments
     only_with_online_preference: Only users, who want to participate in online experiments
-    participation_select1: Only assigned users who have particiüated
+    participation_select1: Only assigned users who have participated
     participation_select2: Only assigned users who are registered in a session
     participation_select3: Only assigned users without session
+    participation_select4: Only assigned users who are registered in a session, which is not over yet
+    
     experience_select1: Without users with previous experiment experience
     experience_select2: Only users with previous experiment experience
       
@@ -385,6 +387,11 @@ For further questions about this software please visit our project page todo
 
 
   participants:    
+    print:
+      header: Experiment
+      filter_settings: Filter settings
+      study: Field of studies
+    
     history:
       history_title: History of participant assignment
       breadcrumb_history: History of participant assignment
@@ -502,13 +509,22 @@ For further questions about this software please visit our project page todo
       limitations_hint: This text will be shown to users during session registration
       minutes: minutes
   users:
+    print:
+      role: Role
+      study: Field of studies
+      gender: Gender
+      begin: Begin
+      created_at: Register date
+      no_users: No user was found
+      header: User list
     users:
+      store_current_filter: Save current filter settings as default
       message_all_filtered: Send message to all currently filtered users.
       send_activation_invitation: Send activation invitation to all users who are not yet activated.
       send_activation_confirm: Are you sure you want to send the activation emails?
       
-      message_all_marked: Send messageto all checked users
-      send_activation_invitation_marked: Send activation invitation to all checkd users.
+      message_all_marked: Send message to all checked users
+      send_activation_invitation_marked: Send activation invitation to all checked users.
       to_all_filtered: Currently filtered users
       to_all_marked: Checked users
       
@@ -700,6 +716,7 @@ For further questions about this software please visit our project page todo
       notice_created_user: User was successfully created.
       notice_activated_after_import: The user was activated after import.
       notice_removed_from_session: The user was removed from the selected session.     
+      notice_filter_stored: The current filter settings have been stored as default filter settings.
       
          
     

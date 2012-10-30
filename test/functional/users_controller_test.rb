@@ -15,6 +15,15 @@ class UsersControllerTest < ActionController::TestCase
       should respond_with :success
     end
     
+    context "get on index" do
+      setup do
+        get :index, :user_action => "print_view"
+      end
+    
+      should respond_with :success
+      should render_with_layout :print
+    end
+    
     context "get on new" do
       setup do
         get :new

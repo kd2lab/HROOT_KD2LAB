@@ -25,5 +25,13 @@ $ ->
       return false
     
     $('#user_action').val($(this).attr('data-value'))
+    if $(this).attr('data-target')
+      $('#user_search').attr("target", $(this).attr('data-target'))
+      
     $('#user_search').submit()
+    
+    # reset form values again, so form can be submitted again
+    $('#user_search').removeAttr("target")
+    $('#user_action').val('')
+  
     return false

@@ -52,6 +52,8 @@
   = will_paginate @users,  :renderer => WillPaginate::ActionView::BootstrapLinkRenderer , :previous_label => "&lt;&lt;&nbsp;", :next_label => "&nbsp;&gt;&gt;"
 
   .menu
+    = link_to t('.print'), '#', :class => "user_action_link btn", :style => "float:right",  :'data-value' => 'print_view', :'data-target' => "_blank"
+    
     .btn-group{:style => "float:left"}
       %a.btn.dropdown-toggle{:'data-toggle' => "dropdown", :href => "#"}
         =t '.current_filtered'
@@ -59,6 +61,7 @@
       %ul.dropdown-menu
         %li= link_to t('.message_all_filtered'), '#', :class => "send-message", :'data-to' => t('.to_all_filtered'), :'data-mode' => 'all'    
         %li= link_to t('.send_activation_invitation'), '#', :confirm => t('.send_activation_confirm'), :class => "user_action_link", :'data-value' => 'invite_all'    
+        %li= link_to t('.store_current_filter'), '#', :class => "user_action_link", :'data-value' => 'store_filter'    
     
     .btn-group.context-menu{:style => "float:left"}
       %a.btn.dropdown-toggle{:'data-toggle' => "dropdown", :href => "#"}

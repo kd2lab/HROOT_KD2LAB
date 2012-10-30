@@ -32,7 +32,7 @@ en:
         name: Name
         firstname: First name
         lastname: Last name
-        matrikel: Student Nr.
+        matrikel: Student No.
         country_name: Nationality
         role: Role
         phone: Cell phone

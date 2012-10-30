@@ -29,7 +29,7 @@
         %td.span2=l entry.created_at, :format => :short
         %td.span3= entry.to_s
         %td.span2
-          - entry.get_filter_setting_string.each do |tx|
+          - HistoryEntry.get_filter_setting_string(JSON.parse(entry.filter_settings)).each do |tx|
             %span.badge= tx
 %br
 

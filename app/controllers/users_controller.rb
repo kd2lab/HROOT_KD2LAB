@@ -12,7 +12,8 @@ class UsersController < ApplicationController
       session[:filter] = nil
     end
     
-    params[:filter] = params[:filter] || {}
+    params[:filter] = params[:filter] || Settings.standard_filter || {}
+
 
     if params[:message] && params[:message][:action] == 'send'
       if (params[:message][:mode] == 'all')
@@ -28,22 +29,31 @@ class UsersController < ApplicationController
       
       # todo flash -> notice?
       redirect_to users_path, :flash => {:notice => t('controllers.users.notice_mailqueue')}
-    elsif !params[:user_action].blank?  
+    elsif params[:user_action] == "invite_all"
       # store filters in session to enable redirect
       session[:filter] = params[:filter]
       
-      if params[:user_action] == "invite_all"
-        params[:filter] = params[:filter].merge({:activated_after_import => false, :role => 'user'})
-        ids =  User.load_ids(params, {:sort_column => sort_column, :sort_direction => sort_direction})
-      elsif params[:user_action] == "invite_selected"
-        selected_ids = params['selected_users'].keys.map(&:to_i)
-        ids = User.where('activated_after_import=0 AND deleted=0 AND role="user"').where("id IN (?)", selected_ids).map(&:id)
-      end
+      params[:filter] = params[:filter].merge({:activated_after_import => false, :role => 'user'})
+      ids =  User.load_ids(params, {:sort_column => sort_column, :sort_direction => sort_direction})
       
       Message.send_message(current_user.id, ids, nil, Settings.import_invitation_subject, Settings.import_invitation_text)
+      redirect_to users_path, :flash => {:notice => t('controllers.users.notice_mailqueue_activation')}
+    elsif params[:user_action] == "invite_selected"
+      # store filters in session to enable redirect
+      session[:filter] = params[:filter]
       
-      #todo flash -> notice?
-      redirect_to users_path, :flash => {:notice => t('controllers.users.notice_mailqueue_activated')}
+      selected_ids = params['selected_users'].keys.map(&:to_i)
+      ids = User.where('activated_after_import=0 AND deleted=0 AND role="user"').where("id IN (?)", selected_ids).map(&:id)
+      
+      Message.send_message(current_user.id, ids, nil, Settings.import_invitation_subject, Settings.import_invitation_text)
+      redirect_to users_path, :flash => {:notice => t('controllers.users.notice_mailqueue_activation')}
+    elsif params[:user_action] == "store_filter"
+      Settings.standard_filter = params[:filter]
+      redirect_to users_path, :flash => {:notice => t('controllers.users.notice_filter_stored')}  
+    elsif params[:user_action] == "print_view"
+      @users = User.load(params, {:sort_column => sort_column, :sort_direction => sort_direction, :include_deleted_users => (params[:filter][:show_deleted].to_s == "1")})
+      render :action => 'print', :layout => 'print'
+      return
     end
         
     @users = User.paginate(params, {:sort_column => sort_column, :sort_direction => sort_direction, :include_deleted_users => (params[:filter][:show_deleted].to_s == "1")})
@@ -89,6 +99,8 @@ class UsersController < ApplicationController
       params["user"].delete("password_confirmation")
     end
       
+    @user.admin_update = true  
+      
     if @user.update_attributes(params[:user])
       redirect_to user_url(@user), :notice => t('controllers.notice_saved_changes') 
     else
@@ -113,7 +125,7 @@ class UsersController < ApplicationController
     sign_in @user
     redirect_to account_path
   end
-  
+
   private
 
   def sort_column

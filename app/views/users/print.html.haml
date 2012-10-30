@@ -1,0 +1,57 @@
+
+%h3
+  =t '.header'
+%br
+
+- filter_setting_str = HistoryEntry.get_filter_setting_string(params[:filter])
+
+- if filter_setting_str.count > 0
+  =t('.filter_settings')+':'
+  - HistoryEntry.get_filter_setting_string(params[:filter]).each do |tx|
+    %span.badge= tx
+  %br
+  %br
+
+
+-if @users.count > 0
+  %table.table.table-striped
+    %thead
+      %tr
+        %th
+        %th= 'Name'  
+        %th= t('.role')
+        %th= t(:email)
+        %th= t('.study')
+        %th= t('.gender')
+        %th= t('.begin')
+        %th= t('.created_at')
+        %th= t('noshow_shortcut')
+        %th= t('participations_shortcut')
+
+    %tbody    
+      - @users.each_with_index do |user, index| 
+        %tr
+          %td= index+1
+          %td= truncate(user.lastname, {:length => 15})+ " "+truncate(user.firstname, {:length => 10})
+          %td= {'user' => 'P', 'experimenter' => 'E', 'admin' => 'A'}[user.role]
+          %td= user.email
+          %td= user.study_name ? truncate(user.study_name, {:length => 10}) : t(:no_info)
+          %td= user.gender
+          %td= user.begin_date 
+          %td= user.created_at.strftime('%d.%m.%y')
+          %td= "#{user.noshow_count}" 
+          %td= "#{user.participations_count}"
+        
+        
+- else
+  %br
+  %b
+    =t('.no_users')
+  %br  
+  %br
+  %br
+  %br
+
+
+    
+
