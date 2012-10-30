@@ -2,6 +2,8 @@
 
 class AccountController < ApplicationController
   authorize_resource :class => false
+  
+  before_filter :require_user_role, :except => [:phone, :alternative_email, :data]
     
   def index
   
@@ -51,6 +53,14 @@ class AccountController < ApplicationController
       if current_user.update_attributes(params[:user])
         redirect_to(account_edit_path, :notice => t('controllers.account.notice_data_changed')) 
       end
+    end
+  end
+  
+  private
+  
+  def require_user_role
+    unless current_user.user?
+      redirect_to dashboard_url
     end
   end
   

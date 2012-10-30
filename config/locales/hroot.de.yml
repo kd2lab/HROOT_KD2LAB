@@ -48,6 +48,21 @@ de:
   session_show_shortcut: E
   session_participated_shortcut: T
   session_noshow_shortcut: N
+  cal_participants: 'Teilnehmer:'
+  cal_pre_time: 'Vorbereitungszeit: %{minutes} Minuten'
+  cal_post_time: 'Nachbereitungszeit: %{minutes} Minuten'
+  role_user: 'Poolmitglied (P)'
+  role_exp: 'Experimentator (E)'
+  role_admin: 'Administrator (A)'
+  right_edit: Datenpflege
+  right_rights: Rechte bearbeiten
+  right_manage_sessions: Sessiontermine verwalten
+  right_manage_participants: Zugeordnete und Sessionteilnehmer verwalten
+  right_manage_showups: Anwesenheit bearbeiten
+  right_send_session_messages: Nachrichtenversand an Sessionteilnehmer
+  right_manage_invitations: Einladungsversand
+  right_status_mails: Statusmails
+  
     
   popup:
     noshow_count: Anzahl Nichterscheinen
@@ -394,6 +409,7 @@ Für weiteren Fragen zur Software besuchen Sie bitte unsere Projektseite unter t
     history:
       history_title: Verlauf der Teilnehmerzuordnung
       breadcrumb_history: Verlauf der Teilnehmerzuordnung
+      no_history: Es wurden keine Zuordnungsschritte gespeichert
 
     manage:
       study: Fach

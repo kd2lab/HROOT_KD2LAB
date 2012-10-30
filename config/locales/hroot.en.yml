@@ -48,7 +48,21 @@ en:
   session_show_shortcut: S
   session_participated_shortcut: P
   session_noshow_shortcut: N
-
+  cal_participants: 'Participants:'
+  cal_pre_time: 'Preparation time: %{minutes} minutes'
+  cal_post_time: 'Wrap-up time: %{minutes} minutes'
+  role_user: 'Pool member (P)'
+  role_exp: 'Experimenter (E)'
+  role_admin: 'Administrator (A)'
+  right_edit: Manage experiment properties
+  right_rights: Manage privileges
+  right_manage_sessions: Manage sessions
+  right_manage_participants: Manage partipation
+  right_manage_showups: Manage showup info
+  right_send_session_messages: Send session messages
+  right_manage_invitations: Manage invitations
+  right_status_mails: Receive status emails
+  
   popup:
     noshow_count: Number of noshows
     participations_count: Number of participations
@@ -395,7 +409,8 @@ For further questions about this software please visit our project page todo
     history:
       history_title: History of participant assignment
       breadcrumb_history: History of participant assignment
-    
+      no_history: No history about participation assignment was recorded
+
     manage:
       study: field of studies
       add_all: Assign all users of the current filtering

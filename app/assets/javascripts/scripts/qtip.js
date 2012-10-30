@@ -11,7 +11,9 @@ $(function () {
                 
                 +"<i>"+$(this).attr('data-location')+"</i><br/><br/>"
                 +$(this).attr('data-exp')+"<br/><br/>"
-                +"Teilnehmer: "+$(this).attr('data-count')+"<br/><br/>"
+                +$(this).attr('data-count')+"<br/><br/>"
+                +($(this).attr('data-before') ? $(this).attr('data-before')+"<br/>" : "")
+                +($(this).attr('data-after') ? $(this).attr('data-after')+"<br/>" : "")
                 
        ,
        show: { when: 'mouseover', solo : 'true'},

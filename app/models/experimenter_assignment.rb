@@ -5,14 +5,14 @@ class ExperimenterAssignment < ActiveRecord::Base
   
   def self.right_list
     [
-      ["Datenpflege","edit"],
-      ["Rechte bearbeiten","rights"],
-      ["Sessiontermine verwalten", "manage_sessions"],
-      ["Zugeordnete und Sessionteilnehmer verwalten", "manage_participants"],
-      ["Anwesenheit bearbeiten", "manage_showups"],
-      ["Nachrichtenversand an Sessionteilnehmer", "send_session_messages"],
-      ["Einladungsversand", "manage_invitations"],
-      ["Statusmails", "status_mails"]
+      [I18n.t(:right_edit),"edit"],
+      [I18n.t(:right_rights),"rights"],
+      [I18n.t(:right_manage_sessions), "manage_sessions"],
+      [I18n.t(:right_manage_participants), "manage_participants"],
+      [I18n.t(:right_manage_showups), "manage_showups"],
+      [I18n.t(:right_send_session_messages), "send_session_messages"],
+      [I18n.t(:right_manage_invitations), "manage_invitations"],
+      [I18n.t(:right_status_mails), "status_mails"]
     ]
   end
   

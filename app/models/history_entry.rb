@@ -14,8 +14,15 @@ class HistoryEntry < ActiveRecord::Base
     return action == "add_selected_users" || action == "add_filtered_users"
   end
   
+  def arr_user_ids
+    JSON.parse(user_ids)
+  end
+  
+  def users
+    User.where(:id => arr_user_ids).order(:lastname)
+  end
+  
   def self.get_filter_setting_string (filter)
-    #filter = JSON.parse(filter_settings)
     report = []
     
     # search

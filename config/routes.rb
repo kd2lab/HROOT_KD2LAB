@@ -118,6 +118,7 @@ Hroot::Application.routes.draw do
           post :manage
           post :index
           get :history
+          post :undo
         end
       end
     end

@@ -42,15 +42,28 @@ module CalendarHelper
       else
         links = %(<a href="#">#{session.start_at.strftime("%H:%M")}</a>
                   <a href="#">#{h(truncate(session.experiment.name, :length => 8))}</a>)
-      
       end
       
+      if session.time_before > 0
+        data_before = "data-before=\"#{I18n.t(:cal_pre_time, :minutes => session.time_before)}\""
+      else
+        data_before = ''
+      end
+      
+      if session.time_after > 0
+        data_after = "data-after=\"#{I18n.t(:cal_post_time, :minutes => session.time_after)}\""
+      else
+        data_after = ''
+      end
+        
       %(<div class="event-qtip cal_color#{session.experiment_id % 32}"
+          #{data_before}
+          #{data_after}
           data-title="#{session.experiment.name}"
           data-location="#{session.location.name if session.location}"
           data-expid="#{session.experiment.id}"
           data-sessionid="#{session.id}"
-          data-count="#{session.session_participations.count} (#{session.needed},#{session.reserve})"
+          data-count="#{I18n.t(:cal_participants)} #{session.session_participations.count} (#{session.needed},#{session.reserve})"
           data-exp="#{session.experiment.experimenters.collect{|u| u.firstname[0]+". "+u.lastname}.join(' | ')}">
             <div class="participation-marker #{part_css_class}"></div>
             #{links}

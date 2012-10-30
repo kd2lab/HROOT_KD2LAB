@@ -3,7 +3,7 @@ require 'test_helper'
 class AccountControllerTest < ActionController::TestCase
   context "the account controller" do
     setup do
-      sign_in FactoryGirl.create(:admin)
+      sign_in FactoryGirl.create(:user)
     end
     
     context "get on index" do

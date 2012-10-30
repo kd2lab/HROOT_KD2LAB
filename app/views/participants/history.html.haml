@@ -15,22 +15,50 @@
 %h2=t '.history_title'
 %br
 
-%table.table
+- entries = @experiment.history_entries
+- if entries.count > 0
 
-  %thead
-    %tr
-      %th=t 'filter_summary.header_time'
-      %th=t 'filter_summary.header_action'
-      %th=t 'filter_summary.header_filter'
+  %table.table
 
-  %tbody    
-    - @experiment.history_entries.each do |entry|
-      %tr{:class => if entry.is_adding_entry? then "history-green" else "history-red" end}
-        %td.span2=l entry.created_at, :format => :short
-        %td.span3= entry.to_s
-        %td.span2
-          - HistoryEntry.get_filter_setting_string(JSON.parse(entry.filter_settings)).each do |tx|
-            %span.badge= tx
-%br
+    %thead
+      %tr
+        %th=t 'filter_summary.header_time'
+        %th=t 'filter_summary.header_action'
+        %th=t 'filter_summary.header_filter'
 
+    %tbody    
+      - @experiment.history_entries.each do |entry|
+        %tr{:class => if entry.is_adding_entry? then "history-green" else "history-red" end}
+          %td.span4
+            - if entry.id == params[:detail].to_i
+              = link_to l(entry.created_at, :format => :short), history_experiment_participants_path() 
+            - else
+              = link_to l(entry.created_at, :format => :short), history_experiment_participants_path(:detail => entry.id) 
+            
+          %td.span4= entry.to_s
+          %td.span1
+            - HistoryEntry.get_filter_setting_string(JSON.parse(entry.filter_settings)).each do |tx|
+              %span.badge= tx
+              &nbsp;
+        - if entry.id == params[:detail].to_i
+          %tr
+            %td{:colspan => "3", :style => "border:none; padding-left: 40px"}
+              %table.table
+                - entry.users.each_with_index do |user, index|
+                  %tr
+                    %td= index+1
+                    %td= link_to highlight(truncate(user.lastname, {:length => 15}), params[:search])+', '+highlight(truncate(user.firstname, {:length => 10}), params[:search]), user_path(user)
+                    %td= link_to highlight(truncate(user.email, {:length => 20}), params[:search]), "mailto:#{user.email}"
+                    %td= user.study ? user.study.name : t(:no_info)
+          
+  %br
+  
+  /= link_to t('.undo_caption'), undo_experiment_participants_path, :class => "btn", :method => :post
+
+- else
+
+  =t '.no_history'
+  %br
+  %br
+  %br
 
