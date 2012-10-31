@@ -57,11 +57,12 @@ en:
   right_edit: Manage experiment properties
   right_rights: Manage privileges
   right_manage_sessions: Manage sessions
-  right_manage_participants: Manage partipation
+  right_manage_participants: Manage participation
   right_manage_showups: Manage showup info
   right_send_session_messages: Send session messages
   right_manage_invitations: Manage invitations
   right_status_mails: Receive status emails
+  rights_label: 'Rights...'
   
   popup:
     noshow_count: Number of noshows
@@ -89,7 +90,7 @@ en:
   account:
     index:
       welcome: Welcome
-      available_registrations: register for new sessions
+      available_registrations: Register for new sessions
       available_registrations_text: You can currenty register for experiment sessions.
       enroll_now_button: Register now
       currently_no_sessions: You are currently not invited to experiment sessions.
@@ -659,7 +660,7 @@ For further questions about this software please visit our project page todo
       header2: Email for registration confirmation
       header3: Reminder email
       header4: Reminder email for session completion
-      header5: Email for activatin invitation after import.
+      header5: Email for activation invitation after import.
       text: Email texts
   controllers:
     notice_saved_changes: The changes have been saved.

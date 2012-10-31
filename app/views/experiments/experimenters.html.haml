@@ -20,7 +20,7 @@
 = simple_form_for @experiment,:url => '', :html => {:method => :post, :class => "guarded_form form-horizontal"} do |f| 
   
   
-  %table#usertable.table
+  %table#usertable.table{:'data-rights' => ExperimenterAssignment.right_list.to_json, :'data-rights-label' => I18n.t(:rights_label)}
     - @experiment.experimenter_assignments.each do |assign|
       %tr.removable{:'data-id' => assign.user_id}
         %td

@@ -16,9 +16,10 @@ class ExperimenterAssignment < ActiveRecord::Base
     ]
   end
   
-  def self.right_list_options
-    self.right_list.collect{|r| "<option value=\"#{r.second}\">#{r.first}</option>" }.join()
-  end
+  #todo just delete :-)
+  #def self.right_list_options
+  #  self.right_list.collect{|r| "<option value=\"#{r.second}\">#{r.first}</option>" }.join()
+  #end
   
   def self.update_experiment_rights experiment, rights, ignore_id = 0
     ids_to_delete = experiment.experimenter_assignments.where(["user_id <> ?", ignore_id]).map(&:id)

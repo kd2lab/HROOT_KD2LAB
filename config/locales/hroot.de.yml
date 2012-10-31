@@ -62,6 +62,7 @@ de:
   right_send_session_messages: Nachrichtenversand an Sessionteilnehmer
   right_manage_invitations: Einladungsversand
   right_status_mails: Statusmails
+  rights_label: 'Rechte...'
   
     
   popup:
