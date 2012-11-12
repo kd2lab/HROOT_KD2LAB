@@ -109,7 +109,7 @@
             =user.study_name ? truncate(user.study_name, {:length => 10}) : t(:no_info)
           %td= "#{user.noshow_count}" if user.user?
           %td= "#{user.participations_count}" if user.user?
-          %td= "#{user.session_start_at.strftime("%d.%m.%Y %H:%M") if user.session_start_at}" 
+          %td= "#{I18n.l(user.session_start_at) if user.session_start_at}" 
 - else
   %br
   %b= t'.none_found'

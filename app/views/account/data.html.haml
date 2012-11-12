@@ -31,7 +31,7 @@
       %td= {'m' => t('form_values.male'), 'f' => t('form_values.female'), '?' => t('no_info') }[current_user.gender]
     %tr
       %td=t('activerecord.attributes.user.birthday')
-      %td= current_user.birthday ? current_user.birthday.strftime('%d.%m.%Y') : t('no_info')
+      %td= current_user.birthday ? I18n.l(current_user.birthday) : t('no_info')
     %tr
       %td=t('activerecord.attributes.user.matrikel') 
       %td= current_user.matrikel

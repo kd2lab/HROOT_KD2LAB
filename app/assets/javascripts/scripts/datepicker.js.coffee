@@ -18,8 +18,10 @@ $ ->
 		isRTL: false,
 		showMonthAfterYear: false,
 		yearSuffix: ''}
-  
-  $.datepicker.setDefaults $.datepicker.regional['de']
+
+  # use our date format for english version
+  $.datepicker.regional[''].dateFormat = 'yy-mm-dd'
+  $.datepicker.regional['en'] = $.datepicker.regional['']
   
   $.timepicker.regional['de'] = {
   	timeOnlyTitle: 'timeonlytitle',
@@ -32,10 +34,14 @@ $ ->
   	closeText: 'Schliessen',
   	ampm: false
   };
-  $.timepicker.setDefaults($.timepicker.regional['de']);
+
+  # if there is an element session_start_date
+  if $('#session_start_date').length > 0    
+    lang = $('#session_start_date').data('lang')
+    $.timepicker.setDefaults($.timepicker.regional[lang]);
+    $.datepicker.setDefaults $.datepicker.regional[lang]
   
-  #$('#session_start_date').datepicker $.datepicker.regional[ 'de' ]
-  $('#session_start_date').datetimepicker {
+    $('#session_start_date').datetimepicker {
     	hour: 12,
     	minute: 0
-  };
+    };

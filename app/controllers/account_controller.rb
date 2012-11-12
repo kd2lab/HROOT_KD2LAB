@@ -43,7 +43,6 @@ class AccountController < ApplicationController
     end
   end
   
-  # todo secure this
   def edit
     redirect_to(account_path, :notice => t('controllers.account.notice_all_data')) unless current_user.is_missing_data?
     

@@ -56,21 +56,20 @@ EOSQL
       subject = @session.experiment.confirmation_subject.to_s.mreplace({
         "#firstname" => current_user.firstname, 
         "#lastname"  => current_user.lastname,
-        "#session_date"  => @session.start_at.strftime("%d.%m.%Y"),
-        "#session_start_time" => @session.start_at.strftime("%H:%M"),
-        "#session_end_time" => @session.end_at.strftime("%H:%M"),
+        "#session_date"  => I18n.l(@session.start_at, :format => :date_only),
+        "#session_start_time" => I18n.l(@session.start_at, :format => :time_only),
+        "#session_end_time" => I18n.l(@session.end_at, :format => :time_only),
         "#session_location" => if @session.location then @session.location.name else "" end
       })
       
-      # todo date format i18n
       text = @session.experiment.confirmation_text.to_s.mreplace({
         "#firstname" => current_user.firstname, 
         "#lastname"  => current_user.lastname,
-        "#session_date"  => @session.start_at.strftime("%d.%m.%Y"),
-        "#session_start_time" => @session.start_at.strftime("%H:%M"),
-        "#session_end_time" => @session.end_at.strftime("%H:%M"),
+        "#session_date"  => I18n.l(@session.start_at, :format => :date_only),
+        "#session_start_time" => I18n.l(@session.start_at, :format => :time_only),
+        "#session_end_time" => I18n.l(@session.end_at, :format => :time_only),
         "#session_location" => if @session.location then @session.location.name else "" end,
-        "#sessionlist"  =>  ([@session] + @session.following_sessions).map{|s| s.start_at.strftime("%d.%m.%Y, %H:%M Uhr")+(if s.location then " (#{t('controllers.enroll.location')} #{s.location.name.chomp})" else "" end) }.join("\n")
+        "#sessionlist"  =>  ([@session] + @session.following_sessions).map{|s| I18n.l(s.start_at) + (if s.location then " (#{t('controllers.enroll.location')} #{s.location.name.chomp})" else "" end) }.join("\n")
       })
       
       UserMailer.email(

@@ -37,10 +37,10 @@ module CalendarHelper
       
 
       if can? :read, session.experiment 
-        links = %(<a href="#{participants_experiment_session_path(session.experiment, session)}">#{session.start_at.strftime("%H:%M")}</a>
+        links = %(<a href="#{participants_experiment_session_path(session.experiment, session)}">#{I18n.l(session.start_at, :format => :time_only)}</a>
                   <a href="#{experiment_sessions_path(session.experiment)}">#{h(truncate(session.experiment.name, :length => 8))}</a>)
       else
-        links = %(<a href="#">#{session.start_at.strftime("%H:%M")}</a>
+        links = %(<a href="#">#{I18n.l(session.start_at, :format => :time_only)}</a>
                   <a href="#">#{h(truncate(session.experiment.name, :length => 8))}</a>)
       end
       

@@ -13,6 +13,9 @@
 
 %h3=t '.alternative_email'
 
+=t '.alternative_email_text'
+
+
 - if !current_user.secondary_email.blank?
   - if current_user.secondary_email_confirmed_at
     .success

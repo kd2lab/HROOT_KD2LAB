@@ -27,7 +27,7 @@ de:
   password: Passwort
   emails: E-Mails
   subject: Betreff  
-  site_credits_and_contact: Impressum und Kontaktt
+  site_credits_and_contact: Impressum und Kontakt
   root_page: Startseite
   copyright_html: '&copy; 2011-2013 Universität Hamburg'
   login: Login
@@ -107,6 +107,7 @@ de:
       phone: Telefonnummer
     alternative_email:
       alternative_email: Alternative E-Mail
+      alternative_email_text: Hier können Sie eine zweite E-Mail-Adresse konfigurieren, an die Sie Einladungen und Informationen zu den Experimenten gesendet bekommen. Zur Einloggen nutzen Sie bitte weiterhin Ihre primäre E-Mail-Adresse.
       your_current_alternative_email: Ihre alternative E-Mail-Adresse 
       was_confirmed: wurde bestätigt und wird jetzt verwendet.
       was_not_confirmed: ist derzeit noch nicht bestätigt. Es wurde Ihnen eine E-Mail mit einem Link zur Bestätigung Ihrer alternativen E-Mail-Adresse zugesendet.
@@ -185,6 +186,8 @@ de:
     confirm: Sind Sie sich sicher, dass Sie diesen Raum entfernen möchten?
     description: Beschreibung
     notice: 'Hinweis: Es können nur Räume gelöscht werden, die nicht belegt wurden.'
+    room_active_label: "Raum ist aktiv"
+
   enroll:
     notes: Teilnahmehinweise
     alert1: Experiment mit Folgesessions
@@ -193,7 +196,7 @@ de:
       new_enrollment: Neuanmeldung zu Experiment-Sessions
       available_sessions: 'Sie können sich für folgende Termine anmelden:'
       no_sessions_available: Derzeit können Sie sich für keine weiteren Sessions anmelden.
-      register_for_sessions: Zu den gewählten Sessions anmelden
+      register_for_sessions: Anmelden
     confirm:
       confirm_enrollment: Experiment-Anmeldung bestätigen    
       confirm_enrollment_question: Möchten Sie sich hiermit verbindlich zu folgendem Experiment anmelden?
@@ -245,6 +248,8 @@ de:
       count_info1: Derzeit sind 
       count_info2: Teilnehmer zugeordnet und noch nicht in einer Session eingetragen, davon wurden
       count_info3: noch nicht eingeladen
+      estimation: 'Geschätzte Dauer des Versands:'
+      duration: 'Dauer:'
       choose_per_interval: 'Bitte wählen Sie die Anzahl der E-Mails pro Zeitintervall:'
       choose_interval: 'Bitte wählen Sie die Länge eines Zeitintervalls:'
       prefer_new_users: Teilnehmer mit wenig Teilnahmen bevorzugen
@@ -631,6 +636,9 @@ Für weiteren Fragen zur Software besuchen Sie bitte unsere Projektseite unter t
       edit:
         change_password: Passwort ändern
         change_password_link: Passwort ändern
+        label_new_password: Neues Passwort
+        label_new_password_confirm: Bitte bestätigen Sie das neue Passwort
+
         please_confirm_password: 'Bitte geben Sie das aktuelle Passwort zur Bestätigung ein:'
   options:
     tabs:

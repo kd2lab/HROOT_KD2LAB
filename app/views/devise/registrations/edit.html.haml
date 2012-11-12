@@ -17,17 +17,23 @@
 
 = form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put }) do |f| 
 
-  = f.label :password 
-  = f.password_field :password
-
-  = f.label :password_confirmation
-  = f.password_field :password_confirmation
-
-  %br
-  %br
   =t 'devise.registrations.edit.please_confirm_password'
   %br
   = f.password_field :current_password
+
+  %br
+  %br
+
+  = t('devise.registrations.edit.label_new_password')
+  %br
+  = f.password_field :password
+
+  %br
+
+  = t('devise.registrations.edit.label_new_password_confirm')
+  %br
+  = f.password_field :password_confirmation
+  
   %br
   %br
   = f.submit t('devise.registrations.edit.change_password_link'), :class => "btn btn-primary"

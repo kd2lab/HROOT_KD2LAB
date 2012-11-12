@@ -29,7 +29,7 @@
   %table.table
     %tr
       %td=t '.invitation_row1'
-      %td= @experiment.invitation_start.strftime("%d.%m.%Y, %H:%M") 
+      %td=l @experiment.invitation_start 
 
     %tr
       %td=t '.invitation_row2'
@@ -71,6 +71,7 @@
       
       %br
       %br
+      =t '.estimation'
       %span#info_text 
     
     =t '.choose_per_interval'
@@ -91,6 +92,7 @@
     %br
     = f.button t('.start_sending1'), :confirm => t('.sending_confirm1'), :class => "guarded_form_save btn btn-success", :value => ''
     = f.button t('.start_sending2'), :confirm => t('.sending_confirm2'), :class => "guarded_form_save btn btn-warning", :value => :send_all
+    =t '.duration'
     %span#info_text2
     
 %br

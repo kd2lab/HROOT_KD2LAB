@@ -108,7 +108,7 @@
             =user.study_name ? truncate(user.study_name, {:length => 10}) : t(:no_info)
           %td= user.gender
           %td= user.begin_date 
-          %td= user.created_at.strftime('%d.%m.%y')
+          %td= I18n.l(user.created_at, :format => :date_only)
           %td= "#{user.noshow_count}" 
           %td= "#{user.participations_count}"
         

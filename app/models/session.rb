@@ -80,11 +80,11 @@ class Session < ActiveRecord::Base
   end
   
   def time_str
-    start_at.strftime("%d.%m.%Y %H:%M")+" - "+end_at.strftime("%H:%M")
+    I18n.l(start_at) + ' - ' + I18n.l(end_at, :format => :time_only)
   end
   
   def only_time_str
-    start_at.strftime("%H:%M")+" - "+end_at.strftime("%H:%M")
+    I18n.l(start_at, :format => :time_only) + ' - ' + I18n.l(end_at, :format => :time_only)
   end
     
   def following_sessions

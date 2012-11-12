@@ -26,7 +26,6 @@ class HomeController < ApplicationController
     end
   end
   
-  # todo test
   def confirm_alternative_email
     u = User.find_by_secondary_email_confirmation_token(params[:confirmation_token])
     if u
@@ -43,7 +42,6 @@ class HomeController < ApplicationController
     end      
   end
   
-  #todo test
   def calendar
     u = User.find_by_calendar_key(params[:key])
     

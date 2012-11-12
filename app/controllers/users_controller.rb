@@ -27,7 +27,6 @@ class UsersController < ApplicationController
       # store filters in session to enable redirect
       session[:filter] = params[:filter]
       
-      # todo flash -> notice?
       redirect_to users_path, :flash => {:notice => t('controllers.users.notice_mailqueue')}
     elsif params[:user_action] == "invite_all"
       # store filters in session to enable redirect

@@ -39,7 +39,7 @@ en:
   mailqueue: mailqueue
   logged_in_as: Logged in as
   register_now: Register now
-  recruitment_system: Recruitment sytem for experiments
+  recruitment_system: Administration system for experiments
   text_templates: text templates
   insert_data: Insert data
   remember_me: remember me
@@ -58,7 +58,7 @@ en:
   right_rights: Manage privileges
   right_manage_sessions: Manage sessions
   right_manage_participants: Manage participation
-  right_manage_showups: Manage showup info
+  right_manage_showups: Manage show up info
   right_send_session_messages: Send session messages
   right_manage_invitations: Manage invitations
   right_status_mails: Receive status emails
@@ -73,8 +73,8 @@ en:
   
   form_values:
     interested_in: interested in
-    type_both: presence and online experiments
-    type_presence: only presence experimente
+    type_both: lab based and online experiments
+    type_presence: only lab based experimente
     type_online: only online experimente
     male: male
     female: female
@@ -101,12 +101,13 @@ en:
       incomplete_data_text: Currently you are not invited to all possible experiment sessions, as you have not completed all necessary data. Providing personal information is optional, if you provide more personal information, you will be invited to more eperiment sessions. 
       complete_data_link: Enter additional information
     tabs:
-      overview: Overview of stored data
+      overview: Personal data
       password: Password
       alternative_email: Secondary email
       phone: Phone 
     alternative_email:
       alternative_email: Secondary E-Mail
+      alternative_email_text: You can configure a secondary email, information and invitations for experiments will be sent to this secondary email. For login, please continue to use your primary email.
       your_current_alternative_email: Your secondary email address 
       was_confirmed: was confirmed and will now be used.
       was_not_confirmed: is currently not confirmed. An email was sent to your secondary email address with a confirmation link.
@@ -122,7 +123,7 @@ en:
       incomplete_data_text: 'Currently you are not invited to all possible experiment sessions, as you have not completed all necessary data. Providing personal information is optional, if you provide more personal information, you will be invited to more eperiment sessions. '
     phone:
       phone_number: phone number
-      phone_number_text: Providing a phone number is optional. If you provide a phone number, we will be able reach you in case of short term changes
+      phone_number_text: Providing a phone number is optional, it allows us to contact you immediately e.g. when a session is cancelled.
       save_phone_number: Save phone number
   activation:
     email:
@@ -185,6 +186,7 @@ en:
     confirm: Are you sure you want to delete this location?
     description: description
     notice: 'Notice: you can only delete locations which are not used.'
+    room_active_label: "Location is active"
   enroll:
     notes: Participation notices
     alert1: experiment with following sessions
@@ -193,7 +195,7 @@ en:
       new_enrollment: Register for experiment sessions
       available_sessions: 'You can register for the following sessions:'
       no_sessions_available: Currently you can't register for experiment sessions.'.
-      register_for_sessions: Register for selected experiment sessions.
+      register_for_sessions: Register
     confirm:
       confirm_enrollment: Confirm experiment registration
       confirm_enrollment_question: Do you really want to register to the selected sessions?
@@ -243,11 +245,13 @@ en:
       invitation_confirm: Are you sure you want to stop the invitation process?
       count_info1: Currently there
       count_info2: assigned participants who are not registered in a session, 
-      count_info3: of them where not invited so far.
+      count_info3: of whom have not been invited.
+      estimation: 'Estimated duration of mailing:'
+      duration: 'Duration:'
       choose_per_interval: 'Please choose the number of emails per interval:'
       choose_interval: 'Please choose the duration of a time interval:'
-      prefer_new_users: Invite participants with lesser registrations first.
-      start_sending1: Start sending invitations and open experiment for registration.
+      prefer_new_users: Invite participants with fewer registrations first.
+      start_sending1: Open experiment for registration and start sending invitations
       sending_confirm1: Are you sure you want to start sending invitations?
       start_sending2: Start sending invitations TO ALL participants.
       sending_confirm2: Are you sure you want to start sending invitations? With this option, you will send invitations also to people who where already invited to this experiment previously.
@@ -300,11 +304,11 @@ For further questions about this software please visit our project page todo
       for_registered_users: for registered users
   filter:
     search_text: 'Search in name or email address:'
-    header: 'Filter:'
+    header: 'Filter by:'
     gender: gender
-    noshow: no shows
+    noshow: no show
     participated: participation
-    begin: begin of studies
+    begin: beginning of study
     birthday: age
     experience: experience
     study: field of studies
@@ -325,18 +329,18 @@ For further questions about this software please visit our project page todo
     title_sessions_with_tags1: 'Only show users, who have participated in experiment sessions with the following tags:'
     title_sessions_with_tags2: participations in sessions of experiments with tag
     title_sessions_with_tags3: ' '
-    title_study: 'users with field of studies:'
+    title_study: 'users within this (these) field(s) of study:'
     title_role: 'Role:'
     title_preference: Experiment preference
     title_participation_count: Participation count
     title_noshow_count: No show count
-    title_language: 'Only participants speaking the following languages:'
+    title_language: 'Include only participants who speak the following languages:'
     title_gender: 'Gender:'
-    title_experience: 'Previous experiment experience:'
-    title_experiment: 'Users,'
-    title_degrees: 'users having a degree:' 
-    title_birthday: Birthday
-    title_begin: Begin of studies
+    title_experience: 'Experience in previous experiments:'
+    title_experiment: 'Include users,'
+    title_degrees: 'users holding the following degree(s):' 
+    title_birthday: Date of birth
+    title_begin: Date of beginning of studies
     title_deleted: Deleted users
     hint_studies: Fields of study...
     hint_languages: Languages...
@@ -344,19 +348,19 @@ For further questions about this software please visit our project page todo
     hint_degrees: Degrees...
     at_least: At least
     at_most: At most
-    only: Only
-    without: Without
+    only: Include only
+    without: Exclude
     from: from
     to: to
-    only_with_presence_preference: Only users, who want to participate in presence experiments
-    only_with_online_preference: Only users, who want to participate in online experiments
-    participation_select1: Only assigned users who have participated
-    participation_select2: Only assigned users who are registered in a session
-    participation_select3: Only assigned users without session
-    participation_select4: Only assigned users who are registered in a session, which is not over yet
+    only_with_presence_preference: Include only users, who want to participate in lab based experiments
+    only_with_online_preference: Include only users, who want to participate in online experiments
+    participation_select1: Include only assigned users who have participated
+    participation_select2: Include only assigned users who are registered in a session
+    participation_select3: Include only assigned users without session
+    participation_select4: Include only assigned users who are registered in a session, which is not over yet
     
-    experience_select1: Without users with previous experiment experience
-    experience_select2: Only users with previous experiment experience
+    experience_select1: Exlude users with previous experiment experience
+    experience_select2: Include only users with previous experiment experience
       
     experiment_select1: who are assigned to one of the following experiments
     experiment_select2: who are assigned to all of the following experiments
@@ -378,13 +382,13 @@ For further questions about this software please visit our project page todo
     gender: gender
     preference: preference
     only_with_online_preference: only online
-    only_with_presence_preference: only presence
-    noshow_count: no shows
+    only_with_presence_preference: only lab based
+    noshow_count: no show
     participation_count: participations
     begin_after: begin after
     begin_before: begin before
-    birthday_after: birthday after
-    birthday_before: birthday before
+    birthday_after: date of birth after
+    birthday_before: date of birth before
     and: and
     without_experienced: exclude users with experience
     with_experienced: only users with experience
@@ -414,16 +418,16 @@ For further questions about this software please visit our project page todo
 
     manage:
       study: field of studies
-      add_all: Assign all users of the current filtering
+      add_all: Assign all users selected by current filter
       add_marked: Assign checked users
     
-      none_found: No users were gefunden
+      none_found: No users were found
       none_found_reason: Please change filter settings.
       add_participants: Assign participants
       add_new_participants: Assign new participants
       
     participants:
-      current_filtered: Current filtering
+      current_filtered: Selected by current filter
       marked_participants: Checked participants
     
       study: Field of studies
@@ -530,7 +534,7 @@ For further questions about this software please visit our project page todo
       study: Field of studies
       gender: Gender
       begin: Begin
-      created_at: Register date
+      created_at: Registration date
       no_users: No user was found
       header: User list
     users:
@@ -548,9 +552,9 @@ For further questions about this software please visit our project page todo
       study: Field of studies
       gender: Gender
       begin: Begin
-      created_at: Register date
+      created_at: Registration date
       no_users: No user was found
-      current_filtered: Current filtering
+      current_filtered: Selected by current filter
       marked_users: Checked users
     edit:
       edit_user: 'Edit %{name}'
@@ -567,20 +571,20 @@ For further questions about this software please visit our project page todo
 
       gender: Gender
       phone: Phone
-      matrikel: Student nr.
+      matrikel: Student No.
       role: Role
       study: Field of studies
       degree: Degree
-      begin: Begin of studies
+      begin: Date of beginning of studies
       country: Country
       languages: Languages
       profession: Profession
       secondary_email: Secondary email
       
       participations_so_far: 'Experiment participation history:'
-      showup: Showup
-      noshow: Non-show
-      participated: Participated
+      showup: showed up
+      noshow: No show
+      participated: participated
       
       remove_from_session: Remove
       remove_from_session_confirm: Are you sure you want to remove the user from the experiment session?
@@ -629,7 +633,9 @@ For further questions about this software please visit our project page todo
       edit:
         change_password: Change password
         change_password_link: Change password
-        please_confirm_password: 'Please enter you current password:'
+        label_new_password: New password
+        label_new_password_confirm: Please confirm new password
+        please_confirm_password: Current password
   options:
     tabs:
       general: Options
@@ -654,7 +660,7 @@ For further questions about this software please visit our project page todo
       submit_link: Save texts
     index:
       email_formats_header: Valid email formats
-      email_formats_info: "Configure valid email formats for user signup. You can limit domainds and you can require a prefix substring before the '@'-Symbol."
+      email_formats_info: "Configure valid email formats for user signup. You can limit domains and you can require a prefix substring before the '@'-Symbol."
     emails:
       header1: Email for experiment invitation
       header2: Email for registration confirmation

@@ -5,7 +5,6 @@ calc_times = (anzahl, size, hours) ->
   minutes = 0
   paket = size  
   
-  
   #versand simulieren
   while anzahl > 0
     if paket > 50
@@ -40,8 +39,8 @@ update_calculations = () ->
   s2 = calc_times(anzahl2, size, hours)
   s2.minuten = "0"+s2.minuten if s2.minuten < 10  
     
-  $("#info_text").text("Geschätzte Dauer des Versands: "+s.stunden+ ":"+s.minuten+ " Stunden")     
-  $("#info_text2").text("(Dauer: "+s2.stunden+ ":"+s2.minuten+" Stunden)")     
+  $("#info_text").text(s.stunden+ ":"+s.minuten)     
+  $("#info_text2").text(s2.stunden+ ":"+s2.minuten)     
     
 $ ->
   $('#experiment_invitation_size').change ->

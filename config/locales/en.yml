@@ -17,14 +17,14 @@ en:
         start_date: Start date
         start_time: Start time
         description: Description
-        limitations: Participation info
+        limitations: Information for participants
         duration: Duration in minutes
-        needed: Needed participants
+        needed: Participants needed
         reserve: Reserve participants
         location: Location
         finished: Session closed
-        time_before: Preparation time
-        time_after: Preparation time after
+        time_before: Setup time before
+        time_after: Teardown time after
       location:
         description: Description
         
@@ -36,7 +36,7 @@ en:
         country_name: Nationality
         role: Role
         phone: Cell phone
-        begin: Begin of studies
+        begin: Date of beginning of studies
         begin_month: Month of birth
         begin_year: Year of birth
         email: Email
@@ -48,7 +48,7 @@ en:
         profession_id: Profession
         degree_id: Degree
         gender: Gender
-        birthday: Birthday
+        birthday: Date of birth
         password: Password
         password_confirmation: Password confirmation
         preference: Preference for
@@ -102,9 +102,12 @@ en:
   time:
     am: am
     formats:
-      default: ! '%a, %d %b %Y %H:%M:%S %z'
+      default: ! '%Y-%m-%d %H:%M'
+      date_only: ! '%Y-%m-%d'      
+      time_only: ! '%H:%M'
       long: ! '%B %d, %Y %H:%M'
       short: ! '%d %b %H:%M'
+      
     pm: pm
     
   date:

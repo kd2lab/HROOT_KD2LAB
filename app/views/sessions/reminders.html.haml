@@ -19,7 +19,7 @@
 %br
 %h2
   =t '.session_at'
-  = @session.time_str
+  =l @session.time_str
 %br
 
 = render :partial => "sessions/tabs", :locals => {:selected => :reminders}

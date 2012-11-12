@@ -102,10 +102,13 @@ de:
             
   time:
     formats:
-      default: ! '%A, %d. %B %Y, %H:%M Uhr'
+      default: ! '%d.%m.%Y %H:%M'
+      date_only: ! '%d.%m.%Y'
+      time_only: ! '%H:%M'
+
       long: ! '%A, %d. %B %Y, %H:%M Uhr'
       short: ! '%d. %B, %H:%M Uhr'
-    
+      
   date:
     formats:
       default: "%d.%m.%Y"

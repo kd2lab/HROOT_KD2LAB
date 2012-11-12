@@ -14,7 +14,7 @@ class AccountControllerTest < ActionController::TestCase
       should respond_with :success
     end
     
-    context "get on options" do
+    context "get on data" do
       setup do
          get :data
       end
