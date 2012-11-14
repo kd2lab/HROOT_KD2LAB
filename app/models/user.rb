@@ -175,6 +175,12 @@ EOSQL
       where << "users.role='#{filter[:role]}'"
     end
     
+    #fixed number
+    limit = ''
+    if filter[:fixed].to_i > 0
+      limit = "LIMIT #{filter[:fixed].to_i}"
+    end
+    
     # noshow
     if ["<=", ">"].include?(filter[:noshow_op])
       where << "noshow_count #{filter[:noshow_op]} #{filter[:noshow].to_i}"
@@ -226,6 +232,12 @@ EOSQL
       else
         where << s
       end
+    end
+    
+    # country
+    if filter[:country] && filter[:country].length > 0
+      country_names = filter[:country].join(' ')
+      where << ActiveRecord::Base.send(:sanitize_sql_array, ["(? LIKE concat('%',country_name,'%') AND length(country_name) > 0)", country_names])
     end
 
     # degree
@@ -358,15 +370,19 @@ EOSQL
     end
           
     sql = <<EOSQL
-      SELECT 
+      SELECT * FROM
+        (SELECT 
           #{final_select}     
-      FROM users
-      #{experiment_join}
-      #{participation_join}
-      #{session_participation_join}
-      #{'WHERE' unless where.blank?} 
-        #{where.join(' AND ')}
-      #{order_by}
+        FROM users
+        #{experiment_join}
+        #{participation_join}
+        #{session_participation_join}
+        #{'WHERE' unless where.blank?} 
+          #{where.join(' AND ')}
+        #{order_by}
+        #{limit}
+        ) as t
+      
 EOSQL
   
     return sql
@@ -426,6 +442,11 @@ EOSQL
       count = User.count
     else  
       count = User.where('deleted=0').count
+    end
+    
+    # global limit on results
+    if params[:filter][:fixed].to_i > 0 && count > params[:filter][:fixed].to_i
+      count = params[:filter][:fixed].to_i
     end
   
     # reset page, if not enough results

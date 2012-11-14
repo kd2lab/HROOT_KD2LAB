@@ -48,7 +48,11 @@
         %th= sortable_for_form 'email', t('.th_email')
         %th= sortable_for_form 'study_name', t('.th_study')
         %th= sortable_for_form 'gender',  t('.th_gender')
-        %th= sortable_for_form 'begin_date', t('.th_begin')
+        %th.popup{:'data-popup' => t('popup.noshow_count')}= sortable_for_form 'noshow_count' , t('noshow_shortcut')
+        %th.popup{:'data-popup' => t('popup.participations_count')}= sortable_for_form 'participations_count' , t('participations_shortcut')
+        
+        
+        
         %th.popup{:'data-popup' => t('popup.showup')} 
           = sortable_for_form 'session_showup', t('session_show_shortcut')
           - if participation_boxes
@@ -82,10 +86,10 @@
           %td
             = check_box_tag "selected_users[#{user.id}]", '1', false, :class => 'selected_users' if selection_boxes
             - if !user.deleted && user.imported && !user.activated_after_import
-              %i.icon-ban-circle
+              %i.icon-ban-circle.popup{:'data-popup' => t('popup.inactive_after_import')}
           
             - unless user.reminded_at.nil?
-              %i.icon-user
+              %i.icon-user.popup{:'data-popup' => t('popup.user_was_reminded')}
             
           %td= index + 1
       
@@ -94,7 +98,9 @@
           %td.study_name_popup{:'data-text' => user.study_name || t(:no_info) }
             =user.study_name ? truncate(user.study_name, {:length => 10}) : t(:no_info)
           %td= user.gender
-          %td= user.begin_date 
+          %td= "#{user.noshow_count}" if user.user?
+          %td= "#{user.participations_count}" if user.user?
+          
           %td= check_box_tag "showups[#{user.id}]", "1", user.session_showup == 1, :class => "show_checkbox", :disabled => !participation_boxes, :'data-id' => user.id
           %td= check_box_tag "participations[#{user.id}]", "1", user.session_participated == 1, :class => "participation_checkbox", :disabled => !participation_boxes, :'data-id' => user.id
           %td
@@ -102,6 +108,7 @@
             = hidden_field_tag "ids[#{user.id}]", "1"
       
       %tr
+        %td
         %td
         %td
         %td

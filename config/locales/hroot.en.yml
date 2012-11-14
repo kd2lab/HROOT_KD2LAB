@@ -70,6 +70,9 @@ en:
     showup: "Person showed up"
     participated: "Person participated"
     noshow: "Person didn't show up"
+    inactive_after_import: User was not actived after import
+    user_was_invited: User was invited
+    user_was_reminded: User has been reminded
   
   form_values:
     interested_in: interested in
@@ -320,7 +323,9 @@ For further questions about this software please visit our project page todo
     participation: session participation
     preference: experiment preference
     show_deleted: deleted users
-    
+    fixed: number of results
+    country: countries
+
     submit: Filter and show results
     showing1: Showing
     showing2: of
@@ -342,10 +347,13 @@ For further questions about this software please visit our project page todo
     title_birthday: Date of birth
     title_begin: Date of beginning of studies
     title_deleted: Deleted users
+    title_fixed: Number of results
+    title_country: 'Include only users from the following countries:'
     hint_studies: Fields of study...
     hint_languages: Languages...
     hint_experiment: Experiments...
     hint_degrees: Degrees...
+    hint_countries: Countries...
     at_least: At least
     at_most: At most
     only: Include only

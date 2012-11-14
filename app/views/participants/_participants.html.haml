@@ -15,8 +15,8 @@
   =t 'filter.header' 
   %br
   
-  - [ 'gender', 'noshow', 'participated', 'begin', 'birthday', 'experience', |
-      'study', 'degree', 'language', 'tags', 'experiment', 'participation', 'preference'].each do |key|
+  - [ 'gender', 'noshow', 'participated', 'fixed', 'begin', 'birthday', 'experience', |
+      'study', 'country', 'degree', 'language', 'tags', 'experiment', 'participation', 'preference'].each do |key|
     %a.open-link{:href => '#f'+key}=t("filter.#{key}")
     = '|' unless key == 'preference'
 
@@ -25,11 +25,13 @@
 
   = render :partial => 'shared/filter_gender'
   = render :partial => 'shared/filter_noshow' 
-  = render :partial => 'shared/filter_participated' 
+  = render :partial => 'shared/filter_participated'
+  = render :partial => 'shared/filter_fixed_amount' 
   = render :partial => 'shared/filter_begin' 
   = render :partial => 'shared/filter_birthday' 
   = render :partial => 'shared/filter_experience' 
   = render :partial => 'shared/filter_study'
+  = render :partial => 'shared/filter_country'
   = render :partial => 'shared/filter_degree' 
   = render :partial => 'shared/filter_language'  
   = render :partial => 'shared/filter_tags' 
@@ -94,13 +96,13 @@
             = check_box_tag "selected_users[#{user.id}]", '1', false, :class => 'selected_users'
           
             - unless user.invited_at.nil?
-              %i.icon-envelope
+              %i.icon-envelope.popup{:'data-popup' => t('popup.user_was_invited')}
 
             - if !user.deleted && user.imported && !user.activated_after_import
-              %i.icon-ban-circle
+              %i.icon-ban-circle.popup{:'data-popup' => t('popup.inactive_after_import')}
           
             - unless user.reminded_at.nil?
-              %i.icon-user
+              %i.icon-user.popup{:'data-popup' => t('popup.user_was_reminded')}
           
           
           %td= link_to highlight(truncate(user.lastname, {:length => 15}), params[:search])+', '+highlight(truncate(user.firstname, {:length => 10}), params[:search]), user_path(user)
