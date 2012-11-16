@@ -314,7 +314,7 @@ For further questions about this software please visit our project page todo
     begin: beginning of study
     birthday: age
     experience: experience
-    study: field of studies
+    study: field of study
     degree: degrees
     role: role
     language: languages
@@ -331,7 +331,7 @@ For further questions about this software please visit our project page todo
     showing2: of
     showing3: 'pool members, already assigned:'
     
-    title_sessions_with_tags1: 'Only show users, who have participated in experiment sessions with the following tags:'
+    title_sessions_with_tags1: 'Include only users, who have participated in experiment sessions with the following tags:'
     title_sessions_with_tags2: participations in sessions of experiments with tag
     title_sessions_with_tags3: ' '
     title_study: 'users within this (these) field(s) of study:'
@@ -342,7 +342,7 @@ For further questions about this software please visit our project page todo
     title_language: 'Include only participants who speak the following languages:'
     title_gender: 'Gender:'
     title_experience: 'Experience in previous experiments:'
-    title_experiment: 'Include users,'
+    title_experiment: 'Include only users,'
     title_degrees: 'users holding the following degree(s):' 
     title_birthday: Date of birth
     title_begin: Date of beginning of studies
@@ -400,8 +400,8 @@ For further questions about this software please visit our project page todo
     and: and
     without_experienced: exclude users with experience
     with_experienced: only users with experience
-    study: 'include field of studies: '
-    not_study: 'exclude field of studies: '
+    study: 'include field of study: '
+    not_study: 'exclude field of study: '
     degree: 'include degree: '
     not_degree: 'exclude degree: '
     exp1: Assigned to one of 
@@ -425,7 +425,7 @@ For further questions about this software please visit our project page todo
       no_history: No history about participation assignment was recorded
 
     manage:
-      study: field of studies
+      study: field of study
       add_all: Assign all users selected by current filter
       add_marked: Assign checked users
     
@@ -707,10 +707,10 @@ For further questions about this software please visit our project page todo
       notice_language_changed: The language was changed.
       notice_language_deleted: The language was deleted.  
     study:
-      notice_study_created: The field of studies was created.
-      notice_study_changed: The field of studies was changed.
-      notice_study_deleted: The field of studies was deleted.
-      notice_study_not_deleted: The field of studies can not be deleted, since there are users with this field of studies.
+      notice_study_created: The field of study was created.
+      notice_study_changed: The field of study was changed.
+      notice_study_deleted: The field of study was deleted.
+      notice_study_not_deleted: The field of study can not be deleted, since there are users with this field of study.
     profession:
       notice_profession_created: The profession was created.
       notice_profession_changed: The profession was changed.
