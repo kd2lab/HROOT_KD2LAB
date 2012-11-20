@@ -242,7 +242,7 @@ class UserTest < ActiveSupport::TestCase
     
     should "filter for degree" do
       assert_same_elements [@u1, @u2, @u3, @u4], User.load({ :filter => {:degree => [@d1.id, @d2.id]}})
-      assert_same_elements [@u5, @u6, @u7, @u9], User.load({ :filter => {:degree => [@d1.id, @d2.id], :degree_op => 2, :role => 'user'} })
+      assert_same_elements [], User.load({ :filter => {:degree => [@d1.id, @d2.id], :degree_op => 2, :role => 'user'} })
     end
     
     should "filter tags" do      
