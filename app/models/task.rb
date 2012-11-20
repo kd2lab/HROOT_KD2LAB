@@ -30,7 +30,9 @@ EOSQL
       subject = subject.to_s.mreplace({
         "#firstname" => sp.user.firstname, 
         "#lastname"  => sp.user.lastname,
-        "#session_date"  => sp.session.start_at.strftime("%d.%m.%Y"),
+        "#session_date"  => session.start_at.strftime("%d.%m.%Y"),
+        "#session_date_de"  => session.start_at.strftime("%d.%m.%Y"),
+        "#session_date_en"  => session.start_at.strftime("%Y-%m-%d"),
         "#session_start_time" => sp.session.start_at.strftime("%H:%M"),
         "#session_end_time" => sp.session.end_at.strftime("%H:%M")
       })
@@ -39,6 +41,8 @@ EOSQL
         "#firstname" => sp.user.firstname, 
         "#lastname"  => sp.user.lastname,
         "#session_date"  => sp.session.start_at.strftime("%d.%m.%Y"),
+        "#session_date_de"  => session.start_at.strftime("%d.%m.%Y"),
+        "#session_date_en"  => session.start_at.strftime("%Y-%m-%d"),      
         "#session_start_time" => sp.session.start_at.strftime("%H:%M"),
         "#session_end_time" => sp.session.end_at.strftime("%H:%M"),
         "#session_location" => if sp.session.location then sp.session.location.name else "" end
@@ -73,6 +77,8 @@ EOSQL
         if recipient.message.session_id && session = Session.find(recipient.message.session_id) 
           message = message.to_s.mreplace({
               "#session_date"  => session.start_at.strftime("%d.%m.%Y"),
+              "#session_date_de"  => session.start_at.strftime("%d.%m.%Y"),
+              "#session_date_en"  => session.start_at.strftime("%Y-%m-%d"),
               "#session_start_time" => session.start_at.strftime("%H:%M"),
               "#session_end_time" => session.end_at.strftime("%H:%M"),
               "#session_location" => if session.location then session.location.name else "" end
@@ -134,17 +140,24 @@ EOSQL
         
         link = Rails.application.routes.url_helpers.enroll_sign_in_url(u.create_code)
         
+        sessionlist_de = experiment.open_sessions.map{|s| s.start_at.strftime("%d.%m.%Y, %H:%M Uhr") }.join("\n")
+        sessionlist_en = experiment.open_sessions.map{|s| s.start_at.strftime("%Y-%m-%d, %H:%M ") }.join("\n")
+        
         subject = experiment.invitation_subject.to_s.mreplace({
           "#firstname" => u.firstname, 
           "#lastname"  => u.lastname,
-          "#sessionlist"  => experiment.open_sessions.map{|s| s.start_at.strftime("%d.%m.%Y, %H:%M Uhr") }.join("\n"),
+          "#sessionlist"  => sessionlist_de,
+          "#sessionlist_de"  => sessionlist_de,
+          "#sessionlist_en"  => sessionlist_en,
           "#link"      => link
         })
         
         text = experiment.invitation_text.to_s.mreplace({
           "#firstname" => u.firstname, 
           "#lastname"  => u.lastname,
-          "#sessionlist"  => experiment.open_sessions.map{|s| s.start_at.strftime("%d.%m.%Y, %H:%M Uhr") }.join("\n"),
+          "#sessionlist"  => sessionlist_de,
+          "#sessionlist_de"  => sessionlist_de,
+          "#sessionlist_en"  => sessionlist_en,
           "#link"      => link
         })
         
@@ -182,6 +195,8 @@ EOSQL
       subject = Settings.session_finish_subject.to_s.mreplace({
         "#experiment_name" => session.experiment.name, 
         "#session_date"  => session.start_at.strftime("%d.%m.%Y"),
+        "#session_date_de"  => session.start_at.strftime("%d.%m.%Y"),
+        "#session_date_en"  => session.start_at.strftime("%Y-%m-%d"),
         "#session_start_time" => session.start_at.strftime("%H:%M"),
         "#session_end_time" => session.end_at.strftime("%H:%M")
       })
@@ -189,6 +204,8 @@ EOSQL
       text = Settings.session_finish_text.to_s.mreplace({
         "#experiment_name" => session.experiment.name, 
         "#session_date"  => session.start_at.strftime("%d.%m.%Y"),
+        "#session_date_de"  => session.start_at.strftime("%d.%m.%Y"),
+        "#session_date_en"  => session.start_at.strftime("%Y-%m-%d"),
         "#session_start_time" => session.start_at.strftime("%H:%M"),
         "#session_end_time" => session.end_at.strftime("%H:%M")
       })

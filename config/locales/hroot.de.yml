@@ -412,7 +412,7 @@ Für weiteren Fragen zur Software besuchen Sie bitte unsere Projektseite unter t
     exp5: "An allen der folgenden teilgenommen: "
     exp6: "An keinem der folgenden teilgenommen: "
     language: 'Sprachen: '
-     
+    country: 'Länder: ' 
     
   participants:
     print:

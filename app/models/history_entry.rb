@@ -153,6 +153,11 @@ class HistoryEntry < ActiveRecord::Base
       end
     end
     
+    # contries
+    if filter['country']
+      #report << filter['country'].inspect    
+      report << "#{I18n.t('filter_summary.country')}" + filter['country'].join(', ')
+    end
     
     report 
   end

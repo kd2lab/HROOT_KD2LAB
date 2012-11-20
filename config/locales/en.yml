@@ -37,14 +37,14 @@ en:
         role: Role
         phone: Cell phone
         begin: Date of beginning of studies
-        begin_month: Month of birth
-        begin_year: Year of birth
+        begin_month: Month of begin of studies
+        begin_year: Year of begin of studies
         email: Email
         secondary_email: Secondary email
         lang1: Language
         lang2: Additional Language
         lang3: Additional Language
-        study_id: Field of studies
+        study_id: Field of study
         profession_id: Profession
         degree_id: Degree
         gender: Gender

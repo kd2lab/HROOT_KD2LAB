@@ -245,7 +245,7 @@ EOSQL
       s = "users.degree_id IN (#{filter[:degree].map(&:to_i).join(', ')})"
       
       if filter[:degree_op].to_i == 2
-        where << "(NOT(#{s}) OR users.degree_id IS NULL)"
+        where << "(NOT(#{s}))"
       else
         where << s
       end

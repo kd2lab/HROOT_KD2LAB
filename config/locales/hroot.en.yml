@@ -411,13 +411,14 @@ For further questions about this software please visit our project page todo
     exp5: Participated in all of
     exp6: Participated in none of
     language: 'Languages: '
+    country: 'Countries: ' 
 
 
   participants:    
     print:
       header: Experiment
       filter_settings: Filter settings
-      study: Field of studies
+      study: Field of study
     
     history:
       history_title: History of participant assignment
@@ -438,7 +439,7 @@ For further questions about this software please visit our project page todo
       current_filtered: Selected by current filter
       marked_participants: Checked participants
     
-      study: Field of studies
+      study: Field of study
       message_all_filtered: Send message to all currently filtered users
       to_all_filtered: All currently filtered users
       remove_filtered: Remove all currently filtered users from the experiment
@@ -514,7 +515,7 @@ For further questions about this software please visit our project page todo
       
       th_name: Name
       th_email: Email
-      th_study: Field of studies
+      th_study: Field of study
       th_gender: Gender
       th_begin: Begin
       save_changes_now: Save changes now
@@ -539,7 +540,7 @@ For further questions about this software please visit our project page todo
   users:
     print:
       role: Role
-      study: Field of studies
+      study: Field of study
       gender: Gender
       begin: Begin
       created_at: Registration date
@@ -557,7 +558,7 @@ For further questions about this software please visit our project page todo
       to_all_marked: Checked users
       
       role: Role
-      study: Field of studies
+      study: Field of study
       gender: Gender
       begin: Begin
       created_at: Registration date
@@ -581,7 +582,7 @@ For further questions about this software please visit our project page todo
       phone: Phone
       matrikel: Student No.
       role: Role
-      study: Field of studies
+      study: Field of study
       degree: Degree
       begin: Date of beginning of studies
       country: Country
@@ -651,7 +652,7 @@ For further questions about this software please visit our project page todo
       emails: Emails
       professions: Professions
       languages: Languages
-      studies: Field of studies
+      studies: Field of study
       degrees: Degrees
       texts: Texts
     texts:
