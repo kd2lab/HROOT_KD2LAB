@@ -343,7 +343,7 @@ For further questions about this software please visit our project page todo
     title_gender: 'Gender:'
     title_experience: 'Experience in previous experiments:'
     title_experiment: 'Include only users,'
-    title_degrees: 'users holding the following degree(s):' 
+    title_degrees: 'users studying for the following degree(s):' 
     title_birthday: Date of birth
     title_begin: Date of beginning of studies
     title_deleted: Deleted users
