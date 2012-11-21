@@ -36,7 +36,7 @@
     
     
       - if current_user.has_right?(@experiment, 'manage_sessions')
-        .btn-group{:style => 'float:left'}
+        .btn-group{:style => 'float:right'}
           %a.btn.dropdown-toggle{:'data-toggle' => "dropdown", :href => "#"}
             =t '.actions'
             %b.caret

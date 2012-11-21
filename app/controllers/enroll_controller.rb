@@ -56,20 +56,29 @@ EOSQL
       subject = @session.experiment.confirmation_subject.to_s.mreplace({
         "#firstname" => current_user.firstname, 
         "#lastname"  => current_user.lastname,
-        "#session_date"  => I18n.l(@session.start_at, :format => :date_only),
+        "#session_date"  => @session.start_at.strftime("%d.%m.%Y"),
+        "#session_date_de"  => @session.start_at.strftime("%d.%m.%Y"),
+        "#session_date_en"  => @session.start_at.strftime("%Y-%m-%d"),
         "#session_start_time" => I18n.l(@session.start_at, :format => :time_only),
         "#session_end_time" => I18n.l(@session.end_at, :format => :time_only),
         "#session_location" => if @session.location then @session.location.name else "" end
       })
       
+      sessionlist_de =  ([@session] + @session.following_sessions).map{|s| s.start_at.strftime("%d.%m.%Y") + (if s.location then " (#{t('controllers.enroll.location')} #{s.location.name.chomp})" else "" end) }.join("\n")
+      sessionlist_en =  ([@session] + @session.following_sessions).map{|s| s.start_at.strftime("%Y-%m-%d") + (if s.location then " (#{t('controllers.enroll.location')} #{s.location.name.chomp})" else "" end) }.join("\n")
+      
       text = @session.experiment.confirmation_text.to_s.mreplace({
         "#firstname" => current_user.firstname, 
         "#lastname"  => current_user.lastname,
-        "#session_date"  => I18n.l(@session.start_at, :format => :date_only),
+        "#session_date"  => @session.start_at.strftime("%d.%m.%Y"),
+        "#session_date_de"  => @session.start_at.strftime("%d.%m.%Y"),
+        "#session_date_en"  => @session.start_at.strftime("%Y-%m-%d"),
         "#session_start_time" => I18n.l(@session.start_at, :format => :time_only),
         "#session_end_time" => I18n.l(@session.end_at, :format => :time_only),
         "#session_location" => if @session.location then @session.location.name else "" end,
-        "#sessionlist"  =>  ([@session] + @session.following_sessions).map{|s| I18n.l(s.start_at) + (if s.location then " (#{t('controllers.enroll.location')} #{s.location.name.chomp})" else "" end) }.join("\n")
+        "#sessionlist"  => sessionlist_de,
+        "#sessionlist_de"  => sessionlist_de,
+        "#sessionlist_en"  => sessionlist_en
       })
       
       UserMailer.email(

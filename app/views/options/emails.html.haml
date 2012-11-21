@@ -14,7 +14,7 @@
   %table.table.accordion  
     %tr
       %td 
-        %h3
+        %h4
           %i.icon-chevron-right
           =t '.header1'
           
@@ -22,20 +22,21 @@
           %br
           =t(:subject)
           %br
-          = text_field_tag :invitation_subject, Settings.invitation_subject, :class => "span8"
+          = text_field_tag :invitation_subject, Settings.invitation_subject, :class => "span10"
           %br
           %br
 
-          .templated-field-header.span8 
+          .templated-field-header.span10 
             = render :partial => 'shared/text_insertions', :locals => {:data => ['#firstname', '#lastname', '#sessionlist_de', '#sessionlist_en', '#link'], :element_id => 'invitation_text' }
 
             =t '.text'
             
-          = text_area_tag :invitation_text, Settings.invitation_text, :rows => 5, :class => "span8"
+          = text_area_tag :invitation_text, Settings.invitation_text, :rows => 10, :class => "span10"
+          %br
           %br
     %tr
       %td  
-        %h3
+        %h4
           %i.icon-chevron-right
           =t '.header2'
           
@@ -43,20 +44,21 @@
           %br
           =t(:subject)
           %br
-          = text_field_tag :confirmation_subject, Settings.confirmation_subject, :class => "span8"
+          = text_field_tag :confirmation_subject, Settings.confirmation_subject, :class => "span10"
           %br
           %br
 
-          .templated-field-header.span8
-            = render :partial => 'shared/text_insertions', :locals => {:data => ['#firstname', '#lastname', '#session_date', '#session_start_time', '#session_end_time', '#session_location', '#sessionlist'], :element_id => 'confirmation_text' }
+          .templated-field-header.span10
+            = render :partial => 'shared/text_insertions', :locals => {:data => ['#firstname', '#lastname', '#session_date_de', '#session_date_en', '#session_start_time', '#session_end_time', '#session_location', '#sessionlist_de', '#sessionlist_en'], :element_id => 'confirmation_text' }
 
             =t '.text'
   
-          = text_area_tag :confirmation_text, Settings.confirmation_text, :rows => 5, :class => "span8"
+          = text_area_tag :confirmation_text, Settings.confirmation_text, :rows => 10, :class => "span10"
+          %br
           %br
     %tr
       %td  
-        %h3
+        %h4
           %i.icon-chevron-right
           =t '.header3'
           
@@ -64,20 +66,21 @@
           %br
           =t(:subject)
           %br
-          = text_field_tag :reminder_subject, Settings.reminder_subject, :class => "span8"
+          = text_field_tag :reminder_subject, Settings.reminder_subject, :class => "span10"
           %br
           %br
 
-          .templated-field-header.span8
+          .templated-field-header.span10
             = render :partial => 'shared/text_insertions', :locals => {:data => ['#firstname', '#lastname', '#session_date_de',  '#session_date_en', '#session_start_time', '#session_end_time', '#session_location'], :element_id => 'reminder_text' }
 
             =t '.text'
   
-          = text_area_tag :reminder_text, Settings.reminder_text, :rows => 5, :class => "span8"
+          = text_area_tag :reminder_text, Settings.reminder_text, :rows => 10, :class => "span10"
+          %br
           %br
     %tr
       %td  
-        %h3
+        %h4
           %i.icon-chevron-right
           =t '.header4'
           
@@ -85,21 +88,22 @@
           %br
           =t(:subject)
           %br
-          = text_field_tag :session_finish_subject, Settings.session_finish_subject, :class => "span8"
+          = text_field_tag :session_finish_subject, Settings.session_finish_subject, :class => "span10"
           %br
           %br
 
-          .templated-field-header.span8
+          .templated-field-header.span10
             = render :partial => 'shared/text_insertions', :locals => {:data => ['#experiment_name', '#session_date_de',  '#session_date_en', '#session_start_time', '#session_end_time'], :element_id => 'session_finish_text' }
 
             =t '.text'
             
-          = text_area_tag :session_finish_text, Settings.session_finish_text, :rows => 5, :class => "span8"
+          = text_area_tag :session_finish_text, Settings.session_finish_text, :rows => 10, :class => "span10"
+          %br
           %br
     
     %tr
       %td  
-        %h3
+        %h4
           %i.icon-chevron-right
           =t '.header5'
           
@@ -107,16 +111,17 @@
           %br
           =t(:subject)
           %br
-          = text_field_tag :import_invitation_subject, Settings.import_invitation_subject, :class => "span8"
+          = text_field_tag :import_invitation_subject, Settings.import_invitation_subject, :class => "span10"
           %br
           %br
 
-          .templated-field-header.span8
+          .templated-field-header.span10
             = render :partial => 'shared/text_insertions', :locals => {:data => ['#firstname', '#lastname', '#activation_link'], :element_id => 'import_invitation_text' }
             
             =t '.text'
   
-          = text_area_tag :import_invitation_text, Settings.import_invitation_text, :rows => 5, :class => "span8"
+          = text_area_tag :import_invitation_text, Settings.import_invitation_text, :rows => 10, :class => "span10"
+          %br
           %br
     
   = submit_tag t(:save), :name => "test", :class => "guarded_form_save btn btn-primary"
