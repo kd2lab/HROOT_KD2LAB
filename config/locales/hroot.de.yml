@@ -39,7 +39,7 @@ de:
   mailqueue: Mailqueue
   logged_in_as: Eingeloggt als
   register_now: Jetzt registrieren
-  recruitment_system: Rekrutierungssystem für Experimente
+  recruitment_system: Hamburg registration and organization online tool
   text_templates: Textvorlagen
   insert_data: Daten einfügen
   remember_me: eingeloggt bleiben
@@ -324,7 +324,6 @@ Für weiteren Fragen zur Software besuchen Sie bitte unsere Projektseite unter t
     participation: Sessionteilnahme
     preference: Experiment-Präferenz
     show_deleted: Gelöschte Benutzer
-    fixed: Anzahl Filterergebnisse
     country: Länder
 
     submit: Filter anwenden und Ergebnis aktualisieren
@@ -348,7 +347,6 @@ Für weiteren Fragen zur Software besuchen Sie bitte unsere Projektseite unter t
     title_birthday: Geburtstag
     title_begin: Studienbeginn
     title_deleted: Gelöschte Benutzer
-    title_fixed: Anzahl beschränken auf
     title_country: 'Nur Teilnehmer aus folgenden Ländern:'
     hint_studies: Studienfächer...
     hint_languages: Sprachen...

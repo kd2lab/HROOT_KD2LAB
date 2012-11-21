@@ -175,12 +175,6 @@ EOSQL
       where << "users.role='#{filter[:role]}'"
     end
     
-    #fixed number
-    limit = ''
-    if filter[:fixed].to_i > 0
-      limit = "LIMIT #{filter[:fixed].to_i}"
-    end
-    
     # noshow
     if ["<=", ">"].include?(filter[:noshow_op])
       where << "noshow_count #{filter[:noshow_op]} #{filter[:noshow].to_i}"
@@ -370,8 +364,7 @@ EOSQL
     end
           
     sql = <<EOSQL
-      SELECT * FROM
-        (SELECT 
+        SELECT 
           #{final_select}     
         FROM users
         #{experiment_join}
@@ -380,9 +373,6 @@ EOSQL
         #{'WHERE' unless where.blank?} 
           #{where.join(' AND ')}
         #{order_by}
-        #{limit}
-        ) as t
-      
 EOSQL
   
     return sql
@@ -444,11 +434,6 @@ EOSQL
       count = User.where('deleted=0').count
     end
     
-    # global limit on results
-    if params[:filter][:fixed].to_i > 0 && count > params[:filter][:fixed].to_i
-      count = params[:filter][:fixed].to_i
-    end
-  
     # reset page, if not enough results
     if (count < (page-1)*50) 
       page = 1

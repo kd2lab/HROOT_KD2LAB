@@ -39,7 +39,7 @@ en:
   mailqueue: mailqueue
   logged_in_as: Logged in as
   register_now: Register now
-  recruitment_system: Administration system for experiments
+  recruitment_system: Hamburg registration and organization online tool
   text_templates: text templates
   insert_data: Insert data
   remember_me: remember me
@@ -323,7 +323,6 @@ For further questions about this software please visit our project page todo
     participation: session participation
     preference: experiment preference
     show_deleted: deleted users
-    fixed: number of results
     country: countries
 
     submit: Filter and show results
@@ -347,7 +346,6 @@ For further questions about this software please visit our project page todo
     title_birthday: Date of birth
     title_begin: Date of beginning of studies
     title_deleted: Deleted users
-    title_fixed: Number of results
     title_country: 'Include only users from the following countries:'
     hint_studies: Fields of study...
     hint_languages: Languages...

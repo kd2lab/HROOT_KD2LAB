@@ -15,7 +15,7 @@
   =t 'filter.header'  
   %br
   
-  - [ 'gender', 'noshow', 'participated', 'role', 'fixed', 'begin', 'birthday', 'experience', |
+  - [ 'gender', 'noshow', 'participated', 'role', 'begin', 'birthday', 'experience', |
       'study', 'country', 'degree', 'language', 'tags', 'experiment', 'preference', 'show_deleted'].each do |key|
     %a.open-link{:href => '#f'+key}=t("filter.#{key}")
     = '|' unless key == 'show_deleted'
@@ -27,7 +27,6 @@
   = render :partial => 'shared/filter_noshow' 
   = render :partial => 'shared/filter_participated' 
   = render :partial => 'shared/filter_role'
-  = render :partial => 'shared/filter_fixed_amount'
   = render :partial => 'shared/filter_begin'
   = render :partial => 'shared/filter_birthday' 
   = render :partial => 'shared/filter_experience' 

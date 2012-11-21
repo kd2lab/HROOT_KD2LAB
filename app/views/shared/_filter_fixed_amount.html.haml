@@ -1,4 +1,0 @@
-#ffixed.filter-block{is_enabled(:fixed)}
-  =t 'filter.title_fixed'
-  %br
-  = text_field_tag 'filter[fixed]', params[:filter][:fixed].to_i > 0 ? params[:filter][:fixed].to_i : 100, :class => "span2", :type => "number"
