@@ -29,9 +29,9 @@
 
   / Wenn der aktuelle Raum nicht mehr aktiv ist, dann alle Räume anzeigen, sonst nur aktive
   - if @session.location && !@session.location.active?
-    = f.association :location
+    = f.association :location, :collection => Location.order(:name)
   - else
-    = f.association :location, :collection => Location.where(:active => true)
+    = f.association :location, :collection => Location.where(:active => true).order(:name)
 
   %br
   
