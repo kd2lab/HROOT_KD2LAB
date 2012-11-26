@@ -1,33 +1,15 @@
-- user_mailer
-- devise/mailer
-- controller
-
-
-- puts bereinigen
-- strftime i18n
-- i18n interpolation
-
-ALT:
-
-
-
 - htaccess: guest dj!d38dFghj
 
+- Bezug zu Hamburg bereinigen
+- Passwörter bereinigen
+- environments bereinigen
+- Installation empty testen
+- migrationen consolidieren
+- alle todos raus
+- noch einmal auf sql-injection schauen
+- production / qa / development raus
+- database.yml raus
+- coverage raus
+- google tracking raus
 
-
-
-
-
-
-- Sprechweise
-
-  Poolmitglieder
-  Zugeordneter
-  Eingeladene
-  Angemeldete
-  Gebuchte/Zugelassene
-  Erschienene
-  Teilnehmer
-
-
-
+- special topics: Javascript / pfade / deployment
