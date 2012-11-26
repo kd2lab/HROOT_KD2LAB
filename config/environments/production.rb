@@ -46,10 +46,6 @@ Hroot::Application.configure do
   }
   config.action_mailer.raise_delivery_errors = true
  
-
-  # Enable threaded mode
-  # config.threadsafe!
-
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation can not be found)
   config.i18n.fallbacks = true
@@ -65,13 +61,14 @@ Hroot::Application.configure do
   #config.assets.prefix = "/hroot/assets"
   config.path_prefix = '/hroot'
   
+  # generic contact email adress
+  config.contact_email = 'experiments@wiso.uni-hamburg.de'
+  
   # list of supported locales
   config.locales = [:de, :en]
   config.locale_names = {:de => 'Deutsch (de)', :en => 'English (en)'}
 
 end
-
-GA.tracker = "UA-33420680-1"
 
 ActionMailer::Base.default :from => 'experiments@wiso.uni-hamburg.de'
 

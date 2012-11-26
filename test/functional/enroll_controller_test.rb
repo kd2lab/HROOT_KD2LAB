@@ -98,12 +98,7 @@ class EnrollControllerTest < ActionController::TestCase
       setup do
         get :index, :code => @code
       end
-      
-      # todo test this
-      #should "not sign in" do
-      #  assert nil, current_user
-      #end
-    
+          
       should respond_with :redirect
     end
 
@@ -112,11 +107,6 @@ class EnrollControllerTest < ActionController::TestCase
         get :enroll_sign_in, :code => @code
       end
 
-      # todo test this      
-      #should "sign in" do
-      #  assert @user, current_user
-      #end
-      
       should respond_with :redirect
     end  
   end

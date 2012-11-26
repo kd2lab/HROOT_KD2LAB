@@ -1,8 +1,6 @@
 !!!
 %html
   %head
-    / todo remove in stable branch
-    = analytics_init if Rails.env.production?
     %title Hroot
     %meta{:"http-equiv" => "content-type", :content => "text/html;charset=UTF-8"}
     = csrf_meta_tags
@@ -14,7 +12,6 @@
     
     
     
-  / todo maybe this info page is obsolete?  
   %body
     .container
       = render :partial => 'layouts/topbar'
@@ -47,12 +44,10 @@
             %p=t '.questions'
               
             %p
-              / todo remove this for stable branch
-              = link_to 'experiments@wiso.uni-hamburg.de', 'mailto:experiments@wiso.uni-hamburg.de'
+              = link_to Hroot::Application.config.contact_email, 'mailto:'+Hroot::Application.config.contact_email
             
         .span3
-          /todo whatup??
-          != image_tag("logo-uni-hh.png")
+          != image_tag("mainlogo.png")
           %br
           %br
           %br

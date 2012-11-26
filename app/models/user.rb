@@ -253,8 +253,6 @@ EOSQL
     end
     
     #experiment tags
-    # todo guard against sql injection
-    
     filter[:exp_tag_count].to_i.times do |i|
       if filter["exp_tag#{i}"].length > 0
         experiment_tag_subquery = <<EOSQL

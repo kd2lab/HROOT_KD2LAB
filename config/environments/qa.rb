@@ -66,12 +66,12 @@ Hroot::Application.configure do
   config.locales = [:de, :en]
   config.locale_names = {:de => 'Deutsch (de)', :en => 'English (en)'}
 
+  config.contact_email = 'experiments@wiso.uni-hamburg.de'
+
   
   #config.assets.prefix = "assettest"
   config.path_prefix = nil
 end
-
-GA.tracker = "UA-33420680-1"
 
 ActionMailer::Base.default :from => 'experiments@wiso.uni-hamburg.de'
 

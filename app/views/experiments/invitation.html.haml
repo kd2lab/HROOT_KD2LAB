@@ -63,7 +63,6 @@
     
     .info{:style => "float:right; width:300px"}
       =t '.count_info1' 
-      / todo: remove query from view
       %span#count_total= @experiment.participations.where("(SELECT count(sp.id) FROM session_participations sp, sessions s WHERE sp.session_id = s.id AND sp.user_id = participations.user_id AND s.experiment_id = participations.experiment_id) = 0").count
       =t '.count_info2' 
       %span#count= @experiment.uninvited_participants_count 

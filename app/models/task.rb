@@ -2,7 +2,6 @@
 
 class Task
   
-  # todo anzeige wer reminded wurde
   def self.send_session_reminders
     sql = <<EOSQL
     SELECT * FROM 

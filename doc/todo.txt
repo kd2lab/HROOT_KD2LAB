@@ -9,7 +9,5 @@
 - noch einmal auf sql-injection schauen
 - production / qa / development raus
 - database.yml raus
-- coverage raus
-- google tracking raus
 
 - special topics: Javascript / pfade / deployment

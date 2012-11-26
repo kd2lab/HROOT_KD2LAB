@@ -129,40 +129,6 @@ class ParticipantsController < ApplicationController
     
   end
   
-  def undo
-    if @experiment.history_entries.count > 0
-      last = @experiment.history_entries.last
-      ids = JSON.parse(last.user_ids)
-      
-      if ids.count > 0      
-        case last.action
-        when 'add_filtered_users', 'add_selected_users'
-          # remove session participatios
-          Session.remove_members_from_sessions(ids, @experiment)
-          User.update_noshow_calculation(ids)
-           
-          # delete participation entries
-          ids.each do |id|
-            p = Participation.find_by_user_id_and_experiment_id(id, @experiment.id)
-            p.destroy if p
-          end
-        when 'remove_filtered_users', 'remove_selected_users'
-          # restore removed users
-          ids.each do |id|
-            p = Participation.find_or_create_by_user_id_and_experiment_id(id, @experiment.id)
-            
-            
-            #todo wtf p.filter_id = history_entry.id
-            p.save
-        end
-        end
-        
-        last.destroy
-      end
-    end
-      
-    redirect_to history_experiment_participants_path, :notice => t('.undo_successful')
-  end
   
   protected
   

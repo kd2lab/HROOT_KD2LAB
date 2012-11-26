@@ -1,8 +1,6 @@
 !!!
 %html
   %head
-    / todo remove analytics for stable branch
-    = analytics_init if Rails.env.production?
     %title Hroot
     %meta{:"http-equiv" => "content-type", :content => "text/html;charset=UTF-8"}
     = csrf_meta_tags
@@ -35,8 +33,7 @@
               
             %p
               = link_to t('.register_now'), register_path, :class => "btn btn-primary btn-large"
-              /= link_to "Mehr Informationen", register_path, :class => "btn btn-large"
-            
+              
             %br
             %br
           
@@ -47,8 +44,7 @@
               = link_to t('.activate_now'), activate_path, :class => "btn btn-large"
             
         .span3
-          /todo whatup?
-          != image_tag("logo-uni-hh.png")
+          != image_tag("mainlogo.png")
           %br
           %br
           %br
