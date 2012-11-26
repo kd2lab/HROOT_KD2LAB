@@ -688,6 +688,7 @@ Für weiteren Fragen zur Software besuchen Sie bitte unsere Projektseite unter t
       notice_email_sent: Es wurde Ihnen eine E-Mail zur Bestätigung Ihrer neuen Adresse gesendet.
       notice_invalid_email: Diese E-Mail-Adresse ist nicht gültig.
     application:
+      error: Ein interner Fehler ist aufgetreten, bitt versuchen Sie es erneut.
       notice_login_required: Für diesen Bereich ist ein Login erforderlich.
       notice_account_not_activated: Ihr bestehender Zugang wurde im neuen System noch nicht aktiviert.
       notice_invalid_url: Die von Ihnen aufgerufene Url ist nicht gültig.

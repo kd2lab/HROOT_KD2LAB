@@ -6,15 +6,14 @@ class ApplicationController < ActionController::Base
     redirect_to root_url, :alert => t('controllers.application.notice_login_required')
   }
   
-  #rescue_from Exception do |exception|
-  #  if Rails.env.production?
-  #      ExceptionNotifier::Notifier.exception_notification(request.env, exception).deliver
-  #  end
-  #  redirect_to root_url, :alert => "Leider ist ein interner Fehler aufgetreten. Das hroot-Entwickler-Team wurde automatisch benachrichtigt. Sollte das Problem weiterhin bestehen, wenden Sie sich bitte an das Forschungslabor."
-  #end
+  rescue_from Exception do |exception|
+    if Rails.env.production?
+        ExceptionNotifier::Notifier.exception_notification(request.env, exception).deliver
+    end
+    redirect_to root_url, :alert => t('controllers.application.error')    
+  end
     
   rescue_from CanCan::AccessDenied do |exception|
-    #flash[:error] = exception.message
     redirect_to root_url, :alert => t('controllers.application.notice_login_required')
   end
   

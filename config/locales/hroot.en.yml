@@ -687,6 +687,7 @@ For further questions about this software please visit our project page todo
       notice_email_sent: An email was sent to validate you email address.
       notice_invalid_email: This email address is invalid.
     application:
+      error: An internal error has occured, please try again.
       notice_login_required: A login is required for this area.
       notice_account_not_activated: Your current account has not been activated yet.
       notice_invalid_url: Invalid url.

@@ -41,9 +41,7 @@ module Hroot
     config.filter_parameters += [:password, :password_confirmation]
     
     # add view routes for registration controller override
-    #paths.app.views << "app/views/devise"
     config.paths["app/views"] << "app/views/devise"
-    
     config.assets.enabled = true
     
     # Catch 404s
