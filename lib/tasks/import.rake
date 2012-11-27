@@ -4,111 +4,13 @@ namespace :import do
   task :all => :environment do
     require 'sequel'
     
-     # set a few defaults:
-    Settings.invitation_subject = "Einladung zur Experiment-Session"
-    Settings.invitation_text = <<EOTXT
-Hallo #firstname #lastname,
-
-an folgenden Terminen können Sie an einer Experiment-Session teilnehmen:
-
-#sessionlist
-
-Melden Sie sich an unter #link.
-
-Viele Grüße,
-Ihre Laborleitung
-EOTXT
-
-    Settings.confirmation_subject = "Bestätigung zur Sessionanmeldung am #session_date um #session_start_time"
-    Settings.confirmation_text = <<EOTXT
-Hallo #firstname #lastname,
-
-hiermit bestätigen wir verbindlich die folgende Experiment-Teilnahme an folgenden Terminen:
-
-#sessionlist   
-EOTXT
-    
-    Settings.reminder_subject = "Erinnerung: Experiment-Session am #session_date um #session_end_time"
-    Settings.reminder_text = <<EOTXT
-Hallo #firstname #lastname,
-
-hiermit erinnern wir Sie an die Experiment-Session am #session_date von #session_start_time bis #session_end_time.        
-EOTXT
-
-    Settings.session_finish_subject = "Sessionabschluss unvollständig: #experiment_name am #session_date um #session_start_time"
-    Settings.session_finish_text = <<EOTXT
-Hallo,
-
-bitte vervollständigen Sie noch die Teilnahmedaten der folgenden Session: 
-Experiment: #experiment_name
-Datum: #session_date
-Startzeit: #session_start_time 
-EOTXT
-    Settings.import_invitation_subject = "Umstellung auf hroot - Neuaktivierung Ihres bestehenden Accounts"
-    Settings.import_invitation_text = <<EOTXT
-Hallo #firstname #lastname,
-
-wir haben unsere Verwaltungssoftware zur Organisation von Experimenten aktualisiert. Die neue Software heisst hroot und löst das bestehende System ab. Bitte aktivieren Sie Ihren Account und folgendem Link:
-
-#activation_link
-EOTXT
-
-    Settings.terms_and_conditions = {}
-    Settings.welcome_text = {}
-    
+    # connect to database to import from
     db = Sequel.connect(:adapter=>'mysql2', :host=>'localhost', :database=>'controlling_orsee', :user=>'root', :password=>'abc8765')
    
-    User.delete_all
-    Study.delete_all
-    Session.delete_all
-    Experiment.delete_all
-    ExperimenterAssignment.delete_all
-    Participation.delete_all
-    SessionParticipation.delete_all
-    Location.delete_all
-    ActsAsTaggableOn::Tag.delete_all
-    ActsAsTaggableOn::Tagging.delete_all
-    Message.delete_all
-    Recipient.delete_all
-    Filter.delete_all
-    Language.delete_all
-    Degree.delete_all
-    
-    # import admins
-    puts "--------- ADMINS ------------"
-    
-    # create account for harald
-    h = User.new :firstname => 'Harald', :birthday => "1.1.1900", :gender => 'm', :lastname => 'Wypior', :email => "harald.wypior@ovgu.de", :role => "admin", :password => 'tester_1', :password_confirmation => 'tester_1', :matrikel => '1'
-    h.skip_confirmation!
-    
-    unless h.save
-      puts h.errors.full_messages
-    end
-
-    
-    db[:or_admin].each do |row|
-      u = User.new(
-        :email => row[:email], 
-        :firstname => row[:fname],
-        :lastname => row[:lname],
-        :password => "tester_1",
-        :password_confirmation => "tester_1",
-        :matrikel => "admin",
-        :birthday => "1.1.1900",
-        :gender => '?',
-        :role => if (row[:admin_type] == 'admin' || row[:admin_type] == 'developer') then "admin" else "experimenter" end
-      )
-      u.skip_confirmation!
-      u.save(:validate => false)
-      
-      if !u.valid?
-        puts u.email+" "+u.errors.inspect
-      else
-        puts "Imported "+u.email
-      end
-    end
         
-    # prepare Study table
+    # import studies from orsee
+    puts  "--------- importing fields of study ------------"
+
     studies={}
     db[:or_lang].where(:content_type => "field_of_studies").collect{|row| studies[row[:content_name]] = {:name => row[:de]} }    
     studies.each do |key, row|
@@ -120,7 +22,7 @@ EOTXT
     # import users
     error_mails = []
       
-    puts  "--------- USERS ------------"
+    puts  "--------- importing users ------------"
     count = 0
     db[:or_participants].each do |row|
       field_of_studies = studies[row[:field_of_studies].to_s]
@@ -168,14 +70,17 @@ EOTXT
       )
       
       u.admin_update = true
+
+      # this line is very important, otherwise devise will send a confirmation mail
+      # do not comment, you could trigger a mass mailing to all imported users!
       u.skip_confirmation!
       u.save
       
-      # set correct creation date
       if !u.valid?
         error_mails << u.email  
         puts u.email+" "+u.errors.inspect
       else
+        # set correct creation date (timestamp in orsee)
         u.created_at = Date.new(1970,1,1)+row[:creation_time].seconds
         u.save
         count += 1
@@ -183,38 +88,14 @@ EOTXT
       end
     end
     
-    # todo fix jans account, fix ricardos account
-    j = User.find_by_email('jan.papmeier@wiso.uni-hamburg.de')
-    if j
-      j.role = 'admin'
-      j.save
-    end
-    
-    puts "Error emails"
+    puts "----------------The following accounts could not be imported:-----------"
     
     error_mails.each do |mail|
       puts mail
     end
   
     # import experiments
-    puts "--------- EXPERIMENTS ------------"
-    
-    
-    # create default Languages
-    Language.create(:name => "Deutsch")
-    Language.create(:name => "Englisch")
-    Language.create(:name => "Französisch")
-    Language.create(:name => "Italienisch")
-    Language.create(:name => "Spanisch")
-    Language.create(:name => "Chinesisch")
-
-    # create default degrees
-    Degree.create(:name => "Bachelor")
-    Degree.create(:name => "Master")
-    Degree.create(:name => "Diplom")
-    Degree.create(:name => "Lehramt")
-    Degree.create(:name => "Magister")
-    
+    puts "--------- importing EXPERIMENTS ------------"
     
     count = 1
     db[:or_experiments].each do |row|
@@ -222,12 +103,10 @@ EOTXT
       
       # load type string
       exp_class = db[:or_lang].first(:content_type => "experimentclass", :content_name => row[:experiment_class])
-      
-      
+        
       e = Experiment.new(
         :name => row[:experiment_name],
         :description => row[:experiment_description],
-        #:restricted => row[:access_restricted] == 'y',
         :finished => row[:experiment_finished] == 'y',
         :show_in_stats => row[:hide_in_stats] != 'y',
         :show_in_calendar => row[:hide_in_cal] != 'y'
@@ -243,32 +122,6 @@ EOTXT
       if !e.valid?
         puts e.name.to_s+" "+e.errors.inspect
       else
-        # setup admin relation
-        row[:experimenter].split(',').each do |adminname|
-          admin = db[:or_admin].first(:adminname => adminname)
-         
-          if admin
-            u = User.find_by_email(admin[:email])     
-            if u      
-              assign = ExperimenterAssignment.new
-              assign.user = u
-              assign.experiment = e
-              
-              if u.admin? 
-                assign.rights = ExperimenterAssignment.right_list.collect{|r| r.second}.join(',')
-              else 
-                assign.rights = ''
-              end
-              
-              assign.save
-            else
-              puts "Error: "+adminname+" not found"
-            end
-          else
-            puts "Error: "+adminname+" not found"
-          end  
-        end
-        
         # import sessions of this experiment
         db[:or_sessions].filter(:experiment_id => row[:experiment_id]).each do |session| 
           begin
@@ -332,10 +185,7 @@ EOTXT
                   :participated => part[:participated] == 'y'
                 ) 
                 
-                # only build session participations with interesting information
-                #if sp.showup || sp.noshow
                 sp.save(:validate => false)
-                #end
               end
             end
           end
@@ -370,9 +220,6 @@ EOTXT
     
     # update noshow calculation
     User.update_noshow_calculation
-    
-    
-    
     
   end
 end

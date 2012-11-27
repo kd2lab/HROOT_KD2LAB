@@ -77,11 +77,6 @@ class DeviseCreateUsers < ActiveRecord::Migration
     add_index :users, :deleted
     add_index :users, :role
     
-    
-    # User.create(:email => "mail@ingmar.net", :password => "test", :password_confirmation => "test", :active => true, :firstname => "Ingmar", :lastname => "Baetge", :matrikel => "123")
-    
-    # add_index :users, :unlock_token,         :unique => true
-    # add_index :users, :authentication_token, :unique => true
   end
 
   def self.down
