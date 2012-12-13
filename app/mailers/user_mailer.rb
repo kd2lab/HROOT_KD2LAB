@@ -29,11 +29,5 @@ class UserMailer < ActionMailer::Base
     @user = user
     mail(:to => user.email, :subject => I18n.t('user_mailer.subject_import_email_activation'))
   end  
-
-  #def change_email_confirmation(user)
-  #  @user = user
-  #  mail(:to => user.change_email, :subject => "Bestätigung der neuen E-Mail-Adresse")
-  #end    
-  
   
 end
