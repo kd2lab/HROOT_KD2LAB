@@ -1,9 +1,9 @@
 # rvm capistrano integration
-# $:.unshift(File.expand_path('./lib', ENV['rvm_path']))
+$:.unshift(File.expand_path('./lib', ENV['rvm_path']))
 require "rvm/capistrano"
-# set :rvm_ruby_string, "1.9.2@hroot"
+set :rvm_ruby_string, "1.9.2@hroot"
 set :use_sudo, false
-set :rvm_ruby_string, ENV['GEM_HOME'].gsub(/.*\//,"")
+# set :rvm_ruby_string, ENV['GEM_HOME'].gsub(/.*\//,"")
 
 #rvm bundler integration
 set :bundle_dir, ""
