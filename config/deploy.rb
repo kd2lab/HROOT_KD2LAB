@@ -1,5 +1,5 @@
 # rvm capistrano integration
-$:.unshift(File.expand_path('./lib', ENV['rvm_path']))
+# $:.unshift(File.expand_path('./lib', ENV['rvm_path']))
 set :rvm_ruby_string, "1.9.2@hroot"
 set :use_sudo, false
 set :rvm_type, :system 
