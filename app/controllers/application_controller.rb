@@ -43,7 +43,7 @@ class ApplicationController < ActionController::Base
       if current_user.imported && !current_user.activated_after_import
         email = current_user.email
         sign_out current_user
-        redirect_to activate_url(:email_insert => email), :notice => t('controllers.application.notice_account_not_activated'), 
+        redirect_to activate_url(:email_insert => email), :notice => t('controllers.application.notice_account_not_activated')
       end
     end
   end
