@@ -45,8 +45,6 @@ class OptionsController < ApplicationController
     
     
     if params[:terms_and_conditions]
-      puts params[:terms_and_conditions]
-      
       Settings.terms_and_conditions = params[:terms_and_conditions]
       Settings.welcome_text = params[:welcome_text]
       Settings.credits_text = params[:credits_text]

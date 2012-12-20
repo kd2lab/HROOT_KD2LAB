@@ -29,35 +29,25 @@ class ParticipantsController < ApplicationController
       redirect_to experiment_participants_path(@experiment), :flash => {:notice => t('controllers.participants.notice_mailqueue')}
     elsif !params[:user_action].blank?
       if params[:user_action] == "remove_all"
+        # add filter to select only users without a session - we don't want to delete users, who are in a session
+        params[:filter][:participation] = "3"
         ids =  User.load_ids(params, {:experiment => @experiment, :sort_column => sort_column, :sort_direction => sort_direction, :exclude_non_participants => 1})
         
         if ids.length > 0   
-          # aus allen sessions austragen, session participations löschen
-          Session.remove_members_from_sessions(ids, @experiment)
-        
+          # remove users who have no session participation
+          deleted_user_ids = @experiment.remove_participations(ids)
+                    
           # store all changes to the user base
-          history_entry = HistoryEntry.create(:filter_settings => params[:filter].to_json, :experiment_id => @experiment.id, :action => "remove_filtered_users", :user_count => ids.length, :user_ids => ids.to_json)
-      
-          # participation auch löschen
-          ids.each do |id|
-            p = Participation.find_by_user_id_and_experiment_id(id, @experiment.id)
-            p.destroy if p
-          end
+          history_entry = HistoryEntry.create(:filter_settings => params[:filter].to_json, :experiment_id => @experiment.id, :action => "remove_filtered_users", :user_count => deleted_user_ids.length, :user_ids => deleted_user_ids.to_json)      
         end
       elsif params[:user_action] == "0" && params[:selected_users]
         # aus allen sessions austragen, session participations löschen
         if params[:selected_users].length > 0   
-          Session.remove_members_from_sessions(params[:selected_users].keys.map(&:to_i), @experiment)
-          User.update_noshow_calculation(params[:selected_users].keys.map(&:to_i))
-
+          # remove users who have no session participation
+          deleted_user_ids = @experiment.remove_participations(params[:selected_users].keys.map(&:to_i))
+          
           # store all changes to the user base
-          history_entry = HistoryEntry.create(:filter_settings => params[:filter].to_json, :experiment_id => @experiment.id, :action => "remove_selected_users", :user_count => params[:selected_users].length, :user_ids => params[:selected_users].keys.map(&:to_i).to_json)
-      
-          # participation auch löschen
-          params[:selected_users].keys.map(&:to_i).each do |id|
-            p = Participation.find_by_user_id_and_experiment_id(id, @experiment.id)
-            p.destroy if p
-          end
+          history_entry = HistoryEntry.create(:filter_settings => params[:filter].to_json, :experiment_id => @experiment.id, :action => "remove_selected_users", :user_count => deleted_user_ids.length, :user_ids => deleted_user_ids.to_json)          
         end  
       elsif params[:user_action].to_i > 0 && params[:selected_users]
         target = Session.find(params[:user_action].to_i)
