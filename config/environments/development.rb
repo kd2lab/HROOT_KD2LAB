@@ -34,6 +34,12 @@ Hroot::Application.configure do
   # list of supported locales
   config.locales = [:de, :en]
   config.locale_names = {:de => 'Deutsch (de)', :en => 'English (en)'}
+  
+  config.custom_fields = [
+    { name: "somedate", title: {de: 'Ein Datum', en: 'Somedate'}, type: "date", required: true, show_in_tables: true},
+    { name: "age", title: {de: 'Alter', en: 'Age'}, type: "int", required: true, show_in_tables: false},
+    { name: "status", title: {de: 'Status', en: 'Status'}, type: "selection", required: true, show_in_tables: true, collection: ["A", "B", "C", "D"]}
+  ]
 end
 
 Rails.application.routes.default_url_options[:host] =  'localhost:3000'

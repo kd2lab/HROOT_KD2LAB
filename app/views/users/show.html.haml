@@ -76,6 +76,7 @@
       %td=t '.profession'
       %td=  @user.profession.name if @user.profession
 
+    = render :partial => 'show_custom_fields'
   %br
 
 .userinfo

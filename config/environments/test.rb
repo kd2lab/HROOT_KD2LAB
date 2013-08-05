@@ -44,6 +44,8 @@ Hroot::Application.configure do
   # list of supported locales
   config.locales = [:de, :en]
   config.locale_names = {:de => 'Deutsch (de)', :en => 'English (en)'}
+  
+  config.custom_fields = []
 end
 
 Rails.application.routes.default_url_options[:host] =  'test.host'

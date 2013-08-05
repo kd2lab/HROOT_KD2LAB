@@ -1,0 +1,14 @@
+- Hroot::Application.config.custom_fields.each do |field|
+  - case field[:type]
+    - when 'string'
+      = f.input field[:name], :label => field[:title][I18n.locale]
+    - when 'int'
+      = f.input field[:name], :label => field[:title][I18n.locale]
+    - when 'date'
+      = f.input field[:name], :label => field[:title][I18n.locale], :order => [:day, :month, :year], :include_blank => "true"
+    - when 'float'
+      = f.input field[:name], :label => field[:title][I18n.locale]
+    - when 'selection'
+      = f.input field[:name], :label => field[:title][I18n.locale], :collection => field[:collection]
+	
+  

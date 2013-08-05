@@ -46,6 +46,8 @@
       = f.input :country_name, :priority => [ "Germany" ], :blank => true
       = f.input :preference, :collection => {t('form_values.type_both')=>0, t('form_values.type_presence')=>1, t('form_values.type_online')=>2}, :default => 0
 
+      = render :partial => 'users/edit_custom_fields', :locals => {:f => f}
+
       %hr
       =t 'devise.registrations.new.optional_data'
       %br

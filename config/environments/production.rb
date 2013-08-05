@@ -68,6 +68,7 @@ Hroot::Application.configure do
   config.locales = [:de, :en]
   config.locale_names = {:de => 'Deutsch (de)', :en => 'English (en)'}
 
+  config.custom_fields = []
 end
 
 ActionMailer::Base.default :from => 'experiments@wiso.uni-hamburg.de'

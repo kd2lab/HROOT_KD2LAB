@@ -20,6 +20,9 @@ class User < ActiveRecord::Base
                   :email_prefix, :email_suffix, 
                   :country_name, :terms_and_conditions, :lang1, :lang2, :lang3, :profession_id, :degree_id, :birthday,
                   :preference, :experience, :imported, :activated_after_import, :import_token
+                  
+  # Setup accessible attributes for custom fields
+  Hroot::Application.config.custom_fields.map{|x| attr_accessible x[:name].to_sym}
   
   ROLES = %w[user experimenter admin]
   

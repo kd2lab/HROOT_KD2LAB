@@ -88,8 +88,14 @@
         %th= sortable_for_form 'gender',  t('.gender')
         %th= sortable_for_form 'begin_date', t('.begin')
         %th= sortable_for_form 'created_at', t('.created_at')
+   		
+        - Hroot::Application.config.custom_fields.each do |field|
+          - if field[:show_in_tables]
+            %th=sortable_for_form field[:name], field[:title][I18n.locale]
+
         %th.popup{:'data-popup' => t('popup.noshow_count')}= sortable_for_form 'noshow_count' , t('noshow_shortcut')
         %th.popup{:'data-popup' => t('popup.participations_count')}= sortable_for_form 'participations_count' , t('participations_shortcut')
+
 
     %tbody    
       - @users.each do |user| 
@@ -110,6 +116,11 @@
           %td= user.gender
           %td= user.begin_date 
           %td= I18n.l(user.created_at, :format => :date_only)
+          
+          - Hroot::Application.config.custom_fields.each do |field|
+            - if field[:show_in_tables]
+              %td=user[field[:name]]
+          
           %td= "#{user.noshow_count}" 
           %td= "#{user.participations_count}"
         
