@@ -95,7 +95,6 @@ EOSQL
         recipient.sent_at = Time.zone.now
         recipient.save
       rescue Exception => e
-        puts e.inspect
         UserMailer.log_mail("Problem mit Mailversand", "Die Mail mit der id #{recipient.message.id} an \n#{recipient.user.inspect}\n kann nicht versendet werden.").deliver
       end
     end

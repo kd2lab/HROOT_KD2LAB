@@ -20,13 +20,12 @@ $ ->
     
 
   # ajax for enabling and disabling of experiment enrollment
-  $('#state_button_enable').live 'click', ->
+  $('#state').on 'click', '#state_button_enable',  ->
     $("#state").load "<%= (Hroot::Application.config.path_prefix || '') %>/admin/experiments/"+$(this).attr("data-id")+"/enable"
-    
-  $('#state_button_disable').live 'click', ->
+  
+  $('#state').on 'click', '#state_button_disable',  ->
     $("#state").load "<%= (Hroot::Application.config.path_prefix || '') %>/admin/experiments/"+$(this).attr("data-id")+"/disable"
-
-
+  
   check_form_enabling = ->
     if $('#reminder_check').attr('checked')
       $('.subpart').show()

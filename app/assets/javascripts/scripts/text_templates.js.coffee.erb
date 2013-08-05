@@ -1,6 +1,6 @@
 $ ->
   
-  $('.save_template').live 'click', ->
+  $('body').on 'click', '.save_template', ->
     if $(this).attr('data-name') && !confirm "Achtung: Die bisher gespeicherten Daten werden dadurch überschrieben! Wollen Sie fortfahren?"
       return false
     
@@ -12,14 +12,14 @@ $ ->
         $('.template-menu').replaceWith(data)
     false
   
-  $('.load_template').live 'click', ->
+  $('body').on 'click', '.load_template', ->
     element_id = $(this).closest('.text-templates').attr('data-element-id')
     if confirm("Soll die Vorlage geladen und der aktuelle Text ersetzt werden?")
       $.post "<%= (Hroot::Application.config.path_prefix || '') %>/admin/templates", { mode: 'load', templatename: $(this).attr('data-name')}, (data) =>
         $('#'+element_id).val(data)
     false
   
-  $('.delete_template').live 'click', ->
+  $('body').on 'click', '.delete_template', ->
     if confirm "Soll die Vorlage wirklich gelöscht werden?"
       $.post "<%= (Hroot::Application.config.path_prefix || '') %>/admin/templates",{ mode: 'delete', templatename: $(this).attr('data-name')}, (data) =>
         $('.template-menu').replaceWith(data)  

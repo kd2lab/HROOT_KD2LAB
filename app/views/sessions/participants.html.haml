@@ -6,7 +6,7 @@
       t(:sessions_label)]
 
 
-= render :partial => "experiments/enrollment"
+#state= render :partial => "experiments/enrollment"
 
 - if @session.reminder_enabled
   = render :partial => "shared/messaging", :locals => {:reminder_header => @session.reminder_subject, :reminder_text => @session.reminder_text, :session_context => true}  

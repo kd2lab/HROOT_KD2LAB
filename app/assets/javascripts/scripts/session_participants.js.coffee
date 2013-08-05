@@ -4,20 +4,21 @@ $ ->
     $('#all_participation').attr('checked', $('.participation_checkbox:not(:checked)').size() == 0)
     $('#all_noshow').attr('checked', $('.noshow_checkbox:not(:checked)').size() == 0)
 
-  $('.show_checkbox').live 'click', ->
+  
+  $('body').on 'click', '.show_checkbox', ->
     if $(this).is(':checked')
       $('.noshow_checkbox[data-id='+$(this).attr('data-id')+']').attr('checked', false)
     else
       $('.participation_checkbox[data-id='+$(this).attr('data-id')+']').attr('checked', false) 
     update_checkboxes()
       
-  $('.noshow_checkbox').live 'click', ->
+  $('body').on 'click', '.noshow_checkbox', ->
     if $(this).is(':checked')
       $('.show_checkbox[data-id='+$(this).attr('data-id')+']').attr('checked', false)
       $('.participation_checkbox[data-id='+$(this).attr('data-id')+']').attr('checked', false)
     update_checkboxes()
       
-  $('.participation_checkbox').live 'click', ->
+  $('body').on 'click', '.participation_checkbox', ->
     if $(this).is(':checked')
       $('.show_checkbox[data-id='+$(this).attr('data-id')+']').attr('checked', true)
       $('.noshow_checkbox[data-id='+$(this).attr('data-id')+']').attr('checked', false)

@@ -31,17 +31,25 @@ class RegistrationsControllerTest < ActionController::TestCase
     
     should "create a user, when suffix validation is active and a correct mailadress is given" do
       @request.env["devise.mapping"] = Devise.mappings[:user]
-      @user1 = FactoryGirl.build(:user)
-      @user2 = FactoryGirl.build(:user)
-      
       Settings.mail_restrictions = [{"prefix"=>"test", "suffix"=>"uni-hamburg.de"}, {"prefix"=>"", "suffix"=>"uni-magdeburg.de"}]
+      @user = FactoryGirl.build(:user)
       
-      post :create, :user => @user1.attributes.merge(:password => "testtest_8", :password_confirmation => "testtest_8", :email_prefix => "blatestbla", :email_suffix => "uni-hamburg.de")
-      post :create, :user => @user2.attributes.merge(:password => "testtest_8", :password_confirmation => "testtest_8", :email_prefix => "irgendwas", :email_suffix => "uni-magdeburg.de")
+      post :create, :user => @user.attributes.merge(:password => "testtest_8", :password_confirmation => "testtest_8", :email_prefix => "blatestblub", :email_suffix => "uni-hamburg.de")
       
-      assert_equal 2, User.count
+      assert_equal 1, User.count    
     end
+    
+    should "create a user, when suffix validation is active and a correct mailadress is given and no suffix validation" do
+      @request.env["devise.mapping"] = Devise.mappings[:user]
+      Settings.mail_restrictions = [{"prefix"=>"test", "suffix"=>"uni-hamburg.de"}, {"prefix"=>"", "suffix"=>"uni-magdeburg.de"}]
+      @user = FactoryGirl.build(:user)
+      
+      post :create, :user => @user.attributes.merge(:password => "testtest_8", :password_confirmation => "testtest_8", :email_prefix => "test", :email_suffix => "uni-magdeburg.de")
+      
+      assert_equal 1, User.count    
+    end
+    
   end
-
+  
   
 end

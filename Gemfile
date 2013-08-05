@@ -23,9 +23,10 @@ gem 'rvm-capistrano'
 # To use debugger (ruby-debug for Ruby 1.8.7+, ruby-debug19 for Ruby 1.9.2+)
 gem 'debugger'
 gem 'haml'
-gem 'ledermann-rails-settings', :require => 'rails-settings'
+gem 'ledermann-rails-settings', '1.2.1', :require => 'rails-settings'
 gem 'sequel'
 gem 'jquery-rails', '>= 1.0.12'
+gem 'jquery-ui-rails'
 gem 'will_paginate'
 gem 'devise'
 gem 'simple_form'
@@ -54,5 +55,5 @@ group :development, :test do
   gem 'jslint_on_rails'
   gem "factory_girl_rails", "~> 4.0"
   gem 'shoulda'
-  gem 'mocha'
+  gem 'mocha', :require => false
 end

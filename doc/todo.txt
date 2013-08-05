@@ -11,3 +11,13 @@
 - database.yml raus
 
 - special topics: Javascript / pfade / deployment
+
+- fix qtip / use popup from bootstrap
+
+- custom field
+  string, int mit range, date, float mit range, selection 
+  User-Formulare überarbeiten
+  Alle Spaltenansichten überarbeiten
+
+  für den nutzer:
+  db-spalte anlegen
