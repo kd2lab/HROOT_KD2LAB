@@ -111,6 +111,10 @@ en:
     pm: pm
     
   date:
+    # see https://github.com/eternicode/bootstrap-datepicker  
+    # this MUST match the default date format
+    datepicker: "yyyy-mm-dd"
+      
     date:
     abbr_day_names:
     - Sun
@@ -146,6 +150,7 @@ en:
       default: ! '%Y-%m-%d'
       long: ! '%B %d, %Y'
       short: ! '%b %d'
+      
     month_names:
     - 
     - January

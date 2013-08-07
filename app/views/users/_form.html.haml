@@ -11,7 +11,7 @@
   = f.input :firstname, :required => false
   = f.input :lastname, :required => false
   = f.input :gender, :collection => {t('form_values.male') => 'm', t('form_values.female') => 'f', t(:no_info) => '?'}, :as => :select, :required => false
-  = f.input :birthday, :include_blank => "true", :order => [:day, :month, :year], :required => false, :start_year => Date.today.year-16, :end_year => 1900
+  = f.input :birthday, :include_blank => "true", :required => false, :start_year => Date.today.year-16, :end_year => 1900
   = f.input :phone
   = f.input :matrikel, :required => false
   = f.input :email
@@ -38,7 +38,7 @@
   %br
   = f.input :deleted, :collection => [[t('form_values.user_is_active'), false],[t('form_values.user_is_marked_as_deleted'), true]], :include_blank => false,  :label => t(:delete) 
    
-  = render :partial => 'edit_custom_fields', :locals => {:f => f}
+  = render :partial => 'edit_custom_fields', :locals => {:fields => Hroot::Application.config.custom_fields, :f => f}
    
    
   %br

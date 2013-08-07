@@ -18,7 +18,7 @@
     = simple_form_for resource, :as => resource_name, :url => registration_path(resource_name), :html => {:class => 'form-horizontal'} do |f| 
       %br
       - if Settings.mail_restrictions && Settings.mail_restrictions.map{|r| r['suffix']}.select{|r| !r.blank?}.count > 0  
-        = f.label :email
+        = f.label :email, :style => "margin-right:20px"
         = f.text_field :email_prefix, :class => "span1"
         @
         = f.select :email_suffix, options_for_select(Settings.mail_restrictions.map{|r| r['suffix']}.select{|r| !r.blank?}, params[:user] ? params[:user][:email_suffix] : "")
@@ -38,15 +38,15 @@
       %br
       %br
 
-      = f.input :gender, :collection => {t('form_values.male') => 'm', t('form_values.female') => 'f'}, :as => :select, :required => false
-      = f.input :birthday, :include_blank => "true", :order => [:day, :month, :year], :required => false, :start_year => Date.today.year-16, :end_year => 1900
+      = f.input :gender, :collection => {t('form_values.male') => 'm', t('form_values.female') => 'f'}, :as => :select, :required => false      
+      = f.input :birthday, :include_blank => "true", :required => false, :start_year => Date.today.year-16, :end_year => 1900
       = f.input :firstname, :required => false
       = f.input :lastname, :required => false
       = f.input :matrikel, :required => false
       = f.input :country_name, :priority => [ "Germany" ], :blank => true
       = f.input :preference, :collection => {t('form_values.type_both')=>0, t('form_values.type_presence')=>1, t('form_values.type_online')=>2}, :default => 0
 
-      = render :partial => 'users/edit_custom_fields', :locals => {:f => f}
+      = render :partial => 'users/edit_custom_fields', :locals => { :fields => Hroot::Application.config.custom_fields.select{|f| f[:required] == true}, :f => f}
 
       %hr
       =t 'devise.registrations.new.optional_data'
@@ -67,9 +67,12 @@
       = f.input :begin_month, :collection => 1..12, :as => :select, :required => false
       = f.input :begin_year, :collection => (Date.today.year-10 .. Date.today.year), :as => :select, :required => false
       
-      .checkbox-wrapper
-        = f.check_box :experience 
-        =t 'devise.registrations.new.experience'
+      = f.input :experience, :inline_label => t('devise.registrations.new.experience'), :as => :boolean, :label => false
+            
+      %br
+      = render :partial => 'users/edit_custom_fields', :locals => { :fields => Hroot::Application.config.custom_fields.select{|f| f[:required] == false}, :f => f}
+      
+      
       %br
       %hr
   

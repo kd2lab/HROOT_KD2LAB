@@ -27,9 +27,10 @@ class SessionsController < ApplicationController
     @session.reference_session_id ||= params[:reference_session_id]
   end
   
-  def create
+  def parse_date_and_time_params
+    # date and time have been split up - we need to put them together again when creating and updating sessions
     begin
-      params[:session][:start_at] = Time.zone.parse  "#{params[:session][:start_date]} "
+      params[:session][:start_at] = Time.zone.parse  "#{params[:session][:start_date]} #{params[:session][:start_time]}"
       params[:session][:end_at] = params[:session][:start_at]+params[:session][:duration].to_i.abs.minutes
     rescue
       params[:session][:start_at] = @session.start_at
@@ -37,8 +38,13 @@ class SessionsController < ApplicationController
     end
     
     params[:session].delete :start_date
+    params[:session].delete :start_time
     params[:session].delete :duration
-    
+  end  
+  
+  def create
+    parse_date_and_time_params
+        
     @session = Session.new(params[:session])
     @session.experiment = @experiment
     
@@ -67,17 +73,7 @@ class SessionsController < ApplicationController
   def update
     @session = Session.find(params[:id])
     
-    begin
-      params[:session][:start_at] = Time.zone.parse  "#{params[:session][:start_date]} "
-      params[:session][:end_at] = params[:session][:start_at]+params[:session][:duration].to_i.abs.minutes
-    rescue
-      params[:session][:start_at] = @session.start_at
-      params[:session][:end_at] = @session.end_at
-    end
-    
-    params[:session].delete :start_date
-    params[:session].delete :start_time
-    params[:session].delete :duration
+    parse_date_and_time_params
     
     if @session.update_attributes(params[:session])
       redirect_to experiment_sessions_path(@experiment), :notice => t('controllers.notice_saved_changes')

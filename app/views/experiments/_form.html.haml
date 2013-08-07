@@ -8,25 +8,17 @@
   = f.input :contact, :as => :text, :input_html => {:class => "span5", :rows => 4} 
   = f.input :sender_email, :hint => "("+t('.default_address_is')+" #{UserMailer.default[:from]})", :input_html => {:class => "span5"} 
   
-  %br
-  
   
   - unless @experiment.new_record?
-    .checkbox-wrapper
-      = f.input :finished, :wrapper => :none, :as => :boolean, :label => false, :boolean_style => :inline
-      =t '.experiment_finished'
-    %br
-  .checkbox-wrapper
-    = f.input :show_in_stats, :wrapper => :none, :label => false, :boolean_style => :inline 
-    =t '.experiment_in_statistic'
+    = f.input :finished, :inline_label => t('.experiment_finished'), :as => :boolean, :label => false
     
-  %br
-  %br
-  .checkbox-wrapper
-    - if @experiment.new_record?
-      = f.submit t('.create_experiment'), :class => "guarded_form_save btn btn-primary"
-    - else
-      = f.submit t(:save), :class => "guarded_form_save btn btn-primary"
+  = f.input :show_in_stats, :inline_label => t('.experiment_in_statistic'), :as => :boolean, :label => false
+    
+  
+  - if @experiment.new_record?
+    = f.submit t('.create_experiment'), :class => "guarded_form_save btn btn-primary"
+  - else
+    = f.submit t(:save), :class => "guarded_form_save btn btn-primary"
   
   %br
   %br

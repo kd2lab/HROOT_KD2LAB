@@ -1,14 +1,17 @@
-- Hroot::Application.config.custom_fields.each do |field|
+- fields.each do |field|
   - case field[:type]
     - when 'string'
-      = f.input field[:name], :label => field[:title][I18n.locale]
+      = f.input field[:name], :label => field[:title][I18n.locale], :required => false
     - when 'int'
-      = f.input field[:name], :label => field[:title][I18n.locale]
+      = f.input field[:name], :label => field[:title][I18n.locale], :required => false
     - when 'date'
-      = f.input field[:name], :label => field[:title][I18n.locale], :order => [:day, :month, :year], :include_blank => "true"
-    - when 'float'
-      = f.input field[:name], :label => field[:title][I18n.locale]
+      = f.input field[:name], 
+          :label => field[:title][I18n.locale], 
+          :required => false, 
+          :as => :string, 
+          :input_html => { :class => 'datepicker', :'data-date-format' => I18n.t('date.datepicker') } 
+          
     - when 'selection'
-      = f.input field[:name], :label => field[:title][I18n.locale], :collection => field[:collection]
+      = f.input field[:name], :label => field[:title][I18n.locale], :required => false, :collection => field[:collection]
 	
   

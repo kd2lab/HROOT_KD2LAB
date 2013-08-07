@@ -110,15 +110,19 @@ de:
       short: ! '%d. %B, %H:%M Uhr'
       
   date:
+    # see https://github.com/eternicode/bootstrap-datepicker  
+    # this MUST match the default date format
+    datepicker: "dd.mm.yyyy"
     formats:
       default: "%d.%m.%Y"
+      datepicker: "%d.%m.%Y"
     day_names: [Sonntag, Montag, Dienstag, Mittwoch, Donnerstag, Freitag, Samstag]
     abbr_day_names: [So, Mo, Di, Mi, Do, Fr, Sa]
     order:
-      - :year
-      - :month
       - :day
-    
+      - :month
+      - :year
+      
     # Don't forget the nil at the beginning; there's no such thing as a 0th month
     month_names: [~, Januar, Februar, März, April, Mai, Juni, Juli, August, September, Oktober, November, Dezember]
     abbr_month_names: [~, Jan, Feb, Mär, Apr, Mai, Jun, Jul, Aug, Sep, Okt, Nov, Dez]

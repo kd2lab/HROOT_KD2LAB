@@ -1,4 +1,13 @@
 $ =>
+  
+  # activate timepicker
+  $('.timepicker').timepicker()
+  
+  # activate datepicker js
+  $('.datepicker').datepicker(
+    language: $('body').data('locale') 
+  )
+        
   # activate chosen
   $(".chzn-select").chosen()
   

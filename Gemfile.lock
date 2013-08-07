@@ -140,6 +140,7 @@ GEM
     ref (1.0.5)
     rvm-capistrano (1.4.1)
       capistrano (>= 2.0.0)
+    sass (3.2.10)
     sequel (4.0.0)
     shoulda (3.5.0)
       shoulda-context (~> 1.0, >= 1.0.1)
@@ -210,6 +211,7 @@ DEPENDENCIES
   mysql2
   rails (= 3.2.9)
   rvm-capistrano
+  sass
   sequel
   shoulda
   simple_form

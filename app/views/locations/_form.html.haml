@@ -5,15 +5,8 @@
   
 = simple_form_for @location, {:html => {:class => "guarded_form form-horizontal"}, :url => url} do |f| 
   = f.input :name, :required => false, :input_html => { :class => 'span4' }
-  = f.input :description, :as => :text, :input_html => { :class => 'span4' }
-  
-  //%label.checkbox
-  //  = f.input :active, :label => false, :wrapper => :none, :boolean_style => :inline
-  //  Dieser Raum ist aktiv
-  = f.input :active, :label => t('locations.room_active_label')
-  
-  
-  
+  = f.input :description, :as => :text, :input_html => { :class => 'span4' }  
+  = f.input :active, :inline_label => t('locations.room_active_label'), :as => :boolean, :label => false
   
   %br
   

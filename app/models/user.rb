@@ -55,6 +55,11 @@ class User < ActiveRecord::Base
   validates_acceptance_of :terms_and_conditions
   validates :secondary_email, :email => true, :allow_blank => true
     
+  Hroot::Application.config.custom_fields.select{|f| f[:required] == true}.each do |field|
+    validates_presence_of field[:name].to_sym
+  end
+    
+    
   # http://www.zorched.net/2009/05/08/password-strength-validation-with-regular-expressions/                                        
   validates_format_of :password, :with => /^.*(?=.{8,})(?=.*[a-zA-Z])(?=.*[\W_])(?=.*[\d]).*$/, :if => :password_present?
   def password_present?

@@ -38,7 +38,10 @@ Hroot::Application.configure do
   config.custom_fields = [
     { name: "somedate", title: {de: 'Ein Datum', en: 'Somedate'}, type: "date", required: true, show_in_tables: true},
     { name: "age", title: {de: 'Alter', en: 'Age'}, type: "int", required: true, show_in_tables: false},
-    { name: "status", title: {de: 'Status', en: 'Status'}, type: "selection", required: true, show_in_tables: true, collection: ["A", "B", "C", "D"]}
+    { name: "status", title: {de: 'Status', en: 'Status'}, type: "selection", required: true, show_in_tables: true, collection: ["A", "B", "C", "D"]},
+    { name: "value", title: {de: 'Wert', en: 'Value'}, type: "int", required: false, show_in_tables: true},
+    { name: "stringvalue", title: {de: 'Wert2', en: 'Value2'}, type: "string", required: true, show_in_tables: true}
+  
   ]
 end
 

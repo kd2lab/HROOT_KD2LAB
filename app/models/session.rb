@@ -38,13 +38,9 @@ class Session < ActiveRecord::Base
   end
   
   def start_date
-    if start_at
-      start_at.to_date.to_s + " " + start_at.strftime("%H:%M")
-    else
-      Time.now.strftime("%d.%m.%Y %H:%M")
-    end
+    I18n.l(start_at.to_date)
   end
-  
+    
   def duration
     begin
       (end_at - start_at).round / 60

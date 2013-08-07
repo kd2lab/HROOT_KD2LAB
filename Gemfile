@@ -23,6 +23,7 @@ gem 'rvm-capistrano'
 # To use debugger (ruby-debug for Ruby 1.8.7+, ruby-debug19 for Ruby 1.9.2+)
 gem 'debugger'
 gem 'haml'
+gem 'sass'
 gem 'ledermann-rails-settings', '1.2.1', :require => 'rails-settings'
 gem 'sequel'
 gem 'jquery-rails', '>= 1.0.12'

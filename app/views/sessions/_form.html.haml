@@ -9,7 +9,28 @@
   
 = simple_form_for @session, {:html => {:class => "guarded_form session_update form-horizontal"}, :url => url } do |f|   
   = f.input :reference_session_id, :as => :hidden
-  = f.input :start_date, :required => false, :input_html => {:'data-lang' => I18n.locale}
+
+  = f.input :start_date, 
+          :required => false, 
+          :as => :string, 
+          :input_html => { :class => 'datepicker', :'data-date-format' => I18n.t('date.datepicker') } 
+
+  -# custom time picker, so simple_form support
+  .control-group
+    %label.control-label=I18n.t('activerecord.attributes.session.start_time')
+    .controls
+      .input-append.bootstrap-timepicker
+        %input.timepicker{:type=>"text",
+          :id => 'session_start_time',
+          :name => 'session[start_time]',
+          :class=>"input-small",
+          :'data-show-meridian' => 'false',
+          :'data-minute-step' => "5",
+          :value => @session.start_at.strftime("%H:%M") }
+        %span.add-on
+          %i.icon-time
+  
+       
   = f.input :duration, :collection => (1..16).map{|x| x*15}+[360, 720, 1440], :default => 15
   
   - unless @session.is_subsession?
@@ -27,7 +48,7 @@
   = f.input :group_size, :collection => (1..20), :include_blank => true
   
 
-  / Wenn der aktuelle Raum nicht mehr aktiv ist, dann alle Räume anzeigen, sonst nur aktive
+  -# Wenn der aktuelle Raum nicht mehr aktiv ist, dann alle Räume anzeigen, sonst nur aktive
   - if @session.location && !@session.location.active?
     = f.association :location, :collection => Location.order(:name)
   - else
@@ -36,4 +57,3 @@
   %br
   
   = f.submit button_text, :class => "guarded_form_save btn btn-primary", :style => "margin-left: 0px"
- 
