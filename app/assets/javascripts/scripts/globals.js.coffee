@@ -1,4 +1,4 @@
-$ =>
+$ ->
   
   # activate timepicker
   $('.timepicker').timepicker()
@@ -9,7 +9,14 @@ $ =>
   )
         
   # activate chosen
-  $(".chzn-select").chosen()
+  # todo clean this up
+  
+  $(".chzn-select-search").chosen({disable_search_threshold: 10, width: '400px'})
+  $(".chzn-select-search-tags").chosen({width: '150px'})
+
+  $(".chzn-select").chosen({width: '150px'})
+  $(".chzn-select-register").chosen({width: '300px'})
+  
   
   # form change detection
   $(".guarded_form :input").change ->

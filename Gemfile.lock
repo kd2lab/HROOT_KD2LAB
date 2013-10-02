@@ -196,7 +196,7 @@ DEPENDENCIES
   coffee-script
   country-select
   debugger
-  devise
+  devise (= 3.0.0)
   event-calendar
   exception_notification
   factory_girl_rails (~> 4.0)
