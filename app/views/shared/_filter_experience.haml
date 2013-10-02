@@ -1,4 +1,0 @@
-#fexperience.filter-block{is_enabled(:experience)}
-  =t 'filter.title_experience'
-  %br
-  = select_tag 'filter[experience]', options_for_select({t('filter.experience_select1') => '0', t('filter.experience_select2') => '1'}, params[:filter][:experience]), :class => "span6"

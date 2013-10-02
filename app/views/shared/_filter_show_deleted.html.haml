@@ -1,4 +1,0 @@
-#fshow_deleted.filter-block{is_enabled(:show_deleted)}
-  =t 'filter.title_deleted'
-  %br
-  = select_tag 'filter[show_deleted]', options_for_select({t('filter.deleted_hidden') => '0', t('filter.deleted_show') => '1'}, params[:filter][:show_deleted]), :class => "span2"

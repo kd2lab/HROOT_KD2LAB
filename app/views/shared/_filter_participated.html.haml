@@ -1,5 +1,0 @@
-#fparticipated.filter-block{is_enabled(:participated)}
-  =t 'filter.title_participation_count'
-  %br
-  = select_tag 'filter[participated_op]', options_for_select(["<=", ">"], params[:filter][:participated_op]), :class => "span1"
-  = select_tag 'filter[participated]', options_for_select((0..10), params[:filter][:participated]), :class => "span1"

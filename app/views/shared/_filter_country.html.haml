@@ -1,7 +1,0 @@
-#fcountry.filter-block{is_enabled(:country)}
-  =t 'filter.title_country'
-  %br
-  = select_tag 'filter[country]', options_for_select(ActionView::Helpers::FormOptionsHelper::COUNTRIES, params[:filter][:country]), {:include_blank => true, :multiple => true, :class => "chzn-select", :'data-placeholder' => t('filter.hint_countries'), :style=>"width:650px"}
-  %br
-  
-  

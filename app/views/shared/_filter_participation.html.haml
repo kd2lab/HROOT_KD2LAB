@@ -1,4 +1,0 @@
-#fparticipation.filter-block{is_enabled(:participation)}
-  = select_tag 'filter[participation]',      | 
-    options_for_select({t('filter.participation_select1') => 1, t('filter.participation_select2') => 2, t('filter.participation_select3') => 3, t('filter.participation_select4') => 4}, params[:filter][:participation].to_i), |
-    {:style=>"width:650px"} |

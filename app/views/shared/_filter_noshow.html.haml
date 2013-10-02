@@ -1,5 +1,0 @@
-#fnoshow.filter-block{is_enabled(:noshow)}
-  =t 'filter.title_noshow_count'
-  %br
-  = select_tag 'filter[noshow_op]', options_for_select(["<=", ">"], params[:filter][:noshow_op]), :class => "span1"
-  = select_tag 'filter[noshow]', options_for_select((0..10), params[:filter][:noshow]), :class => "span1"
