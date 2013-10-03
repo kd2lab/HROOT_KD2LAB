@@ -12,6 +12,7 @@ gem 'unicorn'
 
 gem 'haml'
 gem 'sass'
+gem 'less'
 gem 'coffee-script'
 gem 'ledermann-rails-settings', '1.2.1', :require => 'rails-settings'
 gem 'sequel'
