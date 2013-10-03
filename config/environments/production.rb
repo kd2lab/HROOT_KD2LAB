@@ -77,7 +77,7 @@ Rails.application.routes.default_url_options[:host] =  'www.wiso.uni-hamburg.de/
 Rails.application.routes.default_url_options[:protocol] =  'https'
 Mail.register_interceptor(DevelopmentMailInterceptor)
 
-Hroot::Application.config.middleware.use ExceptionNotifier,
-  :email_prefix => "[hroot] ",
-  :sender_address => %{"hroot notifier" <experiments@wiso.uni-hamburg.de>},
-  :exception_recipients => %w{mail@ingmar.net}
+#Hroot::Application.config.middleware.use ExceptionNotifier,
+#  :email_prefix => "[hroot] ",
+#  :sender_address => %{"hroot notifier" <experiments@wiso.uni-hamburg.de>},
+#  :exception_recipients => %w{mail@ingmar.net}
