@@ -1,0 +1,15 @@
+-# show links for filters
+- links = fields.map{|field| [field[:name], t("search.links.#{field[:name]}")]}
+- links.each_with_index do |field, i|
+  %a.open-search-field{:'data-field' => field[0]}=field[1]
+  = '|' unless links.length-1 == i
+
+%br
+%br
+- fields.each do |field|
+  .search-block{:id => field[:name], :style => "min-height:70px; " + (params[:search][field[:name]] ? '' : 'display:none')}
+    %a.close.close-search-field
+      %i.icon-remove-circle
+    = render :partial => 'shared/search/'+field[:type].to_s, :locals => { :fieldname => field[:name], :field => field}
+    
+ 

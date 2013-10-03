@@ -117,21 +117,15 @@ class UserTest < ActiveSupport::TestCase
     end
   end
   
-  context "filtering users" do
+  context "search users" do
     setup do
-      @s1 = Study.create(:name => "Subject 1")
-      @s2 = Study.create(:name => "Subject 2")
-      
-      @d1 = Degree.create(:name => "Degree 1")
-      @d2 = Degree.create(:name => "Degree 2")
-      
-      @u1 = FactoryGirl.create(:user, :firstname => "Hugo", :study => @s1, :experience => true, :degree => @d1)
-      @u2 = FactoryGirl.create(:user, :lastname => "Boss", :study => @s1, :experience => false, :degree => @d2)
-      @u3 = FactoryGirl.create(:user, :email => "somebody@somewhere.net", :study => @s2, :degree => @d1)
-      @u4 = FactoryGirl.create(:user, :gender => 'f', :begin_month => 12, :begin_year => 2010, :study => @s2, :degree => @d2)
-      @u5 = FactoryGirl.create(:user, :gender => 'f', :begin_month => 3, :begin_year => 2011)
-      @u6 = FactoryGirl.create(:user, :gender => 'm', :begin_month => 6, :begin_year => 2011)
-      @u7 = FactoryGirl.create(:user, :gender => 'm', :begin_month => 9, :begin_year => 2011)
+      @u1 = FactoryGirl.create(:user, :firstname => "Hugo", :course_of_studies => 1, :experience => true, :degree => 1)
+      @u2 = FactoryGirl.create(:user, :lastname => "Boss", :course_of_studies => 1, :experience => false, :degree => 2)
+      @u3 = FactoryGirl.create(:user, :email => "somebody@somewhere.net", :course_of_studies => 2, :degree => 1)
+      @u4 = FactoryGirl.create(:user, :gender => 'f', :begin_of_studies => '2010-12-1', :course_of_studies => 2, :degree => 2)
+      @u5 = FactoryGirl.create(:user, :gender => 'f', :begin_of_studies => '2011-3-1')
+      @u6 = FactoryGirl.create(:user, :gender => 'm', :begin_of_studies => '2011-6-1')
+      @u7 = FactoryGirl.create(:user, :gender => 'm', :begin_of_studies => '2011-9-1')
       @u8 = FactoryGirl.create(:user, :deleted => true)
       @u9 = FactoryGirl.create(:user)
       
@@ -187,91 +181,101 @@ class UserTest < ActiveSupport::TestCase
       User.update_noshow_calculation
     end
     
-    should "return all non-deleted users with empty filtering" do
-      assert_same_elements User.where(:deleted => false), User.load({})
+    should "return all non-deleted users with empty search" do
+      assert_same_elements User.where(:deleted => false), Search.search({})
     end
       
-    should "return all users with empty filtering when deleted are included " do
-      assert_same_elements User.all, User.load({}, {:include_deleted_users => true} )
+    should "return all users with empty search when deleted are included " do
+      assert_same_elements User.all, Search.search({:deleted =>{:value =>"show"}}  )
     end
     
-    should "filter for gender" do
-        assert_same_elements [@u4, @u5], User.load({ :filter => {:gender => 'f'}})
-        assert_same_elements [@admin, @experimenter, @u1, @u2, @u3, @u6, @u7, @u9], User.load({ :filter => {:gender => 'm'}})
+    should "search for gender" do
+        assert_same_elements [@u4, @u5], Search.search({:gender => {:value => 'f'}})
+        assert_same_elements [@admin, @experimenter, @u1, @u2, @u3, @u6, @u7, @u9], Search.search({:gender => {:value => 'm'}})
     end
     
-    should "filter for experience" do
-        assert_same_elements [@u1], User.load({ :filter => {:experience => '1'}})
-        assert_same_elements [@u2], User.load({ :filter => {:experience => '0'}})
+    should "search for experience" do
+      assert_same_elements [@u1], Search.search({:experience => {:value =>'1'}})
+      assert_same_elements [@u2], Search.search({:experience => {:value =>'0'}})  
     end
     
     should "find by email, name and lastname" do
-      assert_equal [@u1], User.load({ :filter => {:search => 'uGO'}})
-      assert_equal [@u2], User.load({ :filter => {:search => 'Bos'}})
-      assert_equal [@u3], User.load({ :filter => {:search => 'omewher'}})
+      assert_equal [@u1], Search.search({:fulltext => 'uGO'})
+      assert_equal [@u2], Search.search({:fulltext => 'Bos'})
+      assert_equal [@u3], Search.search({:fulltext => 'omewher'})
     end
     
-    should "filter for role" do 
-      assert_equal [@admin], User.load({ :filter => {:role => 'admin' }})
-      assert_equal [@experimenter], User.load({ :filter => {:role => 'experimenter'}})
-      assert_same_elements User.where(:role => 'user', :deleted => false), User.load({ :filter => {:role => 'user'}})
+    should "search for role" do 
+      assert_equal [@admin],        Search.search({:role =>{:value =>['admin']}})
+      assert_equal [@experimenter], Search.search({:role =>{:value =>['experimenter']}})
+      assert_same_elements User.where(:role => 'user', :deleted => false), Search.search({:role =>{:value =>['user']}})
     end
     
-    should "filter for showup correctly" do
-      assert_same_elements [@u3, @u4, @u5, @u6, @u7, @u9].map(&:id), User.load({ :filter => {:noshow => '0', :noshow_op => "<=", :role => 'user'}}).map(&:id)
-      assert_same_elements [@u1, @u2], User.load({ :filter => { :noshow => '0', :noshow_op => ">"}})
+    should "search for showup correctly" do
+      assert_same_elements [@u3, @u4, @u5, @u6, @u7, @u9].map(&:id), Search.search({:noshow_count => {:op => "<=", :value => 0}, :role => { :value=>['user']}} ).map(&:id)
+      assert_same_elements [@u1, @u2], Search.search({:noshow_count => {:op => ">", :value => "0"}})
     end
     
-    should "filter for participations correctly" do
-      assert_same_elements [@u3, @u4, @u5, @u6], User.load({ :filter => {:participated => '1', :participated_op => ">"}})
+    should "search for participations correctly" do
+      assert_same_elements [@u3, @u4, @u5, @u6], Search.search({:participations_count => {:op => ">", :value => 1}})
     end
     
-    should "filter for studybegin" do
-      assert_same_elements [@u6, @u7], User.load({ :filter => {:begin_von_month => 5, :begin_von_year => 2011} })
-      assert_same_elements [@u6, @u7], User.load({ :filter => {:begin_von_month => 6, :begin_von_year => 2011} })
-      assert_same_elements [@u4, @u5], User.load({ :filter => {:begin_bis_month => 5, :begin_bis_year => 2011} })
-      assert_same_elements [@u5, @u6], User.load({ :filter => {:begin_von_month => 1, :begin_von_year => 2011, :begin_bis_month => 8, :begin_bis_year => 2011} })
+    should "search for studybegin" do
+      assert_same_elements [@u6, @u7], Search.search({:begin_of_studies => {:from=>"2011-05-01"}} )
+      assert_same_elements [@u6, @u7], Search.search({:begin_of_studies => {:from=>"2011-06-01"}} )
+      assert_same_elements [@u4, @u5], Search.search({:begin_of_studies => {:to  =>"2011-05-01"}} )
+      assert_same_elements [@u5, @u6], Search.search({:begin_of_studies => {:from=>"2011-01-01", :to => "2011-08-01"}} )
     end
     
-    
-    
-    should "filter for study" do
-      assert_same_elements [@u1, @u2, @u3, @u4], User.load({ :filter => {:study => [@s1.id, @s2.id]}})
-      assert_same_elements [@u5, @u6, @u7, @u9], User.load({ :filter => {:study => [@s1.id, @s2.id], :study_op => 2, :role => 'user'} })
+    should "search for study" do
+      assert_same_elements [@u1, @u2, @u3, @u4], Search.search({:course_of_studies=>{:value=>[1, 2]}})
+      assert_same_elements [@u5, @u6, @u7, @u9], Search.search({:course_of_studies=>{:op=>"without", :value=>[1, 2]}, :role => { :value=>['user']}})    
     end
     
-    should "filter for degree" do
-      assert_same_elements [@u1, @u2, @u3, @u4], User.load({ :filter => {:degree => [@d1.id, @d2.id]}})
-      assert_same_elements [], User.load({ :filter => {:degree => [@d1.id, @d2.id], :degree_op => 2, :role => 'user'} })
+    should "search for degree" do    
+      assert_same_elements [@u1, @u2, @u3, @u4], Search.search({ :degree => {:value => [1, 2]}})
+      assert_same_elements [@u5, @u6, @u7, @u9], Search.search({ :degree => {:value => [1, 2], :op => 'without'}, :role => { :value=>['user']} })
     end
     
-    should "filter tags" do      
-      assert_same_elements [], User.load({ :filter => {"exp_tag0" => @tag1, "exp_tag_op1" => [1], "exp_tag_op2" => ["5"], :exp_tag_count => "1"}})
-      assert_same_elements [@u5, @u6], User.load({ :filter => {"exp_tag0" => @tag1, "exp_tag1" => @tag3, "exp_tag_op1" => [1, 1], "exp_tag_op2" => ["1", "1"], :exp_tag_count => "2"} })
-      assert_same_elements [@u1, @u2, @u3, @u4, @u7, @u9], User.load({ :filter => {"exp_tag0" => @tag1, "exp_tag_op1" => [2], "exp_tag_op2" => ["0"], :exp_tag_count => "1", :role => 'user'} })    
+    should "search tags" do      
+      assert_same_elements [], 
+        Search.search({:tags => [{:op => "at_least", :count => 5, :tag => @tag1 }] } )
+      assert_same_elements [@u5, @u6], 
+        Search.search({:tags => [{:op => "at_least", :count => 1, :tag => @tag1 }, {:op => "at_least", :count => 1, :tag => @tag3 }] } )
+      assert_same_elements [@u1, @u2, @u3, @u4, @u7, @u9],
+        Search.search({:tags => [{:op => "at_most", :count => 0, :tag => @tag1 }], :role => { :value=>['user']} } )
     end
     
-    should "filter for experiments" do
-      assert_same_elements [@u1, @u2, @u3, @u4, @u5, @u6, @u9], User.load({ :filter => {:experiment => [@e1.id, @e2.id], :exp_op => 1} })
-      assert_same_elements [@u5, @u9], User.load({ :filter => {:experiment => [@e1.id, @e3.id], :exp_op => 2} })
-      assert_same_elements [@u7], User.load({ :filter => {:experiment => [@e1.id, @e2.id], :exp_op => 3, :role => "user"} })
-      
-      assert_same_elements [@u3, @u4, @u5, @u6], User.load({ :filter => {:experiment => [@e1.id, @e2.id], :exp_op => 4} })
-      assert_same_elements [@u5], User.load({ :filter => {:experiment => [@e1.id, @e3.id], :exp_op => 5} })
-      assert_same_elements [@u1, @u2, @u7, @u9], User.load({ :filter => {:experiment => [@e1.id, @e2.id], :exp_op => 6, :role => "user"} })
+    should "search for experiments" do
+      assert_same_elements [@u1, @u2, @u3, @u4, @u5, @u6, @u9],
+        Search.search({ :experiments => {:value => [@e1.id, @e2.id], :op => 1} })
+      assert_same_elements [@u5, @u9],
+        Search.search({ :experiments => {:value => [@e1.id, @e3.id], :op => 2} })
+      assert_same_elements [@u7], 
+        Search.search({ :experiments => {:value => [@e1.id, @e2.id], :op => 3}, :role => { :value=>['user']} })
+      assert_same_elements [@u3, @u4, @u5, @u6], 
+        Search.search({ :experiments => {:value => [@e1.id, @e2.id], :op => 4} })
+      assert_same_elements [@u5], 
+        Search.search({ :experiments => {:value => [@e1.id, @e3.id], :op => 5} })
+      assert_same_elements [@u1, @u2, @u7, @u9], 
+        Search.search({ :experiments => {:value => [@e1.id, @e2.id], :op => 6}, :role => { :value=>['user']} })
     end
     
     should "in- or exclude experiment members" do
-      assert_same_elements [@u1, @u2, @u3, @u4, @u5, @u6, @u9], User.load({}, {:experiment => @e1, :exclude_non_participants => true})
-      assert_same_elements [@u7], User.load({ :filter => { :role => "user"}}, {:experiment => @e1, :exclude_experiment_participants => true})
+      assert_same_elements [@u1, @u2, @u3, @u4, @u5, @u6, @u9], Search.search({}, {:experiment => @e1 })
+      assert_same_elements [@u7], Search.search({:role => { :value=>['user']}}, {:experiment => @e1, :exclude => true})
     end
     
     should "find available sessions" do
       assert_same_elements [@sess1, @sess2], @u9.available_sessions
     end
+    
+    should "find by language" do
+      assert false
+    end
   end  
   
-  context "filtering users when having multisessions" do
+  context "search users when having multisessions" do
     setup do
       @u1 = FactoryGirl.create(:user, :firstname => "Hugo")
       @u2 = FactoryGirl.create(:user, :lastname => "Boss")
@@ -311,7 +315,7 @@ class UserTest < ActiveSupport::TestCase
     end
     
     should "count correct numbers for show and noshow" do
-      user =  User.load({ :filter => {:search => 'Hugo'}}).first
+      user =  Search.search({:fulltext => 'Hugo'}).first
       
       assert_equal 2, user.participations_count
       assert_equal 1, user.noshow_count

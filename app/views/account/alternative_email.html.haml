@@ -26,7 +26,7 @@
       %b= current_user.secondary_email
       %br
       %br
-      =t '.was_not_confirmed'
+      =t '.was_confirmed'
       %br
       %br
       = button_to t('.delete_alternative_email'), {:delete => 1}, :class => "btn btn-primary", :confirm => t('.confirm_delete_alternative_email')

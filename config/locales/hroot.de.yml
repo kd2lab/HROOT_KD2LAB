@@ -64,6 +64,18 @@ de:
   right_status_mails: Statusmails
   rights_label: 'Rechte...'
   
+  roles:
+    user: 'Poolmitglied'
+    experimenter: 'Experimentator'
+    admin: 'Administrator'
+    
+  
+  modal:
+    send_message: Absenden
+    close: Schliessen
+    subject: Betreff
+    to: An
+    send: Senden
     
   popup:
     noshow_count: Anzahl Nichterscheinen
@@ -210,6 +222,10 @@ de:
     invitation_active: Einladungsversand aktiv
     participants: Teilnehmer
     new_experiment: Neues Experiment
+    manage:
+      submit: 
+    index:
+      search: Suchenw
     experiments:
       organizers: 'Experiment-Organisation:'
       no_sessions: keine Sessions
@@ -326,6 +342,92 @@ hroot wurde mit <a href="http://rubyonrails.org">Ruby on Rails.</a> implementier
       contact: Kontakt
       questions: 'Bei Fragen oder Wünschen kontaktieren Sie uns bitte:'
       for_registered_users: für bereits registrierte Nutzer
+  search:    
+    selections:
+      at_least: Mindestens
+      at_most: Höchstens
+      only: Nur
+      without: Ohne
+      experiments:
+        choice1: die zu einem der folgenden Experimente zugeordnet sind
+        choice2: die zu allen der folgenden Experimente zugeordnet sind
+        choice3: die zu keinem der folgenden Experimente zugeordnet sind
+        choice4: die an mindestens einer Session eines der folgenden Experimente teilgenommen haben
+        choice5: die an mindestens einer Session von jedem der folgenden Experimente teilgenommen haben
+        choice6: die an keiner Session der folgenden Experimente teilgenommen haben    
+      participation:
+        choice1: Nur Zugeordnete, die teilgenommen haben
+        choice2: Nur Zugeordnete, die bereits in eine Session eingetragen sind
+        choice3: Nur Zugeordnete ohne Session
+        choice4: Nur Zugeordnete in Sessions, die noch nicht vorbei sind  
+      gender:
+        male: männlich
+        female: weiblich
+        no_info: Keine Angabe
+      role:
+        user: Benutzer
+        experimenter: Experimentatoren
+        admin: Administratoren
+      experience:
+        no_experience: Ohne Teilnehmer mit externer Experimenterfahrung
+        experience: Nur Teilnehmer mit externer Experimenterfahrung
+      preference:
+        only_with_presence_preference: Nur Teilnehmer, die an Präsenz-Experimenten teilnehmen wollen
+        only_with_online_preference: Nur Teilnehmer, die an Online-Experimenten teilnehmen wollen
+      deleted:
+        hide_deleted: verstecken
+        show_deleted: anzeigen
+    links:
+      fulltext: Volltextsuche
+      gender: Geschlecht  
+      preference: Experiment-Präferenz
+      role: Rolle
+      noshow_count: Nichterscheinen
+      participations_count: Teilnahmen
+      begin_of_studies: Studienbeginn
+      birthday: Alter
+      experience: Erfahrung
+      study_id: Fächer
+      country_name: Länder
+      degree_id: Abschlüsse
+      language: Sprachen
+      tags: Tags
+      participation: Sessionteilnahme
+      experiments: Experimente
+      deleted: Gelöschte Benutzer
+    titles:
+      fulltext: "Suche in Name, E-Mail: "
+      gender: Geschlecht  
+      preference: Experiment-Präferenz
+      role: "Nur Teilnehmer mit der folgenden Rolle anzeigen:"
+      noshow_count: Nichterscheinen
+      participations_count: Teilnahmen
+      begin_of_studies: Studienbeginn
+      birthday: Alter
+      experience: Erfahrung
+      study_id: "Teilnehmer aus folgenden Studienfächern:"
+      country_name: "Nur Teilnehmer aus folgenden Ländern:"
+      degree_id: "Teilnehmer mit folgenden Abschlüssen:"
+      language: "Teilnehmer mit Kenntnissen in einer der folgenden Sprachen:"
+      tags: 'Nur Teilnehmer mit folgenden Teilnahmen an Sessions von Experimenten mit Tags:'
+      tags2: mal an einer Session eines Experiments mit Tag
+      tags3: teilgenommen
+      participation: Sessionteilnahme
+      deleted: Gelöschte Benutzer
+      experiments: "Teilnehmer, "
+    hints:
+      gender: Geschlecht...
+      role: Rolle...
+      degree_id: Abschlüsse...
+      country_name: Länder... 
+      study_id: Fächer...      
+      experience: Erfahrung...
+      preference: Präferenz   
+      language: Sprachen...
+      tags: Tag...
+      deleted: Gelöschte
+      experiments: Experimente...
+      participation: Sessionteilnahme
   filter:
     search_text: 'Suche in Name, Vorname, E-Mail-Adresse:'
     header: 'Filter:'
@@ -346,10 +448,6 @@ hroot wurde mit <a href="http://rubyonrails.org">Ruby on Rails.</a> implementier
     show_deleted: Gelöschte Benutzer
     country: Länder
 
-    submit: Filter anwenden und Ergebnis aktualisieren
-    showing1: Zeige
-    showing2: von
-    showing3: 'Poolmitgliedern, bereits zugeordnet:'
     
     title_sessions_with_tags1: 'Nur Teilnehmer mit folgenden Teilnahmen an Sessions von Experimenten mit Tags:'
     title_sessions_with_tags2: mal an einer Session eines Experiments mit Tag
@@ -368,6 +466,10 @@ hroot wurde mit <a href="http://rubyonrails.org">Ruby on Rails.</a> implementier
     title_begin: Studienbeginn
     title_deleted: Gelöschte Benutzer
     title_country: 'Nur Teilnehmer aus folgenden Ländern:'
+    title_custom_field_string: Feld %{field} enthält 
+    title_custom_field_int: Wert des Feldes
+    title_custom_field_date: "%{field} liegt in folgendem Datumsbereich"
+    title_custom_field_selection: Teilnehmer mit den folgenden Werten im Feld
     hint_studies: Studienfächer...
     hint_languages: Sprachen...
     hint_experiment: Experimente...
@@ -444,6 +546,8 @@ hroot wurde mit <a href="http://rubyonrails.org">Ruby on Rails.</a> implementier
       no_history: Es wurden keine Zuordnungsschritte gespeichert
 
     manage:
+      submit: Suche ausführen und Ergebnis aktualisieren
+      showing: "Zeige <b>%{count}</b> von <b>%{total}</b> Nutzern, <b>%{participants}</b> bereits zugeordnet"
       study: Fach
       add_all: Alle Poolmitglieder der aktuellen Filterung zuordnen
       add_marked: Markierte Poolmitglieder zuordnen
@@ -454,14 +558,18 @@ hroot wurde mit <a href="http://rubyonrails.org">Ruby on Rails.</a> implementier
       add_new_participants: Neue Teilnehmer zuordnen
       
     participants:
-      current_filtered: Aktuelle Filterung
+      submit: Suche ausführen und Ergebnis aktualisieren
+      showing: "Zeige <b>%{count}</b> von <b>%{total}</b> Nutzern"
+      
+      
+      current_result: Aktuelles Suchergebnis
       marked_participants: Markierte Teilnehmer
     
       study: Fach
-      message_all_filtered: Nachricht an alle Teilnehmer der aktuellen Filterung
-      to_all_filtered: Alle Teilnehmer der aktuellen Filterung
-      remove_filtered: Alle Teilnehmer der aktuellen Filterung aus dem Experiment austragen
-      remove_filtered_confirm: Sind Sie sicher, dass alle Teilnehmer der aktuellen Filterung aus dem Experiment entfernt werden sollen?
+      message_all_searched: Nachricht an alle Teilnehmer der aktuellen Filterung
+      to_all_searched: Alle Teilnehmer der aktuellen Filterung
+      remove_searched: Alle Teilnehmer der aktuellen Filterung aus dem Experiment austragen
+      remove_searched_confirm: Sind Sie sicher, dass alle Teilnehmer der aktuellen Filterung aus dem Experiment entfernt werden sollen?
     
       message_all_marked: Nachricht an alle markierten Teilnehmer
       to_all_marked: Markierte Teilnehmer
@@ -567,24 +675,27 @@ hroot wurde mit <a href="http://rubyonrails.org">Ruby on Rails.</a> implementier
       header: Nutzerliste
 
     users:
-      store_current_filter: Filtereinstellungen als Standardfilter speichern
-      message_all_filtered: Nachricht an alle User der aktuellen Filterung
-      send_activation_invitation: Aktivierungseinladung an alle noch nicht aktivierten User dieser Filterung schicken
-      send_activation_confirm: Sind Sie sicher, dass diese E-Mails versendet werden sollen?
-      
-      message_all_marked: Nachricht an alle markierten User
-      send_activation_invitation_marked: Aktivierungseinladung an alle markierten User schicken
-      to_all_filtered: Aktuell gefilterte User
-      to_all_marked: Markierte User
-      
+      current_result: Aktuelles Suchergebnis
+      submit: Suche ausführen und Ergebnis aktualisieren
+      showing: "Zeige <b>%{count}</b> von <b>%{total}</b> Nutzern"
+      print: Druckansicht
+      no_users: Mit den aktuellen Sucheinstellungen wurden keine Benutzer gefunden
+      message_all_searched: Nachricht an alle Teilnehmer der aktuellen Suche
+      store_current_search: Aktuelle Suche als Standardsuche festlegen
+      message_all_marked: Allen markierten Teilnehmern eine Nachricht senden
+      to_all_marked: Alle markierten Teilnehmer
+      to_all_searched: Alle Teilnehmer der aktuellen Suche
+      remove_searched: Alle Teilnehmer der aktuellen Suche aus dem Experiment austragen
+      remove_searched_confirm: Sind Sie sicher, dass alle Teilnehmer der aktuellen Filterung aus dem Experiment entfernt werden sollen?
       role: Rolle
-      study: Fach
-      gender: 'G.'
-      begin: Beginn
-      created_at: 'Anmeld.'
-      no_users: Kein User gefunden
-      current_filtered: Aktuelle Filterung
-      marked_users: Markierte User
+      study: Studiengang
+      gender: Geschlecht
+      begin: Studienbeginn
+      created_at: Anmeld.
+      marked_users: Markierte Benutzer
+      fullname: Name
+      email: E-Mail
+      
     edit:
       edit_user: '%{name} bearbeiten'
     index:
@@ -617,6 +728,17 @@ hroot wurde mit <a href="http://rubyonrails.org">Ruby on Rails.</a> implementier
       
       remove_from_session: Austragen
       remove_from_session_confirm: Sind Sie sicher, dass der Benutzer aus dieser Session ausgetragen werden soll?
+      
+      optional_fields: Optionale Felder
+      required_fields: Pflichtfelder
+      account: Accountdaten
+      general: Allgemeine Daten
+    form:
+      optional_fields: Optionale Felder
+      required_fields: Pflichtfelder
+      account: Accountdaten
+      general: Allgemeine Daten
+      
       
   devise:
     confirmations:
@@ -708,7 +830,7 @@ hroot wurde mit <a href="http://rubyonrails.org">Ruby on Rails.</a> implementier
       notice_email_sent: Es wurde Ihnen eine E-Mail zur Bestätigung Ihrer neuen Adresse gesendet.
       notice_invalid_email: Diese E-Mail-Adresse ist nicht gültig.
     application:
-      error: Ein interner Fehler ist aufgetreten, bitt versuchen Sie es erneut.
+      error: Ein interner Fehler ist aufgetreten, bitte versuchen Sie es erneut.
       notice_login_required: Für diesen Bereich ist ein Login erforderlich.
       notice_account_not_activated: Ihr bestehender Zugang wurde im neuen System noch nicht aktiviert.
       notice_invalid_url: Die von Ihnen aufgerufene Url ist nicht gültig.
@@ -762,7 +884,7 @@ hroot wurde mit <a href="http://rubyonrails.org">Ruby on Rails.</a> implementier
       notice_moved_to_session1: Die gewählen Teilnehmer wurden in die Session
       notice_moved_to_session2: verschoben
     users:
-      notice_mailqueue: Nachricht(en) wurden in die Mailqueue eingetragen.
+      notice_mailqueue: Die Nachricht(en) wurden in die Mailqueue eingetragen.
       notice_mailqueue_activation: Die Aktivierungs-Einladungen(en) wurden in die Mailqueue eingetragen.
       notice_created_user: Der Benutzer wurde erfolgreich angelegt.
       notice_activated_after_import: Der Benutzer wurde nach dem Import freigeschaltet.

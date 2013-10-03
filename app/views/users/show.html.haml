@@ -31,52 +31,56 @@
 
 %br
 
+.some
+  .row
+    .span5
+      %h4= t('.general')
+      %table.table
+        %thead
+          %tr
+            %td= t('activerecord.attributes.user.firstname')
+            %td= @user.firstname
+        %tbody
+          %tr
+            %td= t('activerecord.attributes.user.lastname')
+            %td= @user.lastname
+          %tr
+            %td= t('activerecord.attributes.user.role')
+            %td= @user.rolename
+      
+    .span5
+      %h4= t('.account')
+      %table.table
+        %thead
+          %tr
+            %td= t('activerecord.attributes.user.email')
+            %td= link_to @user.email, "mailto:#{@user.email}"
+        %tbody
+          %tr
+            %td= t('activerecord.attributes.user.secondary_email')
+            %td= link_to @user.secondary_email, "mailto:#{@user.secondary_email}" unless @user.secondary_email.blank?
+      
 
-%table.table
-  %thead
-    %tr
-      %td=t '.phone'
-      %td= @user.phone
-  %tbody
-    %tr
-      %td=t '.gender'
-      %td= {'m' => t('form_values.male'), 'f' => t('form_values.female'), '?' => t(:no_info)}[@user.gender]
-  
-    %tr
-      %td=t '.matrikel'
-      %td= @user.matrikel
-    %tr
-      %td=t :email
-      %td= link_to @user.email, "mailto:#{@user.email}"
-    %tr
-      %td=t '.secondary_email'
-      %td
-        = link_to @user.secondary_email, "mailto:#{@user.secondary_email}" unless @user.secondary_email.blank?
-    %tr
-      %td=t '.role'
-      %td= User.roles.invert[@user.role]
-    %tr
-      %td=t '.study'
-      %td= @user.study.name if @user.study
-    %tr
-      %td=t '.degree'
-      %td= @user.degree.name if @user.degree  
-    
-    %tr
-      %td=t '.begin'
-      %td
-        = "#{@user.begin_month}/#{@user.begin_year}" if @user.begin_month && @user.begin_year
-    %tr
-      %td=t '.country'
-      %td= @user.country_name
-    %tr
-      %td=t '.languages'
-      %td= @user.languages.join(',')
-    %tr
-      %td=t '.profession'
-      %td=  @user.profession.name if @user.profession
+  .row
+    .span5
+      %h4= t('.required_fields')
+      %table.table
+        %tbody
+          - Datafields.required.each do |field|
+            %tr
+              %td= t("activerecord.attributes.user.#{field.name}")
+              %td= field.display_value(@user)
+              
+    .span5  
+      %h4= t('.optional_fields')
+      %table.table
+        %tbody
+          - Datafields.optional.each do |field|
+            %tr
+              %td= t("activerecord.attributes.user.#{field.name}")
+              %td= field.display_value(@user)
 
-    = render :partial => 'show_custom_fields'
+
   %br
 
 .userinfo
@@ -85,7 +89,7 @@
   
   - if participations.count > 0
 
-    =t '.participations_so_far'
+    %h4=t '.participations_so_far'
     %br
     %br
   

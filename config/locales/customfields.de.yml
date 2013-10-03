@@ -1,0 +1,109 @@
+de:
+  search:
+    hints:
+      course_of_studies: Studiengänge
+      degree: Abschlüsse
+    titles:
+      course_of_studies: Studiengänge  
+      degree: Abschlüsse
+    links:
+      course_of_studies: Studiengänge  
+      degree: Abschlüsse
+  activerecord:
+    attributes:
+      user:
+        phone: Mobilnummer
+        matrikel: Matrikelnummer
+        country_name: Nationalität
+        begin_of_studies: Studienbeginn
+        language: Sprachen
+        course_of_studies: Studiengang
+        profession: Beruf
+        degree: Abschluss(-ziel)
+        gender: Geschlecht
+        birthday: Geburtstag
+        preference: Interesse an
+        experience: Experimenterfahrung
+  
+  hints:
+    phone: "Eine Angabe erlaubt es uns, Sie schnell zu erreichen, wenn z.B. ein Experiment abgesagt werden muss."      
+  customfields:
+    preference:
+      value0: Präsenz- und Online-Experimenten
+      value1: nur Präsenz-Experimente
+      value2: nur Online-Experimente
+    gender:
+      f: weiblich
+      m: männlich
+    language:
+      value1: Deutsch
+      value2: Englisch
+      value3: Französisch
+      value4: Italienisch
+      value5: Spanisch
+      value6: Chinesisch
+    degree:
+      value1: Bachelor
+      value2: Master
+      value3: Diplom
+      value4: Lehramt
+      value5: Magister
+    course_of_studies:
+      value1: Betriebswirtschaftslehre
+      value2: Volkswirtschaftslehre
+      value3: Biologie
+      value4: Chemie
+      value5: Italienisch
+      value6: Philosophie
+      value7: Psychologie
+      value8: Physik
+      value9: Klassische ArchÃ¤ologie
+      value10: Geschichte
+      value11: Anglistik/Amerikanistik
+      value12: Bewegungswissenschaft 
+      value13: Finanzen und Versicherung mit Schwerpunkt Recht
+      value14: Biochemie
+      value15: Computing in Science
+      value16: Deutsche Sprache und Literatur
+      value17: Erziehungs- und Bildungswissenschaft
+      value18: Software-System-Entwicklung
+      value19: Geographie
+      value20: Religionswissenschaft
+      value21: Geowissenschaften
+      value22: Rechtswissenschaft
+      value23: Informatik
+      value24: Wirtschaftsinformatik
+      value25: FranzÃ¶sisch
+      value26: Kunstgeschichte
+      value27: Mathematik
+      value28: Medien- und Kommunikationswissenschaft
+      value29: Mensch-Computer-Interaktion
+      value30: Slawistik
+      value31: Pharmazie
+      value32: Politikwissenschaft
+      value33: Soziologie
+      value34: Sinologie
+      value35: SozialÃ¶konomie
+      value36: Zahnmedizin
+      value37: Medizin
+      value38: Wirtschaftsmathematik
+      value39: Arbeits- und Sozialmanagement mit Schwerpunkt Recht             
+      value40: Klassische Philologie
+      value41: Meteorologie
+      value42: Spanisch
+      value43: Wirtschaftsingenieurwesen
+      value44: Evangelische Theologie
+      value45: Sonstige
+      value46: Handelslehramt
+      value47: Holzwirtschaft
+      value48: Ethnologie
+      value49: Kulturanalysen
+      value50: Wirtschaft und Kultur Chinas
+      value51: Sprachen und Kulturen SÃ¼dostasiens
+      value52: Japanologie
+      value53: Arbeits- und Sozialmanagement
+      value54: Nanowissenschaften
+      value55: Kulturanthroplogie
+    experience:
+      value0: noch nicht an wirtschaftswissenschaftlichen Experimenten teilgenommen
+      value1: an wirtschaftswissenschaftlichen Experimenten teilgenommen

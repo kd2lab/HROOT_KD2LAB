@@ -28,7 +28,7 @@ en:
       location:
         description: Description
         
-      user: 
+      userf: 
         name: Name
         firstname: First name
         lastname: Last name

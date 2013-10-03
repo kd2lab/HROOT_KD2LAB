@@ -8,41 +8,42 @@
   
   
 = simple_form_for @user, :url => url, :method => method, :html => {:class => "guarded_form form-horizontal"} do |f| 
-  = f.input :firstname, :required => false
-  = f.input :lastname, :required => false
-  = f.input :gender, :collection => {t('form_values.male') => 'm', t('form_values.female') => 'f', t(:no_info) => '?'}, :as => :select, :required => false
-  = f.input :birthday, :include_blank => "true", :required => false, :start_year => Date.today.year-16, :end_year => 1900
-  = f.input :phone
-  = f.input :matrikel, :required => false
-  = f.input :email
-  = f.input :secondary_email
-  = f.input :password
-  = f.input :password_confirmation
-  = f.input :role, :collection => User.roles, :include_blank => false
-  %br
-  = f.input :country_name, :priority => [ "Germany" ], :include_blank => true
-  %br
-  = f.input :study_id, :collection => Study.all.map{|s| [s.name, s.id]}, :include_blank => t(:no_info)
-  = f.input :degree_id, :collection => Degree.all.map{|s| [s.name, s.id]}, :include_blank => t(:no_info)
-  = f.input :begin_month, :collection => (1..12)
-  = f.input :begin_year, :collection => (Time.now.year-10..Time.now.year)
-  %br
-    = f.input :preference, :collection => {t('form_values.type_both')=>0, t('form_values.type_presence')=>1, t('form_values.type_online')=>2}
-  = f.input :lang1, :collection => Language.all.map{|s| [s.name, s.id]}, :as => :select, :required => false
-  = f.input :lang2, :collection => Language.all.map{|s| [s.name, s.id]}, :as => :select, :required => false, :wrapper_html => {:style => "display:none", :id => "lang2"}
-  = f.input :lang3, :collection => Language.all.map{|s| [s.name, s.id]}, :as => :select, :required => false, :wrapper_html => {:style => "display:none", :id => 'lang3'}
-  %br
-  = f.input :profession_id, :collection => Profession.all.map{|s| [s.name, s.id]}
-  %br
-  = f.input :experience, :collection => [[t('form_values.no_experience'), false], [t('form_values.has_experience'), true]] #, :label => "Experimenterfahrung" 
-  %br
-  = f.input :deleted, :collection => [[t('form_values.user_is_active'), false],[t('form_values.user_is_marked_as_deleted'), true]], :include_blank => false,  :label => t(:delete) 
-   
-  = render :partial => 'edit_custom_fields', :locals => {:fields => Hroot::Application.config.custom_fields, :f => f}
-   
-   
+  .row
+    .span5
+      %h4= t('.general')
+      %hr
+      = f.input :firstname, :required => false
+      = f.input :lastname, :required => false
+      = f.input :role, :collection => User.roles, :include_blank => false
+      = f.input :deleted, :collection => [[t('form_values.user_is_active'), false],[t('form_values.user_is_marked_as_deleted'), true]], :include_blank => false,  :label => t(:delete) 
+
+    .span5
+      %h4= t('.account')
+      %hr  
+      = f.input :email
+      = f.input :secondary_email
+      = f.input :password  
+      = f.input :password_confirmation  
+
+  .row
+    .span5
+      %h4= t('.required_fields')
+      %hr    
+      - Datafields.required.each do |field|
+        = field.add_to_form(f)
+  
+    .span5  
+      %h4= t('.optional_fields')
+      %hr      
+      - Datafields.optional.each do |field|
+        = field.add_to_form(f, :hint => false)
+  
+  
   %br
   = f.submit t(:save), :class => "guarded_form_save btn btn-primary"
-  %br
-  %br
+  
+  
+  
+  /todo= f.input :profession_id, :collection => Profession.all.map{|s| [s.name, s.id]}
+   
   

@@ -232,10 +232,13 @@ class SessionsController < ApplicationController
       end
     end
     
-    params[:filter] = {} unless params[:filter]
-    params[:filter][:session] = @session.id
+    params[:search] = params[:search] || {}
+    params[:search][:role] = {:value => ['user']} 
 
-    @users = User.load(params, {:experiment => @experiment, :sort_column => sort_column, :sort_direction => sort_direction, :exclude_non_participants => 1, :include_deleted_users => 1})
+    @users = User.search(params, {:experiment => @experiment, :session => @session.id, :sort_column => sort_column, :sort_direction => sort_direction, :exclude => false})
+
+#    @users = User.search(params[:search], )
+#    @users = User.load(params, {:experiment => @experiment, :sort_column => sort_column, :sort_direction => sort_direction, :exclude_non_participants => 1, :include_deleted_users => 1})
   end
   
   def overlaps

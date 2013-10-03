@@ -1,0 +1,18 @@
+%br 
+
+- fields.each_with_index do |field, i|
+  %a.open-search-box{:'data-field' => field}= t('search.links.'+field.to_s)
+  = '|' unless fields.length-1 == i
+  
+%br
+%br
+
+- fields.each do |field|
+  .search-block{:id => field, :style => "min-height:70px; " + (params[:search][field] ? '' : 'display:none')}
+    %a.close.close-search-field
+      %i.icon-remove-circle
+    
+    .search-header
+      = t("search.titles.#{field}")
+    
+    = render :partial => Search.partial_for(field), :locals => {:name => field}.merge(Search.partial_locals_for(field))

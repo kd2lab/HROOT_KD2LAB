@@ -26,7 +26,7 @@ Hroot::Application.routes.draw do
   match 'home/version', :controller => 'home', :action => 'version'
   match 'home/activate', :controller => 'home', :action => 'activate', :as => 'activate'
   match 'home/calendar/:key', :controller => 'home', :action => 'calendar', :as => 'public_calendar'
-
+  
   devise_for :users, :controllers => {:registrations => "registrations"}, :path_names => { :sign_in => 'login' }, skip: :registrations 
   
   devise_scope :user do
@@ -67,15 +67,12 @@ Hroot::Application.routes.draw do
         post :index
         post :create_user
         get :print
+        post :send_message
       end
     end
     
     resources :locations, :except => :show
-    resources :languages, :except => :show    
-    resources :professions, :except => :show
-    resources :studies, :except => :show
-    resources :degrees, :except => :show
-
+    
     match 'experiments/tag/:tag', :as => 'tagged_experiment', :controller => 'experiments', :action => 'tag'
 
     resources :experiments, :except => :show do
@@ -118,6 +115,7 @@ Hroot::Application.routes.draw do
           post :manage
           post :index
           get :history
+          post :send_message
         end
       end
     end

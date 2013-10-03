@@ -1,83 +1,29 @@
-# rvm capistrano integration
-# $:.unshift(File.expand_path('./lib', ENV['rvm_path']))
-set :rvm_ruby_string, "1.9.2@hroot"
-set :use_sudo, false
-set :rvm_type, :system 
-require "rvm/capistrano"
+require 'bundler/capistrano'
 
-#rvm bundler integration
-set :bundle_dir, ""
-set :bundle_flags, ""
-require "bundler/capistrano"
+set :application, "hroot2"
+set :repository,  "git@bitbucket.org:n0c1urne/hroot.git"
+set :deploy_to, "/var/www/rails/hroot2"
 
-# multistage integration
-set :stages, %w(production qa)
-set :default_stage, "qa"
-require 'capistrano/ext/multistage'
-
-
-set :application, "hroot"
-set :repository,  "git@ingmar.net:hroot.git"
-set :scm, :git
+server "root@lvps83-169-5-139.dedicated.hosteurope.de", :app, :web, :db, :primary => true
 
 
 
-namespace :deploy do
-  task :start, :roles => :app, :except => { :no_release => true } do 
-    run "cd #{current_path} && #{try_sudo} #{unicorn_binary} -c #{unicorn_config} -E #{rails_env} -D"
-  end
-  task :stop, :roles => :app, :except => { :no_release => true } do 
-    run "#{try_sudo} kill `cat #{unicorn_pid}`"
-  end
-  task :graceful_stop, :roles => :app, :except => { :no_release => true } do
-    run "#{try_sudo} kill -s QUIT `cat #{unicorn_pid}`"
-  end
-  task :reload, :roles => :app, :except => { :no_release => true } do
-    run "#{try_sudo} kill -s USR2 `cat #{unicorn_pid}`"
-  end
-  task :restart, :roles => :app, :except => { :no_release => true } do
-    stop
-    start
-  end
-end
+#role :web, "your web-server here"                          # Your HTTP server, Apache/etc
+#role :app, "your app-server here"                          # This may be the same as your `Web` server
+#role :db,  "your primary db-server here", :primary => true # This is where Rails migrations will run
+#role :db,  "your slave db-server here"
 
-namespace :deploy do
-  #desc "Tell unicorn to restart the app."
-  #task :restart, :roles => :app do
-  #  run "(test -f #{current_path}/tmp/pids/unicorn.pid && kill -s USR2 `cat #{current_path}/tmp/pids/unicorn.pid`)"
-  #end
-  
-  task :compile_assets do
-    run "cd #{release_path}; RAILS_ENV=#{rails_env} rake assets:precompile"
-  end
-  
-end
+# if you want to clean up old releases on each deploy uncomment this:
+# after "deploy:restart", "deploy:cleanup"
 
-after 'deploy:update_code', 'deploy:symlink_db'
+# if you're still using the script/reaper helper you will need
+# these http://github.com/rails/irs_process_scripts
 
-namespace :deploy do
-  desc "Symlinks the database.yml"
-  task :symlink_db, :roles => :app do
-    run "ln -nfs #{deploy_to}/shared/config/database.yml #{release_path}/config/database.yml"
-  end
-  
-  desc "Symlinks the unicorn configuration"
-  task :symlink_unicorn, :roles => :app do
-    run "ln -nfs #{deploy_to}/shared/config/unicorn.rb #{release_path}/config/unicorn.rb"
-  end
-end
-
-# whenever integration
-set :whenever_command, "bundle exec whenever"
-#set :whenever_environment, defer { stage }
-require "whenever/capistrano"
-
-#before "deploy", "deploy:stop"
-after "deploy", "deploy:migrate"
-after 'deploy:update_code', 'deploy:compile_assets'
-after 'deploy:update_code', 'deploy:symlink_db'
-after 'deploy:update_code', 'deploy:symlink_unicorn'
-
-#after "deploy", "deploy:start"
-
-
+# If you are using Passenger mod_rails uncomment this:
+# namespace :deploy do
+#   task :start do ; end
+#   task :stop do ; end
+#   task :restart, :roles => :app, :except => { :no_release => true } do
+#     run "#{try_sudo} touch #{File.join(current_path,'tmp','restart.txt')}"
+#   end
+# end

@@ -43,7 +43,7 @@ class ParticipantsControllerTest < ActionController::TestCase
         SessionParticipation.create(:user => @user1, :session => @session)
         SessionParticipation.create(:user => @user2, :session => @session)
         
-        get :index, :experiment_id => @experiment.id, :user_action => 0, :selected_users => {@user1.id => "1", @user2.id => "1", @user3.id => "1"}, :filter => {:search => 'hugo'}
+        get :index, :experiment_id => @experiment.id, :user_action => "0", :selected_users => {@user1.id => "1", @user2.id => "1", @user3.id => "1"}, :search => {:text => 'hugo'}
       end
       
       should "remove selected participations but leave session_participations untouched" do
@@ -68,7 +68,7 @@ class ParticipantsControllerTest < ActionController::TestCase
         SessionParticipation.create(:user => @user1, :session => @session)
         SessionParticipation.create(:user => @user2, :session => @session)
         
-        get :index, :experiment_id => @experiment.id, :user_action => 'remove_all', :filter => {:search => 'hugo'}
+        get :index, :experiment_id => @experiment.id, :user_action => 'remove_all', :search => {:text => 'hugo'}
       end
       
       should "remove all participations but leave session_participations untouched" do

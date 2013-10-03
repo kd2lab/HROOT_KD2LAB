@@ -8,6 +8,8 @@ FactoryGirl.define do
     matrikel "1234"
     gender 'm'
     birthday Date.today
+    country_name "Germany"
+    preference 1
     role "user"
     after(:create) { |user| user.confirm!}
   end

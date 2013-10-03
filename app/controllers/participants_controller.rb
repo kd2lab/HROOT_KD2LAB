@@ -5,112 +5,103 @@ class ParticipantsController < ApplicationController
   before_filter :check_right
   helper_method :sort_column, :sort_direction
   
-  def index
-    # filters are only in session, when message was sent
-    if session[:filter]
-      params[:filter] = session[:filter]
-      session[:filter] = nil
+  def index   
+    params[:search] = params[:search]  || Settings.standard_search || {} 
+    
+    # default: include deleted and only users in this view
+    params[:search][:role] = {:value => ['user']} 
+    params[:search][:deleted] = {:value =>"show"}
+    
+    if params[:user_action] == "remove_all"
+      # add filter to select only users without a session - we don't want to delete users, who are in a session
+      params[:search][:participation] = {:value => 3}
+      ids =  User.search_ids(params[:search], {:experiment => @experiment, :sort_column => sort_column, :sort_direction => sort_direction, :exclude_non_participants => 1})
+               
+      if ids.length > 0   
+        # remove users who have no session participation
+        deleted_user_ids = @experiment.remove_participations(ids)
+      
+        # store all changes to the user base
+        history_entry = HistoryEntry.create(:filter_settings => params[:filter].to_json, :experiment_id => @experiment.id, :action => "remove_filtered_users", :user_count => deleted_user_ids.length, :user_ids => deleted_user_ids.to_json)      
+        
+        flash.now[:notice] = t('controllers.participants.notice_removed_all')
+      end
     end
     
-    params[:filter] = params[:filter] || Settings.standard_filter || {}
-    params[:filter][:role] = 'user' 
-    
-    if params[:message] && params[:message][:action] == 'send'
-      if (params[:message][:mode] == 'all')
-        ids =  User.load_ids(params, {:experiment => @experiment, :sort_column => sort_column, :sort_direction => sort_direction, :exclude_non_participants => 1})
-      elsif (params[:message][:mode] == 'selected')
-        ids = params['selected_users'].keys.map(&:to_i)
-      end
-      
-      Message.send_message(current_user.id, ids, @experiment.id, params[:message][:subject], params[:message][:text])
-      
-      # store filters in session to enable redirect
-      session[:filter] = params[:filter]
-      redirect_to experiment_participants_path(@experiment), :flash => {:notice => t('controllers.participants.notice_mailqueue')}
-    elsif !params[:user_action].blank?
-      if params[:user_action] == "remove_all"
-        # add filter to select only users without a session - we don't want to delete users, who are in a session
-        params[:filter][:participation] = "3"
-        ids =  User.load_ids(params, {:experiment => @experiment, :sort_column => sort_column, :sort_direction => sort_direction, :exclude_non_participants => 1})
-        
-        if ids.length > 0   
-          # remove users who have no session participation
-          deleted_user_ids = @experiment.remove_participations(ids)
-                    
-          # store all changes to the user base
-          history_entry = HistoryEntry.create(:filter_settings => params[:filter].to_json, :experiment_id => @experiment.id, :action => "remove_filtered_users", :user_count => deleted_user_ids.length, :user_ids => deleted_user_ids.to_json)      
-        end
-      elsif params[:user_action] == "0" && params[:selected_users]
-        # aus allen sessions austragen, session participations löschen
-        if params[:selected_users].length > 0   
-          # remove users who have no session participation
-          deleted_user_ids = @experiment.remove_participations(params[:selected_users].keys.map(&:to_i))
-          
-          # store all changes to the user base
-          history_entry = HistoryEntry.create(:filter_settings => params[:filter].to_json, :experiment_id => @experiment.id, :action => "remove_selected_users", :user_count => deleted_user_ids.length, :user_ids => deleted_user_ids.to_json)          
-        end  
-      elsif params[:user_action].to_i > 0 && params[:selected_users]
-        target = Session.find(params[:user_action].to_i)
-        
-        if target
-          # store filters in session to enable redirect
-          session[:filter] = params[:filter]
-    
-          Session.move_members(params[:selected_users].keys.map(&:to_i), @experiment, target)
-          User.update_noshow_calculation(params[:selected_users].keys.map(&:to_i))
+    if params[:user_action] == "0" && params[:selected_users]
+      # aus allen sessions austragen, session participations löschen
+      if params[:selected_users].length > 0   
+        # remove users who have no session participation
+        deleted_user_ids = @experiment.remove_participations(params[:selected_users].keys.map(&:to_i))
 
-          redirect_to experiment_participants_path(@experiment), :flash => {:notice => "#{t('controllers.participants.notice_session1')} #{target.time_str} #{t('controllers.participants.notice_session2')}"}
-        end
-      elsif params[:user_action] == "print_view"
-        #@users = User.load(params, {:sort_column => sort_column, :sort_direction => sort_direction, :include_deleted_users => (params[:filter][:show_deleted].to_s == "1")})
-        @users = User.load(params, {:experiment => @experiment, :sort_column => sort_column, :sort_direction => sort_direction, :exclude_non_participants => 1, :include_deleted_users => 1})
-    
-        render :action => 'print', :layout => 'print'
-        return
+        # store all changes to the user base
+        history_entry = HistoryEntry.create(:filter_settings => params[:filter].to_json, :experiment_id => @experiment.id, :action => "remove_selected_users", :user_count => deleted_user_ids.length, :user_ids => deleted_user_ids.to_json)          
+        
+        flash.now[:notice] = t('controllers.participants.notice_removed_from_session')
       end
     end
-    
-    @users = User.paginate(params, {:experiment => @experiment, :sort_column => sort_column, :sort_direction => sort_direction, :exclude_non_participants => 1, :include_deleted_users => 1})
+      
+    if params[:user_action].to_i > 0 && params[:selected_users]
+      target = Session.find(params[:user_action].to_i)
+      
+      if target
+        Session.move_members(params[:selected_users].keys.map(&:to_i), @experiment, target)
+        User.update_noshow_calculation(params[:selected_users].keys.map(&:to_i))
+
+        flash.now[:notice] = t('controllers.participants.notice_session', :target => "#{target.time_str}")
+      end
+    end
+
+    # todo restore print view
+#       elsif params[:user_action] == "print_view"
+#         #@users = User.load(params, {:sort_column => sort_column, :sort_direction => sort_direction, :include_deleted_users => (params[:filter][:show_deleted].to_s == "1")})
+#         @users = User.load(params, {:experiment => @experiment, :sort_column => sort_column, :sort_direction => sort_direction, :exclude_non_participants => 1, :include_deleted_users => 1})
+#     
+#         render :action => 'print', :layout => 'print'
+#         return
+#       end
+#     end
+#     
+
+    @users = User.paginate(params, {:experiment => @experiment, :sort_column => sort_column, :sort_direction => sort_direction})
     @user_count = @experiment.participations.includes(:user).where('users.role' => 'user').count
   end
   
   def manage
-    params[:filter] = params[:filter] || Settings.standard_filter || {}
-    params[:filter][:role] = 'user' 
+    params[:search] = params[:search] || Settings.standard_search || {}
     
-    # create participation relation
-    if params[:submit_all]
-      # load filtered users without those already in the experiment (and without deleted users)
-      ids =  User.load_ids(params, {:sort_column => sort_column, :sort_direction => sort_direction, :exclude_experiment_participants => 1, :experiment => @experiment})
-
-      # did we find users?
-      if ids.length > 0      
-        # store all changes to the user base    
-        history_entry = HistoryEntry.create(:filter_settings => params[:filter].to_json, :experiment_id => @experiment.id, :action => "add_filtered_users", :user_count => ids.length, :user_ids => ids.to_json)
-      
-        ids.each do |id|
-          p = Participation.find_or_create_by_user_id_and_experiment_id(id, @experiment.id)
-          p.filter_id = history_entry.id
-          p.save
-        end
-        flash[:notice] = t('controllers.participants.notice_added_members')
-      end
+    # default: only show users in this view
+    params[:search][:role] = {:value => ['user']} 
+    
+    # load ids of users to add to experiment
+    ids = if params[:submit_all]
+      User.search_ids(params[:search], {:experiment => @experiment, :exclude => 1})
     elsif (params[:submit_marked]) && params[:selected_users]
-      # did we find users?
-      if params[:selected_users].length > 0      
-        # store all changes to the user base
-        history_entry = HistoryEntry.create(:filter_settings => params[:filter].to_json, :experiment_id => @experiment.id, :action => "add_selected_users", :user_count => params[:selected_users].length, :user_ids => params[:selected_users].keys.map(&:to_i).to_json)
-
-        params[:selected_users].keys.each do |id|
-          p = Participation.find_or_create_by_user_id_and_experiment_id(id, @experiment.id)
-          p.filter_id = history_entry.id
-          p.save
-        end
-        flash[:notice] = t('controllers.participants.notice_added_members')
-      end  
+      params[:selected_users].keys.map(&:to_i)
+    else
+      []
+    end
+      
+    # did we find users?
+    if ids.length > 0      
+      # store all changes to the user base
+      history_entry = HistoryEntry.create(
+        :filter_settings => params[:search].to_json,
+        :experiment_id => @experiment.id, 
+        :action => if params[:submit_all] then 'add_filtered_users' else 'add_selected_users' end, 
+        :user_count => ids.length, 
+        :user_ids => ids.to_json
+      )
+    
+      ids.each do |id|
+        p = Participation.find_or_create_by_user_id_and_experiment_id(id, @experiment.id)
+        p.filter_id = history_entry.id
+        p.save
+      end
+      flash.now[:notice] = t('controllers.participants.notice_added_members')
     end
     
-    @users = User.paginate(params, {:experiment => @experiment, :sort_column => sort_column, :sort_direction => sort_direction, :exclude_experiment_participants => 1})
+    @users = User.paginate(params, {:experiment => @experiment, :sort_column => sort_column, :sort_direction => sort_direction, :exclude => true})
     @user_count = User.where('users.role' => 'user', 'users.deleted' => false).count
     @participants_count = @experiment.participations.includes(:user).where('users.role' => 'user', 'users.deleted' => false).count
   end
@@ -119,6 +110,20 @@ class ParticipantsController < ApplicationController
     
   end
   
+  def send_message
+    # default: include deleted and only users when
+    params[:search][:role] = {:value => ['user']} 
+    params[:search][:deleted] = {:value =>"show"}
+    
+    if (params[:message][:to] == 'all')
+      ids =  User.search_ids(params[:search], {:experiment => @experiment})
+    elsif (params[:message][:to] == 'selected')
+      ids = params['selected_users'].keys.map(&:to_i)
+    end  
+    
+    Message.send_message(current_user.id, ids, @experiment.id, params[:message][:subject], params[:message][:text])
+    render :json => {:updated => ids.length}
+  end
   
   protected
   

@@ -33,29 +33,15 @@ de:
         name: Name
         firstname: Vorname
         lastname: Nachname
-        matrikel: Matrikelnummer
-        country_name: Nationalität
         role: Rolle
-        phone: Mobilnummer
-        begin: Studienbeginn
-        begin_month: Studienbeginn Monat
-        begin_year: Studienbeginn Jahr
         email: E-Mail
         secondary_email: Alternative E-Mail
-        lang1: Sprachkenntnisse
-        lang2: weitere Sprache
-        lang3: weitere Sprache
-        study_id: Studiengang
-        profession_id: Beruf
-        degree_id: Abschluss(-ziel)
-        gender: Geschlecht
-        birthday: Geburtstag
+        current_password: Aktuelles Passwort
         password: Passwort
         password_confirmation: Passwort wdh.
-        preference: Interesse an
         change_email: E-Mail ändern
-        current_password: Aktuelles Passwort
-        experience: Experimenterfahrung
+        
+      
         
       experiment:
         tag_list: Tags

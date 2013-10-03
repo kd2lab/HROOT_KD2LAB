@@ -26,7 +26,7 @@
 = form_tag experiments_path, :method => 'get', :id => "experiment_search" do
   %p  
     = text_field_tag :search, params[:search] 
-    = submit_tag t(:search), :name => nil  
+    = submit_tag t('.search'), :name => nil  
 
 #experiments
   = render 'experiments'

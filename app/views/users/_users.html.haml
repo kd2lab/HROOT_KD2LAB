@@ -1,53 +1,20 @@
 = hidden_field_tag :direction, params[:direction]
 = hidden_field_tag :sort, params[:sort]
 = hidden_field_tag :page, params[:page] || 1
-= hidden_field_tag :user_action, ''
+= hidden_field_tag :user_action, 'none'
+/= hidden_field_tag 'search[empty]', 'empty'
 
 
+.search
+  = render :partial => 'shared/search/search', :locals => { :fields => [:fulltext, :role, :noshow_count, :participations_count, :deleted,:tags, :experiments,  :gender, :begin_of_studies, :birthday, :preference, :course_of_studies, :country_name, :degree, :language, :experience ] }
 
-.filter
-  =t 'filter.search_text'
-  %br
-  = text_field_tag 'filter[search]', params[:filter][:search] 
-  %br
-  %br
-  
-  =t 'filter.header'  
-  %br
-  
-  - [ 'gender', 'noshow', 'participated', 'role', 'begin', 'birthday', 'experience', |
-      'study', 'country', 'degree', 'language', 'tags', 'experiment', 'preference', 'show_deleted'].each do |key|
-    %a.open-link{:href => '#f'+key}=t("filter.#{key}")
-    = '|' unless key == 'show_deleted'
-   
-  %br
-  %br
-
-  = render :partial => 'shared/filter_gender'
-  = render :partial => 'shared/filter_noshow' 
-  = render :partial => 'shared/filter_participated' 
-  = render :partial => 'shared/filter_role'
-  = render :partial => 'shared/filter_begin'
-  = render :partial => 'shared/filter_birthday' 
-  = render :partial => 'shared/filter_experience' 
-  = render :partial => 'shared/filter_study' 
-  = render :partial => 'shared/filter_country'
-  = render :partial => 'shared/filter_degree' 
-  = render :partial => 'shared/filter_language' 
-  = render :partial => 'shared/filter_tags' 
-  = render :partial => 'shared/filter_experiment' 
-  = render :partial => 'shared/filter_preference'
-  = render :partial => 'shared/filter_show_deleted'
-
+  /= render :partial => 'shared/search/search', :locals => { :fields => User.search_fields_without('participation') }
+    
 .searchinfo
-  = submit_tag t('filter.submit'), :name => 'submit_mode', :class => "btn btn-primary"
-  =t 'filter.showing1'
-  %b= @users.total_entries
-  =t 'filter.showing2'
-  %b= @user_count
+  = submit_tag t('.submit'), :name => 'submit_mode', :class => "btn btn-primary"
+  = raw t('.showing', :count => @users.total_entries, :total => @user_count)
   
 %hr
-
 
 - if @users.count > 0
   = will_paginate @users,  :renderer => WillPaginate::ActionView::BootstrapLinkRenderer , :previous_label => "&lt;&lt;&nbsp;", :next_label => "&nbsp;&gt;&gt;"
@@ -57,46 +24,43 @@
     
     .btn-group{:style => "float:left"}
       %a.btn.dropdown-toggle{:'data-toggle' => "dropdown", :href => "#"}
-        =t '.current_filtered'
+        =t '.current_result'
         %b.caret 
       %ul.dropdown-menu
-        %li= link_to t('.message_all_filtered'), '#', :class => "send-message", :'data-to' => t('.to_all_filtered'), :'data-mode' => 'all'    
-        %li= link_to t('.send_activation_invitation'), '#', :confirm => t('.send_activation_confirm'), :class => "user_action_link", :'data-value' => 'invite_all'    
-        %li= link_to t('.store_current_filter'), '#', :class => "user_action_link", :'data-value' => 'store_filter'    
+        %li= link_to t('.message_all_searched'), '#', :class => "open-modal", :'data-to' => t('.to_all_searched'), :'data-mode' => 'all' , :'data-url' => send_message_users_path   
+        %li= link_to t('.store_current_search'), '#', :class => "user_action_link", :'data-value' => 'store_search'    
     
     .btn-group.context-menu{:style => "float:left"}
       %a.btn.dropdown-toggle{:'data-toggle' => "dropdown", :href => "#"}
         =t '.marked_users'
         %b.caret 
       %ul.dropdown-menu
-        %li= link_to t('.message_all_marked'), '#', :class => "send-message", :'data-to' => t('.to_all_marked'), :'data-mode' => 'selected'
-        %li= link_to t('.send_activation_invitation_marked'), '#', :confirm => t('.send_activation_confirm'), :class => "user_action_link", :'data-value' => 'invite_selected'        
-    
+        %li= link_to t('.message_all_marked'), '#', :class => "open-modal", :'data-to' => t('.to_all_marked'), :'data-mode' => 'selected', :'data-url' => send_message_users_path
   %br
   %br
   
+  - columns = [:fullname, :role, :email, :course_of_studies, :gender, :begin_of_studies, :noshow_count, :participations_count]
+  - columns = [:fullname, :role, :email, :noshow_count, :participations_count]
   
   %table.table
     %thead
       %tr
         %th= check_box_tag "", "", false, :id => "select_all_users"
         %th
-        %th= sortable_for_form 'lastname', 'Name'  
-        %th= sortable_for_form 'role', t('.role')
-        %th= sortable_for_form 'email', t(:email)
-        %th= sortable_for_form 'study_name', t('.study')
-        %th= sortable_for_form 'gender',  t('.gender')
-        %th= sortable_for_form 'begin_date', t('.begin')
-        %th= sortable_for_form 'created_at', t('.created_at')
-   		
-        - Hroot::Application.config.custom_fields.each do |field|
-          - if field[:show_in_tables]
-            %th=sortable_for_form field[:name], field[:title][I18n.locale]
-
-        %th.popup{:'data-popup' => t('popup.noshow_count')}= sortable_for_form 'noshow_count' , t('noshow_shortcut')
-        %th.popup{:'data-popup' => t('popup.participations_count')}= sortable_for_form 'participations_count' , t('participations_shortcut')
-
-
+        - columns.each do |col|
+          - case col
+            - when :fullname
+              %th= sortable_for_form 'lastname', t('.fullname')
+            - when :role  
+              %th= sortable_for_form 'role', t('.role')
+            - when :email
+              %th= sortable_for_form 'email', t('.email')
+            - when :noshow_count
+              %th.popup{:'data-popup' => t('popup.noshow_count')}= sortable_for_form 'noshow_count' , t('noshow_shortcut')
+            - when :participations_count
+              %th.popup{:'data-popup' => t('popup.participations_count')}= sortable_for_form 'participations_count' , t('participations_shortcut')
+            - else
+              %th= sortable_for_form col.to_s, t('.'+col.to_s)
     %tbody    
       - @users.each do |user| 
         - cl = []; 
@@ -107,22 +71,53 @@
           %td
             - if !user.deleted && user.imported && !user.activated_after_import
               %i.icon-ban-circle.popup{:'data-popup' => t('popup.inactive_after_import')}
+          - columns.each do |col|
+            - case col
+              - when :fullname
+                %td= link_to highlight(truncate(user.lastname, {:length => 15}), params[:search][:text])+', '+highlight(truncate(user.firstname, {:length => 10}), params[:search][:text]), user_path(user)
+              - when :role  
+                %td= {'user' => 'P', 'experimenter' => 'E', 'admin' => 'A'}[user.role]
+              - when :email
+                %td= link_to highlight(truncate(user.email, {:length => 15}), params[:search][:text]), "mailto:#{user.email}"
+              - when :noshow_count
+                %td= "#{user.noshow_count}" 
+              - when :participations_count
+                %td= "#{user.participations_count}"
+              - else
+                %td custom                      
+        
+        /%th= sortable_for_form 'lastname', 'Name'  
+        /%th= sortable_for_form 'role', t('.role')
+        /%th= sortable_for_form 'email', t(:email)
+        /%th= sortable_for_form 'study_name', t('.study')
+        /%th= sortable_for_form 'gender',  t('.gender')
+        /%th= sortable_for_form 'begin_date', t('.begin')
+        /%th= sortable_for_form 'created_at', t('.created_at')
+   		
+        
+        /%th.popup{:'data-popup' => t('popup.noshow_count')}= sortable_for_form 'noshow_count' , t('noshow_shortcut')
+        /%th.popup{:'data-popup' => t('popup.participations_count')}= sortable_for_form 'participations_count' , t('participations_shortcut')
+
+
+    /%tbody    
+    /  - @users.each do |user| 
+    /    - cl = []; 
+    /    - cl << "deleted" if user.deleted
+    /    - cl << "import_inactive" if user.imported && !user.activated_after_import
+    /    %tr{:class => cl.join(' ')}
               
-          %td= link_to highlight(truncate(user.lastname, {:length => 15}), params[:search])+', '+highlight(truncate(user.firstname, {:length => 10}), params[:search]), user_path(user)
-          %td= {'user' => 'P', 'experimenter' => 'E', 'admin' => 'A'}[user.role]
-          %td= link_to highlight(truncate(user.email, {:length => 15}), params[:search]), "mailto:#{user.email}"
-          %td.study_name_popup{:'data-text' => user.study_name || t(:info) }
-            =user.study_name ? truncate(user.study_name, {:length => 10}) : t(:no_info)
-          %td= user.gender
-          %td= user.begin_date 
-          %td= I18n.l(user.created_at, :format => :date_only)
+    /      %td= link_to highlight(truncate(user.lastname, {:length => 15}), params[:search][:text])+', '+highlight(truncate(user.firstname, {:length => 10}), params[:search][:text]), user_path(user)
+    /      %td= {'user' => 'P', 'experimenter' => 'E', 'admin' => 'A'}[user.role]
+    /      %td= link_to highlight(truncate(user.email, {:length => 15}), params[:search][:text]), "mailto:#{user.email}"
+    /      /todo%td.study_name_popup{:'data-text' => user.study_name || t(:info) }
+    /      /  =user.study_name ? truncate(user.study_name, {:length => 10}) : t(:no_info)
+    /      %td= user.gender
+    /      /todo%td= user.begin_date 
+    /      %td= I18n.l(user.created_at, :format => :date_only)
           
-          - Hroot::Application.config.custom_fields.each do |field|
-            - if field[:show_in_tables]
-              %td=user[field[:name]]
           
-          %td= "#{user.noshow_count}" 
-          %td= "#{user.participations_count}"
+    /      %td= "#{user.noshow_count}" 
+    /      %td= "#{user.participations_count}"
         
         
 - else

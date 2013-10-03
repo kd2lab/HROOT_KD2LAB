@@ -1,0 +1,28 @@
+- rows = params[:search][name] || [{:op => 'at_least', :count => 1, :tag => ''}]
+    
+- rows.each do |row|
+  
+  .tag-row
+    = select_tag "search[#{name}][][op]",
+      options_for_select([[t('search.selections.at_least'), 'at_least'], [t('search.selections.at_most'), 'at_most']], row[:op]),
+      :style => "width: auto"
+    
+    = select_tag "search[#{name}][][count]",
+      options_for_select((0..10), row[:count]),
+      :style => "width: auto"
+    
+    = t("search.titles.tags2")
+    
+    = select_tag "search[#{name}][][tag]",
+      options_for_select(ActsAsTaggableOn::Tag.order(:name).map{|s| [s.name, s.name]}, row[:tag]),
+      {:include_blank => true, :class => "chzn-select-search-tags", :'data-placeholder' => t("search.hints.#{name}"), :style=>"width:100px"}
+    
+    = t("search.titles.tags3")
+    
+%a.btn.btn-success.btn-mini.add-link{:href=>"#"}
+  %i.icon-plus.icon-white 
+        
+%a.btn.btn-danger.btn-mini.remove-link{:href=>"#"}
+  %i.icon-minus.icon-white
+ 
+ 

@@ -1,0 +1,3 @@
+- #todo sliders later?
+= select_tag "search[#{name}][op]", options_for_select(["<=", ">"], (params[:search][name] || {})[:op]), :class => "span1"
+= select_tag "search[#{name}][value]", options_for_select(range.to_a, (params[:search][name] || {})[:value]), :class => "span1"

@@ -367,6 +367,10 @@ hroot is implemented with <a href="http://rubyonrails.org">Ruby on Rails.</a><br
     title_begin: Date of beginning of studies
     title_deleted: Deleted users
     title_country: 'Include only users from the following countries:'
+    title_custom_field_string:  field %{field} contains
+    title_custom_field_int: Value of the field
+    title_custom_field_date: "%{field} is in the following date range"
+    title_custom_field_selection: users with the following values in the field
     hint_studies: Fields of study...
     hint_languages: Languages...
     hint_experiment: Experiments...
@@ -567,11 +571,7 @@ hroot is implemented with <a href="http://rubyonrails.org">Ruby on Rails.</a><br
     users:
       store_current_filter: Save current filter settings as default
       message_all_filtered: Send message to all currently filtered users.
-      send_activation_invitation: Send activation invitation to all users who are not yet activated.
-      send_activation_confirm: Are you sure you want to send the activation emails?
-      
       message_all_marked: Send message to all checked users
-      send_activation_invitation_marked: Send activation invitation to all checked users.
       to_all_filtered: Currently filtered users
       to_all_marked: Checked users
       
@@ -589,7 +589,7 @@ hroot is implemented with <a href="http://rubyonrails.org">Ruby on Rails.</a><br
       new_user: New user
     new:
       create_new_user: Create new user
-    show:
+    showf:
       more_functions: Additional functions
       activate_user_after_import: Activate user after import
       not_activated: not activated after import
@@ -600,7 +600,6 @@ hroot is implemented with <a href="http://rubyonrails.org">Ruby on Rails.</a><br
       phone: Phone
       matrikel: Student No.
       role: Role
-      study: Field of study
       degree: Degree
       begin: Date of beginning of studies
       country: Country

@@ -1,44 +1,30 @@
-if RUBY_VERSION =~ /1.9/
-  Encoding.default_external = Encoding::UTF_8
-  Encoding.default_internal = Encoding::UTF_8
-end
+#if RUBY_VERSION =~ /1.9/
+#  Encoding.default_external = Encoding::UTF_8
+#  Encoding.default_internal = Encoding::UTF_8
+#end
 
 source 'http://rubygems.org'
 
-gem 'rails', '3.2.9'
-
-# Bundle edge Rails instead:
-# gem 'rails', :git => 'git://github.com/rails/rails.git'
-
+gem 'rails', '3.2.11'
 gem 'mysql2'
-
-# Use unicorn as the web server
 gem 'unicorn'
 
-# Deploy with Capistrano
-gem 'capistrano'
-gem 'capistrano-ext'
-gem 'rvm-capistrano'
 
-# To use debugger (ruby-debug for Ruby 1.8.7+, ruby-debug19 for Ruby 1.9.2+)
-gem 'debugger'
 gem 'haml'
 gem 'sass'
+gem 'coffee-script'
 gem 'ledermann-rails-settings', '1.2.1', :require => 'rails-settings'
 gem 'sequel'
 gem 'jquery-rails', '>= 1.0.12'
-gem 'jquery-ui-rails'
 gem 'will_paginate'
-gem 'devise', '3.0.0'
+gem 'devise', '3.1.1'
 gem 'simple_form'
 gem 'event-calendar', :require => 'event_calendar'
 gem 'exception_notification'
 gem 'icalendar'
-gem 'coffee-script'
 gem 'cancan'
 gem 'country-select'
 gem 'acts-as-taggable-on', '~> 2.2.2'
-gem 'gem-licenses'
 
 # js runtime for server
 gem "therubyracer", :require => 'v8'
@@ -52,9 +38,13 @@ gem 'twitter-bootstrap-rails'
 # put test-only gems in this group so their generators
 # and rake tasks are available in development mode:
 group :development, :test do
+  gem 'debugger'
   gem 'simplecov', :require => false
   gem 'jslint_on_rails'
   gem "factory_girl_rails", "~> 4.0"
   gem 'shoulda'
-  gem 'mocha', :require => false
+  gem 'mocha', :require => 'mocha/setup'
+  gem 'capistrano'
+  #gem 'capistrano-ext'
+  #gem 'rvm-capistrano'
 end

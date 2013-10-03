@@ -1,0 +1,11 @@
+
+= select_tag 'search[experiments][op]',
+  options_for_select((1..6).map{|i| [t("search.selections.experiments.choice#{i}"), i]}, (params[:search][name] || {})[:op]),
+  {:class => "span7"}
+
+%br
+
+= select_tag 'search[experiments][value]',
+  options_for_select(Experiment.order(:name).map{|s| [truncate(s.name), s.id]}, (params[:search][name] || {})[:value]),
+  {:include_blank => true, :multiple => true, :class => "chzn-select-search", :'data-placeholder' => t("search.hints.#{name}"), :style=>"width:650px"}
+

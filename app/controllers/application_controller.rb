@@ -13,9 +13,9 @@ class ApplicationController < ActionController::Base
 #     redirect_to root_url, :alert => t('controllers.application.error')    
 #   end
 #     
-#   rescue_from CanCan::AccessDenied do |exception|
-#     redirect_to root_url, :alert => t('controllers.application.notice_login_required')
-#   end
+  rescue_from CanCan::AccessDenied do |exception|
+    redirect_to root_url, :alert => t('controllers.application.notice_login_required')
+  end
 #   
 #   rescue_from ActionController::RoutingError, with: :render_404
 #   rescue_from ActionController::UnknownController, with: :render_404

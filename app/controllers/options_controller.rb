@@ -1,7 +1,8 @@
 #encoding: utf-8
 
 class OptionsController < ApplicationController
-
+  authorize_resource :class => false
+  
   def index
     if params[:commit]
       

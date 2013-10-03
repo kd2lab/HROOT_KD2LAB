@@ -1,0 +1,9 @@
+- if flash[:notice]  
+  .alert
+    %a.close{:'data-dismiss'=>'alert', :href => '#'} x
+    = flash[:notice]
+
+- if alert
+  .alert.alert-error
+    %a.close{:'data-dismiss'=>'alert', :href => '#'} x
+    = alert

@@ -1,0 +1,16 @@
+=t 'filter.from'
+= text_field_tag "search[#{name}][from]",
+       (params[:search][name] || {})[:from],
+       :class => "span2 datepicker",
+       :'data-date-format' => I18n.t('date.datepicker'),
+       :'data-date-min-view-mode' => 1
+=t 'filter.to'
+  
+= text_field_tag "search[#{name}][to]",
+       (params[:search][name] || {})[:to],
+       :class => "span2 datepicker",
+       :'data-date-format' => I18n.t('date.datepicker'),
+       :'data-date-min-view-mode' => 1
+       
+
+  

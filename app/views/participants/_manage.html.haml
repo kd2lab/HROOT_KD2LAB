@@ -1,53 +1,17 @@
 = hidden_field_tag :direction, params[:direction]
 = hidden_field_tag :sort, params[:sort]
 = hidden_field_tag :page, params[:page] || 1
+= hidden_field_tag 'search[empty]', 'empty'
 
 
-.filter
-  =t 'filter.search_text'
-  %br
-  = text_field_tag 'filter[search]', params[:filter][:search] 
-  %br
-  %br
-  
-  =t 'filter.header' 
-  %br
-  - [ 'gender', 'noshow', 'participated', 'begin', 'birthday', 'experience', |
-      'study', 'country', 'degree', 'language', 'tags', 'experiment', 'preference'].each do |key|
-    %a.open-link{:href => '#f'+key}=t("filter.#{key}")
-    = '|' unless key == 'preference'
+.search
+  = render :partial => 'shared/search/search', :locals => { :fields => User.search_fields_without(['role','participation', 'deleted']) }
     
-  %br
-  %br
-  
-  = render :partial => 'shared/filter_gender'
-  = render :partial => 'shared/filter_noshow' 
-  = render :partial => 'shared/filter_participated' 
-  = render :partial => 'shared/filter_begin' 
-  = render :partial => 'shared/filter_birthday' 
-  = render :partial => 'shared/filter_experience' 
-  = render :partial => 'shared/filter_study' 
-  = render :partial => 'shared/filter_country'
-  = render :partial => 'shared/filter_degree' 
-  = render :partial => 'shared/filter_language' 
-  = render :partial => 'shared/filter_tags' 
-  = render :partial => 'shared/filter_experiment' 
-  = render :partial => 'shared/filter_preference'
-
-
 .searchinfo
-  = submit_tag t('filter.submit'), :name => 'submit_mode', :class => "btn btn-primary"    
-  =t 'filter.showing1'
-  %b= @users.total_entries
-  =t 'filter.showing2'
-  %b= @user_count
-  =t 'filter.showing3'
-  %b= @participants_count
-
-
+  = submit_tag t('.submit'), :name => 'submit_mode', :class => "btn btn-primary"
+  = raw t('.showing', :count => @users.total_entries, :total => @user_count, :participants => @participants_count)
+  
 %hr
-%br
-%br
 
 - if @users.count > 0
   = will_paginate @users,  :renderer => WillPaginate::ActionView::BootstrapLinkRenderer , :previous_label => "&lt;&lt;&nbsp;", :next_label => "&nbsp;&gt;&gt;"
@@ -85,8 +49,8 @@
             - if !user.deleted && user.imported && !user.activated_after_import
               %i.icon-ban-circle.popup{:'data-popup' => t('popup.inactive_after_import')}
           
-          %td= link_to highlight(truncate(user.lastname, {:length => 15}), params[:search])+', '+highlight(truncate(user.firstname, {:length => 10}), params[:search]), user_path(user)
-          %td= link_to highlight(truncate(user.email, {:length => 20}), params[:search]), "mailto:#{user.email}"
+          %td= link_to highlight(truncate(user.lastname, {:length => 15}), params[:search][:text])+', '+highlight(truncate(user.firstname, {:length => 10}), params[:search][:text]), user_path(user)
+          %td= link_to highlight(truncate(user.email, {:length => 20}), params[:search][:text]), "mailto:#{user.email}"
           %td.study_name_popup{:'data-text' => user.study_name || t(:no_info) }
             =user.study_name ? truncate(user.study_name, {:length => 10}) : 'k. A.'
           //%td= user.gender

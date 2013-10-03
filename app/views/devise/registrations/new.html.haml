@@ -10,6 +10,10 @@
 .row
   .span8
       
+    = resource.errors.full_messages  
+    
+    = params.inspect
+      
     %h1= t 'devise.registrations.new.register'
     %p
       %br
@@ -17,19 +21,21 @@
       
     = simple_form_for resource, :as => resource_name, :url => registration_path(resource_name), :html => {:class => 'form-horizontal'} do |f| 
       %br
-      - if Settings.mail_restrictions && Settings.mail_restrictions.map{|r| r['suffix']}.select{|r| !r.blank?}.count > 0  
-        = f.label :email, :style => "margin-right:20px"
-        = f.text_field :email_prefix, :class => "span1"
-        @
-        = f.select :email_suffix, options_for_select(Settings.mail_restrictions.map{|r| r['suffix']}.select{|r| !r.blank?}, params[:user] ? params[:user][:email_suffix] : "")
-        = f.error :email
-        %br
-        %br
-      - else
-        = f.input :email, :placeholder => 'name@domain.com'
-
+      
+      / todo
+      /- if Settings.mail_restrictions && Settings.mail_restrictions.map{|r| r['suffix']}.select{|r| !r.blank?}.count > 0  
+      /  = f.label :email, :style => "margin-right:20px"
+      /  = f.text_field :email_prefix, :class => "span1"
+      /  @
+      /  = f.select :email_suffix, options_for_select(Settings.mail_restrictions.map{|r| r['suffix']}.select{|r| !r.blank?}, params[:user] ? params[:user][:email_suffix] : "")
+      /  = f.error :email
+      /  %br
+      /  %br
+      /- else
+      
+      = f.input :email, :placeholder => 'name@domain.com'
       = f.input :password  
-      = f.input :password_confirmation, :hint => t('devise.registrations.new..password_hint')
+      = f.input :password_confirmation, :hint => t('devise.registrations.new.password_hint')
   
 
       %br
@@ -38,39 +44,32 @@
       %br
       %br
 
-      = f.input :gender, :collection => {t('form_values.male') => 'm', t('form_values.female') => 'f'}, :as => :select, :required => false      
-      = f.input :birthday, :include_blank => "true", :required => false, :start_year => Date.today.year-16, :end_year => 1900
+      /= f.input :gender, :collection => {t('form_values.male') => 'm', t('form_values.female') => 'f'}, :as => :select, :required => false      
+      
       = f.input :firstname, :required => false
       = f.input :lastname, :required => false
-      = f.input :matrikel, :required => false
-      = f.input :country_name, :priority => [ "Germany" ], :blank => true
-      = f.input :preference, :collection => {t('form_values.type_both')=>0, t('form_values.type_presence')=>1, t('form_values.type_online')=>2}, :default => 0
+      - Datafields.required.each do |field|
+        = field.add_to_form(f)
+          
+      /= f.input :matrikel, :required => false
+      /= f.input :country_name, :priority => [ "Germany" ], :blank => true
+      /= f.input :preference, :collection => {t('form_values.type_both')=>0, t('form_values.type_presence')=>1, t('form_values.type_online')=>2}, :default => 0
 
-      = render :partial => 'users/edit_custom_fields', :locals => { :fields => Hroot::Application.config.custom_fields.select{|f| f[:required] == true}, :f => f}
-
+    
       %hr
       =t 'devise.registrations.new.optional_data'
       %br
       %br
       %br
       
-      = f.input :phone, :hint => t('devise.registrations.new.phone_hint')
+      - Datafields.optional.each do |field|
+        = field.add_to_form(f)
       
-      = f.input :lang1, :collection => Language.all.map{|s| [s.name, s.id]}, :as => :select, :required => false
-      = f.input :lang2, :collection => Language.all.map{|s| [s.name, s.id]}, :as => :select, :required => false, :wrapper_html => {:style => "display:none", :id => "lang2"}
-      = f.input :lang3, :collection => Language.all.map{|s| [s.name, s.id]}, :as => :select, :required => false, :wrapper_html => {:style => "display:none", :id => 'lang3'}
-
-      %br
       
-      = f.input :study_id, :collection => Study.all.map{|s| [s.name, s.id]}
-      = f.input :degree_id, :collection => Degree.all.map{|s| [s.name, s.id]}
-      = f.input :begin_month, :collection => 1..12, :as => :select, :required => false
-      = f.input :begin_year, :collection => (Date.today.year-10 .. Date.today.year), :as => :select, :required => false
-      
-      = f.input :experience, :inline_label => t('devise.registrations.new.experience'), :as => :boolean, :label => false
+     
             
-      %br
-      = render :partial => 'users/edit_custom_fields', :locals => { :fields => Hroot::Application.config.custom_fields.select{|f| f[:required] == false}, :f => f}
+      /%br
+      /= render :partial => 'users/edit_custom_fields', :locals => { :fields => Hroot::Application.config.custom_fields.select{|f| f[:required] == false}, :f => f}
       
       
       %br

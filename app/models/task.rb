@@ -26,26 +26,19 @@ EOSQL
       end    
       
       # insert dynamic parts
-      subject = subject.to_s.mreplace({
-        "#firstname" => sp.user.firstname, 
-        "#lastname"  => sp.user.lastname,
-        "#session_date"  => session.start_at.strftime("%d.%m.%Y"),
-        "#session_date_de"  => session.start_at.strftime("%d.%m.%Y"),
-        "#session_date_en"  => session.start_at.strftime("%Y-%m-%d"),
-        "#session_start_time" => sp.session.start_at.strftime("%H:%M"),
-        "#session_end_time" => sp.session.end_at.strftime("%H:%M")
-      })
+      replacements = [
+        ["#firstname", sp.user.firstname], 
+        ["#lastname", sp.user.lastname],
+        ["#session_date_de", session.start_at.strftime("%d.%m.%Y")],
+        ["#session_date_en", session.start_at.strftime("%Y-%m-%d")],      
+        ["#session_date", sp.session.start_at.strftime("%d.%m.%Y")],
+        ["#session_start_time", sp.session.start_at.strftime("%H:%M")],
+        ["#session_end_time", sp.session.end_at.strftime("%H:%M")],
+        ["#session_location", if sp.session.location then sp.session.location.name else "" end]
+      ]
       
-      text = text.to_s.mreplace({
-        "#firstname" => sp.user.firstname, 
-        "#lastname"  => sp.user.lastname,
-        "#session_date"  => sp.session.start_at.strftime("%d.%m.%Y"),
-        "#session_date_de"  => session.start_at.strftime("%d.%m.%Y"),
-        "#session_date_en"  => session.start_at.strftime("%Y-%m-%d"),      
-        "#session_start_time" => sp.session.start_at.strftime("%H:%M"),
-        "#session_end_time" => sp.session.end_at.strftime("%H:%M"),
-        "#session_location" => if sp.session.location then sp.session.location.name else "" end
-      })
+      subject = subject.to_s.mreplace(replacements)      
+      text = text.to_s.mreplace(replacements)
       
       # only deliver mails with subject and text
       unless text.blank? || subject.blank?      
@@ -74,14 +67,14 @@ EOSQL
         
         # some messages are sent in context of a session - in this case we allow some variables
         if recipient.message.session_id && session = Session.find(recipient.message.session_id) 
-          message = message.to_s.mreplace({
-              "#session_date"  => session.start_at.strftime("%d.%m.%Y"),
-              "#session_date_de"  => session.start_at.strftime("%d.%m.%Y"),
-              "#session_date_en"  => session.start_at.strftime("%Y-%m-%d"),
-              "#session_start_time" => session.start_at.strftime("%H:%M"),
-              "#session_end_time" => session.end_at.strftime("%H:%M"),
-              "#session_location" => if session.location then session.location.name else "" end
-          })
+          message = message.to_s.mreplace([
+              ["#session_date_de", session.start_at.strftime("%d.%m.%Y")],
+              ["#session_date_en", session.start_at.strftime("%Y-%m-%d")],
+              ["#session_date", session.start_at.strftime("%d.%m.%Y")],
+              ["#session_start_time", session.start_at.strftime("%H:%M")],
+              ["#session_end_time", session.end_at.strftime("%H:%M")],
+              ["#session_location", if session.location then session.location.name else "" end]
+          ])
         end
       
         # message in context of an experiment
@@ -141,23 +134,16 @@ EOSQL
         sessionlist_de = experiment.open_sessions.map{|s| s.start_at.strftime("%d.%m.%Y, %H:%M Uhr") }.join("\n")
         sessionlist_en = experiment.open_sessions.map{|s| s.start_at.strftime("%Y-%m-%d, %H:%M ") }.join("\n")
         
-        subject = experiment.invitation_subject.to_s.mreplace({
-          "#firstname" => u.firstname, 
-          "#lastname"  => u.lastname,
-          "#sessionlist"  => sessionlist_de,
-          "#sessionlist_de"  => sessionlist_de,
-          "#sessionlist_en"  => sessionlist_en,
-          "#link"      => link
-        })
-        
-        text = experiment.invitation_text.to_s.mreplace({
-          "#firstname" => u.firstname, 
-          "#lastname"  => u.lastname,
-          "#sessionlist"  => sessionlist_de,
-          "#sessionlist_de"  => sessionlist_de,
-          "#sessionlist_en"  => sessionlist_en,
-          "#link"      => link
-        })
+        replacements = [
+          ["#firstname", u.firstname], 
+          ["#lastname", u.lastname],
+          ["#sessionlist_de", sessionlist_de],
+          ["#sessionlist_en", sessionlist_en],
+          ["#sessionlist", sessionlist_de],
+          ["#link", link]
+        ]
+        subject = experiment.invitation_subject.to_s.mreplace(replacements)
+        text = experiment.invitation_text.to_s.mreplace(replacements)
         
         UserMailer.email(subject, text, u.main_email, experiment.sender_email).deliver        
         
@@ -190,23 +176,17 @@ EOSQL
   def self.send_reminders_for_incomplete_sessions
     # send an email for each session
     Session.incomplete_sessions.each do |session|
-      subject = Settings.session_finish_subject.to_s.mreplace({
-        "#experiment_name" => session.experiment.name, 
-        "#session_date"  => session.start_at.strftime("%d.%m.%Y"),
-        "#session_date_de"  => session.start_at.strftime("%d.%m.%Y"),
-        "#session_date_en"  => session.start_at.strftime("%Y-%m-%d"),
-        "#session_start_time" => session.start_at.strftime("%H:%M"),
-        "#session_end_time" => session.end_at.strftime("%H:%M")
-      })
+      replacements = [
+        ["#experiment_name", session.experiment.name], 
+        ["#session_date_de", session.start_at.strftime("%d.%m.%Y")],
+        ["#session_date_en", session.start_at.strftime("%Y-%m-%d")],
+        ["#session_date", session.start_at.strftime("%d.%m.%Y")],
+        ["#session_start_time", session.start_at.strftime("%H:%M")],
+        ["#session_end_time", session.end_at.strftime("%H:%M")]
+      ]
       
-      text = Settings.session_finish_text.to_s.mreplace({
-        "#experiment_name" => session.experiment.name, 
-        "#session_date"  => session.start_at.strftime("%d.%m.%Y"),
-        "#session_date_de"  => session.start_at.strftime("%d.%m.%Y"),
-        "#session_date_en"  => session.start_at.strftime("%Y-%m-%d"),
-        "#session_start_time" => session.start_at.strftime("%H:%M"),
-        "#session_end_time" => session.end_at.strftime("%H:%M")
-      })
+      subject = Settings.session_finish_subject.to_s.mreplace(replacements)
+      text = Settings.session_finish_text.to_s.mreplace(replacements)
           
       # only deliver mails with subject and text
       unless text.blank? || subject.blank?      

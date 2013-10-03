@@ -1,3 +1,10 @@
+Neue Filter:
+Tests bereinigen
+
+
+
+
+
 - htaccess: guest dj!d38dFghj
 
 - Bezug zu Hamburg bereinigen
@@ -15,9 +22,41 @@
 - fix qtip / use popup from bootstrap
 
 - custom field
-  string, int mit range, date, float mit range, selection 
+  string, int mit range, date, selection 
   User-Formulare überarbeiten
   Alle Spaltenansichten überarbeiten
 
   für den nutzer:
   db-spalte anlegen
+  
+  datum internationalisieren
+  
+  experiment.notice_created
+  
+  session_date not prefix
+  
+  clean up filters
+  
+  Hroot::application weg, Rails.configuration
+  
+  fix User.roles translation
+  
+  remove tagalize
+  
+  remove puts
+  
+  remove todos
+  
+  only months in datepicker
+  
+  fix modals with bootstrap
+  
+  .close-problem lösen
+  
+  notice_created
+  
+  eperiment
+  
+  email und secondary mail?
+  
+  pagination bug
