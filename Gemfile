@@ -24,7 +24,7 @@ gem 'event-calendar', :require => 'event_calendar'
 gem 'exception_notification'
 gem 'icalendar'
 gem 'cancan'
-gem 'country-select'
+#gem 'country-select'
 gem 'acts-as-taggable-on', '~> 2.2.2'
 
 # js runtime for server

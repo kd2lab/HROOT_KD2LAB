@@ -48,7 +48,6 @@ GEM
     coffee-script-source (1.6.3)
     columnize (0.3.6)
     commonjs (0.2.7)
-    country-select (1.1.1)
     debugger (1.6.1)
       columnize (>= 0.3.1)
       debugger-linecache (~> 1.2.0)
@@ -195,7 +194,6 @@ DEPENDENCIES
   cancan
   capistrano
   coffee-script
-  country-select
   debugger
   devise (= 3.1.1)
   event-calendar
