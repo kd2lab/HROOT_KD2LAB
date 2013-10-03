@@ -48,3 +48,8 @@ group :development, :test do
   #gem 'capistrano-ext'
   #gem 'rvm-capistrano'
 end
+
+group :production do
+  # gems specifically for Heroku go here
+  gem "pg"
+end
