@@ -29,7 +29,7 @@ class User < ActiveRecord::Base
   validates_format_of :password, :with => /^.*(?=.{8,})(?=.*[a-zA-Z])(?=.*[\W_])(?=.*[\d]).*$/, :if => :password_present?
   
   # validate email on signup
-  validates_format_of :email, :with => Rails.configuration.email_restriction[:regex], :on => :create # if defined?(Rais.config.email_restriction)
+  validates_format_of :email, :with => Rails.configuration.email_restriction[:regex], :on => :create if defined?(Rails.config.email_restriction)
   #validates_format_of :email, :with => /.*\.de$/, :on => :create # if defined?(Rais.config.email_restriction)
   
   # setup custom datafields, see config/initializers/fields.rb
