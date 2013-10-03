@@ -59,7 +59,7 @@ Hroot::Application.configure do
   }
   
   #config.assets.prefix = "/hroot/assets"
-  #config.path_prefix = '/hroot'
+  config.path_prefix = nil
   
   # generic contact email adress
   config.contact_email = 'experiments@wiso.uni-hamburg.de'
