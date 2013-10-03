@@ -47,6 +47,7 @@ GEM
       execjs
     coffee-script-source (1.6.3)
     columnize (0.3.6)
+    commonjs (0.2.7)
     country-select (1.1.1)
     debugger (1.6.1)
       columnize (>= 0.3.1)
@@ -86,6 +87,8 @@ GEM
     kgio (2.8.0)
     ledermann-rails-settings (1.2.1)
       activerecord (>= 2.3)
+    less (2.4.0)
+      commonjs (~> 0.2.7)
     libv8 (3.11.8.17)
     mail (2.4.4)
       i18n (>= 0.4.0)
@@ -200,6 +203,7 @@ DEPENDENCIES
   jquery-rails (>= 1.0.12)
   jslint_on_rails
   ledermann-rails-settings (= 1.2.1)
+  less
   mocha
   mysql2
   pg
