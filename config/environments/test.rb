@@ -32,7 +32,7 @@ Hroot::Application.configure do
 
   config.contact_email = 'experiments@wiso.uni-hamburg.de'
 
-
+ 
   # Use SQL instead of Active Record's schema dumper when creating the test database.
   # This is necessary if your schema can't be completely dumped by the schema dumper,
   # like if you have constraints or database-specific column types
@@ -46,6 +46,11 @@ Hroot::Application.configure do
   config.locale_names = {:de => 'Deutsch (de)', :en => 'English (en)'}
   
   config.custom_fields = []
+  
+  config.email_restriction = {
+    :regex => /(.*@uni-hamburg.de$)|(.*@student.uni-hamburg.de$)|(.*@ingmar.net$)/
+  }
+  
 end
 
 Rails.application.routes.default_url_options[:host] =  'test.host'

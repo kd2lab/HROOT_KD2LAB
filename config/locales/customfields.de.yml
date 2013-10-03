@@ -28,6 +28,9 @@ de:
   hints:
     phone: "Eine Angabe erlaubt es uns, Sie schnell zu erreichen, wenn z.B. ein Experiment abgesagt werden muss."      
   customfields:
+    experience:
+      value0: noch nicht an wirtschaftswissenschaftlichen Experimenten teilgenommen
+      value1: an wirtschaftswissenschaftlichen Experimenten teilgenommen
     preference:
       value0: Präsenz- und Online-Experimenten
       value1: nur Präsenz-Experimente
@@ -42,12 +45,7 @@ de:
       value4: Italienisch
       value5: Spanisch
       value6: Chinesisch
-    degree:
-      value1: Bachelor
-      value2: Master
-      value3: Diplom
-      value4: Lehramt
-      value5: Magister
+    profession:
     course_of_studies:
       value1: Betriebswirtschaftslehre
       value2: Volkswirtschaftslehre
@@ -83,7 +81,7 @@ de:
       value32: Politikwissenschaft
       value33: Soziologie
       value34: Sinologie
-      value35: SozialÃ¶konomie
+      value35: Sozialökonomie
       value36: Zahnmedizin
       value37: Medizin
       value38: Wirtschaftsmathematik
@@ -104,6 +102,120 @@ de:
       value53: Arbeits- und Sozialmanagement
       value54: Nanowissenschaften
       value55: Kulturanthroplogie
-    experience:
-      value0: noch nicht an wirtschaftswissenschaftlichen Experimenten teilgenommen
-      value1: an wirtschaftswissenschaftlichen Experimenten teilgenommen
+      value56: Kein Studierender
+      value57: Islamwissenschaft
+      value58: Journalistik
+      value59: Human Resource Management
+      value61: Politics, Economics & Philosophy
+      value62: Afrikanische Sprachen im Kontext
+      value63: Afrikanische Sprachen und Kulturen
+      value64: Afrikanische Sprachwissenschaft 
+      value65: Althebraistik
+      value66: Angewandte und Molekulare Biologie der Pflanzen
+      value67: Arbeit, Wirtschaft, Gesellschaft
+      value68: Arbeits- und Sozialmanagement
+      value69: ArchÃ¤ologie und Kulturgeschichte des antiken Mittelmeerraumes
+      value70: BehindertenpÃ¤dagogik
+      value71: Bioinformatik
+      value72: British and American Cultures
+      value73: Deutschsprachige Literaturen
+      value74: Dokumentation und Analyse Afrikanischer Sprachen
+      value75: English as a World Language
+      value76: Entrepreneurship
+      value77: Ethiopian Studies
+      value78: Europastudien/European Studies 
+      value79: European and International Law
+      value80: European Master in Classical Cultures 
+      value81: European Studies and European Legal Studies
+      value82: Finnougristik / Uralistik
+      value83: GebÃ¤rdensprachdolmetschen
+      value84: GebÃ¤rdensprachen
+      value85: Geophysik
+      value86: Geophysik/Ozeanographie
+      value87: Germanistische Linguistik
+      value88: Geschichte der Naturwissenschaften
+      value89: "Geschichte, Sprachen und Kulturen des Vorderen Orients"
+      value90: Gesundheitsmanagement
+      value91: Griechische und Lateinische Philologie
+      value92: "Health Economics & Health Care Management"
+      value93: Higher Education
+      value94: Historische Musikwissenschaft
+      value95: Human Resource Management/Personalpolitik
+      value96: Integrated Climate System Sciences
+      value97: Integrative Lerntherapie
+      value98: Intelligent Adaptive Systems
+      value99: International Business Administration
+      value100: International Business and Sustainability
+      value101: International M.A.-Program in Buddhist Studies
+      value102: International M.A.-Program in South Asian Studies
+      value103: International M.A.-Program in Tibetan Studies
+      value104: International MA Program Languages and Cultures of Southeast Asia 
+      value105: International Taxation
+      value106: Internationale Kriminologie
+      value107: Internationaler Masterstudiengang Iranistik
+      value108: Internationaler Masterstudiengang Islamwissenschaft
+      value109: Internationaler Masterstudiengang Japanologie
+      value110: Internationaler Masterstudiengang Koreanistik
+      value111: Internationaler Masterstudiengang Sinologie
+      value112: Internationaler Masterstudiengang Turkologie
+      value113: IT-Management und -Consulting
+      value114: Economics
+      value115: "Journalism, Media and Globalisation"
+      value116: Journalistik und Kommunikationswissenschaft
+      value117: Katalanisch
+      value118: Kosmetikwissenschaft
+      value119: Lateinamerika-Studien
+      value120: Law and Economics
+      value121: Lebensmittelchemie
+      value122: Lehramt an Beruflichen Schulen
+      value123: Lehramt an Gymnasien
+      value124: Lehramt an Sonderschulen
+      value125: Lehramt der Primar- und Sekundarstufe I
+      value126: Linguistik / Allgemeine Sprachwissenschaft
+      value127: "Literatur, Sprache und Kultur des modernen Griechenlands (Neogräzistik)"
+      value128: Magister für ausländische JuristInnen
+      value129: Marine Ökosystem- und Fischereiwissenschaften
+      value130: Mathematical Physics
+      value131: Mathematics
+      value132: MathMods - Mathematical Modelling in Engineering
+      value133: Medienwissenschaft / Media Studies
+      value134: Mehrsprachigkeit und Bildung (MOTION)
+      value135: Mittelalter-Studien
+      value136: Mittelalterstudien
+      value137: Molecular Life Sciences
+      value138: Molekularbiologie
+      value139: Neogräzistik und Byzantinistik
+      value140: Ostasien
+      value141: Osteuropastudien
+      value142: Peace and Security Studies
+      value143: Performance Studies
+      value144: Physikalische Ozeanographie
+      value145: Politikwissenschaft
+      value146: Portugiesisch
+      value147: Psychologische Psychotherapie
+      value148: "Religionen, Dialog und Bildung"
+      value149: Romanische Literaturen
+      value150: Romanistische Linguistik
+      value151: Slavistik
+      value152: Sprachen und Kulturen des Indischen Subkontinents und Tibets
+      value153: Sprachlehrforschung
+      value154: Systematische Musikwissenschaft
+      value155: Technomathematik
+      value156: Uralische Sprachen und Kulturen
+      value157: Versicherungsrecht
+      value158: Volkskunde / Kulturanthropologie
+      value159: Vor- und FrÃ¼hgeschichtliche ArchÃ¤ologie
+      value160: Weiterbildender Masterstudiengang Kriminologie
+      value161: Medienmanagement
+      value162: Soziale Arbeit
+    degree:
+      value1: Bachelor
+      value2: Master
+      value3: Diplom
+      value4: Lehramt
+      value5: Magister
+      value6: Promotion
+      value7: Staatsexamen
+
+    
+

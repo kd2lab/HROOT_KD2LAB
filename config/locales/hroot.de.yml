@@ -68,7 +68,13 @@ de:
     user: 'Poolmitglied'
     experimenter: 'Experimentator'
     admin: 'Administrator'
-    
+  usertable:
+    fullname: Name
+    email: E-Mail
+    role: Rolle  
+    created_at: Anmeld.
+    session: Session
+  
   
   modal:
     send_message: Absenden
@@ -387,9 +393,7 @@ hroot wurde mit <a href="http://rubyonrails.org">Ruby on Rails.</a> implementier
       begin_of_studies: Studienbeginn
       birthday: Alter
       experience: Erfahrung
-      study_id: Fächer
       country_name: Länder
-      degree_id: Abschlüsse
       language: Sprachen
       tags: Tags
       participation: Sessionteilnahme

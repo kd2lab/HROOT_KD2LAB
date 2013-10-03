@@ -44,10 +44,10 @@
         %td= t('activerecord.attributes.user.preference')
         %td= [t('form_values.type_both'), t('form_values.type_presence'), t('form_values.type_online')][current_user.preference]
     
-    - if current_user.study
-      %tr
-        %td=t('activerecord.attributes.user.study_id')
-        %td= current_user.study.name
+    /- if current_user.study
+    /  %tr
+    /    %td=t('activerecord.attributes.user.study_id')
+    /    %td= current_user.study.name
     
     %tr
       %td=t('activerecord.attributes.user.lang1')

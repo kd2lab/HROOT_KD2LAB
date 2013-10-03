@@ -52,13 +52,13 @@
   - else
     = t('.no_current_sessions_text')
     
-- if current_user.is_missing_data?
-  .well
-    %h3= t('.incomplete_data')
-    = t('.incomplete_data_text')
-    %br
-    %br
-    = link_to t('.complete_data_link'), account_edit_path, :class => "btn"
+/todo- if current_user.is_missing_data?
+/  .well
+/    %h3= t('.incomplete_data')
+/    = t('.incomplete_data_text')
+/    %br
+/    %br
+/    = link_to t('.complete_data_link'), account_edit_path, :class => "btn"
     
     
     

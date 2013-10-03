@@ -204,6 +204,10 @@ class Datafields
   def self.boolean(name, options={})
     @@fields << BooleanField.new(name, options)
   end
+  
+  def self.get(name)
+    @@fields.select{|f| f.name == name.to_s}.first
+  end
     
   def self.setup_model(klass)
     fields.each do |f|

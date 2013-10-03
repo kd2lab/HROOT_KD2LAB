@@ -1,0 +1,60 @@
+%table.table
+  %thead
+    %tr
+      %th= check_box_tag "", "", false, :id => "select_all_users"
+      %th
+      - columns.each do |col|
+        - case col
+          - when :fullname
+            %th= sortable_for_form 'lastname', t('usertable.fullname')
+          - when :noshow_count
+            %th.popup{:'data-popup' => t('popup.noshow_count')}= sortable_for_form 'noshow_count' , t('noshow_shortcut')
+          - when :participations_count
+            %th.popup{:'data-popup' => t('popup.participations_count')}= sortable_for_form 'participations_count' , t('participations_shortcut')
+          - else
+            - field = Datafields.get(col)
+            - if field
+              %th= sortable_for_form col.to_s, t("activerecord.attributes.user.#{field.name}")
+            - else
+              %th= sortable_for_form col.to_s, t('usertable.'+col.to_s)
+              
+  %tbody    
+    - users.each do |user| 
+      - cl = []; 
+      - cl << "deleted" if user.deleted
+      - cl << "import_inactive" if user.imported && !user.activated_after_import
+      %tr{:class => cl.join(' ')}
+        %td= check_box_tag "selected_users[#{user.id}]", '1', false, :class => 'selected_users'
+        %td
+          - if !user.deleted && user.imported && !user.activated_after_import
+            %i.icon-ban-circle.popup{:'data-popup' => t('popup.inactive_after_import')}
+          / todo trouble here
+          - if defined?(user.invited_at) && !user.invited_at.nil?
+            %i.icon-envelope.popup{:'data-popup' => t('popup.user_was_invited')}
+          / todo trouble here
+          - if defined?(user.reminded_at) && !user.reminded_at.nil?
+            %i.icon-user.popup{:'data-popup' => t('popup.user_was_reminded')}
+            
+            
+        - columns.each do |col|
+          - case col
+            - when :fullname
+              %td= link_to highlight(truncate(user.lastname, {:length => 15}), params[:search][:fulltext])+', '+highlight(truncate(user.firstname, {:length => 10}), params[:search][:fulltext]), user_path(user)
+            - when :role  
+              %td= {'user' => 'P', 'experimenter' => 'E', 'admin' => 'A'}[user.role]
+            - when :email
+              %td= link_to highlight(truncate(user.email, {:length => 15}), params[:search][:fulltext]), "mailto:#{user.email}"
+            - when :noshow_count
+              %td= "#{user.noshow_count}" 
+            - when :participations_count
+              %td= "#{user.participations_count}"
+            - when :created_at
+              %td= I18n.l(user.created_at, :format => :date_only)
+            - when :session
+              %td= "#{I18n.l(user.session_start_at) if user.session_start_at}" 
+            - else
+              - field = Datafields.get(col)
+              - if field
+                %td= field.display_value(user)
+              - else
+                %th= user[col]

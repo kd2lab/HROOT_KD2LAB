@@ -44,7 +44,7 @@ class AccountController < ApplicationController
   end
   
   def edit
-    redirect_to(account_path, :notice => t('controllers.account.notice_all_data')) unless current_user.is_missing_data?
+    # todo
     
     if params[:user]
       params[:user][:country_name] = nil if params[:user][:country_name] == ''

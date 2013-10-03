@@ -44,7 +44,7 @@ group :development, :test do
   gem 'jslint_on_rails'
   gem "factory_girl_rails", "~> 4.0"
   gem 'shoulda'
-  gem 'mocha', :require => 'mocha/setup'
+  #gem 'mocha', :require => 'mocha/setup'
   gem 'capistrano'
   #gem 'capistrano-ext'
   #gem 'rvm-capistrano'

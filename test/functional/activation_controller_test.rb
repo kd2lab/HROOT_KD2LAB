@@ -3,7 +3,7 @@ require 'test_helper'
 class ActivationControllerTest < ActionController::TestCase
   context "the activation controller with mail restrictions" do
     setup do
-      Settings.mail_restrictions = [{"prefix"=>"sdf", "suffix"=>"uni-hamburg.de"}, {"prefix"=>"", "suffix"=>"studium.uni-hamburg.de"}]
+      #Settings.mail_restrictions = [{"prefix"=>"sdf", "suffix"=>"uni-hamburg.de"}, {"prefix"=>"", "suffix"=>"studium.uni-hamburg.de"}]
       
       @import_token1 = "sdjfhsdfkwefu238h23fksjdhf"
       @u1 = FactoryGirl.create(:user, :email => "test@test.test", :import_token => @import_token1, :imported => true, :activated_after_import => false)
@@ -69,7 +69,7 @@ class ActivationControllerTest < ActionController::TestCase
     
     context "post on email with incorrect mail data 2" do
       setup do
-        get :email, :import_token => @import_token1, :user => {:email_prefix => "xxx", :email_suffix => "uni-hamburg.de"}
+        get :email, :import_token => @import_token1, :user => {:email => "dd@somewhereelse.de"}
       end
     
       should "set alert" do

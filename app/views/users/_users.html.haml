@@ -2,13 +2,9 @@
 = hidden_field_tag :sort, params[:sort]
 = hidden_field_tag :page, params[:page] || 1
 = hidden_field_tag :user_action, 'none'
-/= hidden_field_tag 'search[empty]', 'empty'
-
 
 .search
   = render :partial => 'shared/search/search', :locals => { :fields => [:fulltext, :role, :noshow_count, :participations_count, :deleted,:tags, :experiments,  :gender, :begin_of_studies, :birthday, :preference, :course_of_studies, :country_name, :degree, :language, :experience ] }
-
-  /= render :partial => 'shared/search/search', :locals => { :fields => User.search_fields_without('participation') }
     
 .searchinfo
   = submit_tag t('.submit'), :name => 'submit_mode', :class => "btn btn-primary"
@@ -39,87 +35,9 @@
   %br
   %br
   
-  - columns = [:fullname, :role, :email, :course_of_studies, :gender, :begin_of_studies, :noshow_count, :participations_count]
-  - columns = [:fullname, :role, :email, :noshow_count, :participations_count]
+  = render :partial => 'shared/table', :locals => {:users => @users, :columns => Rails.configuration.user_table_columns}
   
-  %table.table
-    %thead
-      %tr
-        %th= check_box_tag "", "", false, :id => "select_all_users"
-        %th
-        - columns.each do |col|
-          - case col
-            - when :fullname
-              %th= sortable_for_form 'lastname', t('.fullname')
-            - when :role  
-              %th= sortable_for_form 'role', t('.role')
-            - when :email
-              %th= sortable_for_form 'email', t('.email')
-            - when :noshow_count
-              %th.popup{:'data-popup' => t('popup.noshow_count')}= sortable_for_form 'noshow_count' , t('noshow_shortcut')
-            - when :participations_count
-              %th.popup{:'data-popup' => t('popup.participations_count')}= sortable_for_form 'participations_count' , t('participations_shortcut')
-            - else
-              %th= sortable_for_form col.to_s, t('.'+col.to_s)
-    %tbody    
-      - @users.each do |user| 
-        - cl = []; 
-        - cl << "deleted" if user.deleted
-        - cl << "import_inactive" if user.imported && !user.activated_after_import
-        %tr{:class => cl.join(' ')}
-          %td= check_box_tag "selected_users[#{user.id}]", '1', false, :class => 'selected_users'
-          %td
-            - if !user.deleted && user.imported && !user.activated_after_import
-              %i.icon-ban-circle.popup{:'data-popup' => t('popup.inactive_after_import')}
-          - columns.each do |col|
-            - case col
-              - when :fullname
-                %td= link_to highlight(truncate(user.lastname, {:length => 15}), params[:search][:text])+', '+highlight(truncate(user.firstname, {:length => 10}), params[:search][:text]), user_path(user)
-              - when :role  
-                %td= {'user' => 'P', 'experimenter' => 'E', 'admin' => 'A'}[user.role]
-              - when :email
-                %td= link_to highlight(truncate(user.email, {:length => 15}), params[:search][:text]), "mailto:#{user.email}"
-              - when :noshow_count
-                %td= "#{user.noshow_count}" 
-              - when :participations_count
-                %td= "#{user.participations_count}"
-              - else
-                %td custom                      
-        
-        /%th= sortable_for_form 'lastname', 'Name'  
-        /%th= sortable_for_form 'role', t('.role')
-        /%th= sortable_for_form 'email', t(:email)
-        /%th= sortable_for_form 'study_name', t('.study')
-        /%th= sortable_for_form 'gender',  t('.gender')
-        /%th= sortable_for_form 'begin_date', t('.begin')
-        /%th= sortable_for_form 'created_at', t('.created_at')
-   		
-        
-        /%th.popup{:'data-popup' => t('popup.noshow_count')}= sortable_for_form 'noshow_count' , t('noshow_shortcut')
-        /%th.popup{:'data-popup' => t('popup.participations_count')}= sortable_for_form 'participations_count' , t('participations_shortcut')
-
-
-    /%tbody    
-    /  - @users.each do |user| 
-    /    - cl = []; 
-    /    - cl << "deleted" if user.deleted
-    /    - cl << "import_inactive" if user.imported && !user.activated_after_import
-    /    %tr{:class => cl.join(' ')}
-              
-    /      %td= link_to highlight(truncate(user.lastname, {:length => 15}), params[:search][:text])+', '+highlight(truncate(user.firstname, {:length => 10}), params[:search][:text]), user_path(user)
-    /      %td= {'user' => 'P', 'experimenter' => 'E', 'admin' => 'A'}[user.role]
-    /      %td= link_to highlight(truncate(user.email, {:length => 15}), params[:search][:text]), "mailto:#{user.email}"
-    /      /todo%td.study_name_popup{:'data-text' => user.study_name || t(:info) }
-    /      /  =user.study_name ? truncate(user.study_name, {:length => 10}) : t(:no_info)
-    /      %td= user.gender
-    /      /todo%td= user.begin_date 
-    /      %td= I18n.l(user.created_at, :format => :date_only)
-          
-          
-    /      %td= "#{user.noshow_count}" 
-    /      %td= "#{user.participations_count}"
-        
-        
+                
 - else
   %br
   %b

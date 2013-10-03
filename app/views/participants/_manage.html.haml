@@ -1,11 +1,10 @@
 = hidden_field_tag :direction, params[:direction]
 = hidden_field_tag :sort, params[:sort]
 = hidden_field_tag :page, params[:page] || 1
-= hidden_field_tag 'search[empty]', 'empty'
-
 
 .search
-  = render :partial => 'shared/search/search', :locals => { :fields => User.search_fields_without(['role','participation', 'deleted']) }
+  = render :partial => 'shared/search/search', :locals => { :fields => [:fulltext, :noshow_count, :participations_count,:tags, :experiments,  :gender, :begin_of_studies, :birthday, :preference, :course_of_studies, :country_name, :degree, :language, :experience ] }
+
     
 .searchinfo
   = submit_tag t('.submit'), :name => 'submit_mode', :class => "btn btn-primary"
@@ -23,40 +22,8 @@
   %br
   %br
   
-    
-  %table.table
-    %thead
-      %tr
-        %th= check_box_tag "", "", false, :id => "select_all_users"
-        %th
-        %th= sortable_for_form 'lastname', 'Name'  
-        -#%th= sortable_for_form 'firstname', 'Vorname'
-        %th= sortable_for_form 'email', t(:email)
-        %th= sortable_for_form 'study_name', t('.study')
-        //%th= sortable_for_form 'gender',  'Gesch.'
-        //%th= sortable_for_form 'begin_date', 'Beginn' 
-        %th.popup{:'data-popup' => t('popup.noshow_count')}= sortable_for_form 'noshow_count' , t('noshow_shortcut')
-        %th.popup{:'data-popup' => t('popup.participations_count')}= sortable_for_form 'participations_count' , t('participations_shortcut')
+  = render :partial => 'shared/table', :locals => {:users => @users, :columns => Rails.configuration.add_user_table_columns}
 
-    %tbody
-      - @users.each do |user| 
-        - cl = []; 
-        - cl << "deleted" if user.deleted
-        - cl << "import_inactive" if user.imported && !user.activated_after_import
-        %tr{:class => cl.join(' ')}
-          %td= check_box_tag "selected_users[#{user.id}]", '1', false, :class => 'selected_users'
-          %td
-            - if !user.deleted && user.imported && !user.activated_after_import
-              %i.icon-ban-circle.popup{:'data-popup' => t('popup.inactive_after_import')}
-          
-          %td= link_to highlight(truncate(user.lastname, {:length => 15}), params[:search][:text])+', '+highlight(truncate(user.firstname, {:length => 10}), params[:search][:text]), user_path(user)
-          %td= link_to highlight(truncate(user.email, {:length => 20}), params[:search][:text]), "mailto:#{user.email}"
-          %td.study_name_popup{:'data-text' => user.study_name || t(:no_info) }
-            =user.study_name ? truncate(user.study_name, {:length => 10}) : 'k. A.'
-          //%td= user.gender
-          //%td= user.begin_date 
-          %td= "#{user.noshow_count}" if user.user?
-          %td= "#{user.participations_count}" if user.user?
 - else
   %br
   %b=t '.none_found'
@@ -65,4 +32,38 @@
   =t '.none_found_reason'
   %br
   %br
-  %br
+  %br  
+    
+  / %table.table
+/     %thead
+/       %tr
+/         %th= check_box_tag "", "", false, :id => "select_all_users"
+/         %th
+/         %th= sortable_for_form 'lastname', 'Name'  
+/         -#%th= sortable_for_form 'firstname', 'Vorname'
+/         %th= sortable_for_form 'email', t(:email)
+/         %th= sortable_for_form 'study_name', t('.study')
+/         //%th= sortable_for_form 'gender',  'Gesch.'
+/         //%th= sortable_for_form 'begin_date', 'Beginn' 
+/         %th.popup{:'data-popup' => t('popup.noshow_count')}= sortable_for_form 'noshow_count' , t('noshow_shortcut')
+/         %th.popup{:'data-popup' => t('popup.participations_count')}= sortable_for_form 'participations_count' , t('participations_shortcut')
+/ 
+/     %tbody
+/       - @users.each do |user| 
+/         - cl = []; 
+/         - cl << "deleted" if user.deleted
+/         - cl << "import_inactive" if user.imported && !user.activated_after_import
+/         %tr{:class => cl.join(' ')}
+/           %td= check_box_tag "selected_users[#{user.id}]", '1', false, :class => 'selected_users'
+/           %td
+/             - if !user.deleted && user.imported && !user.activated_after_import
+/               %i.icon-ban-circle.popup{:'data-popup' => t('popup.inactive_after_import')}
+/           
+/           %td= link_to highlight(truncate(user.lastname, {:length => 15}), params[:search][:text])+', '+highlight(truncate(user.firstname, {:length => 10}), params[:search][:text]), user_path(user)
+/           %td= link_to highlight(truncate(user.email, {:length => 20}), params[:search][:text]), "mailto:#{user.email}"
+/           %td.study_name_popup{:'data-text' => user.study_name || t(:no_info) }
+/             =user.study_name ? truncate(user.study_name, {:length => 10}) : 'k. A.'
+/           //%td= user.gender
+/           //%td= user.begin_date 
+/           %td= "#{user.noshow_count}" if user.user?
+/           %td= "#{user.participations_count}" if user.user?

@@ -1,8 +1,29 @@
-Neue Filter:
-Tests bereinigen
+
+- rework session member list
+- make session list configurable
+- warum ist die experimentlsite so langsam?
+- activation raus, später
 
 
 
+- rework account area
+- rework session list
+- make participant lists configurable
+- rework options page
+- devise source email configurable
+- rework tests
+- check all with no extra columns
+- reintegrate error messaging
+- remove coffee.erbs, find solution for ajax
+- translation of javascript text parts
+- fix layout problems in search boxes
+- remove path prefix
+- repair qtips
+- add fulltext search to custom columns
+- complete language overhaul
+- add email instructions on signup page
+- cleanup javascript
+- find all todos and cleanup
 
 
 - htaccess: guest dj!d38dFghj
@@ -21,13 +42,6 @@ Tests bereinigen
 
 - fix qtip / use popup from bootstrap
 
-- custom field
-  string, int mit range, date, selection 
-  User-Formulare überarbeiten
-  Alle Spaltenansichten überarbeiten
-
-  für den nutzer:
-  db-spalte anlegen
   
   datum internationalisieren
   

@@ -57,6 +57,15 @@ class SelectionSearchField < SearchField
   end
 end
 
+class ParticipationSearchField < SelectionSearchField
+  def where_conditions(search)
+  end
+  
+  def partial
+    "shared/search/selection"
+  end
+end
+
 class DeletedSearchField < SearchField
   def where_conditions(search)
     "users.deleted=0" unless search && search[:value] == "show"  
@@ -323,6 +332,7 @@ EOSQL
     # standard search fields
     add FulltextSearchField.new(:fulltext)
     add SelectionSearchField.new(:role, :values => User.roles.map{|r| [I18n.t("search.selections.role.#{r}"), r]})
+    add ParticipationSearchField.new(:participation, :values => {I18n.t('search.selections.participation.choice1') => '1', I18n.t('search.selections.participation.choice2') => '2', I18n.t('search.selections.participation.choice3') => '3', I18n.t('search.selections.participation.choice4') => '4'})
     add DeletedSearchField.new(:deleted, :values => {I18n.t('search.selections.deleted.hide_deleted') => '', I18n.t('search.selections.deleted.show_deleted') => 'show'})
     add IntegerSearchField.new(:noshow_count, :range => 0..(User.maximum(:noshow_count) || 10))
     add IntegerSearchField.new(:participations_count, :range => 0..(User.maximum(:participations_count) || 10))

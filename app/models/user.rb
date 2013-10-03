@@ -199,9 +199,5 @@ EOSQL
     end    
     return true
   end
-  
-  def is_missing_data?
-    study_id.nil? || birthday.nil? || degree_id.nil? || country_name.nil? || preference.nil? || experience.nil? || (lang1.nil? && lang2.nil? && lang3.nil?) || begin_year.nil? || begin_month.nil?
-  end
-  
+
 end

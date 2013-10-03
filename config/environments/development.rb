@@ -40,6 +40,11 @@ Hroot::Application.configure do
     :regex => /(.*@uni-hamburg.de$)|(.*@student.uni-hamburg.de$)|(.*@ingmar.net$)/
   }
   
+  # columns in user table
+  config.user_table_columns = [:fullname, :role, :email, :course_of_studies, :gender, :begin_of_studies, :created_at, :noshow_count, :participations_count]
+  config.add_user_table_columns = [:fullname, :role, :email, :course_of_studies, :gender, :noshow_count, :participations_count]
+  config.participants_table_columns = [:fullname, :role, :email, :course_of_studies, :noshow_count, :participations_count, :session]
+  
 end
 
 Rails.application.routes.default_url_options[:host] =  'localhost:3000'

@@ -63,7 +63,7 @@ class ParticipantsController < ApplicationController
 #     end
 #     
 
-    @users = User.paginate(params, {:experiment => @experiment, :sort_column => sort_column, :sort_direction => sort_direction})
+    @users = Search.paginate(params, {:experiment => @experiment, :sort_column => sort_column, :sort_direction => sort_direction})
     @user_count = @experiment.participations.includes(:user).where('users.role' => 'user').count
   end
   
@@ -101,7 +101,7 @@ class ParticipantsController < ApplicationController
       flash.now[:notice] = t('controllers.participants.notice_added_members')
     end
     
-    @users = User.paginate(params, {:experiment => @experiment, :sort_column => sort_column, :sort_direction => sort_direction, :exclude => true})
+    @users = Search.paginate(params, {:experiment => @experiment, :sort_column => sort_column, :sort_direction => sort_direction, :exclude => true})
     @user_count = User.where('users.role' => 'user', 'users.deleted' => false).count
     @participants_count = @experiment.participations.includes(:user).where('users.role' => 'user', 'users.deleted' => false).count
   end
