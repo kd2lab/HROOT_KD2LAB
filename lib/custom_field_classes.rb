@@ -1,43 +1,33 @@
+
+
 class Field
   attr_accessor :name
   attr_accessor :options
+  attr_accessor :values
   
   def initialize(name, options = {})
     @name = name.to_s
-    @options = options
+    @options = {}
     @options[:required] = options.fetch(:required, true)
-    @options[:translation] = options.fetch(:translation, true)
+    @options[:translate] = options.fetch(:translate, true)
     @options[:hint] = options.fetch(:hint, false)
-    @options[:multiple] = options.fetch(:multiple, false)
-    @options[:only_months] = options.fetch(:only_months, false)
+    @options[:store_multiple] = options.fetch(:store_multiple, false)
+    @options[:restrict_to_months] = options.fetch(:restrict_to_months, false)
+    @options[:restrict_to_years] = options.fetch(:restrict_to_years, false)
+    
+    @options[:filter_operator] = options.fetch(:filter_operator, false)
+    @options[:filter_search_multiple] = options.fetch(:filter_search_multiple, false)
+    
+    @options[:db_values] = options.fetch(:db_values, [])    
+    @values = @options[:db_values]
   end
   
   def to_s
     @name
   end
   
-  # todo we should be able to remove this in the end
-  def search_field
-    SearchField.new(:name)
-  end
-  
   def display_value(user)
     user[name]
-  end
-end
-
-class SelectionField < Field
-  attr_accessor :values
-  attr_accessor :search_options
-  
-  def initialize(name, values, options = {}, search_options = {})
-    super(name, options)
-    @values = values
-    @search_options = search_options
-  end
-  
-  def sqltype
-    "text"
   end
   
   def add_validation(klass)
@@ -47,9 +37,20 @@ class SelectionField < Field
         validates_presence_of field_name
       end
     end  
+  end
+  
+  def search_field
+    SearchField.new(:name)
+  end  
+end
+
+class SelectionField < Field
+  
+  def add_validation(klass)
+    super(klass)    
     
     # add serialization for multiple selections
-    if options[:multiple]
+    if options[:store_multiple]
       field_name = name
       klass.class_eval do
         serialize field_name, ArraySerializer.new
@@ -59,7 +60,7 @@ class SelectionField < Field
   
   def add_to_form(form, option_overrides={})
     o = options.merge(option_overrides)
-    if o[:translation]
+    if o[:translate]
       vals = values.map do |val|
         varname = if val.kind_of? Integer then "value"+val.to_s else val end
         [I18n.t('customfields.'+name+'.'+varname), val]
@@ -69,14 +70,14 @@ class SelectionField < Field
     end
     
     input_options = {:collection => vals, :required => false}
-    input_options[:input_html] = {:include_blank => true, :multiple => true, :class => "chzn-select-register", :'data-placeholder' => " "} if o[:multiple]     
+    input_options[:input_html] = {:include_blank => true, :multiple => true, :class => "chzn-select-register", :'data-placeholder' => " "} if o[:store_multiple]     
     input_options[:hint] = I18n.t('hints.'+name) if o[:hint]
     
     form.input name, input_options
   end
   
   def search_field
-    if options[:translation]
+    if options[:translate]
       vals = values.map do |val|
         varname = if val.kind_of? Integer then "value"+val.to_s else val end
         [I18n.t('customfields.'+name+'.'+varname), val]
@@ -85,7 +86,7 @@ class SelectionField < Field
       vals = values
     end
     
-    SelectionSearchField.new(name.to_sym, {:values => vals, :operator => search_options.fetch(:operator, false), :search_multiple => search_options.fetch(:search_multiple, false), :multiple => options[:multiple]})
+    SelectionSearchField.new(name.to_sym, options.merge({:values => vals}))
   end  
 
   def display_value(user)
@@ -94,15 +95,19 @@ class SelectionField < Field
     
     values.map do |v|
       varname = if v.kind_of? Integer then "value"+v.to_s else v end
-      if options[:translation]
+      if options[:translate]
         display_values[v.to_s] = I18n.t('customfields.'+name+'.'+varname)
       else
         display_values[v.to_s] = v
       end
     end
     
-    if options[:multiple]
-      user[name].map{|v| display_values[v.to_s]}.join(', ')
+    if options[:store_multiple]
+      if user[name]
+        user[name].map{|v| display_values[v.to_s]}.join(', ')
+      else 
+        puts "#{name} --> NIL--------------------"
+      end
     else
       display_values[user[name].to_s]
     end    
@@ -114,27 +119,16 @@ class DateField < Field
     super(name, options)
   end
   
-  def sqltype
-    "date"
-  end
-  
-  def add_validation(klass)
-    if options[:required]
-      field_name = name
-      klass.class_eval do
-        validates_presence_of field_name
-      end
-    end  
-  end
-  
   def add_to_form(form, option_overrides={})
     o = options.merge(option_overrides)
     input_options = {:required => false, :as => :string}
     input_options[:hint] = I18n.t('hints.'+name) if o[:hint]
     
-    if o[:only_months]
+    if o[:restrict_to_months]
       input_options[:input_html] = { :class => 'datepicker', :'data-date-format' => I18n.t('date.datepicker'), :'data-date-min-view-mode' => 1}
-    else
+    elsif o[:restrict_to_years]
+      input_options[:input_html] = { :class => 'datepicker', :'data-date-format' => I18n.t('date.datepicker'), :'data-date-min-view-mode' => 2}
+    else  
       input_options[:input_html] = { :class => 'datepicker', :'data-date-format' => I18n.t('date.datepicker')}
     end
     
@@ -148,19 +142,6 @@ class DateField < Field
 end  
 
 class TextField < Field  
-  def sqltype
-    "varchar(255)"
-  end
-  
-  def add_validation(klass)
-    if options[:required]
-      field_name = name
-      klass.class_eval do
-        validates_presence_of field_name
-      end
-    end  
-  end
-  
   def add_to_form(form, option_overrides={})
     o = options.merge(option_overrides)
     input_options = {:required => false}
@@ -170,46 +151,50 @@ class TextField < Field
 end  
 
 
-class Datafields
-  @@fields = []
-  
-  def self.fields
-    @@fields
-  end
-  
-  def self.required
-    @@fields.select{|f| f.options[:required]}
-  end
-  
-  def self.optional
-    @@fields.select{|f| !f.options[:required]}
+class CustomFieldManager  
+  def initialize
+    @fields = []
   end
   
   def self.setup(&block)
-    class_eval(&block) if block
+    instance = CustomFieldManager.new
+    instance.instance_eval(&block) if block
+    instance
   end
   
-  def self.selection(name, values, options={}, search_options = {})
-    @@fields << SelectionField.new(name, values, options, search_options)
+  def fields
+    @fields
   end
   
-  def self.date(name, options={})
-    @@fields << DateField.new(name, options)
+  def required
+    @fields.select{|f| f.options[:required]}
   end
   
-  def self.text(name, options={})
-    @@fields << TextField.new(name, options)
+  def optional
+    @fields.select{|f| !f.options[:required]}
   end
   
-  def self.boolean(name, options={})
-    @@fields << BooleanField.new(name, options)
+  def selection(name, options= {})
+    @fields << SelectionField.new(name, options)
   end
   
-  def self.get(name)
-    @@fields.select{|f| f.name == name.to_s}.first
+  def date(name, options={})
+    @fields << DateField.new(name, options)
+  end
+  
+  def text(name, options={})
+    @fields << TextField.new(name, options)
+  end
+  
+  def boolean(name, options={})
+    @fields << BooleanField.new(name, options)
+  end
+  
+  def get(name)
+    @fields.select{|f| f.name == name.to_s}.first
   end
     
-  def self.setup_model(klass)
+  def setup_model(klass)
     fields.each do |f|
       klass.class_eval do
         attr_accessible f.name

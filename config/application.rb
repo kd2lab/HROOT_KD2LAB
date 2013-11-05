@@ -2,6 +2,10 @@ require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
 
+require "./lib/custom_field_classes.rb"
+require "./lib/search_classes.rb"
+
+
 # If you have a Gemfile, require the gems listed there, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(:default, Rails.env) if defined?(Bundler)
@@ -48,6 +52,9 @@ module Hroot
     config.after_initialize do |app|
       app.routes.append{match '*path', :to => 'application#render_404'}
     end
+    
+    
+
   end
 end
 

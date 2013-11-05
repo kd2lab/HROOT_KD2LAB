@@ -42,6 +42,10 @@
 
 - fix qtip / use popup from bootstrap
 
+
+- translation missing: de.devise.failure.user.not_found_in_database
+  
+  
   
   datum internationalisieren
   

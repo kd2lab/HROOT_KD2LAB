@@ -33,7 +33,9 @@ class User < ActiveRecord::Base
   #validates_format_of :email, :with => /.*\.de$/, :on => :create # if defined?(Rais.config.email_restriction)
   
   # setup custom datafields, see config/initializers/fields.rb
-  Datafields.setup_model(self)
+  # todo weg puts "CUSTOM_FIELDS: "+CUSTOM_FIELDS.inspect
+  
+  CUSTOM_FIELDS.setup_model(self)
   
   # flag for admin update
   attr_accessor :admin_update

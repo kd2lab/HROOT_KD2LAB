@@ -1,4 +1,5 @@
 
+
 country_names = ["Afghanistan", "Aland Islands", "Albania", "Algeria", "American Samoa", "Andorra", "Angola",
         "Anguilla", "Antarctica", "Antigua And Barbuda", "Argentina", "Armenia", "Aruba", "Australia", "Austria",
         "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin",
@@ -39,26 +40,22 @@ country_names = ["Afghanistan", "Aland Islands", "Albania", "Algeria", "American
 				"Venezuela, Bolivarian Republic of", "Viet Nam", "Virgin Islands, British", "Virgin Islands, U.S.",
 				"Wallis and Futuna", "Western Sahara", "Yemen", "Zambia", "Zimbabwe"]
 
-Datafields.setup do
-  selection :gender, ['m', 'f']
+
+CUSTOM_FIELDS = CustomFieldManager.setup do
+  selection :gender, :db_values => ['m', 'f']
   date :birthday
   text :matrikel
-  selection :country_name, country_names, {:translation => false}, {:search_multiple => true}
-  selection :preference, [0,1,2]
+  selection :country_name, :db_values => country_names, :translate => false, :filter_search_multiple => true
+  selection :preference, :db_values => [0,1,2]
   
-  text :phone, {:required => false, :hint => true}  
-  date :begin_of_studies, {:only_months => true, :required => false}
-  selection :experience, [0,1], { :values => {'no_experience' => 0, 'experience' => 1}, :required => false}
-  
-  #selection :language, [1, 2, 3, 4, 5, 6], {:required => false, :multiple => true}, {:search_multiple => false, :operator => true}
-  #selection :profession, [1, 2, 3, 4, 5], {:required => false}
-  #selection :course_of_studies, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55], {:required => false}, {:search_multiple => true, :operator => true}
-  #selection :degree, [1, 2, 3, 4, 5], {:required => false}, {:search_multiple => true, :operator => true}
-  
-  selection :language, [1, 2, 3, 4, 5, 6], {:required => false, :multiple => true}, {:search_multiple => false, :operator => true}
-  selection :profession, [], {:required => false}
-  selection :course_of_studies, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 162], {:required => false}, {:search_multiple => true, :operator => true}
-  selection :degree, [1, 2, 3, 4, 5, 6, 7], {:required => false}, {:search_multiple => true, :operator => true}
+  text :phone, :required => false, :hint => true
+  date :begin_of_studies, :restrict_to_months => true, :required => false
+  selection :experience, :db_values => [0,1], :required => false 
+    
+  selection :language, :db_values =>[1, 2, 3, 4, 5, 6], :required => false, :store_multiple => true, :filter_search_multiple => true, :filter_operator => true
+  #selection :profession, :db_values => [], :required => false
+  selection :course_of_studies, :required => false, :filter_search_multiple => true, :filter_operator => true, :db_values => [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 162]
+  selection :degree, :db_values => [1, 2, 3, 4, 5, 6, 7], :required => false, :filter_search_multiple => true, :filter_operator => true
   
   # todo hints!
   

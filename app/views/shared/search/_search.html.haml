@@ -15,4 +15,4 @@
     .search-header
       = t("search.titles.#{field}")
     
-    = render :partial => Search.partial_for(field), :locals => {:name => field}.merge(Search.partial_locals_for(field))
+    = render :partial => Search.partial_for(field), :locals => Search.options_for(field)

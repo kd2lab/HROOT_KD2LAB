@@ -1,10 +1,10 @@
-- if defined?(operator) && operator
+- if defined?(filter_operator) && filter_operator
   .search-operator
     = select_tag "search[#{name}][op]",
       options_for_select([[t('search.selections.only'),'only'], [t('search.selections.without'),'without']], (params[:search][  name] || {})[:op]),
       {:style => 'width:auto'}
   
-- if defined?(search_multiple) && search_multiple
+- if defined?(filter_search_multiple) && filter_search_multiple
   = select_tag "search[#{name}][value]", options_for_select(values, (params[:search][name] || {})[:value]), {:include_blank => false, :multiple => true, :class => "chzn-select-search", :'data-placeholder' => t("search.hints.#{name}"), :style => "width: 400px"}  
 - else
   = select_tag "search[#{name}][value]", options_for_select(values, (params[:search][name] || {})[:value])

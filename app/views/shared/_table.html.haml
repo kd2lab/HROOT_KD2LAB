@@ -12,7 +12,7 @@
           - when :participations_count
             %th.popup{:'data-popup' => t('popup.participations_count')}= sortable_for_form 'participations_count' , t('participations_shortcut')
           - else
-            - field = Datafields.get(col)
+            - field = CUSTOM_FIELDS.get(col)
             - if field
               %th= sortable_for_form col.to_s, t("activerecord.attributes.user.#{field.name}")
             - else
@@ -53,7 +53,7 @@
             - when :session
               %td= "#{I18n.l(user.session_start_at) if user.session_start_at}" 
             - else
-              - field = Datafields.get(col)
+              - field = CUSTOM_FIELDS.get(col)
               - if field
                 %td= field.display_value(user)
               - else
