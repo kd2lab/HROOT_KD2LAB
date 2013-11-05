@@ -9,6 +9,7 @@ gem 'rails', '3.2.11'
 gem 'mysql2'
 gem 'haml'
 gem 'sass'
+gem 'unicorn'
 gem 'less-rails'
 gem 'coffee-script'
 gem 'ledermann-rails-settings', '1.2.1', :require => 'rails-settings'
@@ -48,5 +49,5 @@ group :development, :test do
 end
 
 group :production do
-  gem 'unicorn'
+  gem 'pg'
 end
