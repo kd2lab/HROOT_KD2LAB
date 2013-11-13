@@ -68,7 +68,16 @@ Hroot::Application.configure do
   config.locales = [:de, :en]
   config.locale_names = {:de => 'Deutsch (de)', :en => 'English (en)'}
 
-  config.custom_fields = []
+  config.interceptor_email = "mail@ingmar.net"
+  
+  # this email adress will be the default sender email
+  config.hroot_sender_email = 'development@wiso.uni-hamburg.de'
+
+  # log messages will be sent this email adress
+  config.hroot_log_email = 'mail@ingmar.net'
+  
+  # configure uploads directory
+  config.upload_dir = Rails.root.join('uploads')
 end
 
 ActionMailer::Base.default :from => 'experiments@wiso.uni-hamburg.de'
