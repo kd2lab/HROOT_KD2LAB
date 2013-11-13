@@ -9,6 +9,7 @@ class Search
     @@fields[field.name] = field
   end  
   
+  # default search fields
   add FulltextSearchField.new(:fulltext)
   add SelectionSearchField.new(:role, :values => User.roles.map{|r| [I18n.t("search.selections.role.#{r}"), r]})
   add ParticipationSearchField.new(:participation, :values => {I18n.t('search.selections.participation.choice1') => '1', I18n.t('search.selections.participation.choice2') => '2', I18n.t('search.selections.participation.choice3') => '3', I18n.t('search.selections.participation.choice4') => '4'})
@@ -18,11 +19,10 @@ class Search
   add TagsSearchField.new(:tags)
   add ExperimentsSearchField.new(:experiments)
   
+  # add search field for all custom fields
   CUSTOM_FIELDS.fields.each do |field|
-    puts field
     add field.search_field
-  end
-  
+  end  
   
   # returns the partial for a specific search field
   def self.partial_for(name)
@@ -160,17 +160,7 @@ EOSQL
       pager.replace(objects)
       pager.total_entries = count
     end
-    
-    # todo include counting optimization again but tink about it more
-    # if search && ( search.keys.count > 0 || (options && options[:experiment]))
-#       count = User.count_by_sql(User.create_filter_sql(params, options, true))
-#     elsif options && options[:include_deleted_users]
-#       count = User.count
-#     else  
-#       count = User.where('deleted=0').count
-#     end
-#     
-    
+
   end    
     
 end

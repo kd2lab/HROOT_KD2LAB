@@ -1,92 +1,7 @@
 # Sample localization file for English. Add more files in this directory for other locales.
 # See http://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
-
-
 de:
-  errors:
-    template:
-      body: "Es sind Fehler aufgetreten:"
-  activerecord:
-    models:
-      user: User
-      experiment: Experiment
-      session: Session
-    attributes:
-      session:
-        group_size: Gruppengröße
-        start_date: Startdatum
-        start_time: Startzeit
-        description: Beschreibung
-        limitations: Teilnahmehinweise
-        duration: Dauer in Minuten
-        needed: Nötige Teilnehmer
-        reserve: Reserve-Teilnehmer
-        location: Ort
-        finished: Session abgeschlossen
-        time_before: Vorbereitungszeit
-        time_after: Nachbereitungszeit
-      location:
-        description: Beschreibung
-      user_session:
-        remember_me: eingeloggt bleiben
-      user: 
-        name: Name
-        firstname: Vorname
-        lastname: Nachname
-        role: Rolle
-        email: E-Mail
-        secondary_email: Alternative E-Mail
-        current_password: Aktuelles Passwort
-        password: Passwort
-        password_confirmation: Passwort wdh.
-        change_email: E-Mail ändern
-        
-      
-        
-      experiment:
-        tag_list: Tags
-        description: Beschreibung
-        contact: Kontaktinfos
-        sender_email: E-Mail-Absender
-        confirmation_subject: Betreff
-        confirmation_text: Text
-        reminder_hours: Erinnerungsversand
-    errors:
-      models:
-        profession:
-          blank: muss angegeben werden
-        language:
-          blank: muss angegeben werden
-        experiment:
-          blank: muss angegeben werden
-        session:
-          blank: muss angegeben werden  
-          not_a_number: muss eine ganze Zahl sein
-        location:
-          blank: muss angegeben werden
-        user:
-          blank: muss angegeben werden
-          attributes:
-            firstname:
-            lastname:
-            matrikel:
-            email:
-              taken: ist bereits vergeben.
-              invalid: ist ungültig
-            secondary_email:
-              invalid: ist ungültig
-            password: 
-              confirmation: muss wiederholt werden
-              too_short: ist zu kurz (mind. 8 Zeichen)
-              invalid: ungültiges Passwort (mind. eine Zahl, ein Buchstabe, ein Sonderzeichen)
-            password_confirmation:
-              too_short: ist zu kurz (mind. 8 Zeichen) 
-            terms_and_conditions:
-              accepted: Bitte bestätigen Sie die Nutzungsbedingungen
-            current_password:
-              invalid: ist ungültig
-            
   time:
     formats:
       default: ! '%d.%m.%Y %H:%M'
@@ -117,3 +32,115 @@ de:
     previous_label: "&lt; &lt;"
     next_label: "&gt; &gt;"
     page_gap: "&hellip;"
+  
+  activerecord:
+    errors:
+      models:
+        experiment:
+          blank: muss angegeben werden
+        session:
+          blank: muss angegeben werden  
+          not_a_number: muss eine ganze Zahl sein
+        location:
+          blank: muss angegeben werden
+        user:
+          blank: muss angegeben werden
+          attributes:
+            firstname:
+            lastname:
+            email:
+              taken: ist bereits vergeben.
+              invalid: ist ungültig
+            secondary_email:
+              invalid: ist ungültig
+            password: 
+              confirmation: muss wiederholt werden
+              too_short: ist zu kurz (mind. 8 Zeichen)
+              invalid: ungültiges Passwort (mind. eine Zahl, ein Buchstabe, ein Sonderzeichen)
+            password_confirmation:
+              too_short: ist zu kurz (mind. 8 Zeichen) 
+            terms_and_conditions:
+              accepted: Bitte bestätigen Sie die Nutzungsbedingungen
+            current_password:
+              invalid: ist ungültig
+    
+    attributes:
+      user: 
+        firstname: Vorname
+        lastname: Nachname
+        role: Rolle
+        email: E-Mail
+        secondary_email: Alternative E-Mail
+      session:
+        start_time: Startzeit
+  
+  
+    
+    
+xde:
+  errors:
+    template:
+      body: "Es sind Fehler aufgetreten:"
+            
+  time:
+    formats:
+      default: ! '%d.%m.%Y %H:%M'
+      date_only: ! '%d.%m.%Y'
+      time_only: ! '%H:%M'
+
+      long: ! '%A, %d. %B %Y, %H:%M Uhr'
+      short: ! '%d. %B, %H:%M Uhr'
+      
+  date:
+    # see https://github.com/eternicode/bootstrap-datepicker  
+    # this MUST match the default date format
+    datepicker: "dd.mm.yyyy"
+    formats:
+      default: "%d.%m.%Y"
+      datepicker: "%d.%m.%Y"
+    day_names: [Sonntag, Montag, Dienstag, Mittwoch, Donnerstag, Freitag, Samstag]
+    abbr_day_names: [So, Mo, Di, Mi, Do, Fr, Sa]
+    order:
+      - :day
+      - :month
+      - :year
+      
+    # Don't forget the nil at the beginning; there's no such thing as a 0th month
+    month_names: [~, Januar, Februar, März, April, Mai, Juni, Juli, August, September, Oktober, November, Dezember]
+    abbr_month_names: [~, Jan, Feb, Mär, Apr, Mai, Jun, Jul, Aug, Sep, Okt, Nov, Dez]
+  
+  activerecord:
+    models:
+      user: User
+      experiment: Experiment
+      session: Session
+    attributes:
+      session:
+        group_size: Gruppengröße
+        start_date: Startdatum
+        start_time: Startzeit
+        description: Beschreibung
+        limitations: Teilnahmehinweise
+        duration: Dauer in Minuten
+        needed: Nötige Teilnehmer
+        reserve: Reserve-Teilnehmer
+        location: Ort
+        finished: Session abgeschlossen
+        time_before: Vorbereitungszeit
+        time_after: Nachbereitungszeit
+      location:
+        description: Beschreibung
+      user_session:
+        remember_me: eingeloggt bleiben
+        
+      
+        
+      experiment:
+        tag_list: Tags
+        description: Beschreibung
+        contact: Kontaktinfos
+        sender_email: E-Mail-Absender
+        confirmation_subject: Betreff
+        confirmation_text: Text
+        reminder_hours: Erinnerungsversand
+  

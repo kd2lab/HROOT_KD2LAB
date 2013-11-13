@@ -10,33 +10,5 @@
 = render :partial => "tabs", :locals => {:selected => :general} 
 
 .row
-  .span6
-    = form_tag(options_index_path, :method => "post", :class => "form-horizontal") do 
-      %h3=t '.email_formats_header'
-        
-      =t '.email_formats_info'
-      %br
-      %br
-      #url-tags
-        - if Settings.mail_restrictions
-          - Settings.mail_restrictions.each do |r|
-            %span
-              = " ... "
-              = text_field_tag("mail_restrictions[][prefix]", r['prefix'])
-              = " ... "
-              @
-              = text_field_tag('mail_restrictions[][suffix]', r['suffix'])
-              %br
-  
-  
-      %br
-        %a.btn.btn-success.add-url-link{:href=>"#"}
-          %i.icon-plus.icon-white 
-        
-        %a.btn.btn-danger.remove-url-link{:href=>"#"}
-          %i.icon-minus.icon-white
-        
-    
-      %br
-      %br
-      =submit_tag t(:save), :class => "btn btn-primary"
+  .span10
+    todo nichts hier im Moment  

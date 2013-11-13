@@ -1,10 +1,11 @@
 #encoding: utf-8
 
 class UserMailer < ActionMailer::Base
-  default :bcc => ["ingmar.baetge@googlemail.com", "hroottest@googlemail.com"]
+  # the main hroot adress is the default sender - configure in development.rb
+  default :from => Rails.configuration.hroot_sender_email 
   
   def log_mail(subject, text)
-    mail(:to => "ingmar.baetge@googlemail.com", :subject => subject) do |format|
+    mail(:to => Rails.configuration.hroot_log_email, :subject => subject) do |format|
       format.text { render :text => text }
     end
   end

@@ -48,7 +48,7 @@
       
       = f.input :firstname, :required => false
       = f.input :lastname, :required => false
-      - Datafields.required.each do |field|
+      - CUSTOM_FIELDS.required.each do |field|
         = field.add_to_form(f)
           
       /= f.input :matrikel, :required => false
@@ -62,7 +62,7 @@
       %br
       %br
       
-      - Datafields.optional.each do |field|
+      - CUSTOM_FIELDS.optional.each do |field|
         = field.add_to_form(f)
       
       

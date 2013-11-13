@@ -119,10 +119,10 @@ class UserTest < ActiveSupport::TestCase
   
   context "search users" do
     setup do
-      @u1 = FactoryGirl.create(:user, :firstname => "Hugo", :course_of_studies => 1, :experience => true, :degree => 1)
-      @u2 = FactoryGirl.create(:user, :lastname => "Boss", :course_of_studies => 1, :experience => false, :degree => 2)
-      @u3 = FactoryGirl.create(:user, :email => "somebody@somewhere.net", :course_of_studies => 2, :degree => 1)
-      @u4 = FactoryGirl.create(:user, :gender => 'f', :begin_of_studies => '2010-12-1', :course_of_studies => 2, :degree => 2)
+      @u1 = FactoryGirl.create(:user, :firstname => "Hugo", :course_of_studies => 1, :experience => true, :degree => 1, :language => ["1"])
+      @u2 = FactoryGirl.create(:user, :lastname => "Boss", :course_of_studies => 1, :experience => false, :degree => 2, :language => ["1", "2"])
+      @u3 = FactoryGirl.create(:user, :email => "somebody@somewhere.net", :course_of_studies => 2, :degree => 1, :language => ["1", "3"])
+      @u4 = FactoryGirl.create(:user, :gender => 'f', :begin_of_studies => '2010-12-1', :course_of_studies => 2, :degree => 2, :language => ["1", "2", "3"])
       @u5 = FactoryGirl.create(:user, :gender => 'f', :begin_of_studies => '2011-3-1')
       @u6 = FactoryGirl.create(:user, :gender => 'm', :begin_of_studies => '2011-6-1')
       @u7 = FactoryGirl.create(:user, :gender => 'm', :begin_of_studies => '2011-9-1')
@@ -271,7 +271,8 @@ class UserTest < ActiveSupport::TestCase
     end
     
     should "find by language" do
-      assert false
+      assert_same_elements [@u2,@u3, @u4], Search.search({ :language => { :value => [2,3], :op => "only" }})
+      assert_same_elements [@u5, @u6, @u7, @u9], Search.search({:role => { :value=>['user']},  :language => { :value => [1], :op => "without" }})
     end
   end  
   

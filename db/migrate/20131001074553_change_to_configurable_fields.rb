@@ -15,7 +15,7 @@ class ChangeToConfigurableFields < ActiveRecord::Migration
     
     # change study begin to date
     execute <<-SQL
-      UPDATE users SET begin_of_studies = CAST(CONCAT(begin_year,'-',LPAD(begin_month,2,'00'),'-01') AS DATE);
+      UPDATE users SET begin_of_studies = CAST(CONCAT(begin_year,'-',begin_month,'-01') AS DATE);
     SQL
     
     # migrate degree_id to degree

@@ -3,24 +3,9 @@
 class OptionsController < ApplicationController
   authorize_resource :class => false
   
+  # todo remove this, and also route
   def index
-    if params[:commit]
-      
-      result = []
-      if params[:mail_restrictions]
-        params[:mail_restrictions].each do |r|
-          result << r unless r['prefix'].blank? && r['suffix'].blank?
-        end
-      end
-          
-      if result.length > 0
-        Settings.mail_restrictions = result
-      else
-        Settings.mail_restrictions = nil
-      end
-      
-      flash[:notice] = t('controllers.notice_saved_changes') 
-    end
+ 
   end
 
   def emails

@@ -1,0 +1,44 @@
+= content_for :breadcrumb do
+  = render :partial => "layouts/crumb", :object => [           |
+      link_to(t('administration'), :controller => "admin", :action => "index"), |
+      link_to(t(:experiments_header), experiments_path),                |
+      link_to(@experiment.name, experiment_sessions_path(@experiment)), |
+      t('experiments.tabs.files')]
+      
+#state= render :partial => "experiments/enrollment"
+  
+%h1
+  = @experiment.name
+
+= render :partial => "tabs", :locals => {:selected => :files}
+
+.filelist_container
+  #files
+  #dropzone{:style => "display: none;"}
+    .dropinfo
+      Drop your files here!
+      
+
+= form_tag({action: :upload_via_form}, multipart: true) do 
+  .fileupload.fileupload-new{"data-provides" => "fileupload", 'data-name' => 'file'}
+    .input-append
+      .uneditable-input.span3
+        %i.icon-file.fileupload-exists
+        %span.fileupload-preview
+      %span.btn.btn-file
+        %span.fileupload-new Select file
+        %span.fileupload-exists Change
+        %input{type: "file"}/
+      %a.btn.fileupload-exists{"data-dismiss" => "fileupload", href: "#"} Remove      
+      = submit_tag 'los!', :class => 'btn' 
+      
+      
+%h1 todo
+
+%ul
+  %li normaler upload
+  %li überschreiben von dateien?
+  %li Löschen von Dateien
+  %li Download
+  %li abort
+  %li upload box besser darstellen

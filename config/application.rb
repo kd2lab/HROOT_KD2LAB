@@ -5,7 +5,6 @@ require 'rails/all'
 require "./lib/custom_field_classes.rb"
 require "./lib/search_classes.rb"
 
-
 # If you have a Gemfile, require the gems listed there, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(:default, Rails.env) if defined?(Bundler)
@@ -36,7 +35,7 @@ module Hroot
     config.i18n.default_locale = :de
 
     # JavaScript files you want as :defaults (application.js is always included).
-    config.action_view.javascript_expansions[:defaults] = %w(jquery jquery_ujs jquery-ui.min chosen.jquery.min jquery.qtip-1.0.0-rc3.min qtip)
+    config.action_view.javascript_expansions[:defaults] = %w(jquery chosen.jquery.min)
 
     # Configure the default encoding used in templates for Ruby 1.9.
     config.encoding = "utf-8"
@@ -52,9 +51,6 @@ module Hroot
     config.after_initialize do |app|
       app.routes.append{match '*path', :to => 'application#render_404'}
     end
-    
-    
-
   end
 end
 

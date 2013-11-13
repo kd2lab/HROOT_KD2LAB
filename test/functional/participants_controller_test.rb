@@ -68,7 +68,7 @@ class ParticipantsControllerTest < ActionController::TestCase
         SessionParticipation.create(:user => @user1, :session => @session)
         SessionParticipation.create(:user => @user2, :session => @session)
         
-        get :index, :experiment_id => @experiment.id, :user_action => 'remove_all', :search => {:text => 'hugo'}
+        get :index, :experiment_id => @experiment.id, :user_action => 'remove_all', :search => {:fulltext => 'hugo'}
       end
       
       should "remove all participations but leave session_participations untouched" do

@@ -94,7 +94,7 @@ class UsersController < ApplicationController
   
   def send_message
     if (params[:message][:to] == 'all')
-      ids =  User.search_ids(params[:search] || {})
+      ids =  Search.search_ids(params[:search] || {})
     elsif (params[:message][:to] == 'selected')
       ids = params['selected_users'].keys.map(&:to_i)
     end  

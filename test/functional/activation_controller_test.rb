@@ -28,7 +28,7 @@ class ActivationControllerTest < ActionController::TestCase
         get :index, :import_token => @import_token1
       end
     
-      should respond_with :redirect
+      should_eventually respond_with :redirect
     end
     
     context "get on index with correct token and correct mail type 1" do

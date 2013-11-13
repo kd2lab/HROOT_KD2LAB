@@ -1,3 +1,8 @@
+heroku workflow
+
+  heroku create --remote staging
+  git push staging improve_filters:master
+  heroku run rake db:migrate --remote staging
 
 - rework session member list
 - make session list configurable
@@ -6,6 +11,7 @@
 
 
 
+- 
 - rework account area
 - rework session list
 - make participant lists configurable
@@ -24,10 +30,11 @@
 - add email instructions on signup page
 - cleanup javascript
 - find all todos and cleanup
-
-
+- cleanup eventuallies in tests
+- logmails auf englisch
+- rmove empty tests
 - htaccess: guest dj!d38dFghj
-
+- regularly cleanup language missing translations
 - Bezug zu Hamburg bereinigen
 - Passwörter bereinigen
 - environments bereinigen
@@ -37,14 +44,14 @@
 - noch einmal auf sql-injection schauen
 - production / qa / development raus
 - database.yml raus
-
+- make migrations postgras compatible
 - special topics: Javascript / pfade / deployment
 
 - fix qtip / use popup from bootstrap
-
+- todo fix messaging
 
 - translation missing: de.devise.failure.user.not_found_in_database
-  
+- remove anything with prefix suffix
   
   
   datum internationalisieren

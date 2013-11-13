@@ -15,7 +15,7 @@ class ParticipantsController < ApplicationController
     if params[:user_action] == "remove_all"
       # add filter to select only users without a session - we don't want to delete users, who are in a session
       params[:search][:participation] = {:value => 3}
-      ids =  User.search_ids(params[:search], {:experiment => @experiment, :sort_column => sort_column, :sort_direction => sort_direction, :exclude_non_participants => 1})
+      ids =  Search.search_ids(params[:search], {:experiment => @experiment, :sort_column => sort_column, :sort_direction => sort_direction, :exclude_non_participants => 1})
                
       if ids.length > 0   
         # remove users who have no session participation
@@ -75,7 +75,7 @@ class ParticipantsController < ApplicationController
     
     # load ids of users to add to experiment
     ids = if params[:submit_all]
-      User.search_ids(params[:search], {:experiment => @experiment, :exclude => 1})
+      Search.search_ids(params[:search], {:experiment => @experiment, :exclude => 1})
     elsif (params[:submit_marked]) && params[:selected_users]
       params[:selected_users].keys.map(&:to_i)
     else
@@ -116,7 +116,7 @@ class ParticipantsController < ApplicationController
     params[:search][:deleted] = {:value =>"show"}
     
     if (params[:message][:to] == 'all')
-      ids =  User.search_ids(params[:search], {:experiment => @experiment})
+      ids =  Search.search_ids(params[:search], {:experiment => @experiment})
     elsif (params[:message][:to] == 'selected')
       ids = params['selected_users'].keys.map(&:to_i)
     end  

@@ -1,59 +1,30 @@
+
+
 de:
-  login_area: Login-Bereich
-  account_options: Account-Optionen
-  no_info: keine Angabe
-  save_data: Daten speichern
-  activation_title: Aktivierung
-  administration: Administration
-  homepage: Home
-  dashboard: Dashboard
-  calendar: Kalender
-  settings: Einstellungen
-  edit: Bearbeiten
-  delete: Löschen
-  save: Speichern
-  save_changes: Änderungen speichern
-  back: zurück
-  session: Session
-  sessions_label: Sessions
-  experiments_header: Experimente
-  experimenters_header: Experimentatoren
-  rights: Rechte
-  search: Suche
-  tag: Tag
-  hour: Stunde
-  hours: Stunden
+  logout: Logout
+  logged_in_as: Eingeloggt als
+  recruitment_system: Hamburg registration and organization online tool
+  login: Login
   email: E-Mail
   password: Passwort
-  emails: E-Mails
-  subject: Betreff  
-  site_credits_and_contact: Impressum und Kontakt
-  root_page: Startseite
-  copyright_html: '&copy; 2011-2013 Universität Hamburg'
-  login: Login
-  logout: Logout
-  register: Registrieren
-  user: Benutzer
-  common_menu: Allgemein
-  admin_menu: Admin-Menü
-  mailqueue: Mailqueue
-  logged_in_as: Eingeloggt als
-  register_now: Jetzt registrieren
-  recruitment_system: Hamburg registration and organization online tool
-  text_templates: Textvorlagen
-  insert_data: Daten einfügen
   remember_me: eingeloggt bleiben
-  noshow_shortcut: '#N'
-  participations_shortcut: '#T'
-  session_show_shortcut: E
-  session_participated_shortcut: T
-  session_noshow_shortcut: N
-  cal_participants: 'Teilnehmer:'
-  cal_pre_time: 'Vorbereitungszeit: %{minutes} Minuten'
-  cal_post_time: 'Nachbereitungszeit: %{minutes} Minuten'
-  role_user: 'Poolmitglied (P)'
-  role_exp: 'Experimentator (E)'
-  role_admin: 'Administrator (A)'
+  copyright_html: '&copy; 2011-2013 Universität Hamburg'
+  site_credits_and_contact: Impressum und Kontakt
+  administration: Administration
+  dashboard: Dashboard
+  common_menu: Allgemein
+  account_options: Account-Einstellungen
+  admin_menu: Admin-Menü
+  calendar: Kalender
+  experiments_header: Experimente
+  user: Benutzer
+  settings: Einstellungen
+  save: Speichern
+  emails: E-Mails
+  hour: Stunde
+  hours: Stunden
+  experimenters_header: Experimentatoren
+  rights: Rechte
   right_edit: Datenpflege
   right_rights: Rechte bearbeiten
   right_manage_sessions: Sessiontermine verwalten
@@ -63,111 +34,37 @@ de:
   right_manage_invitations: Einladungsversand
   right_status_mails: Statusmails
   rights_label: 'Rechte...'
+  save_changes: Änderungen speichern
+  cal_participants: 'Teilnehmer:'
+  cal_pre_time: 'Vorbereitungszeit: %{minutes} Minuten'
+  cal_post_time: 'Nachbereitungszeit: %{minutes} Minuten'
+  noshow_shortcut: '#N'
+  participations_shortcut: '#T'
+  session_show_shortcut: E
+  session_participated_shortcut: T
+  session_noshow_shortcut: N
+  insert_data: Daten einfügen
+  subject: Betreff  
+  register_now: Jetzt registrieren
+  root_page: Startseite
+  register: Registrieren
+  homepage: Home
+  edit: Bearbeiten
+  delete: Löschen
+  sessions_label: Sessions
+  files_label: Dateien
+  login_area: Login-Bereich
+  text_templates: Textvorlagen
   
-  roles:
-    user: 'Poolmitglied'
-    experimenter: 'Experimentator'
-    admin: 'Administrator'
-  usertable:
-    fullname: Name
-    email: E-Mail
-    role: Rolle  
-    created_at: Anmeld.
-    session: Session
-  
-  
-  modal:
-    send_message: Absenden
-    close: Schliessen
-    subject: Betreff
-    to: An
-    send: Senden
+  layouts:
+    landing:
+      no_account: Noch kein Zugang? Jetzt anmelden und an Experimenten teilnehmen.
+      register_now: Jetzt registrieren
+      already_registered: Waren Sie bereits im Forschungslabor angemeldet?
+      activate_account: Wenn Sie bereits einen Zugang hatten, sind Ihre Daten bei unserem Systemwechsel übernommen worden. Sie können sich hier Ihren Account freischalten lassen.
+      activate_now: Jetzt freischalten
+      for_registered_users: für bereits registrierte Nutzer
     
-  popup:
-    noshow_count: Anzahl Nichterscheinen
-    participations_count: Anzahl Teilnahmen
-    showup: Erschienen
-    participated: Teilgenommen
-    noshow: Nicht erschienen
-    inactive_after_import: Benutzer wurde nach dem Import noch nicht aktiviert
-    user_was_invited: Benutzer wurde eingeladen  
-    user_was_reminded: Benutzer wurde erinnert
-  form_values:
-    interested_in: Interesse an
-    type_both: Präsenz- und Online-Experimenten
-    type_presence: nur Präsenz-Experimente
-    type_online: nur Online-Experimente
-    male: männlich
-    female: weiblich
-    no_experience: Ich habe noch nie an Experimenten teilgenommen.
-    has_experience: Ich habe bereits an Experimenten teilgenommen.
-    user_is_active: Benutzer ist aktiv
-    user_is_marked_as_deleted: Benutzer wurde als gelöscht markiert
-  user_mailer:
-    subject_secondary_email_confirmation: "Bestätigung der alternativen E-Mail-Adresse"
-    subject_import_email_confirmation: "hroot-Anmeldung: Bestätigung der neuen E-Mail-Adresse"
-    subject_import_email_activation: "hroot: Freischaltung für die Teilnahme an Experimenten"
-  account:
-    index:
-      welcome: Willkommen
-      available_registrations:  Neuanmeldung zu Experiment-Sessions
-      available_registrations_text: Sie können sich derzeit zu Experiment-Sessions anmelden.
-      enroll_now_button: Jetzt anmelden
-      currently_no_sessions: Derzeit gibt es keine Experiment-Sessions, zu denen Sie eingeladen wurden.
-      current_sessions:  Bestehende Sessionanmeldungen
-      current_sessions_text: 'Sie sind zu folgenden Experiment-Sessions verbindlich angemeldet:'
-      no_current_sessions_text: Sie sind derzeit zu keinen Experiment-Sessions angemeldet.    
-      incomplete_data: Unvollständige Daten
-      incomplete_data_text: Sie werden im Moment nicht zu allen möglichen Experiment-Sessions eingeladen, da Sie Ihre Daten nicht vollständig angegeben haben. Die Angabe der Daten ist freiwillig, wenn Sie mehr Informationen angeben, werden Sie allerdings häufiger zu Experimenten eingeladen.
-      complete_data_link: Weitere Daten angeben
-    tabs:
-      overview: Datenübersicht
-      password: Passwort
-      alternative_email: Alternative E-Mail
-      phone: Telefonnummer
-    alternative_email:
-      alternative_email: Alternative E-Mail
-      alternative_email_text: Hier können Sie eine zweite E-Mail-Adresse konfigurieren, an die Sie Einladungen und Informationen zu den Experimenten gesendet bekommen. Zur Einloggen nutzen Sie bitte weiterhin Ihre primäre E-Mail-Adresse.
-      your_current_alternative_email: Ihre alternative E-Mail-Adresse 
-      was_confirmed: wurde bestätigt und wird jetzt verwendet.
-      was_not_confirmed: ist derzeit noch nicht bestätigt. Es wurde Ihnen eine E-Mail mit einem Link zur Bestätigung Ihrer alternativen E-Mail-Adresse zugesendet.
-      delete_alternative_email: Alternative E-Mail löschen
-      confirm_delete_alternative_email: Sind Sie sicher, dass Sie Ihre alternative E-Mail-Adresse löschen möchten?
-      resend_confirmation_mail: Bestätigungsemail erneut senden
-      save_alternative_email: Alternative E-Mail speichern
-    data:
-      overview: Datenübersicht
-      data_stored_text: Folgende Daten sind bei hroot gespeichert, bitte wenden Sie sich zu Datenänderungen an die Laborleitung.
-    edit:
-      incomplete_data: Unvollständige Daten
-      incomplete_data_text: 'Sie werden im Moment nicht zu allen möglichen Experiment-Sessions eingeladen, da Sie Ihre Daten nicht vollständig angegeben haben. Die Angabe der Daten ist freiwillig, wenn Sie mehr Informationen angeben, werden Sie allerdings häufiger zu Experimenten eingeladen. Hier können Sie Ihre Daten ergänzen:'
-    phone:
-      phone_number: Telefonnummer
-      phone_number_text: Die Angabe Ihrer Telefonnummer ist freiwillig. Wenn Sie Ihre Telefonnummer angeben, können wir Sie bei kurzfristigen Terminveränderungen schnell erreichen.
-      save_phone_number: Telefonnummer speichern
-  activation:
-    email:
-      activation_text_1: Auf dieser Seite können Sie Ihren Account freischalten.
-      activation_text_2: Ihre bisherige E-Mail-Adresse
-      activation_text_3: kann in unserem neuen System nicht verwendet werden.
-      activation_text_4: 'Bitte geben Sie eine gültige E-Mail-Adresse der Universität Hamburg an:'
-      activation_text_5: Sie müssen diese E-Mail-Adresse einmal bestätigen und in Zukunft diese zum Login verwenden. Zukünftige E-Mails erhalten Sie aber wie gewohnt an die Adresse
-      activation_text_6: 'Wenn Sie keine E-Mail-Adresse der Uni Hamburg haben, dann kontaktieren Sie uns bitte unter:'
-      activation_text_7: 'Bei Fragen oder Wünschen kontaktieren Sie uns bitte:'
-      contact: Kontakt
-      send_activation_email: E-Mail zur Bestätigung absenden
-        
-    email_delivered:
-      delivered_text_1: Es wurde soeben eine E-Mail an Ihre Adresse
-      delivered_text_2: gesendet. Bitte bestätigen Sie Ihre E-Mail-Adresse, in dem Sie den Link in der E-Mail in Ihrem Browser aufrufen.
-
-    index:
-      activation_text_1: Auf dieser Seite können Sie Ihren Account freischalten.
-      activation_text_2: In unserem neuen Rekrutierungs- und Einladungssystem ist es erforderlich, dass Sie sich mit Ihrer E-Mail-Adresse und einem Passwort anmelden.
-      activation_text_3: 'Wählen Sie dazu bitte ein Passwort:'
-      password_hint: mindestens 8 Zeichen, mindestens eine Zahl, ein Buchstabe, ein Sonderzeichen
-      save_and_activate_link: Passwort speichern und Account freischalten
-      
   admin:
     calendar:
       cal_title: Kalender
@@ -175,73 +72,55 @@ de:
       overlaps: überschneidet sich mit
       as_ics: 'Diesen Kalender als ICS:'
     index:
-      sessions_today: 'Heute anstehende Sessions:'
-      participants: Teilnehmer
       latest_experiments: 'Zuletzt angelegte Experimente:'
-      no_experiments: Es wurden noch keine Experimente angelegt.
       statistic: 'Statistik:'
       active_members: 'Aktive Poolteilnehmer:'
       new_members_last_30_days: 'Neuanmeldungen in den letzten 30 Tagen:'
       incomplete_sessions: 'Durchgeführte, aber nicht abgeschlossene Sessions:'
       missing: 'Es fehlen %{count} Angaben'
-  degrees:
-    create_new_degree: Neuen Abschluss anlegen
-    edit_degree: Abschluss bearbeiten
-    confirm: Sind Sie sich sicher, dass Sie diesen Abschluss entfernen möchten?
-  languages:
-    create_new_language: Neue Sprache anlegen
-    edit_language: Sprache bearbeiten
-    confirm: Sind Sie sich sicher, dass Sie diese Sprache entfernen möchten?
-  professions:
-    create_new_profession: Neuen Beruf anlegen
-    edit_profession: Beruf bearbeiten
-    confirm: Sind Sie sich sicher, dass Sie diesen Beruf entfernen möchten?
-  studies:
-    create_new_study: Neuen Studiengang anlegen
-    edit_study: Studien bearbeiten
-    confirm: Sind Sie sich sicher, dass Sie diesen Studiengang entfernen möchten?
+      sessions_today: 'Heute anstehende Sessions:'
+      no_experiments: Es wurden noch keine Experimente angelegt.
+      participants: Teilnehmer
+      
+  options:
+    tabs:
+      general: Allgemein
+      rooms: Räume
+      emails: E-Mails
+      texts: Texte
+    texts:
+      privacy_header: Text der Datenschutzvereinbarung
+      privacy_info: Hier kann der Text festgelegt werden, der für die Datenschutzvereinbarung von neuen Teilnehmern akzeptiert werden muss.      
+  
+      welcome_header: Begrüßungstext für Teilnehmer nach Login
+      welcome_info: Der folgende Text wird den Teilnehmern nach dem Login angezeigt  
+      
+      credits_header: Impressum und Kontakt
+      credits_info: Der folgende Text wird auf der Seite Impressum und Kontakt angezeigt. Es darf HTML genutzt werden.       
+      submit_link: Texte speichern
+    index:
+      email_formats_header: Gültige E-Mail-Formate todo remove
+      email_formats_info: Hier kann festgelegt werden, welche E-Mail-Formate bei der Registrierung gültig sind. Dabei kann ein Prefix gefordert werden (ein Substring vor dem @-Zeichen), und es kann definiert werden, welche Domain die Adressen haben müssen. todo remove
+    emails:
+      header1: E-Mail zur Experiment-Einladung
+      header2: E-Mail zur Anmeldebestätigung
+      header3: E-Mail zur Session-Erinnerung
+      header4: E-Mail zur Erinnerung des Sessionabschluss
+      header5: E-Mail zur Aktivierungseinladung nach dem Import
+      text: E-Mail-Text
+  
   locations:
     create_new_location: Neuen Raum anlegen
-    edit_location: Raum bearbeiten
     confirm: Sind Sie sich sicher, dass Sie diesen Raum entfernen möchten?
     description: Beschreibung
     notice: 'Hinweis: Es können nur Räume gelöscht werden, die nicht belegt wurden.'
-    room_active_label: "Raum ist aktiv"
-
-  enroll:
-    notes: Teilnahmehinweise
-    alert1: Experiment mit Folgesessions
-    alert2: Dieses Experiment hat mehrere Termine, bitte überprüfen Sie, ob Sie an allen angezeigten Terminen Zeit haben.
-    index:
-      new_enrollment: Neuanmeldung zu Experiment-Sessions
-      available_sessions: 'Sie können sich für folgende Termine anmelden:'
-      no_sessions_available: Derzeit können Sie sich für keine weiteren Sessions anmelden.
-      register_for_sessions: Anmelden
-    confirm:
-      confirm_enrollment: Experiment-Anmeldung bestätigen    
-      confirm_enrollment_question: Möchten Sie sich hiermit verbindlich zu folgendem Experiment anmelden?
-      dates: Termine
-      enroll_for_sure: Verbindlich anmelden
+    
   experiments:
     registration_active: Anmeldung ist aktiv
     registration_inactive: Anmeldung ist nicht aktiv
     invitation_active: Einladungsversand aktiv
     participants: Teilnehmer
     new_experiment: Neues Experiment
-    manage:
-      submit: 
-    index:
-      search: Suchenw
-    experiments:
-      organizers: 'Experiment-Organisation:'
-      no_sessions: keine Sessions
-      assigned_participants: Zugeordnete Teilnehmer
-      
-    form:
-      create_experiment: Experiment anlegen
-      default_address_is: Die Standard-Adresse ist
-      experiment_finished: Dieses Experiment ist abgeschlossen
-      experiment_in_statistic: Dieses Experiment in der Statistik berücksichtigen
     tabs:
       mail_texts: E-Mail-Texte
       reminder_sending: Einladungsversand
@@ -253,40 +132,37 @@ de:
       add_participants: Neue Teilnehmer zuordnen
       view_participants: Bereits zugeordnete Teilnehmer 
       history_participants: Verlauf der Teilnehmerzuordnung
-    experimenters:
-      add_people: Personen hinzufügen...
-    invitation:
-      sending: Versand
-      reload_html: '(Aktualisierung in <span id="time_info">%{seconds}</span> Sekunden)'
-      invitation_active: Der Einladungsversand ist im Moment aktiv.
-      invitation_row1: Start dieses Einladungsversands
-      invitation_row2: Einladungsmodus
-      invitation_row3: Zugeordnete Personen (Gesamt)
-      invitation_row4: davon vor dem Start dieses Einladungsversands bereits eingeladen
-      invitation_row5: Maximalgrenze zu versendender Einladungen bis jetzt 
-      invitation_row6: Bereits versendete Einladungen 
-      invitation_row7: Noch nicht eingeladene Zugeordnete (ohne bereits angemeldete)
-      invitation_row8: Derzeit noch freie Plätze
-      invitation_stop: Einladungsversand stoppen
-      invitation_confirm: Sind Sie sich sicher, dass der Versand gestoppt werden soll?
-      count_info1: Derzeit sind 
-      count_info2: Teilnehmer zugeordnet und noch nicht in einer Session eingetragen, davon wurden
-      count_info3: noch nicht eingeladen
-      estimation: 'Geschätzte Dauer des Versands:'
-      duration: 'Dauer:'
-      choose_per_interval: 'Bitte wählen Sie die Anzahl der E-Mails pro Zeitintervall:'
-      choose_interval: 'Bitte wählen Sie die Länge eines Zeitintervalls:'
-      prefer_new_users: Teilnehmer mit wenig Teilnahmen bevorzugen
-      start_sending1: Versand starten und Experiment zur Anmeldung freigeben
-      sending_confirm1: Sind Sie sich sicher, dass der Versand gestartet werden soll?
-      start_sending2: Versand AN ALLE TEILNEHMER starten
-      sending_confirm2: Sind Sie sich sicher, dass der Versand gestartet werden soll? Damit werden AUCH BEREITS EINGELADENE Teilnehmer eingeladen
+      files: Dateien
     mail:
       mailtexts: Mailtexte
       mail_for_invitation: E-Mail zur Einladung
       invitation_text: Einladungstext
       mail_for_confirmation: E-Mail zur Anmeldebestätigung
       confirmation_text: Bestätigungstext
+      
+    invitation:
+      sending: Versand
+      count_info1: Derzeit sind 
+      count_info2: Teilnehmer zugeordnet und noch nicht in einer Session eingetragen, davon wurden
+      count_info3: noch nicht eingeladen
+      choose_per_interval: 'Bitte wählen Sie die Anzahl der E-Mails pro Zeitintervall:'
+      choose_interval: 'Bitte wählen Sie die Länge eines Zeitintervalls:'
+      estimation: 'Geschätzte Dauer des Versands:'
+      duration: 'Dauer:'
+      prefer_new_users: Teilnehmer mit wenig Teilnahmen bevorzugen
+      start_sending1: Versand starten und Experiment zur Anmeldung freigeben
+      sending_confirm1: Sind Sie sich sicher, dass der Versand gestartet werden soll?
+      start_sending2: Versand AN ALLE TEILNEHMER starten
+      sending_confirm2: Sind Sie sich sicher, dass der Versand gestartet werden soll? Damit werden AUCH BEREITS EINGELADENE Teilnehmer eingeladen
+    experimenters:
+      add_people: Personen hinzufügen...
+    index:
+      search: Suchen
+    form:
+      create_experiment: Experiment anlegen
+      default_address_is: Die Standard-Adresse ist
+      experiment_finished: Dieses Experiment ist abgeschlossen
+      experiment_in_statistic: Dieses Experiment in der Statistik berücksichtigen
     reminders:
       reminder: Erinnerung
       reminder_email: E-Mail zur Erinnerung
@@ -294,298 +170,157 @@ de:
       reminder_info1: Der Versand der Erinnerungen soll
       reminder_info2: Stunden vor dem Beginn der jeweiligen Session erfolgen.
       reminder_text: Erinnerungstext
-  home:
-    about:
-      legal_notes: Haftungsausschluss
-      software: Entwicklerteam und Software
-      software_html: '
-<h3>Lizenz</h3>
-Diese Software kann kostenfrei lizensiert werden.<br/> 
-Wenn Sie Ergebnisse von Experimenten berichten, die mit hroot durchgeführt wurden, dann sind Sie durch die Lizenz verpflichtet, die folgende Veröffentlichung zu zitieren:<br/><br/>
-Die korrekte Zitation:<br/>
-<i>The experiment was organized and recruited with the software hroot (Bock, Nicklisch, Baetge 2012).</i><br/><br/>
-Reference:<br/> 
-Olaf Bock; Andreas Nicklisch; Ingmar Baetge (2012): hroot: Hamburg registration and organization online tool. H-Lab Working Paper No. 1, 2012.<br/><br/>
-Wie kann man hroot erhalten?<br/>
-Um eine Lizenz zu erhalten, kontaktieren Sie bitte: <a href="mailto:olaf.bock@wiso.uni-hamburg.de">olaf.bock@wiso.uni-hamburg.de</a><br/><br/>
-Universität Hamburg<br/>
-Wirtschafts- und Sozialwissenschaften<br/>
-WiSo-Forschungslabor <br/>
-Von-Melle-Park 5 <br/>
-20146 Hamburg <br/>
-Germany<br/>
-Phone: +49 – (0) 40 - 42 83 8 - 37 59<br/>
-<a href="http://www.wiso.uni-hamburg.de/forschung/forschungslabor/experimentallabor/aktuelle-projekte/hroot/">Projektseite von hroot</a><br/><br/>
-Wir benötigen bei Kontaktaufnahme Ihre postalische Adresse, um Ihnen die Vertragsunterlagen zuzusenden, und wir benötigen Ihre E-Mail-Adresse, um Ihnen Informationen zum Download von hroot zur Verfügung zu stellen.<br/><br/> 
-
-Wenn Sie technische Fragen zur Software haben, kontaktieren Sie bitte: <a href="experiments@wiso.uni-hamburg.de">experiments@wiso.uni-hamburg.de</a><br/><br/>
-Verbessungsvorschläge, Anmerkungen und Anregungen: <a href="experiments@wiso.uni-hamburg.de">experiments@wiso.uni-hamburg.de</a> <br/><br/>
-
-Software<br/>
-hroot wurde mit <a href="http://rubyonrails.org">Ruby on Rails.</a> implementiert.<br/><br/>
-
-© 2011-2012 Universität Hamburg 
-'
-    activate:
-      activation: Aktivierung
-      activation_for_experiments: Freischaltung für die Teilnahme an Experimenten
-      activation_info1: Wenn Sie bereits Zugang zum bisherigen System hatten, sind Ihre Daten übertragen worden. Sie können hier Ihren Zugang zum neuen Einladungssystem freischalten.
-      activation_info2: 'Bitte geben Sie die E-Mail-Adresse an, mit der Sie beim bisherigen System angemeldet waren:'
-      send_email: E-Mail zur Freischaltung senden
-  layouts:
-    landing:
-      no_account: Noch kein Zugang? Jetzt anmelden und an Experimenten teilnehmen.
-      register_now: Jetzt registrieren
-      already_registered: Waren Sie bereits im Forschungslabor angemeldet?
-      activate_account: Wenn Sie bereits einen Zugang hatten, sind Ihre Daten bei unserem Systemwechsel übernommen worden. Sie können sich hier Ihren Account freischalten lassen.
-      activate_now: Jetzt freischalten
-      for_registered_users: für bereits registrierte Nutzer
-    info:
-      welcome: Herzlich willkommen im WiSo-Forschungslabor. Wir haben ein neues Rekrutierungs- und Einladungssystem für Experimente. 
-      already_registered: Waren Sie bereits im Forschungslabor angemeldet?
-      activate_account: Wenn Sie bereits einen Zugang hatten, sind Ihre Daten bei unserem Systemwechsel übernommen worden. Sie können sich hier Ihren Account freischalten lassen.
-      activate_now: Jetzt freischalten
-      contact: Kontakt
-      questions: 'Bei Fragen oder Wünschen kontaktieren Sie uns bitte:'
-      for_registered_users: für bereits registrierte Nutzer
+    experiments:
+      organizers: 'Experiment-Organisation:'
+      no_sessions: keine Sessions
+      assigned_participants: Zugeordnete Teilnehmer
+      
+      
+      
+  
+  sessions:
+    new_session_link: Neue Session anlegen
+    back_link: Zurück zur Session-Übersicht
+    session: Session
+    following_session: Folgesession
+    line:
+      participants_label: 'Teilnehmer:'
+      participants_link: 'Teilnehmer'
+      incomplete: Teilnahmeliste noch nicht vollständig
+      actions: Aktionen
+      following_session: Folgesession
+      duplicate: Duplizieren
+      delete: Löschen
+      group_size: 'Gruppengröße:'
+      delete_confirm: Soll diese Session wirklich gelöscht werden?
+    session_participants:
+      header: Session am
+      print: Drucken
+      send_to_all: Nachricht an alle Session-Teilnehmer
+      send_to_all_recipient: Alle Sessionteilnehmer
+      send_to_marked: Nachricht an alle markierten Teilnehmer
+      send_to_marked_recipient: Markierte Sessionteilnehmer
+      message_subject: "Experiment-Session am %{date}"
+      remove_marked: Markierte Teilnehmer aus dieser Session austragen.
+      marked: Markierte Teilnehmer
+      move_marked1: Markierte Teilnehmer in Session
+      move_marked2: verschieben  
+      save_changes_now: Änderungen jetzt speichern
+      no_participants: Diese Session hat keine Teilnehmer
+    new:
+      new_label1: Neue
+      new_label2: anlegen
+    edit:
+      at_label: am
+    tabs:
+      reminders: Session-Erinnerung
+      common_data: Allgemeine Daten
+    form:
+      new_session: Session anlegen
+      save_session: Session speichern
+      limitations_hint: Dieser Text wird dem Teilnehmer bei Anmeldung angezeigt.
+      minutes: Minuten
+    overlaps:
+      with: Überschneidung mit
+    
+  participants:
+    manage:
+      submit: Suche ausführen und Ergebnis aktualisieren
+      showing: "Zeige <b>%{count}</b> von <b>%{total}</b> Nutzern, <b>%{participants}</b> bereits zugeordnet"
+      add_all: Alle Poolmitglieder der aktuellen Filterung zuordnen
+      add_marked: Markierte Poolmitglieder zuordnen
+      none_found: Kein Poolmitglied gefunden
+      none_found_reason: Entweder wurden bereits alle Poolmitglieder zugeordnet, oder die Filtereinstellungen müssen geändert werden.
+      add_participants: Teilnehmer zuordnen
+      add_new_participants: Neue Teilnehmer zuordnen
+    index:
+      already_added_users: Bereits zugeordnete Teilnehmer  
+    participants:
+      submit: Suche ausführen und Ergebnis aktualisieren
+      showing: "Zeige <b>%{count}</b> von <b>%{total}</b> Nutzern"
+      current_result: Aktuelles Suchergebnis
+      marked_participants: Markierte Teilnehmer
+      remove_searched: Alle Teilnehmer der aktuellen Filterung aus dem Experiment austragen
+      remove_searched_confirm: Sind Sie sicher, dass alle Teilnehmer der aktuellen Filterung aus dem Experiment entfernt werden sollen?
+      remove_marked: Alle markierten Teilnehmer aus dem Experiment austragen.
+      remove_marked_confirm: Sind Sie sicher, dass alle markierten Teilnehmer aus dem Experiment entfernt werden sollen?
+      move_marked1: Markierte Teilnehmer in Session todo better translation
+      move_marked2: verschieben
+      none_found: Kein Poolmitglied gefunden
+      none_found_reason: Entweder wurden bereits alle Poolmitglieder zugeordnet, oder die Filtereinstellungen müssen geändert werden.
+      message_all_searched: Nachricht an alle Teilnehmer der aktuellen Suche
+      to_all_searched: Alle Teilnehmer der aktuellen Suche
+      message_all_marked: Nachricht an alle markierten Teilnehmer
+      to_all_marked: Markierte Teilnehmer
+      print: Drucken
+    
   search:    
     selections:
-      at_least: Mindestens
-      at_most: Höchstens
-      only: Nur
-      without: Ohne
-      experiments:
-        choice1: die zu einem der folgenden Experimente zugeordnet sind
-        choice2: die zu allen der folgenden Experimente zugeordnet sind
-        choice3: die zu keinem der folgenden Experimente zugeordnet sind
-        choice4: die an mindestens einer Session eines der folgenden Experimente teilgenommen haben
-        choice5: die an mindestens einer Session von jedem der folgenden Experimente teilgenommen haben
-        choice6: die an keiner Session der folgenden Experimente teilgenommen haben    
       participation:
         choice1: Nur Zugeordnete, die teilgenommen haben
         choice2: Nur Zugeordnete, die bereits in eine Session eingetragen sind
         choice3: Nur Zugeordnete ohne Session
         choice4: Nur Zugeordnete in Sessions, die noch nicht vorbei sind  
-      gender:
-        male: männlich
-        female: weiblich
-        no_info: Keine Angabe
       role:
         user: Benutzer
         experimenter: Experimentatoren
         admin: Administratoren
-      experience:
-        no_experience: Ohne Teilnehmer mit externer Experimenterfahrung
-        experience: Nur Teilnehmer mit externer Experimenterfahrung
-      preference:
-        only_with_presence_preference: Nur Teilnehmer, die an Präsenz-Experimenten teilnehmen wollen
-        only_with_online_preference: Nur Teilnehmer, die an Online-Experimenten teilnehmen wollen
       deleted:
         hide_deleted: verstecken
         show_deleted: anzeigen
     links:
       fulltext: Volltextsuche
-      gender: Geschlecht  
-      preference: Experiment-Präferenz
       role: Rolle
       noshow_count: Nichterscheinen
       participations_count: Teilnahmen
-      begin_of_studies: Studienbeginn
-      birthday: Alter
-      experience: Erfahrung
-      country_name: Länder
-      language: Sprachen
       tags: Tags
       participation: Sessionteilnahme
       experiments: Experimente
       deleted: Gelöschte Benutzer
+    
+    
+    
     titles:
       fulltext: "Suche in Name, E-Mail: "
-      gender: Geschlecht  
-      preference: Experiment-Präferenz
       role: "Nur Teilnehmer mit der folgenden Rolle anzeigen:"
       noshow_count: Nichterscheinen
       participations_count: Teilnahmen
-      begin_of_studies: Studienbeginn
-      birthday: Alter
-      experience: Erfahrung
-      study_id: "Teilnehmer aus folgenden Studienfächern:"
-      country_name: "Nur Teilnehmer aus folgenden Ländern:"
-      degree_id: "Teilnehmer mit folgenden Abschlüssen:"
-      language: "Teilnehmer mit Kenntnissen in einer der folgenden Sprachen:"
       tags: 'Nur Teilnehmer mit folgenden Teilnahmen an Sessions von Experimenten mit Tags:'
       tags2: mal an einer Session eines Experiments mit Tag
       tags3: teilgenommen
+      experiments: "Teilnehmer, todo check this"
       participation: Sessionteilnahme
       deleted: Gelöschte Benutzer
-      experiments: "Teilnehmer, "
+      
+      
     hints:
-      gender: Geschlecht...
-      role: Rolle...
-      degree_id: Abschlüsse...
-      country_name: Länder... 
-      study_id: Fächer...      
-      experience: Erfahrung...
-      preference: Präferenz   
-      language: Sprachen...
       tags: Tag...
-      deleted: Gelöschte
       experiments: Experimente...
-      participation: Sessionteilnahme
+    
+  usertable:
+    fullname: Name
+    email: E-Mail
+    role: Rolle  
+    created_at: Anmeld.
+    session: Session
+    form_fields:
+    counter:
+  modal:
+    send_message: Absenden
+    close: Schliessen
+    subject: Betreff
+    to: An
+    send: Senden
+  
+  popup:
+    noshow_count: Anzahl Nichterscheinen
+    participations_count: Anzahl Teilnahmen
+    inactive_after_import: Benutzer wurde nach dem Import noch nicht aktiviert
+
   filter:
-    search_text: 'Suche in Name, Vorname, E-Mail-Adresse:'
-    header: 'Filter:'
-    gender: Geschlecht
-    noshow: Nichterscheinen
-    participated: Teilnahmen
-    begin: Studienbeginn
-    birthday: Alter
-    experience: Erfahrung
-    study: Fächer
-    role: Rolle
-    degree: Abschlüsse
-    language: Sprachen
-    tags: Tags
-    experiment: Experimente
-    participation: Sessionteilnahme
-    preference: Experiment-Präferenz
-    show_deleted: Gelöschte Benutzer
-    country: Länder
-
-    
-    title_sessions_with_tags1: 'Nur Teilnehmer mit folgenden Teilnahmen an Sessions von Experimenten mit Tags:'
-    title_sessions_with_tags2: mal an einer Session eines Experiments mit Tag
-    title_sessions_with_tags3: teilgenommen
-    title_study: 'Teilnehmer aus folgenden Studienfächern:'
-    title_role: 'Rolle:'
-    title_preference: Experiment_Präferenz
-    title_participation_count: Anzahl Teilnahmen
-    title_noshow_count: Anzahl Nichterscheinen
-    title_language: 'Nur Teilnehmer mit Kenntnissen in einer der folgenden Sprachen:'
-    title_gender: 'Geschlecht:'
-    title_experience: 'Externe Experimenterfahrung:'
-    title_experiment: 'Teilnehmer,'
-    title_degrees: 'Teilnehmer mit folgenden Abschlüssen:' 
-    title_birthday: Geburtstag
-    title_begin: Studienbeginn
-    title_deleted: Gelöschte Benutzer
-    title_country: 'Nur Teilnehmer aus folgenden Ländern:'
-    title_custom_field_string: Feld %{field} enthält 
-    title_custom_field_int: Wert des Feldes
-    title_custom_field_date: "%{field} liegt in folgendem Datumsbereich"
-    title_custom_field_selection: Teilnehmer mit den folgenden Werten im Feld
-    hint_studies: Studienfächer...
-    hint_languages: Sprachen...
-    hint_experiment: Experimente...
-    hint_degrees: Abschlüsse...
-    hint_countries: Länder...
-    
-    at_least: Mindestens
-    at_most: Höchstens
-    only: Nur
-    without: Ohne
-    from: von
-    to: bis
-    only_with_presence_preference: Nur Teilnehmer, die an Präsenz-Experimenten teilnehmen wollen
-    only_with_online_preference: Nur Teilnehmer, die an Online-Experimenten teilnehmen wollen
-    participation_select1: Nur Zugeordnete, die teilgenommen haben
-    participation_select2: Nur Zugeordnete, die bereits in eine Session eingetragen sind
-    participation_select3: Nur Zugeordnete ohne Session
-    participation_select4: Nur Zugeordnete in Sessions, die noch nicht vorbei sind
-    experience_select1: Ohne Teilnehmer, die bereits externe Experimenterfahrung haben
-    experience_select2: Nur Teilnehmer, die bereits externe Experimenterfahrung haben
+    from: von todo filter raus
+    to: bis todo filter raus
       
-    experiment_select1: die zu einem der folgenden Experimente zugeordnet sind
-    experiment_select2: die zu allen der folgenden Experimente zugeordnet sind
-    experiment_select3: die zu keinem der folgenden Experimente zugeordnet sind
-    experiment_select4: die an mindestens einer Session eines der folgenden Experimente teilgenommen haben
-    experiment_select5: die an mindestens einer Session von jedem der folgenden Experimente teilgenommen haben
-    experiment_select6: die an keiner Session der folgenden Experimente teilgenommen haben
-    
-    deleted_hidden: verstecken
-    deleted_show: anzeigen
-      
-  filter_summary:
-    header_time: Zeit
-    header_action: Aktion
-    header_filter: Filterkriterien
-    add_text: "%{count} Teilnehmer hinzugefügt"
-    remove_text: "%{count} Teilnehmer entfernt"
-    search: Suche nach
-    gender: Geschlecht
-    preference: Präferenz
-    only_with_online_preference: Nur Online-Experimente
-    only_with_presence_preference: Nur Präsenz-Experimente
-    noshow_count: Nicht erschienen
-    participation_count: Teilnahmen
-    begin_after: Studienbeginn nach
-    begin_before: Studienbeginn vor
-    birthday_after: Geburtsdatum nach
-    birthday_before: Geburtsdatum vor
-    and: und
-    without_experienced: Nutzer mit Experimenterfahrung ausschliessen
-    with_experienced: Nur Nutzer mit Experimenterfahrung
-    study: 'Nutzer aus folgenden Studiengängen: '
-    not_study: 'Keine Nutzer aus folgenden Studiengängen: '
-    degree: 'Nutzer mit folgenden Abschlusszielen: '
-    not_degree: 'Keine Nutzer mit folgenden Abschlusszielen: '
-    exp1: "Einem der folgenden zugewiesen: "
-    exp2: "Allen der folgenden zugewiesen: "
-    exp3: "Keinem der folgenden zugewiesen: "
-    exp4: "An einem der folgenden teilgenommen: "
-    exp5: "An allen der folgenden teilgenommen: "
-    exp6: "An keinem der folgenden teilgenommen: "
-    language: 'Sprachen: '
-    country: 'Länder: ' 
-    
-  participants:
-    print:
-      header: Experiment
-      filter_settings: Filtereinstellungen
-      study: Studiengang
-          
-    history:
-      history_title: Verlauf der Teilnehmerzuordnung
-      breadcrumb_history: Verlauf der Teilnehmerzuordnung
-      no_history: Es wurden keine Zuordnungsschritte gespeichert
-
-    manage:
-      submit: Suche ausführen und Ergebnis aktualisieren
-      showing: "Zeige <b>%{count}</b> von <b>%{total}</b> Nutzern, <b>%{participants}</b> bereits zugeordnet"
-      study: Fach
-      add_all: Alle Poolmitglieder der aktuellen Filterung zuordnen
-      add_marked: Markierte Poolmitglieder zuordnen
-    
-      none_found: Kein Poolmitglied gefunden
-      none_found_reason: Entweder wurden bereits alle Poolmitglieder zugeordnet, oder die Filtereinstellungen müssen geändert werden.
-      add_participants: Teilnehmer zuordnen
-      add_new_participants: Neue Teilnehmer zuordnen
-      
-    participants:
-      submit: Suche ausführen und Ergebnis aktualisieren
-      showing: "Zeige <b>%{count}</b> von <b>%{total}</b> Nutzern"
-      
-      
-      current_result: Aktuelles Suchergebnis
-      marked_participants: Markierte Teilnehmer
-    
-      study: Fach
-      message_all_searched: Nachricht an alle Teilnehmer der aktuellen Filterung
-      to_all_searched: Alle Teilnehmer der aktuellen Filterung
-      remove_searched: Alle Teilnehmer der aktuellen Filterung aus dem Experiment austragen
-      remove_searched_confirm: Sind Sie sicher, dass alle Teilnehmer der aktuellen Filterung aus dem Experiment entfernt werden sollen?
-    
-      message_all_marked: Nachricht an alle markierten Teilnehmer
-      to_all_marked: Markierte Teilnehmer
-      remove_marked: Alle markierten Teilnehmer aus dem Experiment austragen.
-      remove_marked_confirm: Sind Sie sicher, dass alle markierten Teilnehmer aus dem Experiment entfernt werden sollen?
-      move_marked1: Markierte Teilnehmer in Session
-      move_marked2: verschieben
-    
-      none_found: Kein Poolmitglied gefunden
-      none_found_reason: Entweder wurden bereits alle Poolmitglieder zugeordnet, oder die Filtereinstellungen müssen geändert werden.
-    index:
-      already_added_users: Bereits zugeordnete Teilnehmer
   shared:
     text_templates_items:
       save: Text speichern    
@@ -600,228 +335,136 @@ hroot wurde mit <a href="http://rubyonrails.org">Ruby on Rails.</a> implementier
       insert_reminder: Standard-Erinnerungstext einfügen
       send_button: Nachricht senden
       abort_button: Abbrechen
-  sessions:
-    new_session_link: Neue Session anlegen
-    back_link: Zurück zur Session-Übersicht
-    session: Session
-    following_session: Folgesession
-    reminders:
-      session_at: Session am
-      email_title: E-Mail zur Erinnerung für diese Session
-      activate_sending: automatischen Erinnerungsversand für diese Session aktivieren
-      sending_label1: Der Versand der Erinnerungen soll
-      sending_label2: Stunden vor dem Beginn der jeweiligen Session erfolgen.
-      reminder_text: Erinnerungstext
-    print:
-      header: Session am
-      lastname: Name
-      firstname: Vorname
-      phone: Telefon
-      gender: G.
-      showup: E
-      participated: T
-      noshow: N
-    new:
-      new_label1: Neue
-      new_label2: anlegen
-    edit:
-      at_label: am
-    tabs:
-      reminders: Session-Erinnerung
-      common_data: Allgemeine Daten
-    session_participants:
-      header: Session am
-      print: Drucken
-      send_to_all: Nachricht an alle Session-Teilnehmer
-      send_to_all_recipient: Alle Sessionteilnehmer
-      send_to_marked: Nachricht an alle markierten Teilnehmer
-      send_to_marked_recipient: Markierte Sessionteilnehmer
-      message_subject: "Experiment-Session am %{date}"
-      remove_marked: Markierte Teilnehmer aus dieser Session austragen.
-      marked: Markierte Teilnehmer
-      move_marked1: Markierte Teilnehmer in Session
-      move_marked2: verschieben
-      
-      
-      
-      th_name: Name
-      th_email: E-Mail
-      th_study: Fach
-      th_gender: Gesch.
-      th_begin: Beginn
-      save_changes_now: Änderungen jetzt speichern
-      no_participants: Diese Session hat keine Teilnehmer
-    overlaps:
-      with: Überschneidung mit
-    line:
-      participants_label: 'Teilnehmer:'
-      participants_link: 'Teilnehmer'
-      incomplete: Teilnahmeliste noch nicht vollständig
-      actions: Aktionen
-      following_session: Folgesession
-      duplicate: Duplizieren
-      delete: Löschen
-      group_size: 'Gruppengröße:'
-      delete_confirm: Soll diese Session wirklich gelöscht werden?
-    form:
-      new_session: Session anlegen
-      save_session: Session speichern
-      limitations_hint: Dieser Text wird dem Teilnehmer bei Anmeldung angezeigt.
-      minutes: Minuten
+  
+  roles:
+    user: 'Poolmitglied'
+    admin: 'Administrator'
+    
   users:
-    print:
-      role: Rolle
-      study: Fach
-      gender: 'G.'
-      begin: Beginn
-      created_at: 'Anmeld.'
-      no_users: Kein User gefunden
-      header: Nutzerliste
-
-    users:
-      current_result: Aktuelles Suchergebnis
-      submit: Suche ausführen und Ergebnis aktualisieren
-      showing: "Zeige <b>%{count}</b> von <b>%{total}</b> Nutzern"
-      print: Druckansicht
-      no_users: Mit den aktuellen Sucheinstellungen wurden keine Benutzer gefunden
-      message_all_searched: Nachricht an alle Teilnehmer der aktuellen Suche
-      store_current_search: Aktuelle Suche als Standardsuche festlegen
-      message_all_marked: Allen markierten Teilnehmern eine Nachricht senden
-      to_all_marked: Alle markierten Teilnehmer
-      to_all_searched: Alle Teilnehmer der aktuellen Suche
-      remove_searched: Alle Teilnehmer der aktuellen Suche aus dem Experiment austragen
-      remove_searched_confirm: Sind Sie sicher, dass alle Teilnehmer der aktuellen Filterung aus dem Experiment entfernt werden sollen?
-      role: Rolle
-      study: Studiengang
-      gender: Geschlecht
-      begin: Studienbeginn
-      created_at: Anmeld.
-      marked_users: Markierte Benutzer
-      fullname: Name
-      email: E-Mail
-      
     edit:
       edit_user: '%{name} bearbeiten'
     index:
       new_user: Neuer Benutzer
+    users:
+      submit: Suche ausführen und Ergebnis aktualisieren
+      showing: "Zeige <b>%{count}</b> von <b>%{total}</b> Nutzern"
+      print: Druckansicht
+      current_result: Aktuelles Suchergebnis
+      to_all_marked: Alle markierten Teilnehmer
+      to_all_searched: Alle Teilnehmer der aktuellen Suche
+      message_all_searched: Nachricht an alle Teilnehmer der aktuellen Suche
+      store_current_search: Aktuelle Suche als Standardsuche festlegen
+      message_all_marked: Allen markierten Teilnehmern eine Nachricht senden
+      marked_users: Markierte Benutzer
+      no_users: Mit den aktuellen Sucheinstellungen wurden keine Benutzer gefunden
     new:
       create_new_user: Neuen Benutzer anlegen
-    show:
-      more_functions: Weitere Funktionen
-      activate_user_after_import: User nach Import aktivieren
-      not_activated: nicht aktiviert nach Import
-      marked_as_deleted: als gelöscht markiert
-      login_as: 'Als %{user} einloggen'
-          
-      gender: Geschlecht
-      phone: Telefon
-      matrikel: Matrikelnummer
-      role: Rolle
-      study: Studiengang
-      degree: Abschluss(-ziel)
-      begin: Studienbeginn
-      country: Land
-      languages: Sprachkenntnisse
-      profession: Beruf
-      secondary_email: Alternative E-Mail
-        
-      participations_so_far: 'Bisherige Experimentteilnahmen:'
-      showup: Erschienen
-      noshow: Nicht erschienen
-      participated: Teilgenommen
-      
-      remove_from_session: Austragen
-      remove_from_session_confirm: Sind Sie sicher, dass der Benutzer aus dieser Session ausgetragen werden soll?
-      
-      optional_fields: Optionale Felder
-      required_fields: Pflichtfelder
-      account: Accountdaten
-      general: Allgemeine Daten
     form:
       optional_fields: Optionale Felder
       required_fields: Pflichtfelder
       account: Accountdaten
       general: Allgemeine Daten
+    show:
+      more_functions: Weitere Funktionen
+      activate_user_after_import: User nach Import aktivieren
+      login_as: 'Als %{user} einloggen'
+      account: Accountdaten
+      general: Allgemeine Daten
+      optional_fields: Optionale Felder
+      required_fields: Pflichtfelder
+      participations_so_far: 'Bisherige Experimentteilnahmen:'
+      remove_from_session: Austragen
+      remove_from_session_confirm: Sind Sie sicher, dass der Benutzer aus dieser Session ausgetragen werden soll?
+      showup: Erschienen
+      participated: Teilgenommen
+      noshow: Nicht erschienen
       
-      
+  account:
+    tabs:
+      overview: Datenübersicht
+      password: Passwort
+      alternative_email: Alternative E-Mail
+      phone: Telefonnummer
+    data:
+      overview: Datenübersicht
+      data_stored_text: Folgende Daten sind bei hroot gespeichert, bitte wenden Sie sich zu Datenänderungen an die Laborleitung.
+      optional_fields: Optionale Felder
+      required_fields: Pflichtfelder
+      account: Accountdaten
+      general: Allgemeine Daten
+    alternative_email:
+      alternative_email: Alternative E-Mail
+      alternative_email_text: Hier können Sie eine zweite E-Mail-Adresse konfigurieren, an die Sie Einladungen und Informationen zu den Experimenten gesendet bekommen. Zur Einloggen nutzen Sie bitte weiterhin Ihre primäre E-Mail-Adresse.
+      save_alternative_email: Alternative E-Mail speichern
+      your_current_alternative_email: Ihre alternative E-Mail-Adresse 
+      was_confirmed: wurde bestätigt und wird jetzt verwendet.
+      was_not_confirmed: ist derzeit noch nicht bestätigt. Es wurde Ihnen eine E-Mail mit einem Link zur Bestätigung Ihrer alternativen E-Mail-Adresse zugesendet.
+      delete_alternative_email: Alternative E-Mail löschen
+      confirm_delete_alternative_email: Sind Sie sicher, dass Sie Ihre alternative E-Mail-Adresse löschen möchten?
+      resend_confirmation_mail: Bestätigungsemail erneut senden
+    phone:
+      phone_number: Telefonnummer
+      phone_number_text: Die Angabe Ihrer Telefonnummer ist freiwillig. Wenn Sie Ihre Telefonnummer angeben, können wir Sie bei kurzfristigen Terminveränderungen schnell erreichen.
+      save_phone_number: Telefonnummer speichern
+  
+  user_mailer:
+    subject_secondary_email_confirmation: "Bestätigung der alternativen E-Mail-Adresse"
+    subject_import_email_confirmation: "hroot-Anmeldung: Bestätigung der neuen E-Mail-Adresse"
+    subject_import_email_activation: "hroot: Freischaltung für die Teilnahme an Experimenten"
+   
   devise:
-    confirmations:
-      new:
-        resend_email: E-Mail zur Registrierung erneut senden 
-        email_for_registration: E-Mail zur Registrierung
-        resend: erneut senden
-        resend_link: E-Mail erneut senden
-    passwords:
-      new:
-        breadcrumb_forgot_password: Passwort vergessen
-        forgot_password: Passwort vergessen?
-        forgot_link: E-Mail für Passwortänderung senden
-      edit:
-        breadcrumb_forgot_password: Password vergessen
-        change_password: Passwort ändern
-        password_hint: mindestens 8 Zeichen, mindestens eine Zahl, ein Buchstabe, ein Sonderzeichen
-        change_password_link: Passwort ändern
     shared:
       links:
         login: Login
         register: Registrierung
         forgot_password: Passwort vergessen?
         no_email: E-Mail zur Registrierung nicht erhalten?
+      
     sessions:
+      signed_in: 'Erfolgreich angemeldet.'
+      signed_out: 'Erfolgreich abgemeldet.'
       new:
         breadcrumb_login: Login
         login: Login
         for_registered_users: für bereits registrierte Nutzer
         login_link: Login
+    
+    failure:
+      already_authenticated: 'Sie sind bereits angemeldet.'
+      unauthenticated: 'Sie müssen sich anmelden oder registrieren, bevor Sie sich anmelden können.'
+      unconfirmed: 'Sie müssen Ihren Zugang bestätigen, bevor Sie sich anmelden können.'
+      locked: 'Ihr Zugang ist gesperrt.'
+      invalid: 'Ungültige Logindaten.'
+      invalid_token: 'Kein gültiges Authentifizierungstoken.'
+      timeout: 'Ihre Sitzung ist abgelaufen, bitte melden Sie sich erneut an.'
+      inactive: 'Ihr Zugang ist nicht aktiv.'
+     
     registrations:
-      new:
-        breadcrumb_register: Registrierung
-        register: Registrierung
-        enter_email: "Bitte geben Sie Ihre E-Mail-Adresse und ein Passwort an - diese Daten dienen als Zugangsdaten. Das Passwort muss mindestens 8 Zeichen lang sein und einen Buchstaben, eine Zahl und ein Sonderzeichen enthalten."
-        password_hint: mindestens 8 Zeichen, mindestens eine Zahl, ein Buchstabe, ein Sonderzeichen
-        please_provide_data: 'Bitte geben Sie folgende Daten an:'
-        optional_data: Die folgenden Felder sind optional. Je mehr dieser Felder Sie jedoch ausfüllen, umso höher ist die Wahrscheinlichkeit, dass wir Sie zu bestimmten Experimenten einladen.
-        phone_hint: "Eine Angabe erlaubt es uns, Sie schnell zu erreichen, wenn z.B. ein Experiment abgesagt werden muss."
-        experience: Ich habe bereits an wirtschaftswissenschaftlichen Experimenten teilgenommen.
-        terms_and_conditions: Ich habe die Nutzerbedingungen gelesen und bin damit einverstanden.
-        send_link: Anmeldung absenden
       edit:
         change_password: Passwort ändern
         change_password_link: Passwort ändern
         label_new_password: Neues Passwort
         label_new_password_confirm: Bitte bestätigen Sie das neue Passwort
 
-        please_confirm_password: 'Bitte geben Sie das aktuelle Passwort zur Bestätigung ein:'
-  options:
-    tabs:
-      general: Allgemein
-      rooms: Räume
-      emails: E-Mails
-      professions: Berufe
-      languages: Sprachen
-      studies: Studiengänge
-      degrees: Abschlüsse
-      texts: Texte
-    texts:
-      privacy_header: Text der Datenschutzvereinbarung
-      privacy_info: Hier kann der Text festgelegt werden, der für die Datenschutzvereinbarung von neuen Teilnehmern akzeptiert werden muss.      
+        please_confirm_password: 'Bitte geben Sie das aktuelle Passwort zur Bestätigung ein:' 
+      user:
+        updated: 'Ihr Passwort wurde geändert. Sie sind angemeldet.'    
+        
+    home:
+      activate:
+        activation: Aktivierung
+        activation_for_experiments: Freischaltung für die Teilnahme an Experimenten
+        activation_info1: Wenn Sie bereits Zugang zum bisherigen System hatten, sind Ihre Daten übertragen worden. Sie können hier Ihren Zugang zum neuen Einladungssystem freischalten.
+        activation_info2: 'Bitte geben Sie die E-Mail-Adresse an, mit der Sie beim bisherigen System angemeldet waren:'
+        send_email: E-Mail zur Freischaltung senden
+        
+  popup:  
+    showup: Erschienen
+    participated: Teilgenommen
+    noshow: Nicht erschienen
+    user_was_invited: Benutzer wurde eingeladen  
+    user_was_reminded: Benutzer wurde erinnert
   
-      welcome_header: Begrüßungstext für Teilnehmer nach Login
-      welcome_info: Der folgende Text wird den Teilnehmern nach dem Login angezeigt  
-      
-      credits_header: Impressum und Kontakt
-      credits_info: Der folgende Text wird auf der Seite Impressum und Kontakt angezeigt. Es darf HTML genutzt werden.       
-      submit_link: Texte speichern
-    index:
-      email_formats_header: Gültige E-Mail-Formate
-      email_formats_info: Hier kann festgelegt werden, welche E-Mail-Formate bei der Registrierung gültig sind. Dabei kann ein Prefix gefordert werden (ein Substring vor dem @-Zeichen), und es kann definiert werden, welche Domain die Adressen haben müssen.  
-    emails:
-      header1: E-Mail zur Experiment-Einladung
-      header2: E-Mail zur Anmeldebestätigung
-      header3: E-Mail zur Session-Erinnerung
-      header4: E-Mail zur Erinnerung des Sessionabschluss
-      header5: E-Mail zur Aktivierungseinladung nach dem Import
-      text: E-Mail-Text
   controllers:
     notice_saved_changes: Die Änderungen wurden gespeichert.
     account:
@@ -842,8 +485,7 @@ hroot wurde mit <a href="http://rubyonrails.org">Ruby on Rails.</a> implementier
       notice_location_created: Der Raum wurde angelegt.
       notice_location_changed: Der Raum wurde geändert.
       notice_location_deleted: Der Raum wurde gelöscht.
-      notice_location_not_deleted: Der Raum kann nicht gelöscht werden, da Sessions für diesen Raum eingetragen sind.
-      
+      notice_location_not_deleted: Der Raum kann nicht gelöscht werden, da Sessions für diesen Raum eingetragen sind.    
     degree:
       notice_degree_created: Das Abschlussziel wurde angelegt.
       notice_degree_changed: Das Abschlussziel wurde geändert.
@@ -894,7 +536,43 @@ hroot wurde mit <a href="http://rubyonrails.org">Ruby on Rails.</a> implementier
       notice_activated_after_import: Der Benutzer wurde nach dem Import freigeschaltet.
       notice_removed_from_session: Der Benutzer wurde aus der Session entfernt.
       notice_filter_stored: Die aktuellen Filtereinstellungen wurden als Standardeinstellungen gespeichert.
-      
-         
+        
+        
     
+  home:
+    about:
+      legal_notes: Haftungsausschluss
+      software: Entwicklerteam und Software
+      software_html: '
+  <h3>Lizenz</h3>
+  Diese Software kann kostenfrei lizensiert werden.<br/> 
+  Wenn Sie Ergebnisse von Experimenten berichten, die mit hroot durchgeführt wurden, dann sind Sie durch die Lizenz verpflichtet, die folgende Veröffentlichung zu zitieren:<br/><br/>
+  Die korrekte Zitation:<br/>
+  <i>The experiment was organized and recruited with the software hroot (Bock, Nicklisch, Baetge 2012).</i><br/><br/>
+  Reference:<br/> 
+  Olaf Bock; Andreas Nicklisch; Ingmar Baetge (2012): hroot: Hamburg registration and organization online tool. H-Lab Working Paper No. 1, 2012.<br/><br/>
+  Wie kann man hroot erhalten?<br/>
+  Um eine Lizenz zu erhalten, kontaktieren Sie bitte: <a href="mailto:olaf.bock@wiso.uni-hamburg.de">olaf.bock@wiso.uni-hamburg.de</a><br/><br/>
+  Universität Hamburg<br/>
+  Wirtschafts- und Sozialwissenschaften<br/>
+  WiSo-Forschungslabor <br/>
+  Von-Melle-Park 5 <br/>
+  20146 Hamburg <br/>
+  Germany<br/>
+  Phone: +49 – (0) 40 - 42 83 8 - 37 59<br/>
+  <a href="http://www.wiso.uni-hamburg.de/forschung/forschungslabor/experimentallabor/aktuelle-projekte/hroot/">Projektseite von hroot</a><br/><br/>
+  Wir benötigen bei Kontaktaufnahme Ihre postalische Adresse, um Ihnen die Vertragsunterlagen zuzusenden, und wir benötigen Ihre E-Mail-Adresse, um Ihnen Informationen zum Download von hroot zur Verfügung zu stellen.<br/><br/> 
+
+  Wenn Sie technische Fragen zur Software haben, kontaktieren Sie bitte: <a href="experiments@wiso.uni-hamburg.de">experiments@wiso.uni-hamburg.de</a><br/><br/>
+  Verbessungsvorschläge, Anmerkungen und Anregungen: <a href="experiments@wiso.uni-hamburg.de">experiments@wiso.uni-hamburg.de</a> <br/><br/>
+
+  Software<br/>
+  hroot wurde mit <a href="http://rubyonrails.org">Ruby on Rails.</a> implementiert.<br/><br/>
+
+  © 2011-2012 Universität Hamburg 
+  '    
     
+  
+  
+  
+  

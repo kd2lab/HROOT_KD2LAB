@@ -3,12 +3,28 @@ de:
     hints:
       course_of_studies: Studiengänge
       degree: Abschlüsse
+      country_name: Land
+      language: Sprache
     titles:
       course_of_studies: Studiengänge  
       degree: Abschlüsse
+      gender: Geschlecht
+      begin_of_studies: Studienbeginn
+      birthday: Geburtstag
+      preference: Präferenz
+      country_name: Land
+      language: Sprachen
+      experience: Erfahrung
     links:
       course_of_studies: Studiengänge  
       degree: Abschlüsse
+      gender: Geschlecht
+      begin_of_studies: Studienbeginn
+      birthday: Geburtstag
+      preference: Präferenz
+      country_name: Land
+      language: Sprachen
+      experience: Erfahrung
   activerecord:
     attributes:
       user:
@@ -23,8 +39,7 @@ de:
         gender: Geschlecht
         birthday: Geburtstag
         preference: Interesse an
-        experience: Experimenterfahrung
-  
+        experience: Experimenterfahrung  
   hints:
     phone: "Eine Angabe erlaubt es uns, Sie schnell zu erreichen, wenn z.B. ein Experiment abgesagt werden muss."      
   customfields:
@@ -71,7 +86,7 @@ de:
       value22: Rechtswissenschaft
       value23: Informatik
       value24: Wirtschaftsinformatik
-      value25: FranzÃ¶sisch
+      value25: Französisch
       value26: Kunstgeschichte
       value27: Mathematik
       value28: Medien- und Kommunikationswissenschaft
@@ -106,13 +121,13 @@ de:
       value57: Islamwissenschaft
       value58: Journalistik
       value59: Human Resource Management
-      value61: Politics, Economics & Philosophy
+      value61: "Politics, Economics & Philosophy"
       value62: Afrikanische Sprachen im Kontext
       value63: Afrikanische Sprachen und Kulturen
       value64: Afrikanische Sprachwissenschaft 
       value65: Althebraistik
       value66: Angewandte und Molekulare Biologie der Pflanzen
-      value67: Arbeit, Wirtschaft, Gesellschaft
+      value67: "Arbeit, Wirtschaft, Gesellschaft"
       value68: Arbeits- und Sozialmanagement
       value69: ArchÃ¤ologie und Kulturgeschichte des antiken Mittelmeerraumes
       value70: BehindertenpÃ¤dagogik
@@ -204,7 +219,7 @@ de:
       value156: Uralische Sprachen und Kulturen
       value157: Versicherungsrecht
       value158: Volkskunde / Kulturanthropologie
-      value159: Vor- und FrÃ¼hgeschichtliche ArchÃ¤ologie
+      value159: Vor- und Frühgeschichtliche Archäologie
       value160: Weiterbildender Masterstudiengang Kriminologie
       value161: Medienmanagement
       value162: Soziale Arbeit

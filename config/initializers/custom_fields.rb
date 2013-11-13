@@ -43,10 +43,10 @@ country_names = ["Afghanistan", "Aland Islands", "Albania", "Algeria", "American
 
 CUSTOM_FIELDS = CustomFieldManager.setup do
   selection :gender, :db_values => ['m', 'f']
-  date :birthday
+  date :birthday, :required => false
   text :matrikel
-  selection :country_name, :db_values => country_names, :translate => false, :filter_search_multiple => true
-  selection :preference, :db_values => [0,1,2]
+  selection :country_name, :db_values => country_names, :translate => false, :filter_search_multiple => true, :required => false
+  selection :preference, :db_values => [0,1,2], :required => false
   
   text :phone, :required => false, :hint => true
   date :begin_of_studies, :restrict_to_months => true, :required => false

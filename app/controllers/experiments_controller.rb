@@ -166,4 +166,90 @@ class ExperimentsController < ApplicationController
     redirect_to :action => 'invitation'
   end
   
+  def files
+    
+  end
+  
+  def filelist
+    # todo make this configurable
+    dirname = File.dirname(Rails.root.join('uploads', 'experiments', @experiment.id.to_s, 'some_file_name'))
+    unless File.directory?(dirname)
+      FileUtils.mkdir_p(dirname)
+    end
+    
+    Dir.chdir(dirname);
+    
+    result = '<ul class="jqueryFileTree" style="display: none;">'
+    
+		#loop through all directories
+		Dir.glob("*") {
+			|x|
+			if not File.directory?(x.untaint) then next end 
+			result+= "<li class=\"directory collapsed\"><a href=\"#\" rel=\"#{dirname}#{x}/\">#{x}</a></li>";
+		}
+
+		#loop through all files
+		Dir.glob("*") {
+			|x|
+			if not File.file?(x.untaint) then next end 
+			ext = File.extname(x)[1..-1]
+			result += "<li class=\"file ext_#{ext}\"><a href=\"#\" rel=\"#{dirname}#{x}\">#{x}</a></li>"
+		}
+    
+    result += "</ul>"
+    
+    render :text => result
+  end  
+  
+  def upload_via_form
+    puts params.inspect
+    if (upload_file(params[:file]))
+      redirect_to({:action => 'files'}, :notice => t('controllers.experiment.upload_success'))
+    else  
+      redirect_to({:action => 'files'}, :notice => t('controllers.experiment.upload_failure'))
+    end
+  end
+
+  def upload
+    if (upload_file(params[:file]))
+      render :json => { :result => 'ok'}
+    else
+      render :json => { :result => 'error'}
+    end      
+  end
+
+  
+  private
+  
+  def upload_file(file)
+    require 'fileutils'
+
+    # create path, if not exists
+    dirname = File.join(Rails.configuration.upload_dir, 'experiments', @experiment.id.to_s)
+    unless File.directory?(dirname)
+      FileUtils.mkdir_p(dirname)
+    end
+    
+    # check if uploaded file exists
+    uploaded_file = file
+    if uploaded_file
+      # sanitize path name, cleanpath removes something/../something
+      upload_file_path = Pathname(File.join(dirname, uploaded_file.original_filename)).cleanpath.to_s
+      
+      # check if final upload filename is in upload dir
+      if upload_file_path[0..dirname.length-1] == dirname  
+        File.open(upload_file_path, 'wb') do |file|
+          file.write(uploaded_file.read)
+        end
+        return true
+      else
+        return false
+      end
+    else
+      return false  
+    end
+    
+  end
+  
+  
 end

@@ -41,3 +41,5 @@
           %li= link_to t('.experimenters'), experimenters_experiment_path(@experiment)
   
   
+  %li{:class => if selected == :files then 'active' else '' end}= link_to t(:files_label), files_experiment_path(@experiment)
+  

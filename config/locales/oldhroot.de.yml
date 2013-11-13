@@ -1,0 +1,474 @@
+xde:
+  no_info: keine Angabe
+  save_data: Daten speichern
+  activation_title: Aktivierung
+  back: zurück
+  session: Session
+  search: Suche
+  tag: Tag
+  mailqueue: Mailqueue
+  
+  role_user: 'Poolmitglied (P)'
+  role_exp: 'Experimentator (E)'
+  role_admin: 'Administrator (A)'
+  
+  layouts:
+    info:
+      welcome: Herzlich willkommen im WiSo-Forschungslabor. Wir haben ein neues Rekrutierungs- und Einladungssystem für Experimente. 
+      already_registered: Waren Sie bereits im Forschungslabor angemeldet?
+      activate_account: Wenn Sie bereits einen Zugang hatten, sind Ihre Daten bei unserem Systemwechsel übernommen worden. Sie können sich hier Ihren Account freischalten lassen.
+      activate_now: Jetzt freischalten
+      contact: Kontakt
+      questions: 'Bei Fragen oder Wünschen kontaktieren Sie uns bitte:'
+      for_registered_users: für bereits registrierte Nutzer
+  
+  locations:
+    edit_location: Raum bearbeiten
+    room_active_label: "Raum ist aktiv"
+  
+  experiments:
+    manage:
+      submit: 
+    invitation:
+      reload_html: '(Aktualisierung in <span id="time_info">%{seconds}</span> Sekunden)'
+      invitation_active: Der Einladungsversand ist im Moment aktiv.
+      invitation_row1: Start dieses Einladungsversands
+      invitation_row2: Einladungsmodus
+      invitation_row3: Zugeordnete Personen (Gesamt)
+      invitation_row4: davon vor dem Start dieses Einladungsversands bereits eingeladen
+      invitation_row5: Maximalgrenze zu versendender Einladungen bis jetzt 
+      invitation_row6: Bereits versendete Einladungen 
+      invitation_row7: Noch nicht eingeladene Zugeordnete (ohne bereits angemeldete)
+      invitation_row8: Derzeit noch freie Plätze
+      invitation_stop: Einladungsversand stoppen
+      invitation_confirm: Sind Sie sich sicher, dass der Versand gestoppt werden soll?
+      
+  sessions:
+    reminders:
+      session_at: Session am
+      email_title: E-Mail zur Erinnerung für diese Session
+      activate_sending: automatischen Erinnerungsversand für diese Session aktivieren
+      sending_label1: Der Versand der Erinnerungen soll
+      sending_label2: Stunden vor dem Beginn der jeweiligen Session erfolgen.
+      reminder_text: Erinnerungstext
+    print:
+      header: Session am
+      lastname: Name
+      firstname: Vorname
+      phone: Telefon
+      gender: G.
+      showup: E
+      participated: T
+      noshow: N
+    overlaps:
+      with: Überschneidung mit
+    
+  
+  participants:
+    manage:
+      study: Fach
+      
+      
+    print:
+      header: Experiment
+      filter_settings: Filtereinstellungen
+      study: Studiengang
+          
+    history:
+      history_title: Verlauf der Teilnehmerzuordnung
+      breadcrumb_history: Verlauf der Teilnehmerzuordnung
+      no_history: Es wurden keine Zuordnungsschritte gespeichert
+
+      
+    participants:
+      study: Fach
+      
+  search:    
+    selections:
+      at_least: Mindestens
+      at_most: Höchstens
+      only: Nur
+      without: Ohne
+      experiments:
+        choice1: die zu einem der folgenden Experimente zugeordnet sind
+        choice2: die zu allen der folgenden Experimente zugeordnet sind
+        choice3: die zu keinem der folgenden Experimente zugeordnet sind
+        choice4: die an mindestens einer Session eines der folgenden Experimente teilgenommen haben
+        choice5: die an mindestens einer Session von jedem der folgenden Experimente teilgenommen haben
+        choice6: die an keiner Session der folgenden Experimente teilgenommen haben    
+      gender:
+        male: männlich
+        female: weiblich
+        no_info: Keine Angabe
+      experience:
+        no_experience: Ohne Teilnehmer mit externer Experimenterfahrung
+        experience: Nur Teilnehmer mit externer Experimenterfahrung
+      preference:
+        only_with_presence_preference: Nur Teilnehmer, die an Präsenz-Experimenten teilnehmen wollen
+        only_with_online_preference: Nur Teilnehmer, die an Online-Experimenten teilnehmen wollen
+      
+    links:
+      gender: Geschlecht  
+      preference: Experiment-Präferenz
+      begin_of_studies: Studienbeginn
+      birthday: Alter
+      experience: Erfahrung
+      country_name: Länder
+      language: Sprachen
+      experiments: Experimente
+      deleted: Gelöschte Benutzer
+    
+    
+    titles:
+      gender: Geschlecht  
+      preference: Experiment-Präferenz
+      begin_of_studies: Studienbeginn
+      birthday: Alter
+      experience: Erfahrung
+      study_id: "Teilnehmer aus folgenden Studienfächern:"
+      country_name: "Nur Teilnehmer aus folgenden Ländern:"
+      degree_id: "Teilnehmer mit folgenden Abschlüssen:"
+      language: "Teilnehmer mit Kenntnissen in einer der folgenden Sprachen:"
+    
+    hints:
+      gender: Geschlecht...
+      role: Rolle...
+      degree_id: Abschlüsse...
+      country_name: Länder... 
+      study_id: Fächer...      
+      experience: Erfahrung...
+      preference: Präferenz   
+      language: Sprachen...
+      deleted: Gelöschte
+      participation: Sessionteilnahme    
+  
+  filter:
+    search_text: 'Suche in Name, Vorname, E-Mail-Adresse:'
+    header: 'Filter:'
+    gender: Geschlecht
+    noshow: Nichterscheinen
+    participated: Teilnahmen
+    begin: Studienbeginn
+    birthday: Alter
+    experience: Erfahrung
+    study: Fächer
+    role: Rolle
+    degree: Abschlüsse
+    language: Sprachen
+    tags: Tags
+    experiment: Experimente
+    participation: Sessionteilnahme
+    preference: Experiment-Präferenz
+    show_deleted: Gelöschte Benutzer
+    country: Länder
+
+    
+    title_sessions_with_tags1: 'Nur Teilnehmer mit folgenden Teilnahmen an Sessions von Experimenten mit Tags:'
+    title_sessions_with_tags2: mal an einer Session eines Experiments mit Tag
+    title_sessions_with_tags3: teilgenommen
+    title_study: 'Teilnehmer aus folgenden Studienfächern:'
+    title_role: 'Rolle:'
+    title_preference: Experiment_Präferenz
+    title_participation_count: Anzahl Teilnahmen
+    title_noshow_count: Anzahl Nichterscheinen
+    title_language: 'Nur Teilnehmer mit Kenntnissen in einer der folgenden Sprachen:'
+    title_gender: 'Geschlecht:'
+    title_experience: 'Externe Experimenterfahrung:'
+    title_experiment: 'Teilnehmer,'
+    title_degrees: 'Teilnehmer mit folgenden Abschlüssen:' 
+    title_birthday: Geburtstag
+    title_begin: Studienbeginn
+    title_deleted: Gelöschte Benutzer
+    title_country: 'Nur Teilnehmer aus folgenden Ländern:'
+    title_custom_field_string: Feld %{field} enthält 
+    title_custom_field_int: Wert des Feldes
+    title_custom_field_date: "%{field} liegt in folgendem Datumsbereich"
+    title_custom_field_selection: Teilnehmer mit den folgenden Werten im Feld
+    hint_studies: Studienfächer...
+    hint_languages: Sprachen...
+    hint_experiment: Experimente...
+    hint_degrees: Abschlüsse...
+    hint_countries: Länder...
+    
+    at_least: Mindestens
+    at_most: Höchstens
+    only: Nur
+    without: Ohne
+    only_with_presence_preference: Nur Teilnehmer, die an Präsenz-Experimenten teilnehmen wollen
+    only_with_online_preference: Nur Teilnehmer, die an Online-Experimenten teilnehmen wollen
+    participation_select1: Nur Zugeordnete, die teilgenommen haben
+    participation_select2: Nur Zugeordnete, die bereits in eine Session eingetragen sind
+    participation_select3: Nur Zugeordnete ohne Session
+    participation_select4: Nur Zugeordnete in Sessions, die noch nicht vorbei sind
+    experience_select1: Ohne Teilnehmer, die bereits externe Experimenterfahrung haben
+    experience_select2: Nur Teilnehmer, die bereits externe Experimenterfahrung haben
+      
+    experiment_select1: die zu einem der folgenden Experimente zugeordnet sind
+    experiment_select2: die zu allen der folgenden Experimente zugeordnet sind
+    experiment_select3: die zu keinem der folgenden Experimente zugeordnet sind
+    experiment_select4: die an mindestens einer Session eines der folgenden Experimente teilgenommen haben
+    experiment_select5: die an mindestens einer Session von jedem der folgenden Experimente teilgenommen haben
+    experiment_select6: die an keiner Session der folgenden Experimente teilgenommen haben
+    
+    deleted_hidden: verstecken
+    deleted_show: anzeigen
+      
+  roles:
+    experimenter: 'Experimentator'
+  
+  users:
+    print:
+      role: Rolle
+      study: Fach
+      gender: 'G.'
+      begin: Beginn
+      created_at: 'Anmeld.'
+      no_users: Kein User gefunden
+      header: Nutzerliste
+
+    users:
+      no_users: Mit den aktuellen Sucheinstellungen wurden keine Benutzer gefunden
+      remove_searched: Alle Teilnehmer der aktuellen Suche aus dem Experiment austragen
+      remove_searched_confirm: Sind Sie sicher, dass alle Teilnehmer der aktuellen Filterung aus dem Experiment entfernt werden sollen?
+      role: Rolle
+      study: Studiengang
+      gender: Geschlecht
+      begin: Studienbeginn
+      created_at: Anmeld.
+      fullname: Name
+      email: E-Mail
+      
+      
+    show:
+      not_activated: nicht aktiviert nach Import
+      marked_as_deleted: als gelöscht markiert
+          
+      gender: Geschlecht
+      phone: Telefon
+      matrikel: Matrikelnummer
+      role: Rolle
+      study: Studiengang
+      degree: Abschluss(-ziel)
+      begin: Studienbeginn
+      country: Land
+      languages: Sprachkenntnisse
+      profession: Beruf
+      secondary_email: Alternative E-Mail
+        
+      showup: Erschienen
+      noshow: Nicht erschienen
+      participated: Teilgenommen
+      
+      
+  account:
+    index:
+      welcome: Willkommen
+      available_registrations:  Neuanmeldung zu Experiment-Sessions
+      available_registrations_text: Sie können sich derzeit zu Experiment-Sessions anmelden.
+      enroll_now_button: Jetzt anmelden
+      currently_no_sessions: Derzeit gibt es keine Experiment-Sessions, zu denen Sie eingeladen wurden.
+      current_sessions:  Bestehende Sessionanmeldungen
+      current_sessions_text: 'Sie sind zu folgenden Experiment-Sessions verbindlich angemeldet:'
+      no_current_sessions_text: Sie sind derzeit zu keinen Experiment-Sessions angemeldet.    
+      incomplete_data: Unvollständige Daten
+      incomplete_data_text: Sie werden im Moment nicht zu allen möglichen Experiment-Sessions eingeladen, da Sie Ihre Daten nicht vollständig angegeben haben. Die Angabe der Daten ist freiwillig, wenn Sie mehr Informationen angeben, werden Sie allerdings häufiger zu Experimenten eingeladen.
+      complete_data_link: Weitere Daten angeben
+    edit:
+      incomplete_data: Unvollständige Daten
+      incomplete_data_text: 'Sie werden im Moment nicht zu allen möglichen Experiment-Sessions eingeladen, da Sie Ihre Daten nicht vollständig angegeben haben. Die Angabe der Daten ist freiwillig, wenn Sie mehr Informationen angeben, werden Sie allerdings häufiger zu Experimenten eingeladen. Hier können Sie Ihre Daten ergänzen:'
+       
+  
+  
+  
+  
+  
+  
+  
+  
+    
+  
+  
+    
+  form_values:
+    interested_in: Interesse an
+    type_both: Präsenz- und Online-Experimenten
+    type_presence: nur Präsenz-Experimente
+    type_online: nur Online-Experimente
+    male: männlich
+    female: weiblich
+    no_experience: Ich habe noch nie an Experimenten teilgenommen.
+    has_experience: Ich habe bereits an Experimenten teilgenommen.
+    user_is_active: Benutzer ist aktiv
+    user_is_marked_as_deleted: Benutzer wurde als gelöscht markiert
+  activation:
+    email:
+      activation_text_1: Auf dieser Seite können Sie Ihren Account freischalten.
+      activation_text_2: Ihre bisherige E-Mail-Adresse
+      activation_text_3: kann in unserem neuen System nicht verwendet werden.
+      activation_text_4: 'Bitte geben Sie eine gültige E-Mail-Adresse der Universität Hamburg an:'
+      activation_text_5: Sie müssen diese E-Mail-Adresse einmal bestätigen und in Zukunft diese zum Login verwenden. Zukünftige E-Mails erhalten Sie aber wie gewohnt an die Adresse
+      activation_text_6: 'Wenn Sie keine E-Mail-Adresse der Uni Hamburg haben, dann kontaktieren Sie uns bitte unter:'
+      activation_text_7: 'Bei Fragen oder Wünschen kontaktieren Sie uns bitte:'
+      contact: Kontakt
+      send_activation_email: E-Mail zur Bestätigung absenden
+        
+    email_delivered:
+      delivered_text_1: Es wurde soeben eine E-Mail an Ihre Adresse
+      delivered_text_2: gesendet. Bitte bestätigen Sie Ihre E-Mail-Adresse, in dem Sie den Link in der E-Mail in Ihrem Browser aufrufen.
+
+    index:
+      activation_text_1: Auf dieser Seite können Sie Ihren Account freischalten.
+      activation_text_2: In unserem neuen Rekrutierungs- und Einladungssystem ist es erforderlich, dass Sie sich mit Ihrer E-Mail-Adresse und einem Passwort anmelden.
+      activation_text_3: 'Wählen Sie dazu bitte ein Passwort:'
+      password_hint: mindestens 8 Zeichen, mindestens eine Zahl, ein Buchstabe, ein Sonderzeichen
+      save_and_activate_link: Passwort speichern und Account freischalten
+      
+  degrees:
+    create_new_degree: Neuen Abschluss anlegen
+    edit_degree: Abschluss bearbeiten
+    confirm: Sind Sie sich sicher, dass Sie diesen Abschluss entfernen möchten?
+  languages:
+    create_new_language: Neue Sprache anlegen
+    edit_language: Sprache bearbeiten
+    confirm: Sind Sie sich sicher, dass Sie diese Sprache entfernen möchten?
+  professions:
+    create_new_profession: Neuen Beruf anlegen
+    edit_profession: Beruf bearbeiten
+    confirm: Sind Sie sich sicher, dass Sie diesen Beruf entfernen möchten?
+  studies:
+    create_new_study: Neuen Studiengang anlegen
+    edit_study: Studien bearbeiten
+    confirm: Sind Sie sich sicher, dass Sie diesen Studiengang entfernen möchten?
+  
+  enroll:
+    notes: Teilnahmehinweise
+    alert1: Experiment mit Folgesessions
+    alert2: Dieses Experiment hat mehrere Termine, bitte überprüfen Sie, ob Sie an allen angezeigten Terminen Zeit haben.
+    index:
+      new_enrollment: Neuanmeldung zu Experiment-Sessions
+      available_sessions: 'Sie können sich für folgende Termine anmelden:'
+      no_sessions_available: Derzeit können Sie sich für keine weiteren Sessions anmelden.
+      register_for_sessions: Anmelden
+    confirm:
+      confirm_enrollment: Experiment-Anmeldung bestätigen    
+      confirm_enrollment_question: Möchten Sie sich hiermit verbindlich zu folgendem Experiment anmelden?
+      dates: Termine
+      enroll_for_sure: Verbindlich anmelden
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    activate:
+      activation: Aktivierung
+      activation_for_experiments: Freischaltung für die Teilnahme an Experimenten
+      activation_info1: Wenn Sie bereits Zugang zum bisherigen System hatten, sind Ihre Daten übertragen worden. Sie können hier Ihren Zugang zum neuen Einladungssystem freischalten.
+      activation_info2: 'Bitte geben Sie die E-Mail-Adresse an, mit der Sie beim bisherigen System angemeldet waren:'
+      send_email: E-Mail zur Freischaltung senden
+  
+  
+  filter_summary:
+    header_time: Zeit
+    header_action: Aktion
+    header_filter: Filterkriterien
+    add_text: "%{count} Teilnehmer hinzugefügt"
+    remove_text: "%{count} Teilnehmer entfernt"
+    search: Suche nach
+    gender: Geschlecht
+    preference: Präferenz
+    only_with_online_preference: Nur Online-Experimente
+    only_with_presence_preference: Nur Präsenz-Experimente
+    noshow_count: Nicht erschienen
+    participation_count: Teilnahmen
+    begin_after: Studienbeginn nach
+    begin_before: Studienbeginn vor
+    birthday_after: Geburtsdatum nach
+    birthday_before: Geburtsdatum vor
+    and: und
+    without_experienced: Nutzer mit Experimenterfahrung ausschliessen
+    with_experienced: Nur Nutzer mit Experimenterfahrung
+    study: 'Nutzer aus folgenden Studiengängen: '
+    not_study: 'Keine Nutzer aus folgenden Studiengängen: '
+    degree: 'Nutzer mit folgenden Abschlusszielen: '
+    not_degree: 'Keine Nutzer mit folgenden Abschlusszielen: '
+    exp1: "Einem der folgenden zugewiesen: "
+    exp2: "Allen der folgenden zugewiesen: "
+    exp3: "Keinem der folgenden zugewiesen: "
+    exp4: "An einem der folgenden teilgenommen: "
+    exp5: "An allen der folgenden teilgenommen: "
+    exp6: "An keinem der folgenden teilgenommen: "
+    language: 'Sprachen: '
+    country: 'Länder: ' 
+    
+  
+  
+      
+      
+  devise:
+    passwords:
+      send_instructions: 'Sie erhalten in wenigen Minuten eine E-Mail mit der Anleitung, wie Sie ihr Passwort zurücksetzen können.' 
+      updated: 'Ihr Passwort wurde geändert. Sie sind angemeldet.'    
+      send_paranoid_instructions: "If your e-mail exists on our database, you will receive a password recovery link on your e-mail"
+    confirmations:
+      send_instructions: 'Sie werden in Kürze eine Aktivierungs-E-Mail erneut erhalten.' 
+      updated: 'Ihr Zugang wurde geändert. Sie sind angemeldet.'
+      confirmed: 'Ihr Zugang wurde aktiviert, Sie sind jetzt angemeldet.'
+    unlocks:
+      send_instructions: 'Sie erhalten in wenigen Minuten eine E-Mail mit der Anleitung, wie Sie Ihren Zugang entsperren können.'
+      unlocked: 'Ihr Zugang wurde entsperrt. Sie sind angemeldet.'
+    oauth_callbacks:
+      success: 'Erfolgreich mit dem %{kind}-Zugang angemeldet.'
+      failure: 'Sie konnten nicht mit dem %{kind}-Zugang angemeldet werden, weil "%{reason}".'
+    mailer:
+      confirmation_instructions:
+        subject: 'Registrierung zu hroot: Aktivierung Ihres Zugangs'
+      reset_password_instructions:
+        subject: 'Anleitung zum Zurücksetzen des Passworts'
+      unlock_instructions:
+        subject: 'Anleitung um Ihren Zugang freizuschalten'
+    
+    confirmations:
+      new:
+        resend_email: E-Mail zur Registrierung erneut senden 
+        email_for_registration: E-Mail zur Registrierung
+        resend: erneut senden
+        resend_link: E-Mail erneut senden
+    passwords:
+      new:
+        breadcrumb_forgot_password: Passwort vergessen
+        forgot_password: Passwort vergessen?
+        forgot_link: E-Mail für Passwortänderung senden
+      edit:
+        breadcrumb_forgot_password: Password vergessen
+        change_password: Passwort ändern
+        password_hint: mindestens 8 Zeichen, mindestens eine Zahl, ein Buchstabe, ein Sonderzeichen
+        change_password_link: Passwort ändern
+    registrations:
+      new:
+        breadcrumb_register: Registrierung
+        register: Registrierung
+        enter_email: "Bitte geben Sie Ihre E-Mail-Adresse und ein Passwort an - diese Daten dienen als Zugangsdaten. Das Passwort muss mindestens 8 Zeichen lang sein und einen Buchstaben, eine Zahl und ein Sonderzeichen enthalten."
+        password_hint: mindestens 8 Zeichen, mindestens eine Zahl, ein Buchstabe, ein Sonderzeichen
+        please_provide_data: 'Bitte geben Sie folgende Daten an:'
+        optional_data: Die folgenden Felder sind optional. Je mehr dieser Felder Sie jedoch ausfüllen, umso höher ist die Wahrscheinlichkeit, dass wir Sie zu bestimmten Experimenten einladen.
+        phone_hint: "Eine Angabe erlaubt es uns, Sie schnell zu erreichen, wenn z.B. ein Experiment abgesagt werden muss."
+        experience: Ich habe bereits an wirtschaftswissenschaftlichen Experimenten teilgenommen.
+        terms_and_conditions: Ich habe die Nutzerbedingungen gelesen und bin damit einverstanden.
+        send_link: Anmeldung absenden
+      edit:
+        change_password: Passwort ändern
+        change_password_link: Passwort ändern
+        label_new_password: Neues Passwort
+        label_new_password_confirm: Bitte bestätigen Sie das neue Passwort
+
+        please_confirm_password: 'Bitte geben Sie das aktuelle Passwort zur Bestätigung ein:'
+    
+         
+    
+    

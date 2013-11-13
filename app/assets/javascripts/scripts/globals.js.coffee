@@ -1,14 +1,18 @@
 $ ->
+  
+  $('#files').fileTree();
+  
   # todo remove this later - adds translation errors to the top of the page
   $ ->
     console.log "test"
     s = $('html')[0].innerHTML
-    arr = s.match(/"translation missing: (.*?)"/gi)
+    arr = s.match(/translation missing: ([\w\.]*)/gi)
     if arr
-      arr = arr.map (s) -> s.slice(22, -1)
-      arr.forEach (s) ->
-        console.log s
-        $('body').prepend(s+"<br/>")
+      arr = arr.map (s) -> s.slice(21)
+      $.post('/home/translations', {missing: arr}, (data) -> console.log(data))
+      #arr.forEach (s) ->
+      #  console.log s
+      #  $('body').prepend(s+"<br/>")
   
   
   # activate dropdown toggle - todo remove if not needed
@@ -66,15 +70,7 @@ $ ->
     $('#direction').val($(this).attr 'data-sort-direction')
     $('form').submit()
     false
-    
   
-  # add and remove url lines for settings
-  $('a.add-url-link').click ->
-    $('#url-tags').append('<span> ... <input id="mail_restrictions__prefix" name="mail_restrictions[][prefix]" type="text" value="" /> ... @ '+
-                          '<input id="mail_restrictions__suffix" name="mail_restrictions[][suffix]" type="text" value="" /><br/></span>')
-                
-  $('a.remove-url-link').click ->
-    $('#url-tags span:last-child').remove()
     
   # open links in new window
   $('.new-window').click ->

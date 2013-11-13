@@ -9,6 +9,8 @@ class ActivationController < ApplicationController
     # b) an email token was provided showing that the field import contains a valid new email adress OR
     # c) the old email is consistent with the new restrictions
     
+    
+    # todo remove this
     prefix, suffix = @activation_user.email.split '@'
     unless (!Settings.mail_restrictions || 
         (!params[:email_token].blank? && params[:email_token] == @activation_user.import_email_confirmation_token) ||

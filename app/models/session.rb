@@ -38,7 +38,7 @@ class Session < ActiveRecord::Base
   end
   
   def start_date
-    I18n.l(start_at.to_date)
+    I18n.l(start_at.to_date) if start_at
   end
     
   def duration

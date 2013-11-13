@@ -31,58 +31,54 @@
 
 %br
 
-/todo remove
-.some
-  .row
-    .span5
-      %h4= t('.general')
-      %table.table
-        %thead
-          %tr
-            %td= t('activerecord.attributes.user.firstname')
-            %td= @user.firstname
-        %tbody
-          %tr
-            %td= t('activerecord.attributes.user.lastname')
-            %td= @user.lastname
-          %tr
-            %td= t('activerecord.attributes.user.role')
-            %td= @user.rolename
-      
-    .span5
-      %h4= t('.account')
-      %table.table
-        %thead
-          %tr
-            %td= t('activerecord.attributes.user.email')
-            %td= link_to @user.email, "mailto:#{@user.email}"
-        %tbody
-          %tr
-            %td= t('activerecord.attributes.user.secondary_email')
-            %td= link_to @user.secondary_email, "mailto:#{@user.secondary_email}" unless @user.secondary_email.blank?
-      
+.row
+  .span5
+    %h4= t('.general')
+    %table.table
+      %thead
+        %tr
+          %td= t('activerecord.attributes.user.firstname')
+          %td= @user.firstname
+      %tbody
+        %tr
+          %td= t('activerecord.attributes.user.lastname')
+          %td= @user.lastname
+        %tr
+          %td= t('activerecord.attributes.user.role')
+          %td= @user.rolename
+    
+  .span5
+    %h4= t('.account')
+    %table.table
+      %thead
+        %tr
+          %td= t('activerecord.attributes.user.email')
+          %td= link_to @user.email, "mailto:#{@user.email}"
+      %tbody
+        %tr
+          %td= t('activerecord.attributes.user.secondary_email')
+          %td= link_to @user.secondary_email, "mailto:#{@user.secondary_email}" unless @user.secondary_email.blank?
+    
 
-  .row
-    .span5
-      %h4= t('.required_fields')
-      %table.table
-        %tbody
-          - Datafields.required.each do |field|
-            %tr
-              %td= t("activerecord.attributes.user.#{field.name}")
-              %td= field.display_value(@user)
-              
-    .span5  
-      %h4= t('.optional_fields')
-      %table.table
-        %tbody
-          - Datafields.optional.each do |field|
-            %tr
-              %td= t("activerecord.attributes.user.#{field.name}")
-              %td= field.display_value(@user)
+.row
+  .span5
+    %h4= t('.required_fields')
+    %table.table
+      %tbody
+        - CUSTOM_FIELDS.required.each do |field|
+          %tr
+            %td= t("activerecord.attributes.user.#{field.name}")
+            %td= field.display_value(@user)
+            
+  .span5  
+    %h4= t('.optional_fields')
+    %table.table
+      %tbody
+        - CUSTOM_FIELDS.optional.each do |field|
+          %tr
+            %td= t("activerecord.attributes.user.#{field.name}")
+            %td= field.display_value(@user)
 
-
-  %br
 
 .userinfo
   - ptable = {}; @user.session_participations.each do |sp| ptable[sp.session_id] = sp end

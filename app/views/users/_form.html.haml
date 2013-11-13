@@ -29,13 +29,13 @@
     .span5
       %h4= t('.required_fields')
       %hr    
-      - Datafields.required.each do |field|
+      - CUSTOM_FIELDS.required.each do |field|
         = field.add_to_form(f)
   
     .span5  
       %h4= t('.optional_fields')
       %hr      
-      - Datafields.optional.each do |field|
+      - CUSTOM_FIELDS.optional.each do |field|
         = field.add_to_form(f, :hint => false)
   
   

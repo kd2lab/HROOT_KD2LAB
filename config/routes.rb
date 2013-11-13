@@ -27,12 +27,15 @@ Hroot::Application.routes.draw do
   match 'home/activate', :controller => 'home', :action => 'activate', :as => 'activate'
   match 'home/calendar/:key', :controller => 'home', :action => 'calendar', :as => 'public_calendar'
   
+  match 'home/translations', :controller => 'home', :action => 'translations'
+  
+  
   devise_for :users, :controllers => {:registrations => "registrations"}, :path_names => { :sign_in => 'login' }, skip: :registrations 
   
   devise_scope :user do
-    get "/login" => "devise/sessions#new"
+    get    "/login" => "devise/sessions#new"
     delete "/logout" => "devise/sessions#destroy"
-    get "/logout" => "devise/sessions#destroy"
+    get    "/logout" => "devise/sessions#destroy"
     
     get "/register" => "registrations#new"
     
@@ -92,6 +95,11 @@ Hroot::Application.routes.draw do
         get :invitation
         post :invitation
         get :autocomplete_tags
+        get :files
+        post :filelist
+        post :upload
+        # todo remove
+        post :upload_via_form
       end
     
       resources :sessions, :except => :show do

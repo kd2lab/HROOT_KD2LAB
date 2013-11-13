@@ -16,103 +16,52 @@
 %br
 %br
 
-%table.table
-  %thead
-    %tr
-      %td= t('activerecord.attributes.user.name')
-      %td
-        = "#{current_user.lastname}, #{current_user.firstname}"      
-  %tbody
-    .row
-      .span5
-        %h4= t('.general')
-        %table.table
-          %thead
-            %tr
-              %td= t('activerecord.attributes.user.firstname')
-              %td= current_user.firstname
-          %tbody
-            %tr
-              %td= t('activerecord.attributes.user.lastname')
-              %td= current_user.lastname
-            %tr
-              %td= t('activerecord.attributes.user.role')
-              %td= current_user.rolename
-    
-      .span5
-        %h4= t('.account')
-        %table.table
-          %thead
-            %tr
-              %td= t('activerecord.attributes.user.email')
-              %td= link_to current_user.email, "mailto:#{current_user.email}"
-          %tbody
-            %tr
-              %td= t('activerecord.attributes.user.secondary_email')
-              %td= link_to current_user.secondary_email, "mailto:#{current_user.secondary_email}" unless current_user.secondary_email.blank?
-    
+.row
+  .span5
+    %h4= t('.general')
+    %table.table
+      %thead
+        %tr
+          %td= t('activerecord.attributes.user.firstname')
+          %td= current_user.firstname
+      %tbody
+        %tr
+          %td= t('activerecord.attributes.user.lastname')
+          %td= current_user.lastname
+        %tr
+          %td= t('activerecord.attributes.user.role')
+          %td= current_user.rolename
 
-    .row
-      .span5
-        %h4= t('.required_fields')
-        %table.table
-          %tbody
-            - Datafields.required.each do |field|
-              %tr
-                %td= t("activerecord.attributes.user.#{field.name}")
-                %td= field.display_value(current_user)
-            
-      .span5  
-        %h4= t('.optional_fields')
-        %table.table
-          %tbody
-            - Datafields.optional.each do |field|
-              %tr
-                %td= t("activerecord.attributes.user.#{field.name}")
-                %td= field.display_value(current_user)
-  
+  .span5
+    %h4= t('.account')
+    %table.table
+      %thead
+        %tr
+          %td= t('activerecord.attributes.user.email')
+          %td= link_to current_user.email, "mailto:#{current_user.email}"
+      %tbody
+        %tr
+          %td= t('activerecord.attributes.user.secondary_email')
+          %td= link_to current_user.secondary_email, "mailto:#{current_user.secondary_email}" unless current_user.secondary_email.blank?
+
+
+.row
+  .span5
+    %h4= t('.required_fields')
+    %table.table
+      %tbody
+        - CUSTOM_FIELDS.required.each do |field|
+          %tr
+            %td= t("activerecord.attributes.user.#{field.name}")
+            %td= field.display_value(current_user)
+        
+  .span5  
+    %h4= t('.optional_fields')
+    %table.table
+      %tbody
+        - CUSTOM_FIELDS.optional.each do |field|
+          %tr
+            %td= t("activerecord.attributes.user.#{field.name}")
+            %td= field.display_value(current_user)
+
     
-    /%tr
-    /  %td= t('activerecord.attributes.user.email')
-    /  %td= current_user.email
-    /%tr
-    /  %td= t('activerecord.attributes.user.gender')
-    /  %td= {'m' => t('form_values.male'), 'f' => t('form_values.female'), '?' => t('no_info') }[current_user.gender]
-    /%tr
-    /  %td=t('activerecord.attributes.user.birthday')
-    /  %td= current_user.birthday ? I18n.l(current_user.birthday) : t('no_info')
-    /%tr
-    /  %td=t('activerecord.attributes.user.matrikel') 
-    /  %td= current_user.matrikel
-    /- unless current_user.country_name.blank?
-    /  %tr
-    /    %td= t('activerecord.attributes.user.country_name')
-    /    %td= current_user.country_name
-    /- if current_user.preference
-    /  %tr
-    /    %td= t('activerecord.attributes.user.preference')
-    /    %td= [t('form_values.type_both'), t('form_values.type_presence'), t('form_values.type_online')][current_user.preference]
-    
-    
-    
-    /- if current_user.study
-    /  %tr
-    /    %td=t('activerecord.attributes.user.study_id')
-    /    %td= current_user.study.name
-    
-    /%tr
-    /  %td=t('activerecord.attributes.user.lang1')
-    /  %td= current_user.languages.join(',')
-    /
-    /- if current_user.degree
-    /  %tr
-    /    %td=t('activerecord.attributes.user.degree_id')
-    /    %td= current_user.degree.name   
-    /- if current_user.begin_month.to_i > 0
-    /  %tr
-    /    %td= t('activerecord.attributes.user.begin')
-    /    %td= "#{current_user.begin_month}/#{current_user.begin_year}"
-    /- if current_user.profession
-    /  %tr
-    /    %td= t('activerecord.attributes.user.profession_id')
-    /    %td=  current_user.profession.name

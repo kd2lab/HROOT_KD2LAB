@@ -62,5 +62,28 @@ class HomeController < ApplicationController
       redirect_to root_url
     end
   end
+  
+  # todo remove later
+  def translations
+    Settings.missing_translations = {} unless Settings.missing_translations
+    
+    obj = Settings.missing_translations || {}
+    m = params[:missing]
+    m.each do |s|
+      v = s.split('.')
+      ref = obj
+      v.each_with_index do |val, i|
+        ref[val] = {} unless ref[val]
+        ref = ref[val] 
+      end
+    end
+
+    Settings.missing_translations = obj
+    
+    
+    render :json => obj
+  end
+  
+  
     
 end
