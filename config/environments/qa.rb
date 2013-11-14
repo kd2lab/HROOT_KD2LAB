@@ -71,6 +71,25 @@ Hroot::Application.configure do
   
   #config.assets.prefix = "assettest"
   config.path_prefix = nil
+  
+  # this email is used by the development mail interceptor (see application.rb and lib/development_mail_interceptor.rb)
+  # in all other that production mode, emails will be sent to this adress instead of the real recipient
+  config.interceptor_email = "mail@ingmar.net"
+  
+  # this email adress will be the default sender email
+  config.hroot_sender_email = 'development@wiso.uni-hamburg.de'
+
+  # log messages will be sent this email adress
+  config.hroot_log_email = 'mail@ingmar.net'
+  
+  # configure uploads directory
+  config.upload_dir = Rails.root.join('uploads')
+  
+  config.user_table_columns = [:fullname, :role, :email, :course_of_studies, :gender, :begin_of_studies, :created_at, :noshow_count, :participations_count]
+  config.add_user_table_columns = [:fullname, :role, :email, :course_of_studies, :gender, :noshow_count, :participations_count]
+  config.participants_table_columns = [:fullname, :role, :email, :course_of_studies, :noshow_count, :participations_count, :session]
+  config.session_participants_table_columns = [:counter, :fullname, :email, :course_of_studies, :gender, :noshow_count, :participations_count]
+  
 end
 
 ActionMailer::Base.default :from => 'experiments@wiso.uni-hamburg.de'
