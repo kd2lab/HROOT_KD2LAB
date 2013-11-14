@@ -66,6 +66,8 @@ de:
     
     attributes:
       user: 
+        current_password: Derzeitiges Passwort
+        password: Passwort
         firstname: Vorname
         lastname: Nachname
         role: Rolle

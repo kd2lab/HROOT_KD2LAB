@@ -43,9 +43,10 @@ group :development, :test do
   gem "factory_girl_rails", "~> 4.0"
   gem 'shoulda'
   gem 'mocha', :require => 'mocha/setup'
-  gem 'capistrano'
-  #gem 'capistrano-ext'
-  #gem 'rvm-capistrano'
+  gem 'capistrano', '~> 3.0.1'
+  gem 'capistrano-rails'
+  gem 'capistrano-bundler'
+  gem 'capistrano-rvm', '~> 0.0.3'
 end
 
 group :production do

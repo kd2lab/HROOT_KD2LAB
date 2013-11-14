@@ -31,6 +31,8 @@ Hroot::Application.configure do
   # in a subdirectory like http://youdomain.com/subdirectory/hroot
   config.path_prefix = nil
   
+  config.assets.debug = true
+  
   # list of supported locales
   config.locales = [:de, :en]
   config.locale_names = {:de => 'Deutsch (de)', :en => 'English (en)'}

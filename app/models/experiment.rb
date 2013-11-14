@@ -73,7 +73,7 @@ class Experiment < ActiveRecord::Base
       .order(order)
       .includes(:user)
       .where('users.confirmed_at IS NOT NULL')
-      .where('users.deleted=0')
+      .where('users.deleted=false')
       .limit([count_remaining_messages, 50].min)
       .all
   end
@@ -87,7 +87,7 @@ class Experiment < ActiveRecord::Base
         .where("participations.invited_at IS NULL")
         .where(" (SELECT count(sp.id) FROM session_participations sp, sessions s WHERE sp.session_id = s.id AND s.experiment_id = participations.experiment_id AND sp.user_id = users.id) = 0")
         .where('users.confirmed_at IS NOT NULL')
-        .where('users.deleted=0')
+        .where('users.deleted=false')
         .count  
   end
   

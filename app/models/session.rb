@@ -132,7 +132,7 @@ EOSQL
   
   def self.incomplete_sessions
     # load sessions in the past with incomplete lists
-    Session.in_the_past.where('(SELECT count(s.id) FROM session_participations s WHERE s.session_id=sessions.id AND showup=0 AND participated=0 AND noshow=0) >0')
+    Session.in_the_past.where('(SELECT count(s.id) FROM session_participations s WHERE s.session_id=sessions.id AND showup=false AND participated=false AND noshow=false) >0')
   end
   
   def is_subsession?

@@ -312,11 +312,6 @@ de:
     to: An
     send: Senden
   
-  popup:
-    noshow_count: Anzahl Nichterscheinen
-    participations_count: Anzahl Teilnahmen
-    inactive_after_import: Benutzer wurde nach dem Import noch nicht aktiviert
-
   filter:
     from: von todo filter raus
     to: bis todo filter raus
@@ -464,6 +459,9 @@ de:
     noshow: Nicht erschienen
     user_was_invited: Benutzer wurde eingeladen  
     user_was_reminded: Benutzer wurde erinnert
+    noshow_count: Anzahl Nichterscheinen
+    participations_count: Anzahl Teilnahmen
+    inactive_after_import: Benutzer wurde nach dem Import noch nicht aktiviert
   
   controllers:
     notice_saved_changes: Die Änderungen wurden gespeichert.

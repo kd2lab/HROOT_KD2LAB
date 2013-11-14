@@ -1,14 +1,20 @@
 heroku workflow
 
+  add this
+  https://devcenter.heroku.com/articles/cleardb#the-short-tutorial-for-ruby-on-rails-apps
+  
   heroku create --remote staging
   git push staging improve_filters:master
   heroku run rake db:migrate --remote staging
+  set staging like here
+  https://devcenter.heroku.com/articles/multiple-environments#managing-staging-and-production-configurations
+
 
 - rework session member list
 - make session list configurable
 - warum ist die experimentlsite so langsam?
 - activation raus, später
-
+- fix übersetzung von without, only...
 
 
 - 
