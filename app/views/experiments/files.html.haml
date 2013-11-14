@@ -34,7 +34,8 @@
       
       
 %h1 todo
-
+- commit = `git rev-parse HEAD`
+- branch = `git rev-parse --abbrev-ref HEAD`
 %ul
   %li normaler upload
   %li überschreiben von dateien?
@@ -43,3 +44,5 @@
   %li abort
   %li upload box besser darstellen
   %li testen
+  %li= commit
+  %li= branch
