@@ -2,8 +2,10 @@ set :stage, :qa
 server 'lvps91-250-116-64.dedicated.hosteurope.de', user: 'root', roles: %w{web app db}
 set :deploy_to, "/var/www/rails/#{fetch(:application)}"
 set :rvm_ruby_version, '2.0.0@hroot'
-set :bundle_flags, '--deployment'
+#set :bundle_flags, '--deployment'
 set :linked_files, %w{config/database.yml}
+set :branch, 'improve_filters'
+
 
 # Simple Role Syntax
 # ==================
