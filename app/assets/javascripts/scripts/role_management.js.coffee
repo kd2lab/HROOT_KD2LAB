@@ -1,4 +1,5 @@
 $ ->
+  # todo refactor this, check
   
   build_select = (id) ->
     rights = $('#usertable').data('rights')

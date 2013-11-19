@@ -22,18 +22,7 @@
     = simple_form_for resource, :as => resource_name, :url => registration_path(resource_name), :html => {:class => 'form-horizontal'} do |f| 
       %br
       
-      / todo
-      /- if Settings.mail_restrictions && Settings.mail_restrictions.map{|r| r['suffix']}.select{|r| !r.blank?}.count > 0  
-      /  = f.label :email, :style => "margin-right:20px"
-      /  = f.text_field :email_prefix, :class => "span1"
-      /  @
-      /  = f.select :email_suffix, options_for_select(Settings.mail_restrictions.map{|r| r['suffix']}.select{|r| !r.blank?}, params[:user] ? params[:user][:email_suffix] : "")
-      /  = f.error :email
-      /  %br
-      /  %br
-      /- else
-      
-      / place translation og email hint in configurable place
+      =# todo place translation og email hint in configurable place
       = f.input :email, :placeholder => 'name@domain.com', :hint => t('.email_hint')
       = f.input :password  
       = f.input :password_confirmation, :hint => t('devise.registrations.new.password_hint')
@@ -45,18 +34,11 @@
       %br
       %br
 
-      /= f.input :gender, :collection => {t('form_values.male') => 'm', t('form_values.female') => 'f'}, :as => :select, :required => false      
-      
       = f.input :firstname, :required => false
       = f.input :lastname, :required => false
       - CUSTOM_FIELDS.required.each do |field|
         = field.add_to_form(f)
           
-      /= f.input :matrikel, :required => false
-      /= f.input :country_name, :priority => [ "Germany" ], :blank => true
-      /= f.input :preference, :collection => {t('form_values.type_both')=>0, t('form_values.type_presence')=>1, t('form_values.type_online')=>2}, :default => 0
-
-    
       %hr
       =t 'devise.registrations.new.optional_data'
       %br
@@ -69,8 +51,8 @@
       
      
             
-      /%br
-      /= render :partial => 'users/edit_custom_fields', :locals => { :fields => Hroot::Application.config.custom_fields.select{|f| f[:required] == false}, :f => f}
+      /%br todo check fr removal
+      /= render :partial => 'users/edit_custom_fields', :locals => { :fields => Rails.configuration.custom_fields.select{|f| f[:required] == false}, :f => f}
       
       
       %br

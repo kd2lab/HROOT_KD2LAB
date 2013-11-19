@@ -1,4 +1,4 @@
-- Hroot::Application.config.custom_fields.each do |field|
+- Rails.configuration.custom_fields.each do |field|
   %tr
     %td=field[:title][I18n.locale]
     %td=@user[field[:name]]

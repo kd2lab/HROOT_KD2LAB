@@ -96,7 +96,7 @@ end
 class TagsSearchField < SearchField
   def where_conditions(search)
     # todo sanitize tag value
-    res = search.map do |row|
+    res = search.select{|row| !row[:tag].blank?}.map do |row|
       experiment_tag_subquery = <<EOSQL
         (SELECT 
           COUNT(session_participations.id)

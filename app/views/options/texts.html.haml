@@ -17,12 +17,12 @@
   %br
   %br
   %ul.nav.nav-tabs
-    - Hroot::Application.config.locales.each_with_index do |loc, i|
+    - Rails.configuration.locales.each_with_index do |loc, i|
       %li{:class => (i==0 ? 'active' : '')}
         %a{:href => '#'+loc.to_s, :class => "locale_tab", :'data-toggle' => 'tab'}= loc          
         
   .tab-content
-    - Hroot::Application.config.locales.each_with_index do |loc, i|
+    - Rails.configuration.locales.each_with_index do |loc, i|
       .tab-pane{:id => loc.to_s, :class => (i==0 ? 'active' : '')}
         = text_area_tag("terms_and_conditions[#{loc.to_s}]", Settings.terms_and_conditions[loc.to_s], :rows => 10, :class => "span8")
   
@@ -37,12 +37,12 @@
   %br
   %br
   %ul.nav.nav-tabs
-    - Hroot::Application.config.locales.each_with_index do |loc, i|
+    - Rails.configuration.locales.each_with_index do |loc, i|
       %li{:class => (i==0 ? 'active' : '')}
         %a{:href => '#welcome_'+loc.to_s, :class => "locale_tab", :'data-toggle' => 'tab'}= loc          
         
   .tab-content
-    - Hroot::Application.config.locales.each_with_index do |loc, i|
+    - Rails.configuration.locales.each_with_index do |loc, i|
       .tab-pane{:id => 'welcome_'+loc.to_s, :class => (i==0 ? 'active' : '')}
         = text_area_tag("welcome_text[#{loc.to_s}]", Settings.welcome_text[loc.to_s], :rows => 10, :class => "span8")
   %br
@@ -55,12 +55,12 @@
   %br
   %br
   %ul.nav.nav-tabs
-    - Hroot::Application.config.locales.each_with_index do |loc, i|
+    - Rails.configuration.locales.each_with_index do |loc, i|
       %li{:class => (i==0 ? 'active' : '')}
         %a{:href => '#credits_'+loc.to_s, :class => "locale_tab", :'data-toggle' => 'tab'}= loc          
         
   .tab-content
-    - Hroot::Application.config.locales.each_with_index do |loc, i|
+    - Rails.configuration.locales.each_with_index do |loc, i|
       .tab-pane{:id => 'credits_'+loc.to_s, :class => (i==0 ? 'active' : '')}
         = text_area_tag("credits_text[#{loc.to_s}]", Settings.credits_text[loc.to_s], :rows => 10, :class => "span8")
   %br

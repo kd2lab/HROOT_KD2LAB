@@ -245,6 +245,12 @@ class UserTest < ActiveSupport::TestCase
       assert_same_elements [@u1, @u2, @u3, @u4, @u7, @u9],
         Search.search({:tags => [{:op => "at_most", :count => 0, :tag => @tag1 }], :role => { :value=>['user']} } )
     end
+
+    should "ignore empty tags" do      
+      assert_same_elements Search.search({}), 
+        Search.search({:tags => [{:op => "at_least", :count => 5, :tag => '' }] } )
+    end
+
     
     should "search for experiments" do
       assert_same_elements [@u1, @u2, @u3, @u4, @u5, @u6, @u9],

@@ -44,7 +44,7 @@
             %p=t '.questions'
               
             %p
-              = link_to Hroot::Application.config.contact_email, 'mailto:'+Hroot::Application.config.contact_email
+              = link_to Rails.configuration.contact_email, 'mailto:'+Rails.configuration.contact_email
             
         .span3
           != image_tag("mainlogo.png")

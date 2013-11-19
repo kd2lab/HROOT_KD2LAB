@@ -9,29 +9,16 @@ heroku workflow
   set staging like here
   https://devcenter.heroku.com/articles/multiple-environments#managing-staging-and-production-configurations
 
-- tag-suche schlägt fehl mit empty tags
+- integrate gem file from essex
 - rework account area
 - rework options page  
-- remove coffee.erbs, find solution for ajax
-- remove path prefix
-- session-teilnehmer und session einstellungstabs zusammenfassen
 - complete language overhaul
 - add email instructions on signup page
-- cleanup javascript
 - find all todos and cleanup
 - cleanup eventuallies in tests
-- htaccess: guest dj!d38dFghj
-- regularly cleanup language missing translations
 - environments bereinigen
 - Installation empty testen
-- migrationen consolidieren
-- alle todos raus
-- noch einmal auf sql-injection schauen
-- production / qa / development raus
-- database.yml raus
-- special topics: Javascript / pfade / deployment
 - do all this and check for bootstrap 3, fix gem on current version http://bootply.com/bootstrap-3-migration-guide
-
 - remove anything with prefix suffix
  
 - system health page
@@ -61,7 +48,7 @@ heroku workflow
   
   
 Später
-
+- remove path prefix where possible
 - warum ist die experimentlsite so langsam?
 - activation raus, später
 - check all with no extra columns
@@ -70,6 +57,7 @@ Später
 - Passwörter bereinigen
 - reintegrate exception mailing
 - add fulltext search to custom columns
+- htaccess: guest dj!d38dFghj
 
 
 

@@ -53,8 +53,10 @@ class Search
     search_values.each do |key, val|
       result << @@fields[key.to_sym].where_conditions(val) if @@fields[key.to_sym]
     end
-    
-    result.compact
+
+    # remove blanks or nils
+    result.reject!(&:blank?)
+    result
   end  
     
   # creates the where, select and join parts of the full query
@@ -108,11 +110,14 @@ class Search
     sort_column = options[:sort_column] || 'lastname'
     sort_direction = options[:sort_direction] || 'ASC'
     
+    
+    
+    
     <<EOSQL
         SELECT #{select.join(',')}
         FROM users
         #{joins.join(' ')}
-        #{'WHERE ' + where.join(' AND ') unless where.blank?} 
+        #{('WHERE ' + where.join(' AND ')) unless where.blank?} 
         ORDER BY #{sort_column + ' ' + sort_direction}   
 EOSQL
   end
@@ -125,7 +130,7 @@ EOSQL
         SELECT count(DISTINCT users.id)
         FROM users
         #{joins.join(' ')}
-        #{'WHERE ' + where.join(' AND ') unless where.blank?} 
+        #{('WHERE ' + where.join(' AND ')) unless where.blank?} 
 EOSQL
   end  
   
