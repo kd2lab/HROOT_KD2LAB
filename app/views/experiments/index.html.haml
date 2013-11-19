@@ -25,8 +25,8 @@
 
 = form_tag experiments_path, :method => 'get', :id => "experiment_search" do
   %p  
-    = text_field_tag :search, params[:search] 
-    = submit_tag t('.search'), :name => nil  
+    = text_field_tag :search, params[:search], :style=>"margin-top: 10px"
+    = submit_tag t('.search'), :name => nil, :class => "btn btn-default"
 
 #experiments
   = render 'experiments'

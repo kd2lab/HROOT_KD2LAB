@@ -6,7 +6,7 @@
 
   
 .btn-group{:style => "float:right"}
-  %a.btn.dropdown-toggle{:'data-toggle' => "dropdown", :href => "#"}
+  %a.btn.btn-default.dropdown-toggle{:'data-toggle' => "dropdown", :href => "#"}
     =t '.more_functions'
     %b.caret 
   %ul.dropdown-menu
@@ -101,7 +101,6 @@
                 = link_to s.time_str, participants_experiment_session_path(s.experiment, s)
                 %br
             %td
-              %br
               - ([sp.session] + sp.session.following_sessions).each do |s|
                 - if ptable[s.id] && ptable[s.id].showup
                   %span.label.label-success
@@ -110,13 +109,11 @@
                   %span.label.label-important
                     =t '.noshow'
                 %br
-            %td
-              %br
+            %td              
               - ([sp.session] + sp.session.following_sessions).each do |s|
                 - if ptable[s.id] && ptable[s.id].participated
                   %span.label.label-success
                     =t '.participated'
                 %br
             %td
-              %br
-              = link_to t('.remove_from_session'), remove_from_session_user_path(:session_id => sp.session.id), :class => 'btn', :confirm => t('.remove_from_session_confirm')
+              = link_to t('.remove_from_session'), remove_from_session_user_path(:session_id => sp.session.id), :class => 'btn btn-default', :confirm => t('.remove_from_session_confirm')

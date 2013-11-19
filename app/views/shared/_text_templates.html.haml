@@ -1,10 +1,23 @@
-
-.text-templates{:'data-element-id' => element_id}
+.text-templates{:'data-element-id' => element_id, :'data-confirm-save' => t('templates.confirm_save'), :'data-url' => admin_templates_url(), :'data-prompt-text' => t('templates.prompt_text'), :'data-prompt-title' => t('templates.prompt_title'), :'data-confirm-replace' => t('templates.confirm_replace'), :'data-confirm-delete' => t('templates.confirm_delete') }
   .btn-group
-    %a.btn.dropdown-toggle{:'data-toggle' => 'dropdown', :href => '#'}
+    %a.btn.btn-default.dropdown-toggle{:'data-toggle' => 'dropdown', :href => '#'}
       =t :text_templates
       %span.caret
     
-    = render :partial => 'shared/text_templates_items', :locals => {:data => data}
+    %ul.dropdown-menu.template-menu
+      %li=t 'templates.save_header'
+      - data = {} unless data
+      - data.keys.sort.each do |name|
+        %li= link_to name, '#', :class => 'save_template', :'data-name' => name
+      %li= link_to t('templates.new'), '#', :class => 'save_template'
 
+      - if data.count > 0
+        %li= t('templates.insert_header')
+        - data.keys.sort.each do |name|
+          %li= link_to name, '#', :class => 'load_template', :'data-name' => name
+
+        %li= t('templates.delete_header')
+        - data.keys.sort.each do |name|
+          %li= link_to name, '#',:class => 'delete_template', :'data-name' => name
+    
   

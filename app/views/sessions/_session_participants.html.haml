@@ -2,32 +2,21 @@
 = hidden_field_tag :direction, params[:direction]
 = hidden_field_tag :user_action, ''
 
-%br
+= render :partial => "sessions/tabs", :locals => {:selected => :participants}
 
-%h2
-  =t '.header'
-  = @session.time_str
 
-- if @session.location
-  = @session.location.name 
-  %br
-  
-%br
-
-- selection_boxes = (current_user.has_right?(@experiment, 'manage_participants') || current_user.has_right?(@experiment, 'send_session_messages'))
-- participation_boxes = (current_user.has_right?(@experiment, 'manage_participants') || current_user.has_right?(@experiment, 'manage_showups'))
-
-  
 - if @users.count > 0
   .menu    
-    = link_to t('.print'), print_experiment_session_path(@experiment, @session), :class => "btn new-window", :style => "float:right"
+    = link_to t('.print'), print_experiment_session_path(@experiment, @session), :class => "btn btn-default new-window", :style => "float:right"
     - if current_user.has_right?(@experiment, 'send_session_messages')
-      = link_to t('.send_to_all'), '#', :class => "btn send-message", :'data-to' => t('.send_to_all_recipient'), :'data-subject'=> t('.message_subject', :date => @session.time_str), :'data-mode' => 'all',  :style => "float:left"
-      = link_to t('.send_to_marked'), '#', :class => "btn send-message context-menu", :'data-to' => t('.send_to_marked_recipient'), :'data-subject'=> t('.message_subject', :date => @session.time_str), :'data-mode' => 'selected', :style => "float:left"
+
+      
+      = link_to t('.send_to_all'), '#', :class => "btn btn-default open-modal", :'data-to' => t('.send_to_all_recipient'), :'data-subject'=> t('.message_subject', :date => @session.time_str), :'data-mode' => 'all', :'data-url' => send_message_experiment_session_path(@experiment, @session),  :style => "float:left"
+      = link_to t('.send_to_marked'), '#', :class => "btn btn-default open-modal context-menu", :'data-to' => t('.send_to_marked_recipient'), :'data-subject'=> t('.message_subject', :date => @session.time_str), :'data-mode' => 'selected', :'data-url' => send_message_experiment_session_path(@experiment, @session), :style => "float:left; display:none"
       
     - if current_user.has_right?(@experiment, 'manage_participants')
-      .btn-group.context-menu{:style => "float:left"}
-        %a.btn.dropdown-toggle{:'data-toggle' => "dropdown", :href => "#"}
+      .btn-group.context-menu{:style => "float:left; display:none"}
+        %a.btn.btn-default.dropdown-toggle{:'data-toggle' => "dropdown", :href => "#"}
           =t '.marked'
           %b.caret 
         %ul.dropdown-menu
@@ -38,94 +27,9 @@
     %br
     %br
   
-  = render :partial => 'shared/table', :locals => {:users => @users, :columns => Rails.configuration.session_participants_table_columns + [:form_fields]}
+  = render :partial => 'shared/table', :locals => {:users => @users, :columns => Rails.configuration.session_participants_table_columns + [:form_fields], :session_participant_view => true}
   
-  / todo remove this and add last line to other table
-  %table.table{:style=>'display:none'}
-    %thead
-      %tr
-        %th
-          = check_box_tag "", "", false, :id => "select_all_users" if selection_boxes
-        %th
-        %th= sortable_for_form 'lastname', t('.th_name')
-        %th= sortable_for_form 'email', t('.th_email')
-        %th= sortable_for_form 'study_name', t('.th_study')
-        %th= sortable_for_form 'gender',  t('.th_gender')
-        %th.tool-tip{:title => t('popup.noshow_count')}= sortable_for_form 'noshow_count' , t('noshow_shortcut')
-        %th.tool-tip{:title => t('popup.participations_count')}= sortable_for_form 'participations_count' , t('participations_shortcut')
-        
-        
-        
-        %th.tool-tip{:title => t('popup.showup')} 
-          = sortable_for_form 'session_showup', t('session_show_shortcut')
-          - if participation_boxes
-            %br
-            = check_box_tag "", "", false, :id => "all_show"
-        %th.tool-tip{:title => t('popup.participated')} 
-          = sortable_for_form 'session_participated', t('session_participated_shortcut')
-          - if participation_boxes
-            %br
-            = check_box_tag "", "", false, :id => "all_participation"
-      
-        %th.tool-tip{:style => "color:red", :title => t('popup.noshow')}
-          = sortable_for_form 'session_noshow', t('session_noshow_shortcut')
-          - if participation_boxes
-            %br
-            = check_box_tag "", "", false, :id => "all_noshow"
-
-    %tbody  
-      - showup_count = 0; participated_count = 0; noshow_count = 0
-    
-      - @users.each_with_index do |user, index| 
-
-        - showup_count += 1 if user.session_showup == 1 
-        - participated_count += 1 if user.session_participated == 1 
-        - noshow_count += 1 if user.session_noshow == 1 
-        
-        - cl = []; 
-        - cl << "deleted" if user.deleted
-        - cl << "import_inactive" if user.imported && !user.activated_after_import
-        %tr{:class => cl.join(' ')}
-          %td
-            = check_box_tag "selected_users[#{user.id}]", '1', false, :class => 'selected_users' if selection_boxes
-            - if !user.deleted && user.imported && !user.activated_after_import
-              %i.icon-ban-circle.tool-tip{:title => t('popup.inactive_after_import')}
-          
-            - unless user.reminded_at.nil?
-              %i.icon-user.tool-tip{:title => t('popup.user_was_reminded')}
-            
-          %td= index + 1
-      
-          %td= link_to highlight(truncate(user.lastname, {:length => 15}), params[:search][:text])+', '+highlight(truncate(user.firstname, {:length => 10}), params[:search][:text]), user_path(user)
-          %td= link_to highlight(truncate(user.email, {:length => 20}), params[:search][:text]), "mailto:#{user.email}"
-          / todo popup überarbeiten
-          /%td.study_name_popup{:'data-text' => user.study_name || t(:no_info) }
-          /  /todo repair=user.study_name ? truncate(user.study_name, {:length => 10}) : t(:no_info)
-          %td= user.gender
-          %td= "#{user.noshow_count}" if user.user?
-          %td= "#{user.participations_count}" if user.user?
-          
-          %td= check_box_tag "showups[#{user.id}]", "1", user.session_showup == 1, :class => "show_checkbox", :disabled => !participation_boxes, :'data-id' => user.id
-          %td= check_box_tag "participations[#{user.id}]", "1", user.session_participated == 1, :class => "participation_checkbox", :disabled => !participation_boxes, :'data-id' => user.id
-          %td
-            = check_box_tag "noshows[#{user.id}]", "1", user.session_noshow == 1, :class => "noshow_checkbox", :'data-id' => user.id, :disabled => !participation_boxes
-            = hidden_field_tag "ids[#{user.id}]", "1"
-      
-      %tr
-        %td
-        %td
-        %td
-        %td
-        %td
-        %td
-        %td
-        %td
-        %td= showup_count
-        %td= participated_count
-        %td= noshow_count
-                
-  - if participation_boxes     
-    = button_tag t('.save_changes_now'), :name => "save", :class => "btn btn-primary"
+  = button_tag t('.save_changes_now'), :name => "save", :class => "btn btn-primary"
         
 - else
   %br

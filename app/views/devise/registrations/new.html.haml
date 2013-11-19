@@ -9,15 +9,15 @@
 
 .row
   .span8
-      
-    = resource.errors.full_messages  
     
-    = params.inspect
       
     %h1= t 'devise.registrations.new.register'
     %p
       %br
       =t 'devise.registrations.new.enter_email'
+    
+    = render 'layouts/errors', object: resource 
+    
       
     = simple_form_for resource, :as => resource_name, :url => registration_path(resource_name), :html => {:class => 'form-horizontal'} do |f| 
       %br
@@ -33,7 +33,8 @@
       /  %br
       /- else
       
-      = f.input :email, :placeholder => 'name@domain.com'
+      / place translation og email hint in configurable place
+      = f.input :email, :placeholder => 'name@domain.com', :hint => t('.email_hint')
       = f.input :password  
       = f.input :password_confirmation, :hint => t('devise.registrations.new.password_hint')
   
@@ -79,7 +80,7 @@
       %br
       %br
       = f.check_box :terms_and_conditions
-      =t 'devise.registrations.new.terms_and_conditions'
+      = t 'devise.registrations.new.terms_and_conditions'
       %br
       %br
       - if Settings.terms_and_conditions

@@ -146,8 +146,10 @@ EOSQL
     search = params[:search].symbolize_keys
     count = User.count_by_sql(create_count_query(search, options))
 
-    # paging
-    page = (params[:page] || 1).to_i
+    # paging    
+    page = (params[:page].to_i || 1).to_i
+    page = 1 if page < 1
+
     if (count < (page-1)*50) 
       # reset page, if not enough results
       page = 1

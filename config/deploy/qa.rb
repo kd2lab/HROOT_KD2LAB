@@ -17,7 +17,19 @@ namespace :deploy do
       execute :touch, release_path.join('tmp/restart.txt')
     end
   end
+  
+  after :finished, :set_current_version do
+    on roles(:app) do
+      # dump current git version
+      within release_path do
+        execute :echo, "#{capture("cd #{repo_path} && git rev-parse HEAD ")} >> public/version"
+        execute :echo, "#{fetch(:branch)} >> public/version"
+      end
+    end
+  end
+  
 end
+
 
 # Simple Role Syntax
 # ==================

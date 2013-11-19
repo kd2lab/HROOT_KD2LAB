@@ -6,7 +6,7 @@
       t(:sessions_label)]
 
 
-#state= render :partial => "experiments/enrollment"
+= render :partial => "experiments/enrollment"
 
 - if @session.reminder_enabled
   = render :partial => "shared/messaging", :locals => {:reminder_header => @session.reminder_subject, :reminder_text => @session.reminder_text, :session_context => true}  
@@ -21,10 +21,6 @@
 
 
 = render :partial => "experiments/tabs", :locals => {:selected => :sessions}
-
-
-= link_to t('sessions.back_link'), experiment_sessions_path(@experiment), :class => "btn"
-%br
 
 = form_tag participants_experiment_session_path(@experiment, @session), :method => 'post', :id => "user_search" do
   #session_participants

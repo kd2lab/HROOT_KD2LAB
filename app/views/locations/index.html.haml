@@ -20,7 +20,7 @@
         %td
           = link_to t(:edit), edit_location_path(location), :class => "btn btn-primary"
           - if location.sessions.count == 0 
-            = link_to t(:delete), location, :confirm => t('locations.confirm'), :method => :delete, :class => "btn"
+            = link_to t(:delete), location, :confirm => t('locations.confirm'), :method => :delete, :class => "btn btn-default"
   
 %br
 

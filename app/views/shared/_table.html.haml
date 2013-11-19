@@ -1,11 +1,11 @@
 - selection_boxes = (current_user.has_right?(@experiment, 'manage_participants') || current_user.has_right?(@experiment, 'send_session_messages'))
 - participation_boxes = (current_user.has_right?(@experiment, 'manage_participants') || current_user.has_right?(@experiment, 'manage_showups'))
-            
+- showup_count = 0; participated_count = 0; noshow_count = 0            
 
 %table.table
   %thead
     %tr
-      %th= check_box_tag "", "", false, :id => "select_all_users"
+      %th= check_box_tag "", "", false, :class => "user-selection-header"
       %th
       - columns.each do |col|
         - case col
@@ -48,8 +48,14 @@
       - cl = []; 
       - cl << "deleted" if user.deleted
       - cl << "import_inactive" if user.imported && !user.activated_after_import
+
+      - if defined?(session_participant_view) && session_participant_view
+        - showup_count += 1 if user.session_showup == 1 
+        - participated_count += 1 if user.session_participated == 1 
+        - noshow_count += 1 if user.session_noshow == 1 
+
       %tr{:class => cl.join(' ')}
-        %td= check_box_tag "selected_users[#{user.id}]", '1', false, :class => 'selected_users'
+        %td= check_box_tag "selected_users[#{user.id}]", '1', false, :class => 'user-selection-item'
         %td
           - if !user.deleted && user.imported && !user.activated_after_import
             %i.icon-ban-circle.tool-tip{:title => t('popup.inactive_after_import')}
@@ -91,4 +97,19 @@
               - if field
                 %td= field.display_value(user)
               - else
-                %th= user[col]
+                %td= user[col]
+    
+    - # last line for session particpipant view
+    - if defined?(session_participant_view) && session_participant_view
+      %tr
+        %td
+        %td
+        - columns.each do |col|
+          - case col
+            - when :form_fields
+              %td= showup_count
+              %td= participated_count
+              %td= noshow_count
+                
+            - else
+              %td

@@ -88,7 +88,7 @@ EOSQL
         recipient.sent_at = Time.zone.now
         recipient.save
       rescue Exception => e
-        UserMailer.log_mail("Problem mit Mailversand", "Die Mail mit der id #{recipient.message.id} an \n#{recipient.user.inspect}\n kann nicht versendet werden.").deliver
+        UserMailer.log_mail("Problem sending emails", "The email with recipient id #{recipient.message.id} to \n#{recipient.user.inspect}\n can not be sent.").deliver
       end
     end
   end  
@@ -102,12 +102,12 @@ EOSQL
        
       # log this message
       log = ""
-      log += "#{Time.zone.now}: Versendet seit #{experiment.invitation_start}: #{experiment.count_sent_invitation_messages}\n"
-      log += "#{Time.zone.now}: Grenze bis zu diesem Zeitpunkt: #{experiment.count_max_invitation_messages_until_now}\n"
-      log += "#{Time.zone.now}: Noch versendbar: #{experiment.count_remaining_messages}\n"
-      log += "#{Time.zone.now}: Versand von #{p.count} Einladungen\n"
+      log += "#{Time.zone.now}: Emails sent since #{experiment.invitation_start}: #{experiment.count_sent_invitation_messages}\n"
+      log += "#{Time.zone.now}: Max invitation mails (until now, count increases over time): #{experiment.count_max_invitation_messages_until_now}\n"
+      log += "#{Time.zone.now}: Remaining messages to be sent (until now, count increases over time): #{experiment.count_remaining_messages}\n"
+      log += "#{Time.zone.now}: Sending #{p.count} invitations\n"
       
-      # maximal 50 Personen anschreiben, aber nur, so lange es noch Plätze gibt      
+      # while there are open seats, send up to 50 messages
       p.each do |participation|
         # ------------- possible early exits ---------------------------------
       
@@ -119,7 +119,7 @@ EOSQL
         
         # check if there is still open space
         unless experiment.has_open_sessions?
-          log += "#{Time.zone.now}: Versand beendet, keine Plätze mehr"
+          log += "#{Time.zone.now}: Invitation sending ended, no more open seats"
           break
         end
         
@@ -127,7 +127,7 @@ EOSQL
         
         # get user model in this participatoin  
         u = participation.user
-        log += "#{Time.zone.now}: Sende Mail an #{u.email}\n"
+        log += "#{Time.zone.now}: Sending mail to #{u.email}\n"
         
         link = Rails.application.routes.url_helpers.enroll_sign_in_url(u.create_code)
         
@@ -152,21 +152,21 @@ EOSQL
       end
       
       if p.count > 0
-        UserMailer.log_mail("Einladungsversand für #{experiment.name}", log).deliver
+        UserMailer.log_mail("Invitation mailing for #{experiment.name}", log).deliver
       end
       
       # alle eingeladen?   
       if experiment.uninvited_participants_count == 0          
         experiment.invitation_start = nil
         experiment.save
-        UserMailer.log_mail("Einladungsversand für #{experiment.name} abgeschlossen (alle Personen eingeladen)", "Es wurden alle zugeordnete Personen eingeladen.").deliver
+        UserMailer.log_mail("Invitation mailing for #{experiment.name} finished (reason: all users were invited)", "All assigned users were invited.").deliver
       end
         
       # keine freien Plätze mehr?
       unless experiment.has_open_sessions?
         experiment.invitation_start = nil
         experiment.save
-        UserMailer.log_mail("Einladungsversand für #{experiment.name} abgeschlossen (keine freien Plätze mehr)", "In diesem Experiment gibt es keine freien Plätze mehr").deliver
+        UserMailer.log_mail("Invitation mailing for #{experiment.name} finished (reason: no more open seats)", "In this experiment, all open seats are taken now, stopping invitation mailing").deliver
       end
       
     end

@@ -67,11 +67,11 @@ class SessionsController < ApplicationController
   end
 
   def edit
-    @session = Session.find(params[:id])
+    #@session = Session.find(params[:id])
   end
   
   def update
-    @session = Session.find(params[:id])
+    #@session = Session.find(params[:id])
     
     parse_date_and_time_params
     
@@ -83,7 +83,7 @@ class SessionsController < ApplicationController
   end
   
   def reminders
-    @session = Session.find(params[:id])    
+    #@session = Session.find(params[:id])    
     if params[:session] && @session.update_attributes(params[:session])
       flash[:notice] = t('controllers.notice_saved_changes')
     end
@@ -100,7 +100,7 @@ class SessionsController < ApplicationController
   end
   
   def destroy
-    @session = Session.find(params[:id])
+    #@session = Session.find(params[:id])
     
     # only delete sessions without subsessions and without participants
     if @session
@@ -118,7 +118,7 @@ class SessionsController < ApplicationController
   end
   
   def print
-    @session = Session.find(params[:id])
+    #@session = Session.find(params[:id])
     params[:filter] = {} unless params[:filter]
     params[:filter][:role] = 'user' 
     
@@ -131,30 +131,23 @@ class SessionsController < ApplicationController
     render :layout => 'print'
   end
   
+  def send_message
+    if current_user.has_right?(@experiment, 'send_session_messages')
+      if (params[:message][:to] == 'all')
+        ids = Search.search_ids(params, {:experiment => @experiment, :session => @session.id})
+      elsif (params[:message][:to] == 'selected')
+        ids = params['selected_users'].keys.map(&:to_i)
+      end  
+    
+      Message.send_message(current_user.id, ids, nil, params[:message][:subject], params[:message][:text])
+      render :json => {:updated => ids.length, :new_queue_count => Recipient.where('sent_at IS NULL').count, :message => t('controllers.experiments.notice_mailqueue')}
+    end
+  end
+  
   def participants
     @session = Session.find(params[:id])
     
-    if params[:message] && params[:message][:action] == 'send'
-      
-      #
-      # send messages to users of this session
-      #
-      #
-      # this is only allowed if the user has the right 'send_session_messages'
-      #
-      
-      if current_user.has_right?(@experiment, 'send_session_messages')
-        if (params[:message][:mode] == 'all')        
-          ids = @session.session_participations.collect{|p| p.user_id}
-        elsif (params[:message][:mode] == 'selected')
-          ids = params['selected_users'].keys.map(&:to_i)
-        end  
-      
-        Message.send_message(current_user.id, ids, @experiment.id, params[:message][:subject], params[:message][:text], @session.id)
-      
-        redirect_to(participants_experiment_session_path(@experiment, @session), :flash => { :id => @session.id, :notice => "Nachricht(en) wurden in die Mailqueue eingetragen."})
-      end
-    elsif !params[:user_action].blank?
+    if !params[:user_action].blank?
       
       #
       # move session members
@@ -173,7 +166,7 @@ class SessionsController < ApplicationController
         
           if target
             Session.move_members(params['selected_users'].keys.map(&:to_i), @experiment, target)
-            flash[:notice] = "#{t('controllers.sessions.notice_moved_to_session1')} #{target.time_str} #{t('controllers.sessions.notice_moved_to_session2')}"
+            flash[:notice] = t('controllers.sessions.notice_moved_to_session', :session => target.time_str)
             User.update_noshow_calculation(params['selected_users'].keys)
           end
         end

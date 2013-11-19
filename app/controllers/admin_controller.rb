@@ -28,12 +28,13 @@ class AdminController < ApplicationController
     if request.xhr?
       if params['mode'] == 'create'
         current_user.settings.templates = current_user.settings.templates.merge({params['templatename'] => params['value']})
-        render :partial => "shared/text_templates_items", :locals => {:data => current_user.settings.templates, :element_id => params['element_id']}
+        render :partial => "shared/text_templates", :locals => {:data => current_user.settings.templates, :element_id => params['element_id']}
       elsif params['mode'] == 'load'
+        text = current_user.settings.templates[params['templatename']]
         render :text => current_user.settings.templates[params['templatename']]
       elsif params['mode'] == 'delete'
         current_user.settings.templates = current_user.settings.templates.reject{|key| key == params['templatename']}
-        render :partial => "shared/text_templates_items", :locals => {:data => current_user.settings.templates, :element_id => params['element_id']}
+        render :partial => "shared/text_templates", :locals => {:data => current_user.settings.templates, :element_id => params['element_id']}
       end
     end
   end

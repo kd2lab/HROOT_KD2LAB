@@ -114,6 +114,8 @@ Hroot::Application.routes.draw do
           get :participants
           post :participants
           get :print
+          post :send_message
+          
         end
       end
 

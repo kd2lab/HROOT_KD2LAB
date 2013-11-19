@@ -1,26 +1,18 @@
 = content_for :breadcrumb do
   = render :partial => "layouts/crumb", :object => [           |
+      link_to(t('administration'), :controller => "admin", :action => "index"), |
       link_to(t(:experiments_header), experiments_path),                |
       link_to(@experiment.name,experiment_sessions_path(@experiment)), |
       t(:sessions_label)]
       
 
-#state= render :partial => "experiments/enrollment"
+= render :partial => "experiments/enrollment"
   
 %h1
   = @experiment.name
 
 
 = render :partial => "experiments/tabs", :locals => {:selected => :sessions}
-
-= link_to t('sessions.back_link'), experiment_sessions_path(@experiment), :class => "btn"
-
-%br
-%br
-%h2
-  =t '.session_at'
-  =@session.time_str
-%br
 
 = render :partial => "sessions/tabs", :locals => {:selected => :reminders}
 

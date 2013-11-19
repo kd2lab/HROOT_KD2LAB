@@ -171,8 +171,7 @@ class ExperimentsController < ApplicationController
   end
   
   def filelist
-    # todo make this configurable
-    dirname = File.dirname(Rails.root.join('uploads', 'experiments', @experiment.id.to_s, 'some_file_name'))
+    dirname = Pathname(File.join(Rails.configuration.upload_dir, 'experiments', @experiment.id.to_s)).cleanpath.to_s
     unless File.directory?(dirname)
       FileUtils.mkdir_p(dirname)
     end
@@ -202,11 +201,10 @@ class ExperimentsController < ApplicationController
   end  
   
   def upload_via_form
-    puts params.inspect
     if (upload_file(params[:file]))
       redirect_to({:action => 'files'}, :notice => t('controllers.experiment.upload_success'))
     else  
-      redirect_to({:action => 'files'}, :notice => t('controllers.experiment.upload_failure'))
+      redirect_to({:action => 'files'}, :alert => t('controllers.experiment.upload_failure'))
     end
   end
 

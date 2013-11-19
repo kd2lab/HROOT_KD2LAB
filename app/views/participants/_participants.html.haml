@@ -16,17 +16,17 @@
   = will_paginate @users,  :renderer => WillPaginate::ActionView::BootstrapLinkRenderer , :previous_label => "&lt;&lt;&nbsp;", :next_label => "&nbsp;&gt;&gt;"
   
   .menu
-    = link_to t('.print'), '#', :class => "user_action_link btn", :style => "float:right",  :'data-value' => 'print_view', :'data-target' => "_blank"
+    = link_to t('.print'), '#', :class => "user_action_link btn btn-default", :style => "float:right",  :'data-value' => 'print_view', :'data-target' => "_blank"
     
     .btn-group{:style => "float:left"}
-      %a.btn.dropdown-toggle{:'data-toggle' => "dropdown", :href => "#"}
+      %a.btn.btn-default.dropdown-toggle{:'data-toggle' => "dropdown", :href => "#"}
         =t '.current_result'
         %b.caret 
       %ul.dropdown-menu
         %li= link_to t('.message_all_searched'), '#', :class => "open-modal", :'data-to' => t('.to_all_searched'), :'data-mode' => 'all', :'data-url' => send_message_experiment_participants_path(@experiment)
         %li= link_to t('.remove_searched'), '#',  :'data-confirm' => t('.remove_searched_confirm'), :class => 'user_action_link', :'data-value' => 'remove_all'
-    .btn-group.context-menu{:style => "float:left"}
-      %a.btn.dropdown-toggle{:'data-toggle' => "dropdown", :href => "#"}
+    .btn-group.context-menu{:style => "float:left; display:none"}
+      %a.btn.btn-default.dropdown-toggle{:'data-toggle' => "dropdown", :href => "#"}
         =t '.marked_participants'
         %b.caret 
       %ul.dropdown-menu

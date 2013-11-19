@@ -57,7 +57,6 @@ if(jQuery) (function($){
                     cache: false,
                     data: formData,
                     success: function(data) {
-                        console.log(data)
                         this.$elem.children('.progress').removeClass('active');
                         this.$elem.delay(5000).fadeOut(1000, function() { $(this).remove() })
                         
@@ -66,9 +65,7 @@ if(jQuery) (function($){
                     }
                 });
                 
-                console.log($elem.find('.abort-button a'))
                 $elem.find('.abort-button a').click(function() {
-                  console.log(jqXHR);
                   jqXHR.abort();
                   $(this).closest('.statusbar').remove()
                 })
@@ -133,7 +130,6 @@ if(jQuery) (function($){
         $(document).on('dragleave', function(event) {
             setTimeout(function() {
                 collection = collection.not(event.target);
-                console.log(collection.size())
                 if (collection.size() === 0) {
                   $('#dropzone').hide()
                 }
@@ -153,7 +149,6 @@ if(jQuery) (function($){
           }
           $('#dropzone').hide();
           collection = $();
-          console.log(e)
           e.stopPropagation();
           e.preventDefault();
           return false;

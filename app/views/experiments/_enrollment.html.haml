@@ -1,6 +1,7 @@
-- button_active = can? :enable, @experiment
-  
-- if @experiment.registration_active?
-  = button_tag t('experiments.registration_active'), :id => (button_active ? "state_button_disable" : 'a'), :'data-id' => @experiment.id, :class => "btn btn-success"    
-- else
-  = button_tag t('experiments.registration_inactive'), :id => (button_active ? "state_button_enable" : 'b'), :'data-id' => @experiment.id, :class => "btn btn-danger"
+- if can? :enable, @experiment
+  - if @experiment.registration_active?
+    .state
+      = button_tag t('experiments.registration_active'), :'data-id' => @experiment.id, :class => "btn btn-success state-button-disable", :'data-url' => disable_experiment_url(@experiment)    
+  - else
+    .state
+      = button_tag t('experiments.registration_inactive'), :'data-id' => @experiment.id, :class => "btn btn-danger state-button-enable", :'data-url' => enable_experiment_url(@experiment)

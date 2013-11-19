@@ -31,12 +31,12 @@
     .btn-group
       - if current_user.has_right?(@experiment, 'manage_sessions')
         = link_to t(:edit), edit_experiment_session_path(@experiment, session), :class => 'btn btn-primary'
-      = link_to t('.participants_link'), participants_experiment_session_path(@experiment, session), :class => 'btn'
+      = link_to t('.participants_link'), participants_experiment_session_path(@experiment, session), :class => 'btn btn-default'
     
     
       - if current_user.has_right?(@experiment, 'manage_sessions')
         .btn-group{:style => 'float:right'}
-          %a.btn.dropdown-toggle{:'data-toggle' => "dropdown", :href => "#"}
+          %a.btn.btn-default.dropdown-toggle{:'data-toggle' => "dropdown", :href => "#"}
             =t '.actions'
             %b.caret
           %ul.dropdown-menu

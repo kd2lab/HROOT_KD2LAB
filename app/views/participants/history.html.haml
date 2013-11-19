@@ -5,7 +5,7 @@
       link_to(@experiment.name,experiment_sessions_path(@experiment)), |
       t('.breadcrumb_history')]
   
-#state= render :partial => "experiments/enrollment"
+= render :partial => "experiments/enrollment"
   
 %h1
   = @experiment.name  

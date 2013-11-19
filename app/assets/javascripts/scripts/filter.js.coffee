@@ -21,7 +21,11 @@ $ ->
   
     
   # integrate pagination and filters  
-  $('#user_search .pagination a').click ->
-    $('#page').val($(this).attr('data-page'))
-    $('#user_search').submit();
+  $('#user_search .pagination a' ).click ->
+    page = $(this).attr('data-page')
+    
+    if (page != undefined)
+      $('#page').val(page)
+      $('#user_search').submit();
+    
     return false

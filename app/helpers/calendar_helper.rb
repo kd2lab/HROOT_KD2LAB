@@ -56,7 +56,7 @@ module CalendarHelper
         data_after = ''
       end
         
-      %(<div class="event-qtip cal_color#{session.experiment_id % 32}"
+      %(<div class="event-popover cal_color#{session.experiment_id % 32}"
           #{data_before}
           #{data_after}
           data-title="#{session.experiment.name}"

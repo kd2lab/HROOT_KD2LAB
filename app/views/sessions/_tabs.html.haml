@@ -1,7 +1,20 @@
+= link_to t('sessions.back_link'), experiment_sessions_path(@experiment), :class => "btn btn-default"
+
+%br
+%br
+
+%h2=raw "#{@session.is_subsession? ? t('sessions.following_session') : t('sessions.session')} #{t('sessions.at_label')} #{@session.time_str}"
+
+- if @session.location
+  = @session.location.name 
+  %br
+%br
+%br
 = render :partial => "layouts/tabs",                                                                            |
            :locals => {                                                                                         |
              :selected => selected,                                                                             |
              :links => [                                                                                        |
+               {:id => :participants, :title => t('.participants'), :url=> participants_experiment_session_path(@experiment, @session)},        |
                {:id => :common_data, :title => t('.common_data'), :url=> edit_experiment_session_path(@experiment, @session)},        |
                {:id => :reminders, :title => t('.reminders'), :url => reminders_experiment_session_path(@experiment, @session)}  |
              ]                                                                                                  |

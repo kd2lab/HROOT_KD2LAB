@@ -9,40 +9,19 @@ heroku workflow
   set staging like here
   https://devcenter.heroku.com/articles/multiple-environments#managing-staging-and-production-configurations
 
-
-- rework session member list
-- make session list configurable
-- warum ist die experimentlsite so langsam?
-- activation raus, später
-- fix übersetzung von without, only...
-
-
-- 
+- tag-suche schlägt fehl mit empty tags
 - rework account area
-- rework session list
-- make participant lists configurable
-- rework options page
-- devise source email configurable
-- rework tests
-- check all with no extra columns
-- reintegrate error messaging
+- rework options page  
 - remove coffee.erbs, find solution for ajax
-- translation of javascript text parts
-- fix layout problems in search boxes
 - remove path prefix
-- repair qtips
-- add fulltext search to custom columns
+- session-teilnehmer und session einstellungstabs zusammenfassen
 - complete language overhaul
 - add email instructions on signup page
 - cleanup javascript
 - find all todos and cleanup
 - cleanup eventuallies in tests
-- logmails auf englisch
-- rmove empty tests
 - htaccess: guest dj!d38dFghj
 - regularly cleanup language missing translations
-- Bezug zu Hamburg bereinigen
-- Passwörter bereinigen
 - environments bereinigen
 - Installation empty testen
 - migrationen consolidieren
@@ -50,14 +29,18 @@ heroku workflow
 - noch einmal auf sql-injection schauen
 - production / qa / development raus
 - database.yml raus
-- make migrations postgras compatible
 - special topics: Javascript / pfade / deployment
+- do all this and check for bootstrap 3, fix gem on current version http://bootply.com/bootstrap-3-migration-guide
 
-- fix qtip / use popup from bootstrap
-- todo fix messaging
-
-- translation missing: de.devise.failure.user.not_found_in_database
 - remove anything with prefix suffix
+ 
+- system health page
+  - last cron run
+  - people with the same name
+  - check for validation errors
+  - poeple who have not activated their account
+  - people who have not confirmed their account
+  - people who have never logged in
   
   
   datum internationalisieren
@@ -67,27 +50,27 @@ heroku workflow
   session_date not prefix
   
   clean up filters
-  
-  Hroot::application weg, Rails.configuration
-  
+    
   fix User.roles translation
   
   remove tagalize
-  
-  remove puts
-  
-  remove todos
-  
-  only months in datepicker
-  
-  fix modals with bootstrap
-  
-  .close-problem lösen
-  
-  notice_created
-  
-  eperiment
-  
+      
   email und secondary mail?
   
-  pagination bug
+  
+  
+  
+Später
+
+- warum ist die experimentlsite so langsam?
+- activation raus, später
+- check all with no extra columns
+- fix layout problems in search boxes
+- Bezug zu Hamburg bereinigen
+- Passwörter bereinigen
+- reintegrate exception mailing
+- add fulltext search to custom columns
+
+
+
+  
