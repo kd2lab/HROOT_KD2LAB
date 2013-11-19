@@ -3,17 +3,17 @@
 class AccountController < ApplicationController
   authorize_resource :class => false
   
-  before_filter :require_user_role, :except => [:phone, :alternative_email, :data]
-    
   def index
   
   end
   
-  def phone
-    if params[:phone]
-      current_user.phone = params[:phone]
-      current_user.save
-      redirect_to({:action => 'phone'}, :notice => t('controllers.account.notice_phone'))
+  def optional
+    puts params[:user].inspect
+    
+    if params[:user]      
+      if current_user.update_attributes(params[:user])
+        redirect_to(account_optional_path, :notice => t('controllers.account.notice_data_changed')) 
+      end
     end  
   end
   
@@ -45,8 +45,6 @@ class AccountController < ApplicationController
   end
   
   def edit
-    # todo
-    
     if params[:user]
       params[:user][:country_name] = nil if params[:user][:country_name] == ''
       
@@ -55,13 +53,5 @@ class AccountController < ApplicationController
       end
     end
   end
-  
-  private
-  
-  def require_user_role
-    unless current_user.user?
-      redirect_to dashboard_url
-    end
-  end
-  
+
 end

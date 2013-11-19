@@ -6,6 +6,8 @@ require 'date'
 include Icalendar
 
 class HomeController < ApplicationController
+  before_filter :redirect_on_logged_in, :only => [:index]
+
   def index
     render :layout => 'landing'
   end
@@ -84,6 +86,16 @@ class HomeController < ApplicationController
     render :json => obj
   end
   
+  private
   
+  def redirect_on_logged_in
+    if current_user
+      if current_user.admin? || current_user.experimenter?
+        redirect_to dashboard_path
+      else
+        redirect_to account_path
+      end
+    end
+  end
     
 end

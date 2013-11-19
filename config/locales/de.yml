@@ -108,6 +108,8 @@ de:
             email:
               taken: ist bereits vergeben.
               invalid: ist ungültig
+              not_found: wurde nicht gefunden
+              already_confirmed: ist bereits bestätigt
             secondary_email:
               invalid: ist ungültig
             password: 
@@ -120,16 +122,20 @@ de:
               accepted: müssen bestätigt werden
             current_password:
               invalid: ist ungültig
+            reset_password_token:
+              invalid: ist ungültig. Bitte fordern Sie erneut eine E-Mail zur Passwortänderung an. 
     attributes:
       user: 
         current_password: Derzeitiges Passwort
         password: Passwort
+        password_confirmation: Passwort wiederholen
         firstname: Vorname
         lastname: Nachname
         role: Rolle
         email: E-Mail
         secondary_email: Alternative E-Mail
         termins_and_conditions: Nutzungsbedingungen
+        reset_password_token: Passwort-Link
       session:
         group_size: Gruppengröße
         start_date: Startdatum
@@ -143,7 +149,13 @@ de:
         finished: Session abgeschlossen
         time_before: Vorbereitungszeit
         time_after: Nachbereitungszeit
-  
+      experiment:
+        name: Name
+        tag_list: Tags
+        description: Beschreibung
+        contact: Kontaktinformationen
+        sender_email: Absenderadresse bei Experiment-E-Mails
+        
   layouts:
     landing:
       no_account: Noch kein Zugang? Jetzt anmelden und an Experimenten teilnehmen.
@@ -170,6 +182,20 @@ de:
       no_experiments: Es wurden noch keine Experimente angelegt.
       participants: Teilnehmer
       
+  enroll:
+    index:
+      new_enrollment: Anmeldung zu Experimenten (Schritt 1)
+      available_sessions: 'Sie können sich zu folgenden Experiment-Sessions anmelden:'
+      register_for_sessions: Jetzt anmelden (Bestätigung in Schritt 2)
+      no_sessions_available: Es gibt derzeit keine weiteren Experimente, zu denen Sie sich anmelden können.
+    confirm:
+      confirm_enrollment: Anmeldung bestätigen (Schritt 2)
+      confirm_enrollment_question: 'Bitte bestätigen Sie die Teilnahme an folgenden Terminen verbindlich:'
+      dates: 'Termine:'
+      enroll_for_sure: Verbindlich anmelden!
+      or: oder
+      back: zurück
+  
   options:
     tabs:
       general: Allgemein
@@ -481,11 +507,21 @@ de:
       noshow: Nicht erschienen
       
   account:
+    index:
+      home: Home
+      welcome: Willkommen
+      available_registrations: Aktuelle Experimentanmeldungen
+      currently_no_sessions: Derzeit können Sie sich zu keinem Experiment anmelden
+      current_sessions: Aktuell eingetragene Sessions
+      no_current_sessions_text: Derzeit gibt es keine Experiment-Sessions, zu denen Sie angemeldet sind.
+      available_registrations_text: 'Derzeit gibt es Sessions, zu denen Sie sich anmelden können:'
+      enroll_now_button: Jetzt zu Experimenten anmelden!
+      current_sessions_text: 'Sie sind derzeit verbindlich zu folgenden Terminen angemeldet:'
     tabs:
       overview: Datenübersicht
       password: Passwort
       alternative_email: Alternative E-Mail
-      phone: Telefonnummer
+      optional: Optionale Daten
     data:
       overview: Datenübersicht
       data_stored_text: Folgende Daten sind bei hroot gespeichert, bitte wenden Sie sich zu Datenänderungen an die Laborleitung.
@@ -503,27 +539,48 @@ de:
       delete_alternative_email: Alternative E-Mail löschen
       confirm_delete_alternative_email: Sind Sie sicher, dass Sie Ihre alternative E-Mail-Adresse löschen möchten?
       resend_confirmation_mail: Bestätigungsemail erneut senden
-    phone:
-      phone_number: Telefonnummer
-      phone_number_text: Die Angabe Ihrer Telefonnummer ist freiwillig. Wenn Sie Ihre Telefonnummer angeben, können wir Sie bei kurzfristigen Terminveränderungen schnell erreichen.
-      save_phone_number: Telefonnummer speichern
-  
+    optional:
+      optional_fields: Optionale Daten
+      explanation: Die Angabe der Daten auf dieser Seite ist freiwillig - Sie können diese Daten jederzeit ändern oder löschen. Allerdings sind diese Daten für manche Experimente erforderlich, in diesem Fall werden Sie nur eingeladen, wenn Sie diese Daten angegeben haben.
   user_mailer:
-    subject_secondary_email_confirmation: "Bestätigung der alternativen E-Mail-Adresse"
-    subject_import_email_confirmation: "hroot-Anmeldung: Bestätigung der neuen E-Mail-Adresse"
+    subject_secondary_email_confirmation: "hroot: Bestätigung der alternativen E-Mail-Adresse"
+    subject_import_email_confirmation: "hroot: Bestätigung der neuen E-Mail-Adresse"
     subject_import_email_activation: "hroot: Freischaltung für die Teilnahme an Experimenten"
   
   registrations:
     new:
       email_hint: "todo rausziehen Gültige E-Mail-Adressen enden mit @uni-hamburg.de"
+  devise:    
+    passwords:
+      new:
+        breadcrumb_forgot_password: Passwort vergessen
+        forgot_password: Passwort vergessen?
+        forgot_password_text: Kein Problem, geben Sie einfach Ihre E-Mail-Adresse an, mit der Sie sich bei hroot angemeldet haben. Wir senden Ihnen dann einen Link zu, mit dem Sie Ihr Passwort ändern können.
+        forgot_link: E-Mail für Passwortänderung senden
+      user:
+        send_instructions: Es wurde Ihnen eine E-Mail mit einer Anleitung für die Passwortänderung zugesendet.
+        updated: Ihr Passwort wurde geändert, Sie sind jetzt eingeloggt.
+      edit:
+        breadcrumb_forgot_password: Passwort ändern
+        change_password: Passwort ändern
+        password_hint: mindestens 8 Zeichen, mindestens eine Zahl, ein Buchstabe, ein Sonderzeichen
+        change_password_link: Passwort ändern
       
-  devise:
+    confirmations:
+      new:
+        resend_email: Bestätigungs-E-Mail erneut senden
+        email_for_registration: Bestätigungs-E-Mail
+        resend: Hier können Sie sich Ihre Bestätigungs-E-Mail zur Bestätigung Ihrer Anmeldung erneut zusenden lassen.
+        resend_link: E-Mail erneut senden
+      user:
+        send_instructions: Es wurde Ihnen eine E-Mail zur Anmeldebestätigung zugesendet.
+        confirmed: Ihre E-Mail-Adresse wurde bestätigt. Sie können sich jetzt einloggen.
     shared:
       links:
         login: Login
         register: Registrierung
         forgot_password: Passwort vergessen?
-        no_email: E-Mail zur Registrierung nicht erhalten?
+        no_email: E-Mail zur Bestätigung nicht erhalten?
       
     sessions:
       signed_in: 'Erfolgreich angemeldet.'
@@ -568,7 +625,13 @@ de:
         terms_and_conditions: Ich habe die Nutzerbedingungen gelesen und bin damit einverstanden.
         send_link: Anmeldung absenden
         email_hint: "todo Gültige E-Mail-Adressen enden mit @uni-hamburg.de"
-    
+    mailer:
+      confirmation_instructions:
+        subject: 'hroot: Bestätigung der E-Mail-Adresse'
+      reset_password_instructions:
+        subject: 'hroot: Anleitung zur Passwortänderung'
+      unlock_instructions:
+        subject: 'hroot: Account entsperren'
         
     home:
       activate:
@@ -642,7 +705,7 @@ de:
     home:
       notice_mail_sent: Es wurde Ihnen eine E-Mail mit einem Link zur Freischaltung zugesendet.
       notice_invalid_email: Zu dieser E-Mail-Adresse gibt es keinen Account
-      notice_alternative_mail: Ihre alternative E-Mail-Adresse wurde bestätigt.
+      notice_alternative_email: Ihre alternative E-Mail-Adresse wurde bestätigt.
     participants:
       notice_mailqueue: Nachricht(en) wurden in die Mailqueue eingetragen.
       notice_session1: Die ausgewählten Teilnehmer wurden in die Session

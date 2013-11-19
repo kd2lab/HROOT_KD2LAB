@@ -29,7 +29,7 @@ class User < ActiveRecord::Base
   validates_format_of :password, :with => /^.*(?=.{8,})(?=.*[a-zA-Z])(?=.*[\W_])(?=.*[\d]).*$/, :if => :password_present?
   
   # validate email on signup
-  # too replace with respon_to see interceptor
+  # todo replace with devise stuff
   validates_format_of :email, :with => Rails.configuration.email_restriction[:regex], :on => :create if defined?(Rails.configuration.email_restriction)
   
   # setup custom datafields, see config/initializers/custom_fields.rb  
@@ -190,14 +190,4 @@ EOSQL
     return l.code
   end  
   
-  def self.check_email prefix, suffix
-    if Settings.mail_restrictions
-      Settings.mail_restrictions.each do |r|
-        return true if r['suffix'] == suffix && (r['prefix'].blank? || prefix.include?(r['prefix']))
-      end
-      return false
-    end    
-    return true
-  end
-
 end

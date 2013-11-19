@@ -8,9 +8,9 @@
       =t '.breadcrumb_forgot_password'
 
 .row
-  .span4
-    %h1
-      =t '.forgot_password'
+  .span6
+    %h2=t '.forgot_password'
+    %p=t '.forgot_password_text'
     %br
     = simple_form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post }) do |f|
       =t :email

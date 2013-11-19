@@ -15,7 +15,7 @@ Hroot::Application.routes.draw do
   #match 'home/confirm_change_email/:confirmation_token', :controller => 'home', :action => 'confirm_change_email', :as => 'change_email_confirmation'
   
   match 'account/data', :controller => 'account', :action => 'data'  
-  match 'account/phone', :controller => 'account', :action => 'phone'  
+  match 'account/optional', :controller => 'account', :action => 'optional'  
   match 'account/edit', :controller => 'account', :action => 'edit'  
 
   match 'account/alternative_email', :controller => 'account', :action => 'alternative_email'  

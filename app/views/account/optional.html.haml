@@ -1,0 +1,32 @@
+= content_for :breadcrumb do
+  %ul.breadcrumb
+    %li
+      =link_to t('login_area'), :controller => "account", :action => "index"
+      %span.divider
+        &gt;
+    %li.active
+      =t 'account_options'
+
+%h3=t 'account_options'
+
+= render :partial => "tabs", :locals => {:selected => :optional} 
+
+= simple_form_for current_user, :url => account_optional_path, :method => :post, :html => {:class => "form-horizontal"} do |f| 
+  %h4= t('.optional_fields')
+  
+  .explanation
+    =t '.explanation'
+  
+  %br
+    
+  - CUSTOM_FIELDS.optional.each do |field|
+    = field.add_to_form(f)
+  
+  
+  %br
+  = f.submit t(:save), :class => "btn btn-primary"
+  
+  
+
+
+

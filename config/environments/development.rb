@@ -38,9 +38,7 @@ Hroot::Application.configure do
   config.locale_names = {:de => 'Deutsch (de)', :en => 'English (en)'}
   
   # only allow certain email adresses on signup
-  config.email_restriction = {
-    :regex => /(.*@uni-hamburg.de$)|(.*@student.uni-hamburg.de$)|(.*@ingmar.net$)/
-  }
+  
   
   # columns in user table
   config.user_table_columns = [:fullname, :role, :email, :course_of_studies, :gender, :begin_of_studies, :created_at, :noshow_count, :participations_count]
@@ -69,7 +67,7 @@ Hroot::Application.configure do
   config.interceptor_email = "mail@ingmar.net"
   
   # this email adress will be the default sender email
-  config.hroot_sender_email = 'development@wiso.uni-hamburg.de'
+  config.hroot_sender_email = 'hroottest@googlemail.com'
 
   # log messages will be sent this email adress
   config.hroot_log_email = 'mail@ingmar.net'

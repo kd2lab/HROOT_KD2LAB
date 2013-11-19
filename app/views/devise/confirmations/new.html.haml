@@ -10,9 +10,10 @@
 
 
 .row
-  .span4
-    %h1=t '.email_for_registration'
-      
+  .span6
+    %h2=t '.email_for_registration'
+    
+    %br  
     %p=t '.resend'
     %br
     = simple_form_for(resource, :as => resource_name, :url => confirmation_path(resource_name), :html => { :method => :post, :class => 'form-vertical' }) do |f|

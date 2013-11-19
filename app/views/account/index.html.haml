@@ -5,7 +5,7 @@
       %span.divider
         &gt;
     %li.active
-      = t('.welcome')
+      = t('.home')
 
 - if current_user.show_greeting
   .alert.alert-success
@@ -52,14 +52,3 @@
   - else
     = t('.no_current_sessions_text')
     
-/todo- if current_user.is_missing_data?
-/  .well
-/    %h3= t('.incomplete_data')
-/    = t('.incomplete_data_text')
-/    %br
-/    %br
-/    = link_to t('.complete_data_link'), account_edit_path, :class => "btn"
-    
-    
-    
-  

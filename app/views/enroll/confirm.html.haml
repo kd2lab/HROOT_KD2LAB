@@ -29,8 +29,7 @@
         =f.location.name if f.location
         %br
     %br
-    %br
-
+    
     - unless @session.limitations.blank?
       %b=t('enroll.notes')+':'
       %br
@@ -45,6 +44,6 @@
           
   %br
   = submit_tag t('.enroll_for_sure'), :class => "btn btn-danger"
-  oder
-  = link_to t(:back), enroll_path(params[:code])
+  = t '.or'
+  = link_to t('.back'), enroll_path(params[:code])
 
