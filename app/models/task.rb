@@ -29,8 +29,8 @@ EOSQL
       replacements = [
         ["#firstname", sp.user.firstname], 
         ["#lastname", sp.user.lastname],
-        ["#session_date_de", session.start_at.strftime("%d.%m.%Y")],
-        ["#session_date_en", session.start_at.strftime("%Y-%m-%d")],      
+        ["#session_date_de", sp.session.start_at.strftime("%d.%m.%Y")],
+        ["#session_date_en", sp.session.start_at.strftime("%Y-%m-%d")],      
         ["#session_date", sp.session.start_at.strftime("%d.%m.%Y")],
         ["#session_start_time", sp.session.start_at.strftime("%H:%M")],
         ["#session_end_time", sp.session.end_at.strftime("%H:%M")],
