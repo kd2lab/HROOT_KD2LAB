@@ -1,3 +1,4 @@
+-# todo refactor activation
 %h1
   =t('activation_title')
 
@@ -15,11 +16,6 @@
 %br
 
 = simple_form_for @activation_user, :html => {:class => "form-horizontal"}, :url => '' do |f| 
-  /= f.label :email
-  /= f.text_field :email_prefix, :class => "span1"
-  /@
-  /= f.select :email_suffix, options_for_select(Settings.mail_restrictions.map{|r| r['suffix']}.select{|r| !r.blank?}, params[:user] ? params[:user][:email_suffix] : "")
-  /= f.error :email
   %br
   %br
   = f.submit t('.send_activation_email'), :class => "btn btn-primary"

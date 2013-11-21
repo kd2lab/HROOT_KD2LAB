@@ -1,20 +1,21 @@
 
-// todo rename this file
+// todo later refactor this as a gem
 
 if(jQuery) (function($){
 	$.extend($.fn, {
-		fileTree: function(o, h) {
-			// Defaults todo remove unneeded
+		fileTree: function(o) {
+			// todo later remove unneeded options
 			if( !o ) var o = {};
 			if( o.root == undefined ) o.root = '/';
 			if( o.action == undefined ) o.action = 'filelist';
 			if( o.folderEvent == undefined ) o.folderEvent = 'click';
-			if( o.expandSpeed == undefined ) o.expandSpeed= 200;
-			if( o.collapseSpeed == undefined ) o.collapseSpeed= 200;
-			if( o.multiFolder == undefined ) o.multiFolder = true;
 			if( o.loadMessage == undefined ) o.loadMessage = 'Loading...';
 			
 			$(this).each( function() {
+        var $filelist = $(this)
+        var $contextMenu = $("#contextMenu");
+        var $clicked_elem;
+        
         function handleFileUpload(files, fileListElem) {
            for (var i = 0; i < files.length; i++) {        
                 var size = parseInt(files[i].size/1024);        
@@ -73,6 +74,38 @@ if(jQuery) (function($){
         }
 				
         
+        $filelist.on("click", "li a", function (e) {
+            $clicked_elem = $(this)
+            $contextMenu.css({
+              position: "absolute",
+              display: "block",
+              left: e.pageX,
+              top: e.pageY
+            });
+            return false;
+        });
+
+        $contextMenu.on("click", "a.download", function () {
+            document.location = 'download/'+$clicked_elem.data('file')
+            $contextMenu.hide();
+            return false
+        });
+
+        $contextMenu.on("click", "a.delete", function () {
+          if (confirm($filelist.data('confirmation'))) {
+            $.get('delete/'+$clicked_elem.data('file'), function() {
+              $clicked_elem.parent().hide();
+              //$(this).parent().remove()
+            })
+          }
+          $contextMenu.hide();
+          return false
+    
+        });
+
+        $(document).click(function () {
+            $contextMenu.hide();
+        });
         
 				function showTree(elem, path) {
           $(elem).addClass('wait');
@@ -83,19 +116,19 @@ if(jQuery) (function($){
 						if( o.root == path ) 
               $(elem).find('ul:hidden').show(); 
             else {
-              $(elem).find('ul:hidden').slideDown({ duration: o.expandSpeed });
+              $(elem).find('ul:hidden').slideDown({ duration: 200 });
             } 
 						bindTree(elem);
 					});
 				}
 				
 				function bindTree(t) {
-					$(t).find('LI A').bind(o.folderEvent, function() {
+					/*$(t).find('LI A').bind(o.folderEvent, function(event) {
 						if( $(this).parent().hasClass('directory') ) {
 							if( $(this).parent().hasClass('collapsed') ) {
 								// Expand
 								if( !o.multiFolder ) {
-									$(this).parent().parent().find('UL').slideUp({ duration: o.collapseSpeed });
+									$(this).parent().parent().find('UL').slideUp({ duration: 200 });
 									$(this).parent().parent().find('LI.directory').removeClass('expanded').addClass('collapsed');
 								}
 								$(this).parent().find('UL').remove(); // cleanup
@@ -103,16 +136,17 @@ if(jQuery) (function($){
 								$(this).parent().removeClass('collapsed').addClass('expanded');
 							} else {
 								// Collapse
-								$(this).parent().find('UL').slideUp({ duration: o.collapseSpeed });
+								$(this).parent().find('UL').slideUp({ duration: 200 });
 								$(this).parent().removeClass('expanded').addClass('collapsed');
 							}
-						} else {
-							h($(this).attr('rel'));
-						}
-						return false;
+              // stop default action if folder click
+              return false
+						} 
+            return false
 					});
 					// Prevent A from triggering the # on non-click events
-					if( o.folderEvent.toLowerCase != 'click' ) $(t).find('LI A').bind('click', function() { return false; });
+					//if( o.folderEvent.toLowerCase != 'click' ) $(t).find('LI A').bind('click', function() { return false; });
+            */
 				}
 				
         var collection = $();
@@ -120,8 +154,8 @@ if(jQuery) (function($){
         $(document).on('dragenter', function(event) {
             if (collection.size() === 0) {
               $('#dropzone').show();
-              $('#dropzone').height($('#files').height());
-              $('#dropzone').width($('#files').width());
+              $('#dropzone').height($('#files').height()-10-30); // minus two borderwidhts minus padding-top
+              $('#dropzone').width($('#files').width()-10); // minus two borderwidths
               
             }
             collection = collection.add(event.target);
@@ -155,10 +189,10 @@ if(jQuery) (function($){
         });
         
         // Loading message
-				$(this).html('<ul class="jqueryFileTree start"><li class="wait">' + o.loadMessage + '<li></ul>');
+				$filelist.html('<ul class="jqueryFileTree start"><li class="wait">' + o.loadMessage + '<li></ul>');
 				
         // Get the initial file list
-        showTree( $(this), escape(o.root) );
+        showTree( $filelist, escape(o.root) );
 			});
 		}
 	});

@@ -1,7 +1,7 @@
 
 
 set :application, 'hroot'
-set :repo_url, 'git@bitbucket.org:n0c1urne/hroot.git'
+set :repo_url, 'git@github.com:wiso-forschungslabor/hroot.git'
 
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
 

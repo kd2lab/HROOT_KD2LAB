@@ -28,12 +28,12 @@
           = "#{assign.user.lastname}, #{assign.user.firstname}"
         %td
           - rights = options_for_select(ExperimenterAssignment.right_list, assign.rights.split(','))
-          = select_tag("rights[#{assign.user_id}][]", rights, {:class => "chzn-select", :multiple => true, :style => "width:600px", :'data-placeholder' => t(:rights), :include_blank => true})
+          = select_tag("rights[#{assign.user_id}][]", rights, {:class => "chzn-select-roles", :multiple => true, :style => "width:600px", :'data-placeholder' => t(:rights), :include_blank => true})
           %button.close.removeline{:href => '#'} &times;
     %tr
       %td
         - options = options_for_select(User.where("role = 'admin' OR role='experimenter'").where(:deleted => false).order(:lastname, :firstname).collect do |u| [u.lastname+", "+u.firstname, u.id] end)
-        = select_tag(:add_user, options, {:class => "chzn-select", :'data-placeholder' => t('.add_people'), :include_blank => true})
+        = select_tag(:add_user, options, {:class => "chzn-select-experimenters", :'data-placeholder' => t('.add_people'), :include_blank => true})
       %td
         
   = f.submit t(:save_changes), :class => "guarded_form_save btn btn-primary"

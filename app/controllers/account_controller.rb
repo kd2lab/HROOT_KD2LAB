@@ -18,7 +18,6 @@ class AccountController < ApplicationController
   end
   
   def alternative_email    
-    # todo remove this to an extra method
     if params[:delete]
       current_user.secondary_email = nil
       current_user.secondary_email_confirmation_token = nil

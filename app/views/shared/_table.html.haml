@@ -45,16 +45,16 @@
               
   %tbody    
     - users.each_with_index do |user, i| 
-      - cl = []; 
-      - cl << "deleted" if user.deleted
-      - cl << "import_inactive" if user.imported && !user.activated_after_import
+      - classes = []; 
+      - classes << "deleted" if user.deleted
+      - classes << "import_inactive" if user.imported && !user.activated_after_import
 
       - if defined?(session_participant_view) && session_participant_view
         - showup_count += 1 if user.session_showup == 1 
         - participated_count += 1 if user.session_participated == 1 
         - noshow_count += 1 if user.session_noshow == 1 
 
-      %tr{:class => cl.join(' ')}
+      %tr{:class => classes.join(' ')}
         %td= check_box_tag "selected_users[#{user.id}]", '1', false, :class => 'user-selection-item'
         %td
           - if !user.deleted && user.imported && !user.activated_after_import
@@ -63,10 +63,6 @@
             %i.icon-envelope.tool-tip{:title => t('popup.user_was_invited')}
           - if defined?(user.reminded_at) && !user.reminded_at.nil?
             %i.icon-user.tool-tip{:title => t('popup.user_was_reminded')}
-          /= todo
-          /= user.valid?
-          /= user.errors.full_messages
-              
             
         - columns.each do |col|
           - case col

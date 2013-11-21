@@ -1,7 +1,7 @@
 - if can? :enable, @experiment
   - if @experiment.registration_active?
     .state
-      = button_tag t('experiments.registration_active'), :'data-id' => @experiment.id, :class => "btn btn-success state-button-disable", :'data-url' => disable_experiment_url(@experiment)    
+      = button_tag t('experiments.registration_active'), :class => "btn btn-success state-button-disable", :'data-url' => disable_experiment_url(@experiment)    
   - else
     .state
-      = button_tag t('experiments.registration_inactive'), :'data-id' => @experiment.id, :class => "btn btn-danger state-button-enable", :'data-url' => enable_experiment_url(@experiment)
+      = button_tag t('experiments.registration_inactive'), :class => "btn btn-danger state-button-enable", :'data-url' => enable_experiment_url(@experiment)

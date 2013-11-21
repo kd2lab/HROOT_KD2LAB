@@ -4,7 +4,7 @@ $ ->
   build_select = (id) ->
     rights = $('#usertable').data('rights')
     right_string = ('<option value="'+a[1]+'">'+a[0]+'</option>' for a in rights)
-    right_select = '<select class="chzn-select" data-placeholder="'+$('#usertable').data('rights-label')+'" id="rights'+id+'" multiple="multiple" name="rights['+id+'][]" style="width:600px">'+right_string.join('')+'</select>'
+    right_select = '<select class="chzn-select-roles" data-placeholder="'+$('#usertable').data('rights-label')+'" id="rights'+id+'" multiple="multiple" name="rights['+id+'][]" style="width:600px">'+right_string.join('')+'</select>'
     
   
   $('#add_user').chosen().change ->

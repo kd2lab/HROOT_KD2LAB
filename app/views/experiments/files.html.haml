@@ -12,13 +12,29 @@
 
 = render :partial => "tabs", :locals => {:selected => :files}
 
+%p= t('.files_description_html')
+
+%br
+
 .filelist_container
-  #files
+  #files{:'data-confirmation' => t('.confirmation'), :'base-url' => experiment_url(@experiment)}
+  -# todo refator - create dropzone in jquery
   #dropzone{:style => "display: none;"}
-    .dropinfo
-      Drop your files here!
+    Drop your files here!
       
 %br
+
+
+#contextMenu.dropdown.clearfix{:style => 'display:none; z-index: 10000'}
+  %ul.dropdown-menu{"aria-labelledby" => "dropdownMenu", role: "menu", style: "display:block;position:static;margin-bottom:5px;"}
+    %li
+      %a.download{href: "#", tabindex: "-1"}= t('.download_file')
+    %li.divider
+    %li
+      %a.delete{href: "#", tabindex: "-1"}= t('.delete_file')
+    
+    
+      
 = form_tag({action: :upload_via_form}, multipart: true) do 
   .fileupload.fileupload-new{"data-provides" => "fileupload", 'data-name' => 'file'}
     .input-append
@@ -33,14 +49,5 @@
       
       %a.btn.btn-default.fileupload-exists{"data-dismiss" => "fileupload", href: "#"}= t('.remove')      
       = submit_tag t('.upload'), :class => 'btn btn-primary' 
-      
-      
-%h1 todo
-- commit = `git rev-parse HEAD`
-- branch = `git rev-parse --abbrev-ref HEAD`
-%ul
-  %li überschreiben von dateien?
-  %li Löschen von Dateien
-  %li Download
-  %li upload box besser darstellen
-  %li testen
+  = t('.or_use_drag_drop')
+

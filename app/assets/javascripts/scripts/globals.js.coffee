@@ -1,20 +1,15 @@
 $ ->
   
-  $('#files').fileTree();
+  $('#files').fileTree()
   
-  # todo remove this later - adds translation errors to the top of the page
+  # todo later remove automatic capturing of translation errors
   $ ->
     s = $('html')[0].innerHTML
     arr = s.match(/translation missing: ([\w\.]*)/gi)
     if arr
       arr = arr.map (s) -> s.slice(21)
       $.post('/home/translations', {missing: arr})
-  
-  
-  # todo what is this
-  # activate dropdown toggle - todo remove if not needed
-  # $('.dropdown-toggle').dropdown()
-  
+    
   # activate bootstrap tooltips
   $(".tool-tip").tooltip({trigger: 'hover', container: 'body'})
   
@@ -43,12 +38,14 @@ $ ->
   )
         
   # activate chosen
-  # todo clean this up
+  # todo later clean this up
   
   $(".chzn-select-search").chosen({disable_search_threshold: 10, width: '400px'})
   $(".chzn-select-search-tags").chosen({width: '150px'})
 
   $(".chzn-select").chosen({width: '150px'})
+  $(".chzn-select-roles").chosen({width: '500px'})
+  
   $(".chzn-select-register").chosen({width: '300px'})
   
   

@@ -13,21 +13,14 @@ heroku workflow
 - rework account area
 - rework options page  
 - complete language overhaul
-- add email instructions on signup page
+
 - find all todos and cleanup
 - cleanup eventuallies in tests
 - environments bereinigen
 - Installation empty testen
 - do all this and check for bootstrap 3, fix gem on current version http://bootply.com/bootstrap-3-migration-guide
-- remove anything with prefix suffix
  
-- system health page
-  - last cron run
-  - people with the same name
-  - check for validation errors
-  - poeple who have not activated their account
-  - people who have not confirmed their account
-  - people who have never logged in
+
   
   
   datum internationalisieren

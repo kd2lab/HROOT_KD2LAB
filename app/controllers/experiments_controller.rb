@@ -177,22 +177,21 @@ class ExperimentsController < ApplicationController
     end
     
     Dir.chdir(dirname);
+    result = '<ul class="jqueryFileTree" style="display: noxne;">'
     
-    result = '<ul class="jqueryFileTree" style="display: none;">'
-    
+    # later for directories
 		#loop through all directories
-		Dir.glob("*") {
-			|x|
-			if not File.directory?(x.untaint) then next end 
-			result+= "<li class=\"directory collapsed\"><a href=\"#\" rel=\"#{dirname}#{x}/\">#{x}</a></li>";
-		}
+		#Dir.glob("*") {
+	  #	|x|
+		#	if not File.directory?(x.untaint) then next end 
+		#	result+= "<li class=\"directory collapsed\"><a href=\"#\" rel=\"#{x}/\">#{x}</a></li>";
+		#}
 
 		#loop through all files
-		Dir.glob("*") {
-			|x|
+		Dir.glob("*") { |x|
 			if not File.file?(x.untaint) then next end 
 			ext = File.extname(x)[1..-1]
-			result += "<li class=\"file ext_#{ext}\"><a href=\"#\" rel=\"#{dirname}#{x}\">#{x}</a></li>"
+			result += "<li class=\"file ext_#{ext}\"><a href=\"#\" data-file=\"#{x}\">#{x}</a></li>"
 		}
     
     result += "</ul>"
@@ -216,6 +215,35 @@ class ExperimentsController < ApplicationController
     end      
   end
 
+  def download
+    # the base directory for file uploads of this experiment
+    basedir = File.join(Rails.configuration.upload_dir, 'experiments', @experiment.id.to_s)
+    
+    # expand path to stop having /../.. paths
+    filepath = File.expand_path(File.join(Rails.configuration.upload_dir, 'experiments', @experiment.id.to_s, params[:filename]))
+    
+    # if file is in basedir - for security
+    if File.dirname(filepath) == basedir
+      send_file filepath, :x_sendfile=>true
+    else
+      # render error, if file is not in correct path
+      render :text => 'error'
+    end
+  end
+  
+  def delete
+    # the base directory for file uploads of this experiment
+    basedir = File.join(Rails.configuration.upload_dir, 'experiments', @experiment.id.to_s)
+    
+    # expand path to stop having /../.. paths
+    filepath = File.expand_path(File.join(Rails.configuration.upload_dir, 'experiments', @experiment.id.to_s, params[:filename]))
+    
+    # if file is in basedir - for security
+    if File.dirname(filepath) == basedir
+      File.delete(filepath) if File.exist?(filepath)
+    end
+    render :text => 'delete'
+  end
   
   private
   

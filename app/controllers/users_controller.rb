@@ -10,10 +10,10 @@ class UsersController < ApplicationController
 
     if params[:user_action] == "store_search"
       Settings.standard_search = params[:search]
-      flash.now[:notice] = t('controllers.users.notice_filter_stored')
+      flash.now[:notice] = t('controllers.users.notice_search_stored')
     end
     
-      # todo refactor
+      # todo restore print viewrefactor
      
 #     elsif params[:user_action] == "print_view"
 #       @users = User.load(params, {:sort_column => sort_column, :sort_direction => sort_direction, :include_deleted_users => (params[:filter][:show_deleted].to_s == "1")})

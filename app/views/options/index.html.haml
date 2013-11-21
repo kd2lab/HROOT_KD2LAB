@@ -11,4 +11,48 @@
 
 .row
   .span10
-    todo nichts hier im Moment  
+    %h3=t('.cronjobs_title')
+    
+    - tasks = [[t(".invitation"), Settings.last_invitation_task_execution],                  |
+               [t(".incomplete_sessions"), Settings.last_incomplete_session_task_execution], |
+               [t(".mail_queue"), Settings.last_process_mail_queue_task_execution],          |
+               [t(".session_reminder"), Settings.last_session_reminder_task_execution]]
+    
+    - tasks.each do |task, lasttime|
+      - if lasttime
+        - if lasttime < 10.minutes.ago
+          .alert.alert-error
+            = t('.task_is_delayed_html', :task => task)
+        - else
+          .alert.alert-success
+            = t('.task_is_ok_html', :task => task)
+        
+      - else
+        .alert.alert-error
+          = t('.task_never_run_html', :task => task)
+      
+    %h3=t('.validation_errors_title')
+    %table.table
+      - User.all.each do |user|
+        - if !user.valid?
+          %tr
+            %td= link_to truncate(user.lastname, {:length => 15})+" "+truncate(user.firstname, {:length => 10}), user_path(user)
+            %td= render 'layouts/errors', object: user
+
+    
+    = link_to "do it", "?run", :class => "btn btn-primary"
+
+    %h3=t('.unconfirmed_accounts_title')
+
+    %table.table
+      - User.where(:confirmed_at => nil).each do |user|
+        %tr
+          %td= link_to truncate(user.lastname, {:length => 15})+" "+truncate(user.firstname, {:length => 10}), user_path(user)
+          %td= l(user.created_at)  
+    %ul
+      %li people with the same name
+      %li check for validation errors
+      %li poeple who have not activated their account
+      %li people who have not confirmed their account
+      %li people who have never logged in
+      %li todo nichts hier im Moment  

@@ -65,7 +65,7 @@ class HomeController < ApplicationController
     end
   end
   
-  # todo remove later
+  # todo later automatic capturing of translation errors
   def translations
     Settings.missing_translations = {} unless Settings.missing_translations
     

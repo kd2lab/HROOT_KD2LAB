@@ -1,11 +1,14 @@
-// todo remove this?
-
 @import "twitter/bootstrap/bootstrap";
 @import "twitter/bootstrap/responsive";
 
 // Set the correct sprite paths
 @iconSpritePath: image-url("twitter/bootstrap/glyphicons-halflings.png");
 @iconWhiteSpritePath: image-url("twitter/bootstrap/glyphicons-halflings-white.png");
+
+// todo later old code for sprite urls
+//@iconSpritePath: '<%= (Rails.configuration.path_prefix || '')+asset_path('twitter/bootstrap/glyphicons-halflings.png')%>';
+//@iconWhiteSpritePath: '<%= (Rails.configuration.path_prefix || '')+asset_path('twitter/bootstrap/glyphicons-halflings-white.png')%>';
+
 
 // Set the Font Awesome (Font Awesome is default. You can disable by commenting below lines)
 @fontAwesomeEotPath: asset-url("fontawesome-webfont.eot");

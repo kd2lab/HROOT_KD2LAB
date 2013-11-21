@@ -84,6 +84,7 @@ Hroot::Application.routes.draw do
       end
     
       member do
+        get :index
         get :experimenters
         post :experimenters
         get :enable
@@ -98,7 +99,8 @@ Hroot::Application.routes.draw do
         get :files
         post :filelist
         post :upload
-        # todo remove
+        get 'download/:filename', :action => :download, :constraints => { :filename => /.*/ }, :as => 'download'
+        get 'delete/:filename', :action => :delete, :constraints => { :filename => /.*/ }, :as => 'delete'
         post :upload_via_form
       end
     

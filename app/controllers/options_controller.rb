@@ -3,7 +3,7 @@
 class OptionsController < ApplicationController
   authorize_resource :class => false
   
-  # todo remove this, and also route
+  # todo add system health page here
   def index
  
   end

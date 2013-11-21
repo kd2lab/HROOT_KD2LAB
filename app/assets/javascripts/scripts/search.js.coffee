@@ -1,5 +1,5 @@
 $ ->
-  #todo cleanup
+  #todo later cleanup
   
   # disable all invisible controls to stop form submission
   $('.search-block:hidden').find(':input').attr('disabled', 'disabled')

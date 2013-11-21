@@ -134,7 +134,7 @@ de:
         role: Rolle
         email: E-Mail
         secondary_email: Alternative E-Mail
-        termins_and_conditions: Nutzungsbedingungen
+        terms_and_conditions: Nutzungsbedingungen
         reset_password_token: Passwort-Link
       session:
         group_size: Gruppengröße
@@ -213,8 +213,15 @@ de:
       credits_info: Der folgende Text wird auf der Seite Impressum und Kontakt angezeigt. Es darf HTML genutzt werden.       
       submit_link: Texte speichern
     index:
-      email_formats_header: Gültige E-Mail-Formate todo remove
-      email_formats_info: Hier kann festgelegt werden, welche E-Mail-Formate bei der Registrierung gültig sind. Dabei kann ein Prefix gefordert werden (ein Substring vor dem @-Zeichen), und es kann definiert werden, welche Domain die Adressen haben müssen. todo remove
+      cronjobs_title: Status der Cronjobs
+      task_is_delayed_html: "Warnung: Der Task <b>%{task}</b> wurde länger als 10 Minuten nicht ausgeführt."
+      task_never_run_html: "Warnung: Der Task <b>%{task}</b> wurde noch nie ausgeführt!"
+      task_is_ok_html: "Der Task <b>%{task}</b> wurde in den letzten 10 Minuten ausgeführt."
+      invitation: Einladungsversand
+      incomplete_sessions: Benachrichtigung über unvollständige Sessions
+      mail_queue: Mailversand
+      session_reminder: Session-Erinnerungen
+      
     emails:
       header1: E-Mail zur Experiment-Einladung
       header2: E-Mail zur Anmeldebestätigung
@@ -293,8 +300,11 @@ de:
       choose_different_file: Andere Datei wählen
       upload: Upload
       remove: Entfernen
-      
-      
+      files_description_html: "Laden Sie Dateien über das Dateiupload-Feld hoch, oder ziehen Sie Dateien per Drag and Drop auf das Dateifeld.<br/><br/>Dateien mit gleichem Namen werden überschrieben."
+      or_use_drag_drop: oder ziehen Sie Dateien per Drag and Drop auf der Dateiliste ab.
+      delete_file: Datei löschen...
+      download_file: Download
+      confirmation: Soll diese Datei wirklich gelöscht werden?
   
   sessions:
     new_session_link: Neue Session anlegen
@@ -547,9 +557,6 @@ de:
     subject_import_email_confirmation: "hroot: Bestätigung der neuen E-Mail-Adresse"
     subject_import_email_activation: "hroot: Freischaltung für die Teilnahme an Experimenten"
   
-  registrations:
-    new:
-      email_hint: "todo rausziehen Gültige E-Mail-Adressen enden mit @uni-hamburg.de"
   devise:    
     passwords:
       new:
@@ -724,7 +731,7 @@ de:
       notice_created_user: Der Benutzer wurde erfolgreich angelegt.
       notice_activated_after_import: Der Benutzer wurde nach dem Import freigeschaltet.
       notice_removed_from_session: Der Benutzer wurde aus der Session entfernt.
-      notice_filter_stored: Die aktuellen Filtereinstellungen wurden als Standardeinstellungen gespeichert.
+      notice_search_stored: Die aktuellen Filtereinstellungen wurden als Standardeinstellungen gespeichert.
         
   templates:
     confirm_save: Soll der aktuelle Text als Vorlage gespeichert werden? Dabei wird die bisher gespeicherte Vorlage überschrieben! 

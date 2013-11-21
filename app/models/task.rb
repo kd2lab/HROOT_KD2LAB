@@ -47,6 +47,7 @@ EOSQL
         sp.save
       end
     end
+    Settings.last_session_reminder_task_execution = Time.now    
   end
   
   # send 50 Mails from regular mail queue
@@ -91,6 +92,8 @@ EOSQL
         UserMailer.log_mail("Problem sending emails", "The email with recipient id #{recipient.message.id} to \n#{recipient.user.inspect}\n can not be sent.").deliver
       end
     end
+    Settings.last_process_mail_queue_task_execution = Time.now
+    
   end  
   
   # send invitations
@@ -155,14 +158,14 @@ EOSQL
         UserMailer.log_mail("Invitation mailing for #{experiment.name}", log).deliver
       end
       
-      # alle eingeladen?   
+      # were all users invited?
       if experiment.uninvited_participants_count == 0          
         experiment.invitation_start = nil
         experiment.save
         UserMailer.log_mail("Invitation mailing for #{experiment.name} finished (reason: all users were invited)", "All assigned users were invited.").deliver
       end
         
-      # keine freien Plätze mehr?
+      # no more open seats?
       unless experiment.has_open_sessions?
         experiment.invitation_start = nil
         experiment.save
@@ -171,6 +174,7 @@ EOSQL
       
     end
     
+    Settings.last_invitation_task_execution = Time.now
   end  
   
   def self.send_reminders_for_incomplete_sessions
@@ -195,6 +199,8 @@ EOSQL
         end
       end
     end  
+    Settings.last_incomplete_session_task_execution = Time.now
+    
   end
   
 end
