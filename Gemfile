@@ -35,6 +35,10 @@ gem "therubyracer", :require => 'v8'
 gem 'whenever', :require => false
 gem 'twitter-bootstrap-rails'
 
+gem 'capistrano', '~> 3.0.1'
+gem 'capistrano-rails'
+gem 'capistrano-bundler'
+gem 'capistrano-rvm', '~> 0.0.3'
 
 # Bundle gems for the local environment. Make sure to
 # put test-only gems in this group so their generators
@@ -46,10 +50,6 @@ group :development, :test do
   gem "factory_girl_rails", "~> 4.0"
   gem 'shoulda'
   gem 'mocha', :require => 'mocha/setup'
-  gem 'capistrano', '~> 3.0.1'
-  gem 'capistrano-rails'
-  gem 'capistrano-bundler'
-  gem 'capistrano-rvm', '~> 0.0.3'
 end
 
 group :production do
