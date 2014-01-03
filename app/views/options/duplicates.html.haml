@@ -1,0 +1,59 @@
+= content_for :breadcrumb do
+  %ul.breadcrumb
+    %li
+      =link_to t(:administration), :controller => "admin", :action => "index"
+      %span.divider
+        &gt;
+    %li.active
+      =t :settings
+  
+= render :partial => "tabs", :locals => {:selected => :duplicates} 
+
+.row
+  .span10
+    %h3=t('.duplicates')
+
+    =t('.duplicates_html')
+    %br
+    %br
+    
+    %table.table
+      %thead
+        %tr
+          %th
+          %th
+          %th= t('usertable.fullname')
+          %th= t('usertable.role')
+          %th= t('usertable.email')
+          %th= t("activerecord.attributes.user.course_of_studies")
+          %th.tool-tip{:title => t('popup.noshow_count')}= t('noshow_shortcut')
+          %th.tool-tip{:title => t('popup.participations_count')}= t('participations_shortcut')
+          %th= t('usertable.created_at')
+          
+
+
+      %tbody    
+        - @users.each_with_index do |user, i| 
+          %tr
+            %td= (i+1)
+            
+            %td
+              - if !user.deleted && user.imported && !user.activated_after_import
+                %i.icon-ban-circle.tool-tip{:title => t('popup.inactive_after_import')}
+              - if defined?(user.invited_at) && !user.invited_at.nil?
+                %i.icon-envelope.tool-tip{:title => t('popup.user_was_invited')}
+              - if defined?(user.reminded_at) && !user.reminded_at.nil?
+                %i.icon-user.tool-tip{:title => t('popup.user_was_reminded')}
+              - if !user.comment.blank?
+                %i.icon-comment.tool-tip{:'data-html'=> 'true',  :title => raw(simple_format(user.comment))}
+                
+            %td= link_to truncate(user.lastname, {:length => 15})+', '+truncate(user.firstname, {:length => 10}), user_path(user)
+            %td= {'user' => 'P', 'experimenter' => 'E', 'admin' => 'A'}[user.role]
+            %td= link_to highlight(truncate(user.email, {:length => 15}), params[:search][:fulltext]), "mailto:#{user.email}"
+            %td= field = CUSTOM_FIELDS.get("course_of_studies").display_value(user)
+            %td= "#{user.noshow_count}" 
+            %td= "#{user.participations_count}"
+            %td= I18n.l(user.created_at, :format => :date_only)
+            
+        
+       

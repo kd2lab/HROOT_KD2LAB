@@ -5,6 +5,7 @@ set :deploy_to, "/var/www/rails/#{fetch(:application)}"
 set :rvm_ruby_version, '2.0.0@hroot'
 #set :bundle_flags, '--deployment'
 set :linked_files, %w{config/database.yml}
+set :linked_dirs, %w{uploads}
 set :branch, 'improve_filters'
 set :rails_env, 'qa' 
 

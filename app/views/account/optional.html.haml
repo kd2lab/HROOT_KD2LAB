@@ -11,22 +11,52 @@
 
 = render :partial => "tabs", :locals => {:selected => :optional} 
 
-= simple_form_for current_user, :url => account_optional_path, :method => :post, :html => {:class => "form-horizontal"} do |f| 
-  %h4= t('.optional_fields')
-  
-  .explanation
-    =t '.explanation'
-  
-  %br
-    
-  - CUSTOM_FIELDS.optional.each do |field|
-    = field.add_to_form(f)
-  
-  
-  %br
-  = f.submit t(:save), :class => "btn btn-primary"
-  
-  
+- if Rails.configuration.users_can_edit_optional_data
 
+  = simple_form_for current_user, :url => account_optional_path, :method => :post, :html => {:class => "form-horizontal"} do |f| 
+    %h4= t('.optional_fields')
+  
+    .explanation
+      =t '.explanation_html'
+  
+    %br
+
+    - CUSTOM_FIELDS.optional.each do |field|
+      = field.add_to_form(f)
+  
+    %br
+    = f.submit t(:save), :class => "btn btn-primary"
+  
+- else
+
+  = simple_form_for current_user, :url => account_optional_path, :method => :post, :html => {:class => "form-horizontal"} do |f| 
+    %h4= t('.optional_fields_empty')
+  
+    .explanation
+      =t '.explanation_empty_field_html'
+  
+    %br
+
+    - CUSTOM_FIELDS.optional.each do |field|
+      - if field.display_value(current_user).blank?
+        = field.add_to_form(f)
+       
+    %br
+
+    .explanation
+      =t '.explanation_filled_field_html'
+      %br
+      %br
+      
+    %table.table
+      %tbody
+        
+        - CUSTOM_FIELDS.optional.each do |field|
+          - if !field.display_value(current_user).blank?
+            %tr
+              %td= t("activerecord.attributes.user.#{field.name}")
+              %td= field.display_value(current_user)
+    %br
+    = f.submit t(:save), :class => "btn btn-primary"
 
 

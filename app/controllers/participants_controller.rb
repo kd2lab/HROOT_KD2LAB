@@ -22,7 +22,7 @@ class ParticipantsController < ApplicationController
         deleted_user_ids = @experiment.remove_participations(ids)
       
         # store all changes to the user base
-        history_entry = HistoryEntry.create(:filter_settings => params[:filter].to_json, :experiment_id => @experiment.id, :action => "remove_filtered_users", :user_count => deleted_user_ids.length, :user_ids => deleted_user_ids.to_json)      
+        history_entry = HistoryEntry.create(:search => params[:search].to_json, :experiment_id => @experiment.id, :action => "remove_filtered_users", :user_count => deleted_user_ids.length, :user_ids => deleted_user_ids.to_json)      
         
         flash.now[:notice] = t('controllers.participants.notice_removed_all')
       end
@@ -35,7 +35,7 @@ class ParticipantsController < ApplicationController
         deleted_user_ids = @experiment.remove_participations(params[:selected_users].keys.map(&:to_i))
 
         # store all changes to the user base
-        history_entry = HistoryEntry.create(:filter_settings => params[:filter].to_json, :experiment_id => @experiment.id, :action => "remove_selected_users", :user_count => deleted_user_ids.length, :user_ids => deleted_user_ids.to_json)          
+        history_entry = HistoryEntry.create(:search => params[:search].to_json, :experiment_id => @experiment.id, :action => "remove_selected_users", :user_count => deleted_user_ids.length, :user_ids => deleted_user_ids.to_json)          
         
         flash.now[:notice] = t('controllers.participants.notice_removed_from_session')
       end
@@ -52,19 +52,42 @@ class ParticipantsController < ApplicationController
       end
     end
 
-    # todo restore print view
-#       elsif params[:user_action] == "print_view"
-#         #@users = User.load(params, {:sort_column => sort_column, :sort_direction => sort_direction, :include_deleted_users => (params[:filter][:show_deleted].to_s == "1")})
-#         @users = User.load(params, {:experiment => @experiment, :sort_column => sort_column, :sort_direction => sort_direction, :exclude_non_participants => 1, :include_deleted_users => 1})
-#     
-#         render :action => 'print', :layout => 'print'
-#         return
-#       end
-#     end
-#     
-
     @users = Search.paginate(params, {:experiment => @experiment, :sort_column => sort_column, :sort_direction => sort_direction})
     @user_count = @experiment.participations.includes(:user).where('users.role' => 'user').count
+  end
+
+  def print
+    params[:search] = params[:search] || Settings.standard_search || {}
+    params[:search][:role] = {:value => ['user']} 
+    params[:search][:deleted] = {:value =>"show"}
+    
+    @users = Search.search(params[:search], {:experiment => @experiment, :sort_column => sort_column, :sort_direction => sort_direction})
+    
+    render :layout => 'print'
+  end
+
+  def csv
+    params[:search] = params[:search] || Settings.standard_search || {}
+    params[:search][:role] = {:value => ['user']} 
+    params[:search][:deleted] = {:value =>"show"}
+    
+    users = Search.search(params[:search], {:experiment => @experiment, :sort_column => sort_column, :sort_direction => sort_direction})
+
+    data = Exporter.to_csv(users, Rails.configuration.participants_table_csv_columns)
+
+    send_data(data, :type => 'text/csv', :filename => 'users.csv')
+  end
+
+  def excel
+    params[:search] = params[:search] || Settings.standard_search || {}
+    params[:search][:role] = {:value => ['user']} 
+    params[:search][:deleted] = {:value =>"show"}
+    
+    users = Search.search(params[:search], {:experiment => @experiment, :sort_column => sort_column, :sort_direction => sort_direction})
+
+    data = Exporter.to_excel(users, Rails.configuration.participants_table_csv_columns)
+
+    send_data(data, :type => 'application/vnd.ms-excel', :filename => 'users.xls')
   end
   
   def manage
@@ -86,7 +109,7 @@ class ParticipantsController < ApplicationController
     if ids.length > 0      
       # store all changes to the user base
       history_entry = HistoryEntry.create(
-        :filter_settings => params[:search].to_json,
+        :search => params[:search].to_json,
         :experiment_id => @experiment.id, 
         :action => if params[:submit_all] then 'add_filtered_users' else 'add_selected_users' end, 
         :user_count => ids.length, 
@@ -112,6 +135,7 @@ class ParticipantsController < ApplicationController
   
   def send_message
     # default: include deleted and only users when
+    params[:search] = params[:search] || {} 
     params[:search][:role] = {:value => ['user']} 
     params[:search][:deleted] = {:value =>"show"}
     

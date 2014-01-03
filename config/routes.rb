@@ -51,10 +51,12 @@ Hroot::Application.routes.draw do
   match 'admin/index', :controller => 'admin', :action => 'index'
   match 'admin/calendar(/:year(/:month))' => 'admin#calendar', :as => :calendar, :constraints => {:year => /\d{4}/, :month => /\d{1,2}/} 
   match 'admin/templates', :controller => 'admin', :action => 'templates'
-
+  match 'admin/csv', :controller => 'admin', :action => 'csv'
+  
   scope '/admin' do
     match 'options', :controller => 'options', :action => 'index'
     match 'options/index', :controller => 'options', :action => 'index'
+    match 'options/duplicates', :controller => 'options', :action => 'duplicates'
     post 'options/index'
     match 'options/emails', :controller => 'options', :action => 'emails'
     match 'options/texts', :controller => 'options', :action => 'texts'
@@ -69,8 +71,11 @@ Hroot::Application.routes.draw do
       collection do
         post :index
         post :create_user
-        get :print
+        post :print
+        post :csv
+        post :excel
         post :send_message
+        post :store_search
       end
     end
     
@@ -78,13 +83,12 @@ Hroot::Application.routes.draw do
     
     match 'experiments/tag/:tag', :as => 'tagged_experiment', :controller => 'experiments', :action => 'tag'
 
-    resources :experiments, :except => :show do
+    resources :experiments, :except => :show  do
       collection do
         get :autocomplete_tags
       end
     
       member do
-        get :index
         get :experimenters
         post :experimenters
         get :enable
@@ -96,12 +100,18 @@ Hroot::Application.routes.draw do
         get :invitation
         post :invitation
         get :autocomplete_tags
+        
+        get :public_link
+        get :message_history
+        post :delete, :action => :delete
+        post :upload_via_form
         get :files
+        get :filelist #todo remove
         post :filelist
         post :upload
-        get 'download/:filename', :action => :download, :constraints => { :filename => /.*/ }, :as => 'download'
-        get 'delete/:filename', :action => :delete, :constraints => { :filename => /.*/ }, :as => 'delete'
-        post :upload_via_form
+        post :download
+        post :new_folder
+        post :move
       end
     
       resources :sessions, :except => :show do
@@ -115,7 +125,9 @@ Hroot::Application.routes.draw do
           get :duplicate
           get :participants
           post :participants
-          get :print
+          post :print
+          post :csv
+          post :excel
           post :send_message
           
         end
@@ -128,6 +140,9 @@ Hroot::Application.routes.draw do
           post :index
           get :history
           post :send_message
+          post :print
+          post :csv
+          post :excel
         end
       end
     end

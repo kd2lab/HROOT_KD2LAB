@@ -69,6 +69,8 @@ Hroot::Application.configure do
   config.add_user_table_columns = [:fullname, :role, :email, :course_of_studies, :gender, :noshow_count, :participations_count]
   config.participants_table_columns = [:fullname, :role, :email, :course_of_studies, :noshow_count, :participations_count, :session]
   
+  config.recipient_of_audit_reports = "someemail@somedomain.co.uk"
+  
   
 end
 

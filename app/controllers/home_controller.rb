@@ -6,6 +6,7 @@ require 'date'
 include Icalendar
 
 class HomeController < ApplicationController
+  before_filter :check_for_ref, :only => [:index]
   before_filter :redirect_on_logged_in, :only => [:index]
 
   def index
@@ -88,6 +89,15 @@ class HomeController < ApplicationController
   
   private
   
+  def check_for_ref
+    if params[:ref]
+      e = Experiment.where(:refkey => params[:ref]).first
+      if e
+        cookies.permanent[:refkey] = params[:ref]
+      end
+    end
+  end
+
   def redirect_on_logged_in
     if current_user
       if current_user.admin? || current_user.experimenter?

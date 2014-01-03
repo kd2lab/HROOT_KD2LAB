@@ -17,7 +17,7 @@ class EnrollController < ApplicationController
     # create session participation if there is space (a) and user is not in the session already (b)
     sql = <<EOSQL
       INSERT INTO session_participations 
-      SELECT NULL, #{@session.id}, #{current_user.id}, NULL, 0, 0, 0, NOW(), NOW() 
+      SELECT NULL, #{@session.id}, #{current_user.id}, NULL, 0, 0, 0, NOW(), NOW(), NULL, NULL 
       FROM sessions s
       WHERE
         s.id = #{@session.id} AND
@@ -43,7 +43,7 @@ EOSQL
       # add user to all following sessions
       sql = <<EOSQL
       INSERT INTO session_participations 
-      SELECT NULL, s.id, #{current_user.id}, NULL, 0, 0, 0, NOW(), NOW() 
+      SELECT NULL, s.id, #{current_user.id}, NULL, 0, 0, 0, NOW(), NOW(), NULL, NULL
       FROM sessions s
       WHERE
         s.reference_session_id = #{@session.id} AND
@@ -53,29 +53,13 @@ EOSQL
       ActiveRecord::Base.connection.execute(sql)
       
       # successful registration - send confirmation mail
-      subject = @session.experiment.confirmation_subject.to_s.mreplace([
-        ["#firstname", current_user.firstname], 
-        ["#lastname", current_user.lastname],
-        ["#session_date_de", @session.start_at.strftime("%d.%m.%Y")],
-        ["#session_date_en", @session.start_at.strftime("%Y-%m-%d")],
-        ["#session_date", @session.start_at.strftime("%d.%m.%Y")],
-        ["#session_start_time", I18n.l(@session.start_at, :format => :time_only)],
-        ["#session_end_time", I18n.l(@session.end_at, :format => :time_only)],
-        ["#session_location", if @session.location then @session.location.name else "" end]
-      ])
-      
+      subject = Task.replace(@session.experiment.confirmation_subject.to_s, current_user, nil, nil)
+      text = Task.replace(@session.experiment.confirmation_text.to_s, current_user, nil, nil)
+
       sessionlist_de =  ([@session] + @session.following_sessions).map{|s| s.start_at.strftime("%d.%m.%Y") + (if s.location then " (#{t('controllers.enroll.location')} #{s.location.name.chomp})" else "" end) }.join("\n")
       sessionlist_en =  ([@session] + @session.following_sessions).map{|s| s.start_at.strftime("%Y-%m-%d") + (if s.location then " (#{t('controllers.enroll.location')} #{s.location.name.chomp})" else "" end) }.join("\n")
       
-      text = @session.experiment.confirmation_text.to_s.mreplace([
-        ["#firstname", current_user.firstname], 
-        ["#lastname", current_user.lastname],
-        ["#session_date_de", @session.start_at.strftime("%d.%m.%Y")],
-        ["#session_date_en", @session.start_at.strftime("%Y-%m-%d")],
-        ["#session_date", @session.start_at.strftime("%d.%m.%Y")],
-        ["#session_start_time",I18n.l(@session.start_at, :format => :time_only)],
-        ["#session_end_time", I18n.l(@session.end_at, :format => :time_only)],
-        ["#session_location", if @session.location then @session.location.name else "" end],
+      text = text.to_s.mreplace([
         ["#sessionlist_de", sessionlist_de],
         ["#sessionlist_en", sessionlist_en],
         ["#sessionlist", sessionlist_de]
@@ -85,9 +69,21 @@ EOSQL
         subject,
         text,
         current_user.main_email,
-        @session.experiment.sender_email
+        @session.experiment.sender_email_or_default
       ).deliver
-      
+
+      SentMail.create(
+        :subject => subject,
+        :message => text, 
+        :from => @session.experiment.sender_email_or_default,
+        :to => current_user.main_email,
+        :message_type => UserMailer::SESSION_CONFIRMATION,
+        :user_id => current_user.id,
+        :experiment_id => @session.experiment_id,
+        :sender_id => nil,
+        :session_id => @session.id
+      )
+
       redirect_to enroll_path(params[:code]), :notice => t('controllers.enroll.notice_registered')
     else
       redirect_to enroll_path(params[:code]), :alert => t('controllers.enroll.notice_not_registered')

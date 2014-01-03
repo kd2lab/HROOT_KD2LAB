@@ -19,9 +19,15 @@ heroku workflow
 - environments bereinigen
 - Installation empty testen
 - do all this and check for bootstrap 3, fix gem on current version http://bootply.com/bootstrap-3-migration-guide
- 
+- deployment public folder
+- replacements vereinheitlichen 
 
+
+- remove filter_settings
   
+
+- #usernames in allgemeine messages
+- breite popup mails
   
   datum internationalisieren
   

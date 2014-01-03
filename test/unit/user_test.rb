@@ -229,26 +229,26 @@ class UserTest < ActiveSupport::TestCase
     
     should "search for study" do
       assert_same_elements [@u1, @u2, @u3, @u4], Search.search({:course_of_studies=>{:value=>[1, 2]}})
-      assert_same_elements [@u5, @u6, @u7, @u9], Search.search({:course_of_studies=>{:op=>"without", :value=>[1, 2]}, :role => { :value=>['user']}})    
+      assert_same_elements [@u5, @u6, @u7, @u9], Search.search({:course_of_studies=>{:op=>"2", :value=>[1, 2]}, :role => { :value=>['user']}})   
     end
     
     should "search for degree" do    
       assert_same_elements [@u1, @u2, @u3, @u4], Search.search({ :degree => {:value => [1, 2]}})
-      assert_same_elements [@u5, @u6, @u7, @u9], Search.search({ :degree => {:value => [1, 2], :op => 'without'}, :role => { :value=>['user']} })
+      assert_same_elements [@u5, @u6, @u7, @u9], Search.search({ :degree => {:value => [1, 2], :op => '2'}, :role => { :value=>['user']} })
     end
     
     should "search tags" do      
       assert_same_elements [], 
-        Search.search({:tags => [{:op => "at_least", :count => 5, :tag => @tag1 }] } )
+        Search.search({:tags => [{:op => ">=", :count => 5, :tag => @tag1 }] } )
       assert_same_elements [@u5, @u6], 
-        Search.search({:tags => [{:op => "at_least", :count => 1, :tag => @tag1 }, {:op => "at_least", :count => 1, :tag => @tag3 }] } )
+        Search.search({:tags => [{:op => ">=", :count => 1, :tag => @tag1 }, {:op => ">=", :count => 1, :tag => @tag3 }] } )
       assert_same_elements [@u1, @u2, @u3, @u4, @u7, @u9],
-        Search.search({:tags => [{:op => "at_most", :count => 0, :tag => @tag1 }], :role => { :value=>['user']} } )
+        Search.search({:tags => [{:op => "<=", :count => 0, :tag => @tag1 }], :role => { :value=>['user']} } )
     end
 
     should "ignore empty tags" do      
       assert_same_elements Search.search({}), 
-        Search.search({:tags => [{:op => "at_least", :count => 5, :tag => '' }] } )
+        Search.search({:tags => [{:op => ">=", :count => 5, :tag => '' }] } )
     end
 
     
@@ -277,8 +277,8 @@ class UserTest < ActiveSupport::TestCase
     end
     
     should "find by language" do
-      assert_same_elements [@u2,@u3, @u4], Search.search({ :language => { :value => [2,3], :op => "only" }})
-      assert_same_elements [@u5, @u6, @u7, @u9], Search.search({:role => { :value=>['user']},  :language => { :value => [1], :op => "without" }})
+      assert_same_elements [@u2,@u3, @u4], Search.search({ :language => { :value => [2,3], :op => "1" }})
+      assert_same_elements [@u5, @u6, @u7, @u9], Search.search({:role => { :value=>['user']},  :language => { :value => [1], :op => "2" }})
     end
   end  
   

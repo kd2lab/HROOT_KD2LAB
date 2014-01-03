@@ -4,39 +4,18 @@
 %br
 
 
-- filter_setting_str = HistoryEntry.get_filter_setting_string(params[:filter])
+- if params[:search]
+  - filter_setting_str = HistoryEntry.get_filter_setting_string(params[:search])
 
-- if filter_setting_str.count > 0
-  =t('.filter_settings')+':'
-  - HistoryEntry.get_filter_setting_string(params[:filter]).each do |tx|
-    %span.badge= tx
-  %br
-  %br
+  - if filter_setting_str.count > 0
+    =t('.filter_settings')+':'
+    - HistoryEntry.get_filter_setting_string(params[:search]).each do |tx|
+      %span.badge= tx
+    %br
+    %br
+
+
+
+-if @users.count > 0
+  = render :partial => "shared/print", :locals => {:users => @users, :columns => Rails.configuration.participants_table_print_columns}
   
-- if @users.count > 0
-  %table.table.table-striped
-    %thead
-      %tr
-        %th
-        %th= 'Name'  
-        %th= t(:email)
-        %th= t('.study')
-        %th= t('noshow_shortcut')
-        %th= t('participations_shortcut')
-        %th= t(:session)
-    
-    %tbody  
-      - @users.each_with_index do |user, index| 
-        %tr
-          %td= index+1
-          %td= user.lastname+', '+truncate(user.firstname, {:length => 10})
-          %td= user.email
-          %td= user.study_name ? truncate(user.study_name, {:length => 10}) : t(:no_info)
-          %td= "#{user.noshow_count}" if user.user?
-          %td= "#{user.participations_count}" if user.user?
-          %td= "#{I18n.l(user.session_start_at) if user.session_start_at}" 
-- else
-  %br
-  %b= t'.none_found'
-  %br  
-  %br

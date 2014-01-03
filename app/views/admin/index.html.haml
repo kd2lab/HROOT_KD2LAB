@@ -11,23 +11,31 @@
 %h1=t 'dashboard'
 %br
 
-- if @today_sessions.count > 0  
+- if @next_sessions.count > 0
   .well
-    %h3=t '.sessions_today' 
+    %h3=t '.sessions_next' 
     %table.table
       %tbody
-        - @today_sessions.each do |s|
+        - @next_sessions.each do |exp_id, sessions|
+          - experiment = Experiment.where(:id => exp_id).first
           %tr
-            %td= link_to s.only_time_str, participants_experiment_session_path(s.experiment, s)
+            %td= link_to experiment.name, experiment_sessions_path(experiment)
             %td
-              = link_to s.experiment.name, experiment_sessions_path(s.experiment)
-              
-              - if s.location
-                %br
-                = s.location.name
-              %br
-              = s.session_participations.count
-              =t '.participants'
+              %table#next-sessions
+                -sessions.each do |session|
+                  - surplus = session.session_participations.count - session.needed
+                  - css_class = if surplus < 0 then |
+                      "participants-red"            |
+                    elsif surplus < session.reserve then  |
+                      "participants-yellow"         |
+                    else                            |
+                      "participants-green"          |
+                    end                             |
+                
+                  %tr  
+                    %td= link_to "#{session.time_str}", participants_experiment_session_path(experiment, session), :class => css_class
+                    %td= link_to "#{session.session_participations.count}  #{t('.participants')} (#{session.needed},#{session.reserve})",   participants_experiment_session_path(experiment, session), :class => css_class
+                    %td= session.location.name if session.location 
 
 .row
   .span6
@@ -53,6 +61,13 @@
         =t '.new_members_last_30_days'
         = User.where('DATE(confirmed_at) >= DATE_SUB(DATE(NOW()), INTERVAL 30 DAY)').where("role='user'").where('deleted=0').count
 
+        %h3=t '.newest_tags'
+        =raw Experiment.tag_counts_on('tags') |
+           .order('id desc') |
+           .limit(10) |
+           .map{|tag| link_to(tag.name, tagged_experiment_path(tag.id))} |
+           .join(', ') |
+          
 - if @incomplete_sessions.count > 0
   .well
     %h3=t '.incomplete_sessions'

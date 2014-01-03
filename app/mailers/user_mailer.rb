@@ -1,6 +1,12 @@
 #encoding: utf-8
 
 class UserMailer < ActionMailer::Base
+  REMINDER = 1
+  REGULAR_MAIL = 2
+  INVITATION = 3
+  SESSION_CONFIRMATION = 4
+
+
   # the main hroot adress is the default sender - configure in development.rb
   default :from => Rails.configuration.hroot_sender_email 
   
@@ -9,7 +15,7 @@ class UserMailer < ActionMailer::Base
       format.text { render :text => text }
     end
   end
-  
+
   def email(subject, text, to, from = nil)
     mail(:from => unless from.blank? then from else UserMailer.default[:from] end, :to => to, :subject => subject) do |format|
       format.text { render :text => text }

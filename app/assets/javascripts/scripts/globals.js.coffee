@@ -1,7 +1,15 @@
 $ ->
+  $('.files').fileTree()
   
-  $('#files').fileTree()
-  
+  $('*[data-poload]').on 'mouseenter mouseleave', ->
+    e = $(this)
+    e.off('mouseenter mouseleave')
+    $.get e.data('poload'), (d)->
+      e.popover({title: d.subject, content: d.message, width: "500px", trigger: 'hover', placement: 'left'}).popover('show')
+
+  #$('*[data-poload]').mouseout ->
+  #  $(this).popover('hide')
+
   # todo later remove automatic capturing of translation errors
   $ ->
     s = $('html')[0].innerHTML
@@ -47,6 +55,7 @@ $ ->
   $(".chzn-select-roles").chosen({width: '500px'})
   
   $(".chzn-select-register").chosen({width: '300px'})
+  $(".chzn-select-experiments").chosen({width: '500px'})
   
   
   # form change detection

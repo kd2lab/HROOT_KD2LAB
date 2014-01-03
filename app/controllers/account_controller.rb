@@ -4,12 +4,17 @@ class AccountController < ApplicationController
   authorize_resource :class => false
   
   def index
-  
+    if cookies[:refkey]
+      @experiment = Experiment.where(:refkey => cookies[:refkey]).first
+
+      if @experiment
+        # todo add history entry
+        p = Participation.create(:user_id => current_user.id, :experiment_id => @experiment.id, :added_by_public_key => 1)
+      end
+    end
   end
   
   def optional
-    puts params[:user].inspect
-    
     if params[:user]      
       if current_user.update_attributes(params[:user])
         redirect_to(account_optional_path, :notice => t('controllers.account.notice_data_changed')) 

@@ -25,119 +25,79 @@ class HistoryEntry < ActiveRecord::Base
   def self.get_filter_setting_string (filter)
     report = []
     
-    # search
-    unless filter['search'].blank?
-      report << "#{I18n.t('filter_summary.search')} '#{filter['search']}'"
+    CUSTOM_FIELDS.fields.each do |field|
+      if filter.keys.include? field.name
+        search = filter[field.name]
+        case field.class.to_s
+        when "SelectionField"
+          #report << search
+          if field.options[:translate]
+            #report << "translated"
+            vals = []
+            field.values.each do |val|
+              varname = if val.kind_of? Integer then "value"+val.to_s else val end
+              if search["value"].include?(val.to_s)
+                vals << I18n.t('customfields.'+field.name+'.'+varname)
+              end    
+            end    
+          else
+            vals = search["value"]
+          end  
+          if search["op"].to_i == 1
+            report << I18n.t('search.titles.'+field.name)+": "+I18n.t('search.selections.only')+ " " + vals.join(', ')
+          elsif search["op"].to_i == 2
+            report << I18n.t('search.titles.'+field.name)+": "+I18n.t('search.selections.without')+ " " + vals.join(', ')
+          else
+            report << I18n.t('search.titles.'+field.name)+": "+I18n.t('search.selections.only')+ " " + vals.join(', ')
+          end
+        when "DateField"
+          str = I18n.t('search.titles.'+field.name)+": "
+          if (search['from'])
+            str += I18n.t('filter_summary.from')+" #{search['from']} "
+          end
+
+          if (search['to'])
+            str += I18n.t('filter_summary.to')+" #{search['to']}"
+          end
+
+          report << str
+        else
+          report << "Display for #{field.class} not implemented yet"
+        end
+      end
     end
+
     
-    # gender
-    if ['f', 'm', '?'].include?(filter['gender'])
-      report << "#{I18n.t('filter_summary.gender')}=#{filter['gender']}"
-    end
-        
-    # preference
-    if [1,2].include?(filter['preference'].to_i)
-      pref_description = ["", I18n.t('filter_summary.only_with_presence_preference'), I18n.t('filter_summary.only_with_online_preference')][filter['preference'].to_i]
-      report << "#{I18n.t('filter_summary.preference')}: #{pref_description}"
+    # search
+    unless filter['fulltext'].blank?
+      report << "#{I18n.t('filter_summary.search')} '#{filter['fulltext']}'"
     end
     
     # noshow
-    if ["<=", ">"].include?(filter['noshow_op'])
-      report << "#{I18n.t('filter_summary.noshow_count')} #{filter['noshow_op']} #{filter['noshow'].to_i}"
-    end
-    
-    # successful participations
-    if ["<=", ">"].include?(filter['participated_op'])
-      report << "#{I18n.t('filter_summary.participation_count')} #{filter['participated_op']} #{filter['participated'].to_i}"
-    end
-        
-    #studienbeginn
-    sbegin = []
-    if (1..12).include?(filter['begin_von_month'].to_i) && filter['begin_von_year'].to_i > 1990
-      sbegin << "#{I18n.t('filter_summary.begin_after')} #{filter['begin_von_month'].to_i}/#{filter['begin_von_year'].to_i}"
-    end
-
-    if (1..12).include?(filter['begin_bis_month'].to_i) && filter['begin_bis_year'].to_i > 1990
-      sbegin << "#{I18n.t('filter_summary.begin_before')} #{filter['begin_bis_month'].to_i}/#{filter['begin_bis_year'].to_i}"
-    end
-    
-    if sbegin.length > 0
-      report << sbegin.join(' '+I18n.t('filter_summary.and') +' ')
-    end
-  
-    # birthday
-    sbirthday = []
-    if (1..12).include?(filter['birthday_von_month'].to_i) && filter['birthday_von_year'].to_i > 1900
-      sbirthday << "#{I18n.t('filter_summary.birthday_after')} #{filter['birthday_von_month'].to_i}/#{filter['birthday_von_year'].to_i}"
-    end
-
-    if (1..12).include?(filter['birthday_bis_month'].to_i) && filter['birthday_bis_year'].to_i > 1900
-      sbirthday << "#{I18n.t('filter_summary.birthday_before')} #{filter['birthday_bis_month'].to_i}/#{filter['birthday_bis_year'].to_i}"
-    end
-    
-    if sbirthday.length > 0
-      report << sbirthday.join(' '+I18n.t('filter_summary.and') +' ')
-    end
-      
-    # external experience
-    case filter['experience']
-    when "0"
-      report << "#{I18n.t('filter_summary.without_experienced')}"
-    when "1"
-      report << "#{I18n.t('filter_summary.with_experienced')}"
-    end
-    
-    # study 
-    if filter['study']
-      if filter['study_op'].to_i == 2
-        s = " #{I18n.t('filter_summary.not_study')}" 
-      else
-        s = "#{I18n.t('filter_summary.study')}"
+    if filter['noshow_count']
+      if ["<=", ">"].include?(filter['noshow_count']['op'])
+        report << "#{I18n.t('filter_summary.noshow_count')} #{filter['noshow_count']['op']} #{filter['noshow_count']['value'].to_i}"
       end
-      
-      report << s + Study.where(:id => filter['study'].map(&:to_i)).map(&:name).join(', ')
     end
-
-    # degree
-    if filter['degree']
-      if filter['degree_op'].to_i == 2
-        s = " #{I18n.t('filter_summary.not_degree')}" 
-      else
-        s = "#{I18n.t('filter_summary.degree')}"
+ 
+    if filter['participations_count']
+      if ["<=", ">"].include?(filter['participations_count']['op'])
+        report << "#{I18n.t('filter_summary.participations_count')} #{filter['participations_count']['op']} #{filter['participations_count']['value'].to_i}"
       end
+    end
 
-      report << s + Degree.where(:id => filter['degree'].map(&:to_i)).map(&:name).join(', ')
-    end
-    
-    # language
-    if filter['language']
-      s = "#{I18n.t('filter_summary.language')}"
-      report << s + Language.where(:id => filter['language'].map(&:to_i)).map(&:name).join(', ')
-    end
-    
-    
-    #experiment tags
-    filter['exp_tag_count'].to_i.times do |i|
-      if filter["exp_tag#{i}"].length > 0
-        s = filter["exp_tag#{i}"]
-        
-        
-        
-        if filter['exp_tag_op1'][i].to_i == 1
-          s += " >= #{filter["exp_tag_op2"][i].to_i}"
-        elsif filter['exp_tag_op1'][i].to_i == 2
-          s += " <= #{filter["exp_tag_op2"][i].to_i}"
-        end
-        report << s
-      end  
-    end
+    if filter['tags']
+      filter['tags'].each do |tag|
+        report << "Tag #{tag['tag']}: #{tag['op']} #{tag['count']}"
+      end
+    end  
     
     #experiments
     # if the user even has selected some experiments    
-    if filter['experiment']
-      ids = filter['experiment'].map(&:to_i)
+    if filter['experiments']
+      ids = filter['experiments']['value'].map(&:to_i)
       names = Experiment.where(:id => ids).map(&:name).join(', ')
-      report << case filter['exp_op'].to_i
+      report << case filter['experiments']['op'].to_i
         when 1
           "#{I18n.t('filter_summary.exp1')} #{names}"
         when 2
@@ -151,12 +111,6 @@ class HistoryEntry < ActiveRecord::Base
         when 6
           "#{I18n.t('filter_summary.exp6')} #{names}"      
       end
-    end
-    
-    # contries
-    if filter['country']
-      #report << filter['country'].inspect    
-      report << "#{I18n.t('filter_summary.country')}" + filter['country'].join(', ')
     end
     
     report 

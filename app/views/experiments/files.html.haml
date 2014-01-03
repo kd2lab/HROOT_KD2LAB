@@ -17,25 +17,24 @@
 %br
 
 .filelist_container
-  #files{:'data-confirmation' => t('.confirmation'), :'base-url' => experiment_url(@experiment)}
-  -# todo refator - create dropzone in jquery
-  #dropzone{:style => "display: none;"}
-    Drop your files here!
-      
-%br
+  .files{:'data-confirmation' => t('.confirmation'), :'data-folder-question' => t('.folder_question'),  :'base-url' => experiment_url(@experiment), :'data-path' => ''}
+  
 
 
 #contextMenu.dropdown.clearfix{:style => 'display:none; z-index: 10000'}
   %ul.dropdown-menu{"aria-labelledby" => "dropdownMenu", role: "menu", style: "display:block;position:static;margin-bottom:5px;"}
     %li
       %a.download{href: "#", tabindex: "-1"}= t('.download_file')
+    %li
+      %a.new-folder{href: "#", tabindex: "-1"}= t('.new_folder')
     %li.divider
     %li
       %a.delete{href: "#", tabindex: "-1"}= t('.delete_file')
-    
-    
+        
+%br
       
-= form_tag({action: :upload_via_form}, multipart: true) do 
+= form_tag({action: :upload_via_form}, multipart: true, :id => "upload_form") do 
+  = hidden_field_tag "path"
   .fileupload.fileupload-new{"data-provides" => "fileupload", 'data-name' => 'file'}
     .input-append
       .uneditable-input.span3
@@ -49,5 +48,5 @@
       
       %a.btn.btn-default.fileupload-exists{"data-dismiss" => "fileupload", href: "#"}= t('.remove')      
       = submit_tag t('.upload'), :class => 'btn btn-primary' 
-  = t('.or_use_drag_drop')
+  
 

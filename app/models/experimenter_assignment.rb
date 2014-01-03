@@ -15,18 +15,37 @@ class ExperimenterAssignment < ActiveRecord::Base
       [I18n.t(:right_status_mails), "status_mails"]
     ]
   end
+
+  def self.right_list_hash
+    h = Hash.new
+    right_list.each do |r|
+      h[r[1]] = r[0]
+    end
+    h
+  end 
   
-  def self.update_experiment_rights experiment, rights, ignore_id = 0
+  def self.update_experiment_rights experiment, privileges, ignore_id = 0
     ids_to_delete = experiment.experimenter_assignments.where(["user_id <> ?", ignore_id]).map(&:id)
     ExperimenterAssignment.delete(ids_to_delete)
     
-    if rights
-      rights.each do |id, values|
-        # experimenters may not change their own rights
-        next if id.to_i == ignore_id.to_i
-        ExperimenterAssignment.create(:experiment_id => experiment.id, :user_id => id, :rights => values.join(','))
+    if privileges
+      privileges.each do |row|
+        next if row[:id].to_i == ignore_id.to_i
+        ExperimenterAssignment.create(:experiment_id => experiment.id, :user_id => row[:id], :rights => (row[:list] || []).join(','))
       end
     end
   end
+
+  def self.update_user_rights user, privileges
+    ids_to_delete = user.experimenter_assignments.map(&:id)
+    ExperimenterAssignment.delete(ids_to_delete)
+    
+    if privileges
+      privileges.each do |row|
+        ExperimenterAssignment.create(:experiment_id => row[:id], :user_id => user.id, :rights => (row[:list] || []).join(','))
+      end
+    end
+  end
+      
     
 end

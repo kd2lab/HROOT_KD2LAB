@@ -5,6 +5,8 @@
 .search
   = render :partial => 'shared/search/search', :locals => { :fields => [:fulltext, :noshow_count, :participations_count,:tags, :experiments,  :gender, :begin_of_studies, :birthday, :preference, :course_of_studies, :country_name, :degree, :language, :experience ] }
 
+  / todo remove later
+  = JSON.generate(params[:search])
     
 .searchinfo
   = submit_tag t('.submit'), :name => 'submit_mode', :class => "btn btn-primary"

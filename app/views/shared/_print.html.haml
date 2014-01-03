@@ -1,0 +1,62 @@
+%table.table.table-striped
+  %thead   
+    - columns.each do |col|
+      - case col
+        - when :counter
+          %th
+        - when :fullname
+          %th= t('usertable.fullname')
+        - when :noshow_count
+          %th= t('noshow_shortcut')
+        - when :participations_count
+          %th= t('participations_shortcut')
+        - else
+          - field = CUSTOM_FIELDS.get(col)
+          - if field
+            %th= t("activerecord.attributes.user.#{field.name}")
+          - else
+            %th= t('usertable.'+col.to_s)
+
+  %tbody    
+    - users.each_with_index  do |user, i| 
+      %tr
+        - columns.each do |col|
+
+
+          - case col
+            - when :showup
+              %td= check_box_tag "showups[#{user.id}]", "1", user.session_showup == 1, :disabled => 'disabled'
+            - when :participated
+              %td= check_box_tag "participations[#{user.id}]", "1", user.session_participated == 1, :disabled => 'disabled'
+            - when :noshow
+              %td{:style=> defined?(red) ? "background-color: #FAACAC" : ""}= check_box_tag "noshows[#{user.id}]", "1", user.session_noshow == 1, :disabled => 'disabled'
+            - when :payment
+              %td= number_with_precision(user.payment.to_f, separator: '.', precision: 2)
+            - when :session
+              %td= "#{I18n.l(user.session_start_at) if user.session_start_at}" 
+            - when :counter
+              %td= (i+1)
+            - when :fullname
+              %td= user.lastname+', '+user.firstname
+            - when :role  
+              %td= {'user' => 'P', 'experimenter' => 'E', 'admin' => 'A'}[user.role]
+            - when :deleted
+              %td= (user.deleted ? 1 : 0)
+            - when :email
+              %td= user.email
+            - when :noshow_count
+              %td= "#{user.noshow_count}" 
+            - when :participations_count
+              %td= "#{user.participations_count}"
+            - when :created_at
+              %td= I18n.l(user.created_at, :format => :date_only)
+            
+            - else
+              - field = CUSTOM_FIELDS.get(col)
+              - if field
+                %td= field.display_value(user)
+              - else
+                %td= user[col]
+        
+        
+

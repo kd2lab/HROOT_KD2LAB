@@ -37,7 +37,7 @@
             
           %td.span4= entry.to_s
           %td.span1
-            - HistoryEntry.get_filter_setting_string(JSON.parse(entry.filter_settings)).each do |tx|
+            - HistoryEntry.get_filter_setting_string(JSON.parse(entry.search)).each do |tx|
               %span.badge= tx
               &nbsp;
         - if entry.id == params[:detail].to_i
@@ -49,7 +49,7 @@
                     %td= index+1
                     %td= link_to highlight(truncate(user.lastname, {:length => 15}), params[:search])+', '+highlight(truncate(user.firstname, {:length => 10}), params[:search]), user_path(user)
                     %td= link_to highlight(truncate(user.email, {:length => 20}), params[:search]), "mailto:#{user.email}"
-                    %td= user.study ? user.study.name : t(:no_info)
+                    /%td= user.study ? user.study.name : t(:no_info)
           
   %br
 

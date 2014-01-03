@@ -2,10 +2,13 @@
   position: relative;
 }
 
-#files {
+.files {
   padding: 8px;
   min-height: 100px;
-  border: 1px solid #ddd;  
+  border: 1px solid #ddd;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;  
 }
 
 #contextMenu {
@@ -14,17 +17,8 @@
 }
 
 
-#dropzone {
-  position: absolute;
+.dropinfo {
   display: none;
-  top: 0px;
-  left: 0px;
-  background-color: rgba(255, 255, 255, 0.7);
-  margin: 10px;
-  border: 5px dashed #aaaaaa;
-  padding-top: 30px;
-  display: block; 
-  font-size: 30px;
   text-align: center;
 }
 
@@ -100,33 +94,26 @@ UL.jqueryFileTree LI {
 	margin: 0px;
 	white-space: nowrap;
   overflow: hidden;
+  display: block;
 }
 
-UL.jqueryFileTree A {
-	color: #333;
-	text-decoration: none;
-	display: block;
-	padding: 0px 2px;
+.drop-target {
+  border: 1px solid green;
 }
 
-UL.jqueryFileTree A:hover {
-	background: #BDF;
+UL.jqueryFileTree LI.selected > .name {
+  background-color: #BDF;
 }
-
-UL.jqueryFileTree A.selected {
-	background: #aaf;
-}
-
 
 /* Core Styles */
-.jqueryFileTree LI.directory { background: url(/assets/filetypes/directory.png) left top no-repeat; }
-.jqueryFileTree LI.expanded { background: url(/assets/filetypes/folder_open.png) left top no-repeat; }
-.jqueryFileTree LI.file { background: url(/assets/filetypes/file.png) left top no-repeat; }
-.jqueryFileTree LI.wait { background: url(/assets/filetypes/spinner.gif) left top no-repeat; }
+.jqueryFileTree LI.directory  { background: url(/assets/filetypes/directory.png) left top no-repeat; }
+.jqueryFileTree LI.expanded  { background: url(/assets/filetypes/folder_open.png) left top no-repeat; }
+.jqueryFileTree LI.file  { background: url(/assets/filetypes/file.png) left top no-repeat; }
+.jqueryFileTree LI.wait  { background: url(/assets/filetypes/spinner.gif) left top no-repeat; }
 /* File Extensions*/
 .jqueryFileTree LI.ext_3gp { background: url(/assets/filetypes/film.png) left top no-repeat; }
-.jqueryFileTree LI.ext_afp { background: url(/assets/filetypes/code.png) left top no-repeat; }
-.jqueryFileTree LI.ext_afpa { background: url(/assets/filetypes/code.png) left top no-repeat; }
+.jqueryFileTree LI.ext_afp  { background: url(/assets/filetypes/code.png) left top no-repeat; }
+.jqueryFileTree LI.ext_afpa  { background: url(/assets/filetypes/code.png) left top no-repeat; }
 .jqueryFileTree LI.ext_asp { background: url(/assets/filetypes/code.png) left top no-repeat; }
 .jqueryFileTree LI.ext_aspx { background: url(/assets/filetypes/code.png) left top no-repeat; }
 .jqueryFileTree LI.ext_avi { background: url(/assets/filetypes/film.png) left top no-repeat; }

@@ -33,18 +33,7 @@ Hroot::Application.configure do
   
   config.assets.debug = true
   
-  # list of supported locales
-  config.locales = [:de, :en]
-  config.locale_names = {:de => 'Deutsch (de)', :en => 'English (en)'}
-  
-  # only allow certain email adresses on signup
-  
-  
-  # columns in user table
-  config.user_table_columns = [:fullname, :role, :email, :course_of_studies, :gender, :begin_of_studies, :created_at, :noshow_count, :participations_count]
-  config.add_user_table_columns = [:fullname, :role, :email, :course_of_studies, :gender, :noshow_count, :participations_count]
-  config.participants_table_columns = [:fullname, :role, :email, :course_of_studies, :noshow_count, :participations_count, :session]
-  config.session_participants_table_columns = [:counter, :fullname, :email, :course_of_studies, :gender, :noshow_count, :participations_count]
+ 
   
   #configure action mailer - example: use gmail as mail service
   config.action_mailer.smtp_settings = {
@@ -56,8 +45,15 @@ Hroot::Application.configure do
     :authentication       => "plain",
     :enable_starttls_auto => true
   }
+
   
-  config.action_mailer.delivery_method = :smtp
+
+  # are users allowed to always edit their optional data?
+  config.users_can_edit_optional_data = false
+  
+  config.recipient_of_audit_reports = "someemail@somedomain.de"
+  
+  config.action_mailer.delivery_method = :test
   
   # enable or disable actual delivery
   config.action_mailer.perform_deliveries = true
@@ -75,9 +71,13 @@ Hroot::Application.configure do
   # configure uploads directory
   config.upload_dir = Rails.root.join('uploads')
   
+  config.action_mailer.default_url_options = {
+    :host => 'localhost',
+    :port => 3000
+  }
 end
 
-#Rails.application.routes.default_url_options[:host] =  'localhost:3000'
+Rails.application.routes.default_url_options[:host] =  'localhost:3000'
 
 #ActionMailer::Base.delivery_method = :smtp
 #ActionMailer::Base.perform_deliveries = true

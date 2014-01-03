@@ -1,0 +1,32 @@
+= content_for :breadcrumb do
+  = render :partial => "layouts/crumb", :object => [           |
+      link_to(t('administration'), :controller => "admin", :action => "index"), |
+      link_to(t(:experiments_header), experiments_path),                |
+      link_to(@experiment.name, experiment_sessions_path(@experiment)), |
+      t('.message_history')]
+
+= render :partial => "experiments/enrollment"
+  
+%h1
+  = @experiment.name
+
+= render :partial => "tabs", :locals => {:selected => :invitations} 
+
+- @messages = SentMail.includes(:user).page(params[:page]).where(:experiment_id => @experiment.id).order('created_at DESC').all
+
+
+= will_paginate @messages,  :renderer => WillPaginate::ActionView::BootstrapLinkRenderer , :previous_label => "&lt;&lt;&nbsp;", :next_label => "&nbsp;&gt;&gt;"
+
+%table.table.table-condensed
+
+  - @messages.each do |mail|
+    %tr
+      %td=l(mail.created_at)
+      %td=mail.message_type_to_string
+      %td=mail.user.lastname+', '+mail.user.firstname
+      %td=mail.subject
+      %td
+        %a{:href => "#", :'data-poload'=>"?mail=#{mail.id}"}
+          = t('.mail_link')
+
+        

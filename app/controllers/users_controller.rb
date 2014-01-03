@@ -6,7 +6,7 @@ class UsersController < ApplicationController
   helper_method :sort_column, :sort_direction
   
   def index
-    params[:search] = params[:search] || Settings.standard_search ||{}
+    params[:search] = params[:search] || Settings.standard_search || {}
 
     if params[:user_action] == "store_search"
       Settings.standard_search = params[:search]
@@ -24,6 +24,13 @@ class UsersController < ApplicationController
     
     @users = Search.paginate(params, {:sort_column => sort_column, :sort_direction => sort_direction})
     @user_count = User.count
+  end
+
+  def store_search
+    params[:search] = params[:search] ||  {}
+    Settings.standard_search = params[:search]
+
+    redirect_to users_path, :notice => t('controllers.users.notice_search_stored')
   end
   
   def show
@@ -44,7 +51,13 @@ class UsersController < ApplicationController
   end
 
   def edit
-  
+    unless params[:privileges]
+      params[:privileges] = []
+
+      @user.experimenter_assignments.each do |assign|
+        params[:privileges] << {:id => assign.experiment_id, :name => assign.experiment.name, :list => assign.rights.split(',')}
+      end
+    end
   end
 
   def create_user
@@ -64,13 +77,19 @@ class UsersController < ApplicationController
       params["user"].delete("password")
       params["user"].delete("password_confirmation")
     end
+
+    params[:privileges] = [] unless params[:privileges]
       
     @user.admin_update = true  
-      
+
     if @user.update_attributes(params[:user])
+      ExperimenterAssignment.update_user_rights @user, params[:privileges]
+      
+
+
       redirect_to user_url(@user), :notice => t('controllers.notice_saved_changes') 
     else
-      render :action => "edit" 
+      render :edit
     end
   end
 
@@ -79,7 +98,7 @@ class UsersController < ApplicationController
 
     redirect_to(users_url) 
   end
-  
+
   def activate_after_import
     @user.activated_after_import = true
     @user.import_token = nil
@@ -103,6 +122,31 @@ class UsersController < ApplicationController
     render :json => {:updated => ids.length, :new_queue_count => Recipient.where('sent_at IS NULL').count, :message => t('controllers.users.notice_mailqueue')}
   end
   
+  def print
+    params[:search] = params[:search] || Settings.standard_search || {}
+    @users = Search.search(params[:search], {:sort_column => sort_column, :sort_direction => sort_direction})
+    render :action => 'print', :layout => 'print'
+  end
+
+  def csv
+    params[:search] = params[:search] || Settings.standard_search || {}
+    users = Search.search(params[:search], {:sort_column => sort_column, :sort_direction => sort_direction})
+
+    data = Exporter.to_csv(users, Rails.configuration.user_table_csv_columns)
+
+    send_data(data, :type => 'text/csv', :filename => 'users.csv')
+  end
+
+  def excel
+    params[:search] = params[:search] || Settings.standard_search || {}
+    users = Search.search(params[:search], {:sort_column => sort_column, :sort_direction => sort_direction})
+
+    data = Exporter.to_excel(users, Rails.configuration.user_table_csv_columns)
+
+    send_data(data, :type => 'application/vnd.ms-excel', :filename => 'users.xls')
+  end
+
+
   private
 
   def sort_column

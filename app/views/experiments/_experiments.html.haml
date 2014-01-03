@@ -21,6 +21,15 @@
           %br  
         
         %td
+          - session_count = experiment.sessions.length 
+          - participants_count = experiment.participations.size
+
+          - if session_count == 0 && participants_count == 0 
+         
+            = link_to t('.delete'), experiment_path(experiment), :class => 'btn', :confirm => t(".confirm_delete_experiment"), :method => :delete
+            %br
+            %br
+
           - if experiment.registration_active
             %span.label.label-success=t 'experiments.registration_active'
           - else
@@ -31,8 +40,10 @@
           
           %br
           %br
-          - if experiment.sessions.length > 0
-            = experiment.sessions.length
+
+
+          - if session_count> 0
+            = session_count
             =t :sessions_label
             %br
             =experiment.sessions.collect{|d| d.start_at.to_date}.min
@@ -43,7 +54,7 @@
             %br
         
           %br
-          =experiment.participants.where(:deleted => false, :role => 'user').count
+          =participants_count
           =t '.assigned_participants'
           %br
     

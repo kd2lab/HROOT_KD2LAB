@@ -24,6 +24,8 @@
       %ul.dropdown-menu
         %li= link_to t('.mail_texts'), mail_experiment_path(@experiment)
         %li= link_to t('.reminder_sending'), invitation_experiment_path(@experiment)
+        %li= link_to t('.public_link'), public_link_experiment_path(@experiment)
+        %li= link_to t('.message_history'), message_history_experiment_path(@experiment)
 
   /- if can? :edit, @experiment
   /  %li{:class => if selected == 'Allgemeine Daten' then 'active' else '' end}= link_to "Allgemeine Daten", edit_experiment_url(@experiment)

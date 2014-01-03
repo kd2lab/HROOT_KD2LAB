@@ -7,7 +7,16 @@
 
 - if @users.count > 0
   .menu    
-    = link_to t('.print'), print_experiment_session_path(@experiment, @session), :class => "btn btn-default new-window", :style => "float:right"
+    /= link_to t('.print'), print_experiment_session_path(@experiment, @session), :class => "btn btn-default new-window", :style => "float:right"
+    .btn-group{:style => "float:right"}
+      %a.btn.btn-default.dropdown-toggle{:'data-toggle' => "dropdown", :href => "#"}
+        =t '.data_menu'
+        %b.caret 
+      %ul.dropdown-menu
+        %li= link_to t('.print'), print_experiment_session_path(@experiment, @session), :'target' => "_blank", :class => "with_search"
+        %li= link_to t('.save_as_csv'), csv_experiment_session_path(@experiment, @session), :class => "with_search"
+        %li= link_to t('.save_as_excel'), excel_experiment_session_path(@experiment, @session), :class => "with_search"
+
     - if current_user.has_right?(@experiment, 'send_session_messages')
 
       

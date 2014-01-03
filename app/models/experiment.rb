@@ -13,9 +13,12 @@ class Experiment < ActiveRecord::Base
   
   validates_presence_of :name
   
+  serialize :exclude_tags, ArraySerializer.new
+  serialize :exclude_experiments, ArraySerializer.new
+
   after_create :set_defaults
   def set_defaults
-    auto_participation_key = SecureRandom.hex(16)
+    generate_token
     save
   end
   
@@ -117,7 +120,32 @@ EOSQL
     
     ids_to_delete
   end
+
+  def excluded_ids
+    # first, all direct experiment exclusions
+    ids = exclude_experiments.map(&:to_i)    
+    
+    # second, for each excluded tag load all experiment ids
+    exclude_tags.each do |tag|
+      experiment_ids_for_tag = Experiment.tagged_with(tag).map(&:id)
+      ids += experiment_ids_for_tag
+    end
+    
+    # return ids
+    ids
+  end
   
+  def generate_token
+    begin
+      self[:refkey] = SecureRandom.urlsafe_base64 10
+    end while Experiment.exists?(:refkey => self[:refkey])
+  end
   
-  
+  def sender_email_or_default
+    if sender_email.blank?
+      Rails.configuration.hroot_sender_email 
+    else
+      sender_email
+    end
+  end
 end

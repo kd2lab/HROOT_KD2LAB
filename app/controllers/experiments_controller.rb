@@ -5,11 +5,11 @@ class ExperimentsController < ApplicationController
   
   def index
     if current_user.admin?
-      @experiments = Experiment.search(params[:search]).includes(:sessions)
+      @experiments = Experiment.search(params[:search]).includes(:sessions, :tags)
         .order("experiments.finished, COALESCE(sessions.start_at, experiments.created_at) DESC")
         .paginate(:per_page => 30, :page => params[:page])  
     else
-      @experiments = Experiment.search(params[:search]).includes(:sessions)
+      @experiments = Experiment.search(params[:search]).includes(:sessions, :tags)
         .where(['experiments.id IN (SELECT experiment_id FROM experimenter_assignments WHERE user_id = ?)', current_user.id])
         .order("experiments.finished, COALESCE(sessions.start_at, experiments.created_at) DESC")
         .paginate(:per_page => 30, :page => params[:page])  
@@ -51,7 +51,7 @@ class ExperimentsController < ApplicationController
     @experiment.reminder_text = Settings.reminder_text
     
     if @experiment.save
-      redirect_to experiment_sessions_path(@experiment), :notice => t('controllers.experiments.notice_created')
+      redirect_to reminders_experiment_path(@experiment), :notice => t('controllers.experiments.notice_created')
     else
       render :action => "new"
     end
@@ -62,27 +62,24 @@ class ExperimentsController < ApplicationController
   end
 
   def experimenters
+    unless params[:privileges]
+      params[:privileges] = []
+
+      @experiment.experimenter_assignments.each do |assign|
+        params[:privileges] << {:id => assign.user_id, :name => assign.user.lastname+', '+assign.user.firstname, :list => assign.rights.split(',')}
+      end
+    end
+
+
     if params[:commit]
-      params[:rights] = {} unless params[:rights]
-      
-      # include empty rights lines
-      if params[:user_submitted]
-        params[:user_submitted].each do |user_id|
-          unless params[:rights].keys.include?(user_id)
-            params[:rights][user_id] = []
-          end
-        end
-      end
-      
-      # experimenters may not change their own rights
       if current_user.experimenter?
-        ExperimenterAssignment.update_experiment_rights @experiment, params[:rights], current_user.id
+        ExperimenterAssignment.update_experiment_rights @experiment, params[:privileges], current_user.id
       else
-        ExperimenterAssignment.update_experiment_rights @experiment, params[:rights]  
+        ExperimenterAssignment.update_experiment_rights @experiment, params[:privileges]  
       end
-      
+
       redirect_to experimenters_experiment_path(@experiment), :notice => t('controllers.notice_saved_changes')
-    end  
+    end
   end  
   
   def update
@@ -100,8 +97,12 @@ class ExperimentsController < ApplicationController
   end
 
   def destroy
-    @experiment.destroy
-    redirect_to(experiments_url)
+    if @experiment.sessions.count == 0 && @experiment.participations.count == 0
+      @experiment.destroy
+      redirect_to(experiments_url)
+    else
+      redirect_to(experiments_url, :notice => I18n.t('controllers.notice_cant_delete_experiment'))
+    end  
   end
   
   def enable
@@ -144,6 +145,17 @@ class ExperimentsController < ApplicationController
   def save_mail_text
     render :text => t('controllers.notice_saved_changes')
   end
+
+  def public_link
+
+  end
+
+  def message_history
+    if params[:mail]
+      mail = SentMail.where(:id => params[:mail]).first
+      render :json => {:subject => mail.subject, :message => mail.message}
+    end
+  end
   
   def reminders
    
@@ -166,115 +178,293 @@ class ExperimentsController < ApplicationController
     redirect_to :action => 'invitation'
   end
   
-  def files
-    
+  def files 
+    @experiment.sessions.each do |session|
+      realpath, relpath = get_valid_dir("session__#{session.id}") 
+      FileUtils::mkdir(realpath) unless File.exists?(realpath)
+    end    
   end
   
-  def filelist
-    dirname = Pathname(File.join(Rails.configuration.upload_dir, 'experiments', @experiment.id.to_s)).cleanpath.to_s
-    unless File.directory?(dirname)
-      FileUtils.mkdir_p(dirname)
-    end
-    
-    Dir.chdir(dirname);
-    result = '<ul class="jqueryFileTree" style="display: noxne;">'
-    
-    # later for directories
-		#loop through all directories
-		#Dir.glob("*") {
-	  #	|x|
-		#	if not File.directory?(x.untaint) then next end 
-		#	result+= "<li class=\"directory collapsed\"><a href=\"#\" rel=\"#{x}/\">#{x}</a></li>";
-		#}
+  # ------ file display
 
-		#loop through all files
-		Dir.glob("*") { |x|
-			if not File.file?(x.untaint) then next end 
-			ext = File.extname(x)[1..-1]
-			result += "<li class=\"file ext_#{ext}\"><a href=\"#\" data-file=\"#{x}\">#{x}</a></li>"
-		}
+  
+  
+  # todo refactor, do not use template
+  def filelist
+    realpath, relpath = get_valid_dir(params[:dir] || '')
+
+    if realpath && File.exists?(realpath)
+      Dir.chdir(realpath);
     
-    result += "</ul>"
+      @dirnames = []
+      @filenames = []
     
-    render :text => result
+      Dir.glob("*") { |x|
+        if not File.directory?(x.untaint) then next end 
+        @dirnames << x
+      }
+    
+      Dir.glob("*") { |file|
+        if not File.file?(file.untaint) then next end 
+        @filenames << file
+      }
+    
+      render :partial => 'filelist', :locals => {:dir => relpath}
+    end
   end  
   
+
+
+  # --------------------------- File handling ----------------------------------------
+
+
+  # -------------------- sanitation ---------------------
+
+  
+
+  # ------ Operations
+
+  def new_folder
+    # todo sanizie param
+    realpath, relpath = get_valid_dir(params[:parent]+params['dirname'])
+    
+    if realpath
+      FileUtils::mkdir realpath unless File.exists?(realpath)
+    end
+    
+    render :json => {:result => "ok"}
+  end
+
+  def delete
+    require 'fileutils'
+    
+    result = ''
+
+    # first delete all files
+    params[:files].each do |i, f|
+      # sanitation
+      realpath, relpath = get_valid_filename(f[:path], f[:file])     
+      
+      if !File.directory?(realpath)
+        if File.exist?(realpath)
+          File.delete(realpath) 
+        else
+          result += "#{relpath}: #{I18n.t('upload.cant_delete_file')}\n"
+        end
+      end
+    end
+    
+    # then try to delete dirs
+    params[:files].each do |i, f|
+      # sanitation
+      realpath, relpath = get_valid_filename(f[:path], f[:file])     
+      
+      if File.directory?(realpath) && !(relpath =~ /session__(\d)+\/?$/)
+        if Dir[realpath+'*'].empty? 
+          FileUtils.rmdir(realpath)
+        else
+          result += "#{relpath}: #{I18n.t('upload.cant_delete_nonempty_folder')}\n"  
+        end
+      end
+    end
+    
+    render :text => result
+  end
+
   def upload_via_form
-    if (upload_file(params[:file]))
-      redirect_to({:action => 'files'}, :notice => t('controllers.experiment.upload_success'))
+    if upload_file(params[:file], params[:path])
+      redirect_to(files_experiment_url(@experiment), :notice => t('upload.upload_success'))
     else  
-      redirect_to({:action => 'files'}, :alert => t('controllers.experiment.upload_failure'))
+      redirect_to(files_experiment_url(@experiment), :alert => t('upload.upload_failure'))
     end
   end
 
   def upload
-    if (upload_file(params[:file]))
+    if upload_file(params[:file], params['dir'])
       render :json => { :result => 'ok'}
     else
       render :json => { :result => 'error'}
     end      
   end
 
-  def download
-    # the base directory for file uploads of this experiment
-    basedir = File.join(Rails.configuration.upload_dir, 'experiments', @experiment.id.to_s)
-    
-    # expand path to stop having /../.. paths
-    filepath = File.expand_path(File.join(Rails.configuration.upload_dir, 'experiments', @experiment.id.to_s, params[:filename]))
-    
-    # if file is in basedir - for security
-    if File.dirname(filepath) == basedir
-      send_file filepath, :x_sendfile=>true
-    else
-      # render error, if file is not in correct path
-      render :text => 'error'
-    end
-  end
-  
-  def delete
-    # the base directory for file uploads of this experiment
-    basedir = File.join(Rails.configuration.upload_dir, 'experiments', @experiment.id.to_s)
-    
-    # expand path to stop having /../.. paths
-    filepath = File.expand_path(File.join(Rails.configuration.upload_dir, 'experiments', @experiment.id.to_s, params[:filename]))
-    
-    # if file is in basedir - for security
-    if File.dirname(filepath) == basedir
-      File.delete(filepath) if File.exist?(filepath)
-    end
-    render :text => 'delete'
-  end
-  
-  private
-  
-  def upload_file(file)
-    require 'fileutils'
+  def move
+    # things to check: dirs should not be move in same dir or lower
+    # files should not be moved if parent folder ist supposed to be moved
 
-    # create path, if not exists
-    dirname = File.join(Rails.configuration.upload_dir, 'experiments', @experiment.id.to_s)
-    unless File.directory?(dirname)
-      FileUtils.mkdir_p(dirname)
-    end
-    
-    # check if uploaded file exists
-    uploaded_file = file
-    if uploaded_file
-      # sanitize path name, cleanpath removes something/../something
-      upload_file_path = Pathname(File.join(dirname, uploaded_file.original_filename)).cleanpath.to_s
-      
-      # check if final upload filename is in upload dir
-      if upload_file_path[0..dirname.length-1] == dirname  
-        File.open(upload_file_path, 'wb') do |file|
-          file.write(uploaded_file.read)
-        end
-        return true
+    real_target_path, rel_target_path =get_valid_dir(params[:target_path])
+
+    sanitized_dirs = []
+    sanitized_files = []
+
+    params[:files].each do |i, f|
+      # sanitation
+      realpath, relpath = get_valid_filename(f[:path], f[:file])         
+      if File.directory?(realpath)
+        sanitized_dirs << realpath
       else
-        return false
+        sanitized_files << realpath
+      end
+    end
+
+    # keep only dirs, which are not subdirs of other dirs
+    kept_dirs = sanitized_dirs.select do |p|
+      prefixes = sanitized_dirs.select do |p2| p.start_with?(p2) && p != p2 end
+      prefixes.length == 0 && !real_target_path.start_with?(p)
+    end   
+  
+
+    # keep only files, if they are not part of a moved dir
+    kept_files = sanitized_files.select do |p|
+      prefixes = sanitized_dirs.select do |p2| p.start_with?(p2) end
+      prefixes.length == 0
+    end   
+
+    kept_dirs.each do |dir|
+      begin
+        FileUtils.mv(dir, real_target_path)
+      rescue
+      end
+    end
+
+    kept_files.each do |file|
+      begin
+        FileUtils.mv(file, real_target_path)
+      rescue
+      end
+    end
+
+    render :text => "ok"
+  end
+  
+  def download
+    require 'tempfile'
+    require 'zip'
+
+    files = JSON.parse(params[:files])
+
+    if files.length == 1
+      realpath, relpath = get_valid_filename(files[0]["path"], files[0]["file"])
+      if !File.directory?(realpath)
+        send_file realpath, :x_sendfile=>true
+        return
+      end
+    end
+
+    begin    
+      tempfile = Tempfile.new('hroot')
+     
+      #Initialize the temp file as a zip file
+      Zip::OutputStream.open(tempfile) { |zos| }
+ 
+      #Add files to the zip file as usual
+      Zip::File.open(tempfile.path, Zip::File::CREATE) do |zip|
+        files.each do |f|
+          realpath, relpath = get_valid_filename(f["path"], f["file"])
+
+          if File.directory?(realpath)
+            Dir[File.join(realpath, '**', '**')].each do |file|
+              begin
+                zip.add(file.sub(realpath,relpath),file)
+              rescue
+              end
+            end
+          elsif File.file?(realpath)
+            begin
+              zip.add(relpath, realpath)
+            rescue
+            end
+          end
+        end
+      end
+ 
+      #Read the binary data from the file
+      zip_data = File.read(tempfile.path)
+ 
+      #Send the data to the browser as an attachment
+      #We do not send the file directly because it will
+      #get deleted before rails actually starts sending it
+      send_data(zip_data, :type => 'application/zip', :filename => "hroot.zip")
+    ensure
+      #Close and delete the temp file
+      tempfile.close
+      tempfile.unlink
+    end  
+  end
+
+
+  private
+
+  def sanitize_filename(filename)
+    filename = '' unless filename
+
+    # remove any slashes
+    filename.gsub!(/^.*(\\|\/)/, '')
+
+    # Strip out the non-ascii character
+    filename.gsub!(/[^0-9A-Za-z.\-\(\)]/, '_')
+
+    filename
+  end
+
+  def basedir
+    # create basedir if not exists
+    base = File.join(Rails.configuration.upload_dir, 'experiments', @experiment.id.to_s)
+    FileUtils::mkdir_p base unless File.exists?(base)
+    base
+  end
+
+  def get_valid_filename(path, filename)
+    # todo sanitize param
+    realpath, relpath = get_valid_dir(path)
+    filename = sanitize_filename(filename)
+
+    if realpath
+      if relpath.blank?
+        return "#{realpath}/#{filename}", "#{filename}"
+      else
+        return "#{realpath}/#{filename}", "#{relpath}/#{filename}"
       end
     else
-      return false  
+      return false, false
     end
-    
+  end
+
+  def get_valid_dir(rel_path)
+    rel_path = '' unless rel_path
+    base = basedir
+
+    # create a clean path without .. and // 
+    p = Pathname.new(File.join(base, rel_path)).cleanpath
+
+    # allow only absolute paths which resemble a directory
+    if p.absolute? 
+      # allow only paths, which have the base path as prefix
+      if p.to_s[0..base.length-1] == base
+        # return real path and relative path
+        return p.to_s, p.to_s.slice((base.length+1)..-1)
+      end
+    end
+
+    return false, false
+  end
+  
+  def upload_file(file, target_dir)
+    realpath, relpath = get_valid_dir(target_dir)
+
+    if realpath && File.directory?(realpath)
+      if file
+        real_filepath, rel_filepath = get_valid_filename(target_dir, file.original_filename)
+
+        if real_filepath
+          File.open(real_filepath, 'wb') do |f|
+            f.write(file.read)
+          end
+          return true
+        end
+      end      
+    end
+
+    return false
   end
   
   

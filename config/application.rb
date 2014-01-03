@@ -51,6 +51,27 @@ module Hroot
     config.after_initialize do |app|
       app.routes.append{match '*path', :to => 'application#render_404'}
     end
+
+    # list of supported locales
+    config.locales = [:de, :en]
+    config.locale_names = {:de => 'Deutsch (de)', :en => 'English (en)'}
+    
+    # only allow certain email adresses on signup
+    
+    
+    # columns in user table
+    config.user_table_columns = [:fullname, :role, :email, :course_of_studies, :gender, :begin_of_studies, :created_at, :noshow_count, :participations_count]
+    config.user_table_print_columns = [:counter, :fullname, :role, :email, :course_of_studies, :gender, :begin_of_studies, :created_at, :noshow_count, :participations_count]
+    config.user_table_csv_columns = [:id, :lastname, :firstname, :email, :secondary_email, :gender, :birthday, :matrikel, :phone, :country_name,  :role,  :language, :begin_of_studies, :course_of_studies,  :degree, :created_at, :noshow_count, :participations_count, :deleted, :comment]
+    config.session_participants_table_print_columns = [:counter, :fullname, :phone, :gender, :noshow, :showup, :participated, :seat_nr, :payment]
+    config.session_participants_table_csv_columns = [:id, :lastname, :firstname, :noshow, :showup, :participated, :seat_nr, :payment, :session, :email, :secondary_email, :gender, :birthday, :matrikel, :phone, :country_name,  :role,  :language, :begin_of_studies, :course_of_studies,  :degree, :created_at, :noshow_count, :participations_count, :deleted, :comment]
+  
+    config.participants_table_print_columns = [:counter, :fullname, :showup, :participated, :noshow, :seat_nr, :payment, :session, :role, :email, :course_of_studies, :gender, :noshow_count, :participations_count, :deleted]
+    config.participants_table_csv_columns = [:id, :lastname, :firstname, :showup, :participated, :noshow, :seat_nr, :payment, :session, :email, :secondary_email, :gender, :birthday, :matrikel, :phone, :country_name,  :role,  :language, :begin_of_studies, :course_of_studies,  :degree, :created_at, :noshow_count, :participations_count, :deleted, :comment]
+  
+    config.add_user_table_columns = [:fullname, :role, :email, :course_of_studies, :gender, :noshow_count, :participations_count]
+    config.participants_table_columns = [:fullname, :role, :email, :course_of_studies, :noshow_count, :participations_count, :session]
+    config.session_participants_table_columns = [:counter, :fullname, :email, :course_of_studies, :gender, :noshow_count, :participations_count]
   end
 end
 

@@ -43,7 +43,7 @@ class SelectionSearchField < SearchField
     end    
     
     # allow operator to negate query
-    if search[:op] == 'without' && !condition.blank?
+    if search[:op] == "2" && !condition.blank?
       condition = "(NOT(#{condition}) OR users.#{name} IS NULL)"
     else
       condition
@@ -111,9 +111,9 @@ class TagsSearchField < SearchField
            tags.name LIKE "#{row[:tag]}")
 EOSQL
         
-      if row[:op] == 'at_least'
+      if row[:op] == '>='
         experiment_tag_subquery += " >= #{row[:count].to_i}"
-      elsif row[:op] == 'at_most'
+      elsif row[:op] == '<='
         experiment_tag_subquery += " <= #{row[:count].to_i}"
       else
         experiment_tag_subquery += "ERRROR todo"

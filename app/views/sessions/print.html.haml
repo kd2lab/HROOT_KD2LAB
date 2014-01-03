@@ -8,34 +8,6 @@
   - if @session.location
     = @session.location.name 
 
-  - if @users.count > 0
-    %br
-    %table.table.table-striped
-      %thead
-        %tr
-          %th
-          %th=t '.lastname'
-          %th=t '.firstname'
-          %th=t '.phone'
-          %th=t '.gender'
-          %th=t '.showup' 
-          %th=t '.participated'
-          %th=t '.noshow'
-          
-      %tbody  
-        - @users.each do |user| 
-          %tr
-            %td= index
-            - index = index + 1
-          
-            %td= truncate(user.lastname, {:length => 20})
-            %td= truncate(user.firstname, {:length => 20})
-            %td= user.phone
-            %td={'m' => t('form_values.male'), 'f' => t('form_values.female'), '?' => t(:no_info)}[user.gender]
-            %td= check_box_tag "showups[#{user.id}]", "1", user.session_showup == 1, :disabled => 'disabled'
-            %td= check_box_tag "participations[#{user.id}]", "1", user.session_participated == 1, :disabled => 'disabled'
-            %td{:style=> "background-color: #FAACAC"}
-              = check_box_tag "noshows[#{user.id}]", "1", user.session_noshow == 1, :disabled => 'disabled'
-              
-    
-
+-if @users.count > 0
+  = render :partial => "shared/print", :locals => {:users => @users, :columns => Rails.configuration.session_participants_table_print_columns, :red => true}
+  

@@ -1,0 +1,23 @@
+%ul.jqueryFileTree{:style => 'display: none;'}
+  - basepath = if dir.blank? then '' else dir+'/' end
+
+  - if basepath.blank?
+    = basepath
+    - @experiment.sessions.order('start_at').each do |session|
+      %li.directory.collapsed{:'data-path' => "session__#{session.id}"+'/'}
+        .name= "Session #{session.time_str}" 
+
+
+    
+  - @dirnames.each do |d|
+    - unless d.start_with?('session__')
+      %li.directory.collapsed{:draggable => "true", :'data-path' => basepath+d+'/'}
+        .name= "#{d}" 
+
+  - @filenames.each do |file|
+    - ext = File.extname(file)[1..-1]
+            
+    %li.file{:draggable => "true", :class => "ext_#{ext}", :'data-path' => basepath, :'data-file' => file}
+      .name= "#{file}"
+    
+    

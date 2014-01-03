@@ -1,0 +1,18 @@
+= content_for :breadcrumb do
+  = render :partial => "layouts/crumb", :object => [           |
+      link_to(t('administration'), :controller => "admin", :action => "index"), |
+      link_to(t(:experiments_header), experiments_path),                |
+      link_to(@experiment.name, experiment_sessions_path(@experiment)), |
+      t('.public_link')]
+
+= render :partial => "experiments/enrollment"
+  
+%h1
+  = @experiment.name
+
+= render :partial => "tabs", :locals => {:selected => :invitations} 
+
+= t('.public_link_html')
+
+.well
+  = root_url+'?ref='+@experiment.refkey

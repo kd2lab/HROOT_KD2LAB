@@ -138,5 +138,18 @@ EOSQL
   def is_subsession?
     return id != reference_session_id
   end
+
+  def path
+    File.join(Rails.configuration.upload_dir, 'experiments', experiment.id.to_s, "session__#{id}")
+  end
+
+  def has_files?
+    !Dir[path+'/*'].empty? 
+  end
   
+  def remove_folder
+    require 'fileutils'
+    FileUtils.rmdir(path)
+  end
+
 end

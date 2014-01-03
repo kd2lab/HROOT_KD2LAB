@@ -59,6 +59,13 @@
           %td= t('activerecord.attributes.user.secondary_email')
           %td= link_to @user.secondary_email, "mailto:#{@user.secondary_email}" unless @user.secondary_email.blank?
     
+- if !@user.comment.blank?    
+  .row
+    .span10
+      %h4= t('.comment')
+      %table.table
+        %tr
+          %td=simple_format(@user.comment)
 
 .row
   .span5
@@ -79,7 +86,21 @@
             %td= t("activerecord.attributes.user.#{field.name}")
             %td= field.display_value(@user)
 
-
+- if @user.experimenter?
+  .row
+    .span10 
+      %h4= t('.rights')
+      %table#usertable.table{:'data-rights' => ExperimenterAssignment.right_list.to_json, :'data-rights-label' => I18n.t(:rights_label)}
+        - @user.experimenter_assignments.each do |assign|
+          %tr.removable{:'data-id' => assign.user_id}
+            %td
+              /= hidden_field_tag 'user_submitted[]', assign.user_id
+              = "#{assign.experiment.name}"
+            %td
+              - rightlist = ExperimenterAssignment.right_list_hash
+              - assign.rights.split(',').map{|r| rightlist[r]}.each do |right|
+                %span.badge= right
+              
 .userinfo
   - ptable = {}; @user.session_participations.each do |sp| ptable[sp.session_id] = sp end
   - participations = @user.session_participations.includes(:session).where('sessions.id=sessions.reference_session_id').order("sessions.start_at")

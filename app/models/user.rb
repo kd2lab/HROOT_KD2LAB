@@ -18,7 +18,7 @@ class User < ActiveRecord::Base
 
   
   # Setup accessible (or protected) attributes for your model - main part
-  attr_accessible :email, :secondary_email, :password, :password_confirmation, :remember_me, :firstname, :lastname, :role, :terms_and_conditions, :deleted
+  attr_accessible :email, :secondary_email, :password, :password_confirmation, :remember_me, :firstname, :lastname, :role, :terms_and_conditions, :deleted, :comment
   
   # validations
   validates_presence_of :firstname, :lastname
@@ -29,9 +29,8 @@ class User < ActiveRecord::Base
   validates_format_of :password, :with => /^.*(?=.{8,})(?=.*[a-zA-Z])(?=.*[\W_])(?=.*[\d]).*$/, :if => :password_present?
   
   # validate email on signup
-  # todo replace with devise stuff
-  validates_format_of :email, :with => Rails.configuration.email_restriction[:regex], :on => :create if defined?(Rails.configuration.email_restriction)
-  
+  validates_format_of :email, :with => Rails.configuration.email_restriction[:regex], :on => :create if Rails.configuration.respond_to?(:email_restriction)
+
   # setup custom datafields, see config/initializers/custom_fields.rb  
   CUSTOM_FIELDS.setup_model(self)
   
@@ -43,6 +42,10 @@ class User < ActiveRecord::Base
   
   def self.roles
     %w[user experimenter admin]
+  end
+  
+  def self.roles_for_select
+    User.roles.map{|r| [I18n.t("roles.#{r}"), r]}
   end
   
   def rolename
@@ -100,6 +103,14 @@ class User < ActiveRecord::Base
   end
   
   def available_sessions
+    # first find all sessions a user could potentially register to
+    # criteria:
+    # - sessions of experiments with open registrations
+    # - user must be invited
+    # - session must not be full
+    # - user must not have another session at the same time
+    # - user must not have chosen another session from the same experiment
+    
     sql = <<EOSQL
 SELECT 
  sessions.*
@@ -113,24 +124,40 @@ WHERE
   participations.experiment_id = experiments.id AND
   start_at > NOW() AND
   
+  -- only select sessions, which still have open seats
   (SELECT COUNT(id) FROM session_participations WHERE session_participations.session_id = sessions.id) < sessions.needed+sessions.reserve AND
   
+  -- only select sessions where user is not part in another session of the same experiment
   (SELECT COUNT(*) 
    FROM session_participations, sessions s2 
    WHERE session_participations.session_id = s2.id AND session_participations.user_id=#{self.id} AND s2.experiment_id = experiments.id
   ) = 0 AND
   
+  -- only select sessions with no time overlap to already chosen sessions
   (SELECT COUNT(*) 
    FROM session_participations sp, sessions s3 
    WHERE
      sp.session_id = s3.id AND sp.user_id=#{self.id} AND 
      s3.end_at > sessions.start_at AND s3.start_at < sessions.end_at
   ) = 0
+
 ORDER BY sessions.start_at ASC
  
 EOSQL
 
-    Session.find_by_sql(sql)
+    sessions = Session.find_by_sql(sql)
+
+    # now load all experiment ids where the user as participated
+    experiment_ids = session_participations.where("noshow != 1").includes(:session).map{|p| p.session.experiment_id}
+    
+    # for each session calculate the ids of experiments to exclude based on exclude_experiments and exclude_tags
+    sessions_after_exclusion = sessions.select do |session|
+      # only keep sessions where the list of the excluded experiment ids intersected with the 
+      # ids of experiments the user participated in is length zero
+      (session.experiment.excluded_ids & experiment_ids).length == 0
+    end  
+
+    sessions_after_exclusion
   end
   
   def self.update_noshow_calculation(ids = nil)

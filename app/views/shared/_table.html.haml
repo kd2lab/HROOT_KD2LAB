@@ -19,6 +19,12 @@
             %th.tool-tip{:title => t('popup.participations_count')}= sortable_for_form 'participations_count' , t('participations_shortcut')
           - when :form_fields
             
+            %th.tool-tip{:title => t('popup.noshow')}
+              = sortable_for_form 'session_noshow', t('session_noshow_shortcut')
+              - if participation_boxes
+                %br
+                = check_box_tag "", "", false, :id => "all_noshow"
+            
             %th.tool-tip{:title => t('popup.showup')} 
               = sortable_for_form 'session_showup', t('session_show_shortcut')
               - if participation_boxes
@@ -30,12 +36,14 @@
                 %br
                 = check_box_tag "", "", false, :id => "all_participation"
       
-            %th.tool-tip{:style => "color:red", :title => t('popup.noshow')}
-              = sortable_for_form 'session_noshow', t('session_noshow_shortcut')
-              - if participation_boxes
-                %br
-                = check_box_tag "", "", false, :id => "all_noshow"
             
+            %th.tool-tip{:title => t('popup.seat_nr')}
+              = sortable_for_form 'session_seat_nr', t('session_seat_nr_shortcut')
+            
+            %th.tool-tip{:title => t('popup.payment')}
+              = sortable_for_form 'session_payment', t('session_payment_shortcut')
+              
+
           - else
             - field = CUSTOM_FIELDS.get(col)
             - if field
@@ -59,11 +67,16 @@
         %td
           - if !user.deleted && user.imported && !user.activated_after_import
             %i.icon-ban-circle.tool-tip{:title => t('popup.inactive_after_import')}
-          - if defined?(user.invited_at) && !user.invited_at.nil?
+          - if !user.deleted && !user.confirmed_at 
+            %i.icon-question-sign.tool-tip{:title => t('popup.not_confirmed')}
+          - if user.attributes.has_key?(:invited_at) && !user.invited_at.nil?
             %i.icon-envelope.tool-tip{:title => t('popup.user_was_invited')}
-          - if defined?(user.reminded_at) && !user.reminded_at.nil?
+          - if user.attributes.has_key?(:reminded_at) && !user.reminded_at.nil?
             %i.icon-user.tool-tip{:title => t('popup.user_was_reminded')}
-            
+          - if !user.comment.blank?
+            %i.icon-comment.tool-tip{:'data-html'=> 'true',  :title => raw(simple_format(user.comment))}
+          - if user.attributes.has_key?(:added_by_public_key) && user.added_by_public_key == 1
+            %i.icon-globe.tool-tip{:title => t('popup.user_was_added_by_public_key')}  
         - columns.each do |col|
           - case col
             - when :counter
@@ -83,11 +96,15 @@
             - when :session
               %td= "#{I18n.l(user.session_start_at) if user.session_start_at}" 
             - when :form_fields
-              %td= check_box_tag "showups[#{user.id}]", "1", user.session_showup == 1, :class => "show_checkbox", :disabled => !participation_boxes, :'data-id' => user.id
-              %td= check_box_tag "participations[#{user.id}]", "1", user.session_participated == 1, :class => "participation_checkbox", :disabled => !participation_boxes, :'data-id' => user.id
               %td
                 = check_box_tag "noshows[#{user.id}]", "1", user.session_noshow == 1, :class => "noshow_checkbox", :'data-id' => user.id, :disabled => !participation_boxes
                 = hidden_field_tag "ids[#{user.id}]", "1"
+              %td= check_box_tag "showups[#{user.id}]", "1", user.session_showup == 1, :class => "show_checkbox", :disabled => !participation_boxes, :'data-id' => user.id
+              %td= check_box_tag "participations[#{user.id}]", "1", user.session_participated == 1, :class => "participation_checkbox", :disabled => !participation_boxes, :'data-id' => user.id
+              %td=number_field_tag "seat_nr[#{user.id}]",  user.seat_nr, in: 0...1000, :style => "width: 40px"
+
+              %td=text_field_tag "payment[#{user.id}]",  number_with_precision(user.payment.to_f, separator: '.', precision: 2)  , :style => "width: 40px"
+
             - else
               - field = CUSTOM_FIELDS.get(col)
               - if field
@@ -103,9 +120,11 @@
         - columns.each do |col|
           - case col
             - when :form_fields
+              %td= noshow_count
               %td= showup_count
               %td= participated_count
-              %td= noshow_count
-                
+             
+              %td
+              %td  
             - else
               %td

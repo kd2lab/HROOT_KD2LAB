@@ -11,8 +11,6 @@ class SessionsController < ApplicationController
   
   def index
     @sessions = @experiment.sessions.where("sessions.reference_session_id = sessions.id").order(:start_at)
-    @assignment = @experiment.experimenter_assignments.where(:user_id => current_user.id).first
-    params[:filter] = params[:filter] || {}    
   end
   
   def show
@@ -108,7 +106,10 @@ class SessionsController < ApplicationController
         message = t('controllers.sessions.notice_cant_delete_following')
       elsif @session.session_participations.count.to_i > 0
         message = t('controllers.sessions.notice_cant_delete_participants')
+      elsif @session.has_files?
+        message = t('controllers.sessions.notice_cant_delete_files')
       else  
+        @session.remove_folder
         @session.destroy
         message = t('controllers.sessions.notice_deleted')
       end
@@ -118,17 +119,28 @@ class SessionsController < ApplicationController
   end
   
   def print
-    #@session = Session.find(params[:id])
-    params[:filter] = {} unless params[:filter]
-    params[:filter][:role] = 'user' 
-    
-    
-    params[:filter][:session] = @session.reference_session_id
-    params[:filter][:following_session] = @session.id    
-    
-    @users = User.load(params, {:experiment => @experiment, :sort_column => sort_column, :sort_direction => sort_direction, :exclude_non_participants => 1})
+    @session = Session.find(params[:id])
+    @users = Search.search(params, {:experiment => @experiment, :session => @session.id, :sort_column => sort_column, :sort_direction => sort_direction, :exclude => false})
     
     render :layout => 'print'
+  end
+
+  def csv
+    session = Session.find(params[:id])
+    users = Search.search(params, {:experiment => @experiment, :session => session.id, :sort_column => sort_column, :sort_direction => sort_direction, :exclude => false})
+    
+    data = Exporter.to_csv(users, Rails.configuration.session_participants_table_csv_columns)
+
+    send_data(data, :type => 'text/csv', :filename => 'users.csv')
+  end
+
+  def excel
+    session = Session.find(params[:id])
+    users = Search.search(params, {:experiment => @experiment, :session => session.id, :sort_column => sort_column, :sort_direction => sort_direction, :exclude => false})
+    
+    data = Exporter.to_excel(users, Rails.configuration.session_participants_table_csv_columns)
+
+    send_data(data, :type => 'application/vnd.ms-excel', :filename => 'users.xls')
   end
   
   def send_message
@@ -139,7 +151,7 @@ class SessionsController < ApplicationController
         ids = params['selected_users'].keys.map(&:to_i)
       end  
     
-      Message.send_message(current_user.id, ids, nil, params[:message][:subject], params[:message][:text])
+      Message.send_message(current_user.id, ids, @experiment.id, params[:message][:subject], params[:message][:text], @session.id)
       render :json => {:updated => ids.length, :new_queue_count => Recipient.where('sent_at IS NULL').count, :message => t('controllers.experiments.notice_mailqueue')}
     end
   end
@@ -214,6 +226,16 @@ class SessionsController < ApplicationController
                 sp.save
                 changes +=1
               end
+            end
+
+            if params['seat_nr'] && params['seat_nr'][user_id]
+              sp.seat_nr = params['seat_nr'][user_id].to_i
+              sp.save
+            end
+
+            if params['payment'] && params['payment'][user_id]
+              sp.payment = params['payment'][user_id].to_f
+              sp.save
             end
           end
         end

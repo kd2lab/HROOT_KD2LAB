@@ -19,7 +19,6 @@
 %h1
   = @experiment.name  
 
-
 = render :partial => "experiments/tabs", :locals => {:selected => :sessions}
 
 = form_tag participants_experiment_session_path(@experiment, @session), :method => 'post', :id => "user_search" do

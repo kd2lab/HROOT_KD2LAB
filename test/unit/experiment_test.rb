@@ -35,13 +35,13 @@ class ExperimentTest < ActiveSupport::TestCase
       ExperimenterAssignment.create(:experiment => @e, :user => @user1, :rights => "edit")
       ExperimenterAssignment.create(:experiment => @e, :user => @user2, :rights => "send_session_messages")
     end
-    
+
     should "work" do
-      rights = {
-        @user1.id.to_s => ["edit","manage_participants"],
-        @user2.id.to_s => ["send_session_messages","manage_participants"],
-        @user3.id.to_s => ["edit","send_session_messages"]
-      }
+      rights = [
+        {:id => @user1.id, :name => @user1.lastname, :list => ["edit","manage_participants"]},
+        {:id => @user2.id, :name => @user2.lastname, :list => ["send_session_messages","manage_participants"]},
+        {:id => @user3.id, :name => @user3.lastname, :list => ["edit","send_session_messages"]}
+      ]
       ExperimenterAssignment.update_experiment_rights @e, rights, @user1.id
       
       # user 1 should not be changed (can't edit own rights)
@@ -49,7 +49,6 @@ class ExperimentTest < ActiveSupport::TestCase
       assert_equal "send_session_messages,manage_participants", ExperimenterAssignment.where(:user_id => @user2.id, :experiment_id => @e.id).first.rights
       assert_equal "edit,send_session_messages", ExperimenterAssignment.where(:user_id => @user3.id, :experiment_id => @e.id).first.rights
       assert_equal 3, ExperimenterAssignment.count
-
     end
     
   end

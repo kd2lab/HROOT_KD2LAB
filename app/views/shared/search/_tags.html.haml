@@ -4,7 +4,7 @@
   
   .tag-row
     = select_tag "search[#{name}][][op]",
-      options_for_select([[t('search.selections.at_least'), 'at_least'], [t('search.selections.at_most'), 'at_most']], row[:op]),
+      options_for_select([[t('search.selections.at_least'), '>='], [t('search.selections.at_most'), '<=']], row[:op]),
       :style => "width: auto"
     
     = select_tag "search[#{name}][][count]",

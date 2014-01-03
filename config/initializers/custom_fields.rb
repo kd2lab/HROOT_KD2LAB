@@ -50,7 +50,7 @@ CUSTOM_FIELDS = CustomFieldManager.setup do
   
   text :phone, :required => false, :hint => true
   date :begin_of_studies, :restrict_to_months => true, :required => false
-  selection :experience, :db_values => [0,1], :required => false 
+  selection :experience, :db_values => [0,1], :required => false
     
   selection :language, :db_values =>[1, 2, 3, 4, 5, 6], :required => false, :store_multiple => true, :filter_search_multiple => true, :filter_operator => true
   #selection :profession, :db_values => [], :required => false

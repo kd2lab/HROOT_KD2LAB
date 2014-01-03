@@ -41,6 +41,8 @@ de:
   session_show_shortcut: E
   session_participated_shortcut: T
   session_noshow_shortcut: N
+  session_seat_nr_shortcut: Nr.
+  session_payment_shortcut: €
   insert_data: Daten einfügen
   subject: Betreff  
   register_now: Jetzt registrieren
@@ -54,11 +56,22 @@ de:
   login_area: Login-Bereich
   text_templates: Textvorlagen
   mailqueue: Mail-Queue
-  
+
+  mails:
+    message_type1: Sessionerinnerung
+    message_type2: Freie Nachricht
+    message_type3: Experiment-Einladung
+    message_type4: Bestätigung Sessionanmeldung
+
+  form_values:
+    user_is_active: Benutzer ist aktiv
+    user_is_marked_as_deleted: Benutzer wurde als gelöscht markiert
+
+
   errors:
     template:
       body: "Es sind Fehler aufgetreten:"
-  
+
   time:
     formats:
       default: ! '%d.%m.%Y %H:%M'
@@ -131,6 +144,7 @@ de:
         password_confirmation: Passwort wiederholen
         firstname: Vorname
         lastname: Nachname
+        comment: Kommentar
         role: Rolle
         email: E-Mail
         secondary_email: Alternative E-Mail
@@ -155,7 +169,8 @@ de:
         description: Beschreibung
         contact: Kontaktinformationen
         sender_email: Absenderadresse bei Experiment-E-Mails
-        
+        exclude_tags: Experimente nach Tags ausschliessen
+        exclude_experiments: Experimente ausschliessen
   layouts:
     landing:
       no_account: Noch kein Zugang? Jetzt anmelden und an Experimenten teilnehmen.
@@ -178,10 +193,11 @@ de:
       new_members_last_30_days: 'Neuanmeldungen in den letzten 30 Tagen:'
       incomplete_sessions: 'Durchgeführte, aber nicht abgeschlossene Sessions:'
       missing: 'Es fehlen %{count} Angaben'
-      sessions_today: 'Heute anstehende Sessions:'
+      sessions_next: 'Nächste 20 Sessions'
       no_experiments: Es wurden noch keine Experimente angelegt.
       participants: Teilnehmer
-      
+      newest_tags: Neueste Tags
+
   enroll:
     index:
       new_enrollment: Anmeldung zu Experimenten (Schritt 1)
@@ -195,20 +211,21 @@ de:
       enroll_for_sure: Verbindlich anmelden!
       or: oder
       back: zurück
-  
+
   options:
     tabs:
       general: Allgemein
       rooms: Räume
       emails: E-Mails
       texts: Texte
+      duplicates: Doppelte Benutzeraccounts
     texts:
       privacy_header: Text der Datenschutzvereinbarung
-      privacy_info: Hier kann der Text festgelegt werden, der für die Datenschutzvereinbarung von neuen Teilnehmern akzeptiert werden muss.      
-  
+      privacy_info: Hier kann der Text festgelegt werden, der für die Datenschutzvereinbarung von neuen Teilnehmern akzeptiert werden muss.
+
       welcome_header: Begrüßungstext für Teilnehmer nach Login
       welcome_info: Der folgende Text wird den Teilnehmern nach dem Login angezeigt  
-      
+
       credits_header: Impressum und Kontakt
       credits_info: Der folgende Text wird auf der Seite Impressum und Kontakt angezeigt. Es darf HTML genutzt werden.       
       submit_link: Texte speichern
@@ -221,7 +238,12 @@ de:
       incomplete_sessions: Benachrichtigung über unvollständige Sessions
       mail_queue: Mailversand
       session_reminder: Session-Erinnerungen
-      
+      default_privileges_title: Standardrechte
+      default_privileges_description: "Bei Hinzufügen einer Zeile in der Rechtetabelle werden die folgenden Rechte als Standard eingetragen:"
+
+    duplicates:
+      duplicates: Doppelte Benutzeraccounts
+      duplicates_html: Die folgenden Benutzeraccounts haben übereinstimmende Vor- und Nachnamen. Als gelöscht markierte Accounts werden nicht berücksichtigt.
     emails:
       header1: E-Mail zur Experiment-Einladung
       header2: E-Mail zur Anmeldebestätigung
@@ -229,13 +251,11 @@ de:
       header4: E-Mail zur Erinnerung des Sessionabschluss
       header5: E-Mail zur Aktivierungseinladung nach dem Import
       text: E-Mail-Text
-  
   locations:
     create_new_location: Neuen Raum anlegen
     confirm: Sind Sie sich sicher, dass Sie diesen Raum entfernen möchten?
     description: Beschreibung
     notice: 'Hinweis: Es können nur Räume gelöscht werden, die nicht belegt wurden.'
-    
   experiments:
     registration_active: Anmeldung ist aktiv
     registration_inactive: Anmeldung ist nicht aktiv
@@ -254,13 +274,14 @@ de:
       view_participants: Bereits zugeordnete Teilnehmer 
       history_participants: Verlauf der Teilnehmerzuordnung
       files: Dateien
+      public_link: Öffentlicher Link
+      message_history: Nachrichtenverlauf
     mail:
       mailtexts: Mailtexte
       mail_for_invitation: E-Mail zur Einladung
       invitation_text: Einladungstext
       mail_for_confirmation: E-Mail zur Anmeldebestätigung
       confirmation_text: Bestätigungstext
-      
     invitation:
       sending: Versand
       count_info1: Derzeit sind 
@@ -275,6 +296,18 @@ de:
       sending_confirm1: Sind Sie sich sicher, dass der Versand gestartet werden soll?
       start_sending2: Versand AN ALLE TEILNEHMER starten
       sending_confirm2: Sind Sie sich sicher, dass der Versand gestartet werden soll? Damit werden AUCH BEREITS EINGELADENE Teilnehmer eingeladen
+      reload_html: '(Aktualisierung in <span id="time_info">%{seconds}</span> Sekunden)'
+      invitation_active: Der Einladungsversand ist im Moment aktiv.
+      invitation_row1: Start dieses Einladungsversands
+      invitation_row2: Einladungsmodus
+      invitation_row3: Zugeordnete Personen (Gesamt)
+      invitation_row4: davon vor dem Start dieses Einladungsversands bereits eingeladen
+      invitation_row5: Maximalgrenze zu versendender Einladungen bis jetzt 
+      invitation_row6: Bereits versendete Einladungen 
+      invitation_row7: Noch nicht eingeladene Zugeordnete (ohne bereits angemeldete)
+      invitation_row8: Derzeit noch freie Plätze
+      invitation_stop: Einladungsversand stoppen
+      invitation_confirm: Sind Sie sich sicher, dass der Versand gestoppt werden soll?
     experimenters:
       add_people: Personen hinzufügen...
     index:
@@ -284,6 +317,8 @@ de:
       default_address_is: Die Standard-Adresse ist
       experiment_finished: Dieses Experiment ist abgeschlossen
       experiment_in_statistic: Dieses Experiment in der Statistik berücksichtigen
+      exclude_tags_hint: "Nutzer, die an Experimenten mit diesen Tags teilgenommen haben, können keiner Session beitreten."
+      exclude_experiments_hint: "Nutzer, die an in diesen Experimenten teilgenommen haben, können keiner Session beitreten."
     reminders:
       reminder: Erinnerung
       reminder_email: E-Mail zur Erinnerung
@@ -294,25 +329,36 @@ de:
     experiments:
       organizers: 'Experiment-Organisation:'
       no_sessions: keine Sessions
-      assigned_participants: Zugeordnete Teilnehmer
+      assigned_participants: zugeordnete Teilnehmer
+      confirm_delete_experiment: Soll dieses Experiment wirklich gelöscht werden?
+      delete: Löschen
     files:
       choose_file: Datei wählen
       choose_different_file: Andere Datei wählen
       upload: Upload
       remove: Entfernen
-      files_description_html: "Laden Sie Dateien über das Dateiupload-Feld hoch, oder ziehen Sie Dateien per Drag and Drop auf das Dateifeld.<br/><br/>Dateien mit gleichem Namen werden überschrieben."
-      or_use_drag_drop: oder ziehen Sie Dateien per Drag and Drop auf der Dateiliste ab.
-      delete_file: Datei löschen...
+      files_description_html: "Laden Sie Dateien über das Dateiupload-Feld hoch, oder ziehen Sie Dateien per Drag and Drop auf das Dateifeld."
+      delete_file: Löschen...
       download_file: Download
-      confirmation: Soll diese Datei wirklich gelöscht werden?
-  
+      confirmation: Sollen die ausgewählten Elemente wirklich gelöscht werden?
+      new_folder: Neuer Ordner...
+      folder_question: "Geben Sie den Namen des neuen Ordners an:"
   sessions:
     new_session_link: Neue Session anlegen
     back_link: Zurück zur Session-Übersicht
     session: Session
     following_session: Folgesession
     at_label: am
-    
+    print:
+      header: Session am
+      lastname: Name
+      firstname: Vorname
+      phone: Telefon
+      gender: G.
+      showup: E
+      participated: T
+      noshow: N
+
     line:
       participants_label: 'Teilnehmer:'
       participants_link: 'Teilnehmer'
@@ -337,6 +383,10 @@ de:
       move_marked2: verschieben  
       save_changes_now: Änderungen jetzt speichern
       no_participants: Diese Session hat keine Teilnehmer
+      data_menu: Daten
+      save_as_csv: Als CSV speichern
+      save_as_excel: Als Excel-Datei speichern
+
     new:
       new_label1: Neue
       new_label2: anlegen
@@ -358,8 +408,24 @@ de:
       sending_label1: Der Versand der Erinnerungen soll
       sending_label2: Stunden vor dem Beginn der jeweiligen Session erfolgen.
       reminder_text: Erinnerungstext
-      
-    
+  filter_summary:
+    header_time: Zeit
+    header_action: Aktion
+    header_filter: Filterkriterien
+    add_text: "%{count} Teilnehmer hinzugefügt"
+    remove_text: "%{count} Teilnehmer entfernt"
+    exp1: "Einem der folgenden zugewiesen: "
+    exp2: "Allen der folgenden zugewiesen: "
+    exp3: "Keinem der folgenden zugewiesen: "
+    exp4: "An einem der folgenden teilgenommen: "
+    exp5: "An allen der folgenden teilgenommen: "
+    exp6: "An keinem der folgenden teilgenommen: "
+    search: Suche nach
+    noshow_count: Nicht erschienen
+    participations_count: Teilnahmen
+    from: von
+    to: bis
+
   participants:
     manage:
       submit: Suche ausführen und Ergebnis aktualisieren
@@ -390,7 +456,17 @@ de:
       message_all_marked: Nachricht an alle markierten Teilnehmer
       to_all_marked: Markierte Teilnehmer
       print: Drucken
-    
+      data_menu: Daten
+      save_as_csv: Als CSV speichern
+      save_as_excel: Als Excel-Datei speichern
+    print:
+      header: Experiment
+      filter_settings: Sucheinstellungen
+
+    history:
+      history_title: Verlauf der Teilnehmerzuordnung
+      breadcrumb_history: Verlauf der Teilnehmerzuordnung
+      no_history: Es wurden keine Zuordnungsschritte gespeichert
   search:
     date:
       from: von
@@ -404,7 +480,7 @@ de:
         choice1: Nur Zugeordnete, die teilgenommen haben
         choice2: Nur Zugeordnete, die bereits in eine Session eingetragen sind
         choice3: Nur Zugeordnete ohne Session
-        choice4: Nur Zugeordnete in Sessions, die noch nicht vorbei sind  
+        choice4: Nur Zugeordnete in Sessions, die noch nicht vorbei sind
       experiments:
         choice1: die zu einem der folgenden Experimente zugeordnet sind
         choice2: die zu allen der folgenden Experimente zugeordnet sind
@@ -412,7 +488,7 @@ de:
         choice4: die an mindestens einer Session eines der folgenden Experimente teilgenommen haben
         choice5: die an mindestens einer Session von jedem der folgenden Experimente teilgenommen haben
         choice6: die an keiner Session der folgenden Experimente teilgenommen haben    
-        
+
       role:  
         user: Benutzer
         experimenter: Experimentatoren
@@ -429,9 +505,7 @@ de:
       participation: Sessionteilnahme
       experiments: Experimente
       deleted: Gelöschte Benutzer
-    
-    
-    
+
     titles:
       fulltext: "Suche in Name, E-Mail: "
       role: "Nur Teilnehmer mit der folgenden Rolle anzeigen:"
@@ -443,20 +517,29 @@ de:
       experiments: "Teilnehmer,"
       participation: Sessionteilnahme
       deleted: Gelöschte Benutzer
-      
-      
+
     hints:
       tags: Tag...
       experiments: Experimente...
-    
+
   usertable:
     fullname: Name
+    firstname: Vorname
+    lastname: Nachname
     email: E-Mail
     role: Rolle  
     created_at: Anmeld.
     session: Session
     form_fields:
     counter:
+    comment: Kommentar
+    secondary_email: Alternative E-Mail
+    deleted: Gelöscht
+    showup: E
+    participated: T
+    noshow: N
+    seat_nr: Platznr.
+    payment: Auszahlung
   modal:
     send_message: Absenden
     close: Schliessen
@@ -472,11 +555,12 @@ de:
       insert_reminder: Standard-Erinnerungstext einfügen
       send_button: Nachricht senden
       abort_button: Abbrechen
-  
+
   roles:
     user: 'Poolmitglied'
     admin: 'Administrator'
-    
+    experimenter: 'Experimentator'
+
   users:
     edit:
       edit_user: '%{name} bearbeiten'
@@ -494,19 +578,27 @@ de:
       message_all_marked: Allen markierten Teilnehmern eine Nachricht senden
       marked_users: Markierte Benutzer
       no_users: Mit den aktuellen Sucheinstellungen wurden keine Benutzer gefunden
+      data_menu: Daten
+      save_as_csv: Als CSV speichern
+      save_as_excel: Als Excel-Datei speichern
     new:
       create_new_user: Neuen Benutzer anlegen
     form:
       optional_fields: Optionale Felder
       required_fields: Pflichtfelder
+      comment: Kommentar
       account: Accountdaten
       general: Allgemeine Daten
+      add_experiments: Experimente...
+      rights: Experimentatoren-Rechte
     show:
+      rights: Experimentatoren-Rechte
       more_functions: Weitere Funktionen
       activate_user_after_import: User nach Import aktivieren
       login_as: 'Als %{user} einloggen'
       account: Accountdaten
       general: Allgemeine Daten
+      comment: Kommentar
       optional_fields: Optionale Felder
       required_fields: Pflichtfelder
       participations_so_far: 'Bisherige Experimentteilnahmen:'
@@ -515,7 +607,16 @@ de:
       showup: Erschienen
       participated: Teilgenommen
       noshow: Nicht erschienen
-      
+    print:
+      role: Rolle
+      study: Fach
+      gender: 'G.'
+      begin: Beginn
+      created_at: 'Anmeld.'
+      no_users: Kein User gefunden
+      header: Nutzerliste
+      filter_settings: Suchkiterien
+
   account:
     index:
       home: Home
@@ -551,12 +652,14 @@ de:
       resend_confirmation_mail: Bestätigungsemail erneut senden
     optional:
       optional_fields: Optionale Daten
-      explanation: Die Angabe der Daten auf dieser Seite ist freiwillig - Sie können diese Daten jederzeit ändern oder löschen. Allerdings sind diese Daten für manche Experimente erforderlich, in diesem Fall werden Sie nur eingeladen, wenn Sie diese Daten angegeben haben.
+      explanation_html: Die Angabe der Daten auf dieser Seite ist freiwillig - Sie können diese Daten jederzeit ändern oder löschen. Allerdings sind diese Daten für manche Experimente erforderlich, in diesem Fall werden Sie nur eingeladen, wenn Sie diese Daten angegeben haben.
+      optional_fields_empty: Optionale Daten
+      explanation_empty_field_html: Die Angabe der Daten auf dieser Seite ist freiwillig. Allerdings sind diese Daten für manche Experimente erforderlich, in diesem Fall werden Sie nur eingeladen, wenn Sie diese Daten angegeben haben.
+      explanation_filled_field_html: Die folgenden Angaben wurden bei hroot gespeichert. Kontaktieren Sie bitte die Laborleitung, falls Angaben hier nicht korrekt sind.
   user_mailer:
     subject_secondary_email_confirmation: "hroot: Bestätigung der alternativen E-Mail-Adresse"
     subject_import_email_confirmation: "hroot: Bestätigung der neuen E-Mail-Adresse"
     subject_import_email_activation: "hroot: Freischaltung für die Teilnahme an Experimenten"
-  
   devise:    
     passwords:
       new:
@@ -572,7 +675,6 @@ de:
         change_password: Passwort ändern
         password_hint: mindestens 8 Zeichen, mindestens eine Zahl, ein Buchstabe, ein Sonderzeichen
         change_password_link: Passwort ändern
-      
     confirmations:
       new:
         resend_email: Bestätigungs-E-Mail erneut senden
@@ -588,7 +690,6 @@ de:
         register: Registrierung
         forgot_password: Passwort vergessen?
         no_email: E-Mail zur Bestätigung nicht erhalten?
-      
     sessions:
       signed_in: 'Erfolgreich angemeldet.'
       signed_out: 'Erfolgreich abgemeldet.'
@@ -597,7 +698,6 @@ de:
         login: Login
         for_registered_users: für bereits registrierte Nutzer
         login_link: Login
-    
     failure:
       already_authenticated: 'Sie sind bereits angemeldet.'
       unauthenticated: 'Sie müssen sich anmelden oder registrieren, bevor Sie sich anmelden können.'
@@ -639,7 +739,6 @@ de:
         subject: 'hroot: Anleitung zur Passwortänderung'
       unlock_instructions:
         subject: 'hroot: Account entsperren'
-        
     home:
       activate:
         activation: Aktivierung
@@ -647,7 +746,10 @@ de:
         activation_info1: Wenn Sie bereits Zugang zum bisherigen System hatten, sind Ihre Daten übertragen worden. Sie können hier Ihren Zugang zum neuen Einladungssystem freischalten.
         activation_info2: 'Bitte geben Sie die E-Mail-Adresse an, mit der Sie beim bisherigen System angemeldet waren:'
         send_email: E-Mail zur Freischaltung senden
-        
+  upload:
+    upload_success: Die Datei wurde erfolgreich hochgeladen
+    upload_failure: Fehler beim Upload der Datei
+
   popup:  
     showup: Erschienen
     participated: Teilgenommen
@@ -657,9 +759,12 @@ de:
     noshow_count: Anzahl Nichterscheinen
     participations_count: Anzahl Teilnahmen
     inactive_after_import: Benutzer wurde nach dem Import noch nicht aktiviert
-  
+    seat_nr: Sitznummer
+    payment: Auszahlungsbetrag
+    not_confirmed: Dieser Benutzer hat seine E-Mail-Adresse noch nicht bestätigt. Es werden noch keine E-Mails an diesen Benutzer geschickt.
   controllers:
     notice_saved_changes: Die Änderungen wurden gespeichert.
+    notice_cant_delete_experiment: Das Experiment kann nicht gelöscht werden, da Sessions oder zugeordnete Teilnehmer vorhanden sind.
     account:
       notice_phone: Ihre Telefonnummer wurde gespeichert
       notice_alternative_mail1: Ihre alternative E-Mail-Adresse wurde gelöscht
@@ -678,7 +783,7 @@ de:
       notice_location_created: Der Raum wurde angelegt.
       notice_location_changed: Der Raum wurde geändert.
       notice_location_deleted: Der Raum wurde gelöscht.
-      notice_location_not_deleted: Der Raum kann nicht gelöscht werden, da Sessions für diesen Raum eingetragen sind.    
+      notice_location_not_deleted: Der Raum kann nicht gelöscht werden, da Sessions für diesen Raum eingetragen sind.
     degree:
       notice_degree_created: Das Abschlussziel wurde angelegt.
       notice_degree_changed: Das Abschlussziel wurde geändert.
@@ -706,9 +811,6 @@ de:
     experiments:
       notice_created: Das Experiment wurde erfolgreich angelegt.
       notice_mailqueue: Nachricht(en) wurden in die Mailqueue eingetragen.
-    experiment:
-      upload_success: Die Datei wurde erfolgreich hochgeladen
-      upload_failure: Fehler beim Upload der Datei
     home:
       notice_mail_sent: Es wurde Ihnen eine E-Mail mit einem Link zur Freischaltung zugesendet.
       notice_invalid_email: Zu dieser E-Mail-Adresse gibt es keinen Account
@@ -718,6 +820,7 @@ de:
       notice_session1: Die ausgewählten Teilnehmer wurden in die Session
       notice_session2: eingetragen
       notice_added_members: Die Poolmitglieder wurden zugeordnet
+      notice_session: Die ausgewählten Teilnehmer wurden in die gewählte Session eingetragen
     sessions:
       notice_new_session: Es wurde eine neue Session angelegt
       notice_cant_delete_following: Sessions mit Folgesessions können nicht gelöscht werden.
@@ -725,14 +828,15 @@ de:
       notice_deleted: Die Session wurde gelöscht.
       notice_removed_from_session: Die ausgewählten Teilnehmer wurden aus der Session ausgetragen
       notice_moved_to_session: "Die ausgewählten Teilnehmer wurden in die Session %{session} verschoben"
+      notice_cant_delete_files: "Die Session kann nicht gelöscht werden, da noch Dateien im Dateiordner der Session liegen."
     users:
       notice_mailqueue: Die Nachricht(en) wurden in die Mailqueue eingetragen.
       notice_mailqueue_activation: Die Aktivierungs-Einladungen(en) wurden in die Mailqueue eingetragen.
       notice_created_user: Der Benutzer wurde erfolgreich angelegt.
       notice_activated_after_import: Der Benutzer wurde nach dem Import freigeschaltet.
       notice_removed_from_session: Der Benutzer wurde aus der Session entfernt.
-      notice_search_stored: Die aktuellen Filtereinstellungen wurden als Standardeinstellungen gespeichert.
-        
+      notice_search_stored: Die aktuellen Sucheinstellungen wurden als Standardeinstellungen gespeichert.
+
   templates:
     confirm_save: Soll der aktuelle Text als Vorlage gespeichert werden? Dabei wird die bisher gespeicherte Vorlage überschrieben! 
     confirm_delete: Soll diese Vorlage gelöscht werden?
@@ -744,14 +848,13 @@ de:
     save_header: Speichern...
     insert_header: Einfügen...
     delete_header: Löschen...
-    
   home:
     about:
       legal_notes: Haftungsausschluss
       software: Entwicklerteam und Software
       software_html: '
   <h3>Lizenz</h3>
-  Diese Software kann kostenfrei lizensiert werden.<br/> 
+  Diese Software kann kostenfrei lizensiert werden.<br/>
   Wenn Sie Ergebnisse von Experimenten berichten, die mit hroot durchgeführt wurden, dann sind Sie durch die Lizenz verpflichtet, die folgende Veröffentlichung zu zitieren:<br/><br/>
   Die korrekte Zitation:<br/>
   <i>The experiment was organized and recruited with the software hroot (Bock, Nicklisch, Baetge 2012).</i><br/><br/>

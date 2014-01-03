@@ -79,13 +79,22 @@ class Search
         if options[:session]
           # load specific given session
           joins << "JOIN (sessions sj JOIN session_participations sps ON sj.id = sps.session_id AND sj.id = #{options[:session].to_i}) ON sj.experiment_id = #{experiment.id} AND sps.user_id = users.id "         
-          select << "sps.reminded_at, sj.start_at as session_start_at, sj.id as session_id, p.invited_at, sps.showup as session_showup, sps.noshow as session_noshow, sps.participated as session_participated"
         else
           # or load session_participation and join reference sessions
           joins << "LEFT JOIN (sessions sj JOIN session_participations sps ON sj.id = sps.session_id) ON sj.experiment_id = #{experiment.id} AND sj.id = sj.reference_session_id AND sps.user_id = users.id "         
-          select << "sps.reminded_at, sj.start_at as session_start_at, sj.id as session_id, p.invited_at, sps.showup as session_showup, sps.noshow as session_noshow, sps.participated as session_participated"
         end
-
+        
+        select << "sps.reminded_at, 
+                   sj.start_at as session_start_at,
+                   sj.id as session_id, 
+                   p.invited_at,
+                   p.added_by_public_key, 
+                   sps.showup as session_showup, 
+                   sps.noshow as session_noshow, 
+                   sps.participated as session_participated,
+                   sps.seat_nr as seat_nr,
+                   sps.payment as payment"
+        
         # only select users with a successful participation
         # this filter only makes sense, when we select participants of an experiment
         if search[:participation]
