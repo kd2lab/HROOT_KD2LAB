@@ -5,14 +5,14 @@
 
 source 'http://rubygems.org'
 
-gem 'rails', '3.2.11'
+gem 'rails', '~>3.2.11'
 gem 'mysql2'
 gem 'haml'
 gem 'sass'
 gem 'unicorn'
 gem 'less-rails'
 gem 'coffee-script'
-gem 'ledermann-rails-settings', '1.2.1', :require => 'rails-settings'
+gem 'ledermann-rails-settings', '~> 1.2.1', :require => 'rails-settings'
 gem 'sequel'
 gem 'jquery-rails', '>= 1.0.12'
 gem 'will_paginate'
@@ -22,6 +22,9 @@ gem 'event-calendar', :require => 'event_calendar'
 gem 'exception_notification'
 gem 'icalendar'
 gem 'cancan'
+gem "rubyzip", "~> 1.1.0"
+gem "spreadsheet"
+
 #gem 'country-select'
 gem 'acts-as-taggable-on', '~> 2.2.2'
 
