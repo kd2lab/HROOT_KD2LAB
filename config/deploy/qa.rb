@@ -4,7 +4,7 @@ server 'europe', user: 'root', roles: %w{web app db}#, ssh_options: { keys: %w(/
 set :deploy_to, "/var/www/rails/#{fetch(:application)}"
 #set :rvm_type, :user # or :auto
 #set :pty, true
-set :rvm_ruby_version, '2.0.0@hroot'
+#set :rvm_ruby_version, '2.0.0@hroot'
 # set :rvm_custom_path, '/usr/local/rvm'
 #set :bundle_flags, '--deployment'
 set :linked_files, %w{config/database.yml}

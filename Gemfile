@@ -38,8 +38,9 @@ gem 'twitter-bootstrap-rails'
 
 gem 'capistrano', '~> 3.0.1'
 gem 'capistrano-rails'
-gem 'capistrano-bundler'
-gem 'capistrano-rvm', '~> 0.0.3'
+gem 'rvm1-capistrano3', require: false
+#gem 'capistrano-rvm', '~> 0.0.3'
+#gem 'capistrano-bundler'
 
 # Bundle gems for the local environment. Make sure to
 # put test-only gems in this group so their generators
