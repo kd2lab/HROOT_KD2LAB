@@ -6,7 +6,6 @@ class UserMailer < ActionMailer::Base
   INVITATION = 3
   SESSION_CONFIRMATION = 4
 
-
   # the main hroot adress is the default sender - configure in development.rb
   default :from => Rails.configuration.hroot_sender_email 
   

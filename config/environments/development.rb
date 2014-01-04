@@ -22,18 +22,18 @@ Hroot::Application.configure do
   # Only use best-standards-support built into browsers
   config.action_dispatch.best_standards_support = :builtin
   
-  config.action_mailer.default_url_options = {
-    :host => 'localhost',
-    :port => 3000
-  }
-  
   # set a site-wide path prefix here if hroot is supposed to run 
   # in a subdirectory like http://youdomain.com/subdirectory/hroot
   config.path_prefix = nil
   
   config.assets.debug = true
   
- 
+  
+  # enable or disable actual delivery
+  config.action_mailer.perform_deliveries = true
+
+  # send method
+  config.action_mailer.delivery_method = :smtp
   
   #configure action mailer - example: use gmail as mail service
   config.action_mailer.smtp_settings = {
@@ -46,18 +46,19 @@ Hroot::Application.configure do
     :enable_starttls_auto => true
   }
 
+   # urls in emails
+  config.action_mailer.default_url_options = {
+    :host => 'localhost',
+    :port => 3000
+  }
   
-
   # are users allowed to always edit their optional data?
   config.users_can_edit_optional_data = false
   
+  config.contact_email = 'experiments@wiso.uni-hamburg.de'
+
   config.recipient_of_audit_reports = "someemail@somedomain.de"
   
-  config.action_mailer.delivery_method = :test
-  
-  # enable or disable actual delivery
-  config.action_mailer.perform_deliveries = true
-
   # this email is used by the development mail interceptor (see application.rb and lib/development_mail_interceptor.rb)
   # in all other that production mode, emails will be sent to this adress instead of the real recipient
   config.interceptor_email = "mail@ingmar.net"
@@ -70,14 +71,9 @@ Hroot::Application.configure do
   
   # configure uploads directory
   config.upload_dir = Rails.root.join('uploads')
-  
-  config.action_mailer.default_url_options = {
-    :host => 'localhost',
-    :port => 3000
-  }
 end
 
-Rails.application.routes.default_url_options[:host] =  'localhost:3000'
+#Rails.application.routes.default_url_options[:host] =  'localhost:3000'
 
 #ActionMailer::Base.delivery_method = :smtp
 #ActionMailer::Base.perform_deliveries = true
