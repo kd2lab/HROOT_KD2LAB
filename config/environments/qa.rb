@@ -66,8 +66,6 @@ Hroot::Application.configure do
   config.path_prefix = nil  
 end
 
-Mail.register_interceptor(DevelopmentMailInterceptor)
-
 Hroot::Application.config.middleware.use ExceptionNotification::Rack,
   :email => {
     :email_prefix => "[hroot qa] ",
