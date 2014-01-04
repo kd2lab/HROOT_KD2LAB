@@ -11,6 +11,7 @@ set :linked_files, %w{config/database.yml}
 set :linked_dirs, %w{bin log uploads tmp/cache}
 set :branch, 'improve_filters'
 set :rails_env, 'qa' 
+#set :rvm1_ruby_version, "2.0.0p247"
 #set :bundle_flags, '--deployment'
 
 namespace :deploy do
