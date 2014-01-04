@@ -13,15 +13,6 @@ class UsersController < ApplicationController
       flash.now[:notice] = t('controllers.users.notice_search_stored')
     end
     
-      # todo restore print viewrefactor
-     
-#     elsif params[:user_action] == "print_view"
-#       @users = User.load(params, {:sort_column => sort_column, :sort_direction => sort_direction, :include_deleted_users => (params[:filter][:show_deleted].to_s == "1")})
-#       render :action => 'print', :layout => 'print'
-#       return
-#     end
-#         
-    
     @users = Search.paginate(params, {:sort_column => sort_column, :sort_direction => sort_direction})
     @user_count = User.count
   end

@@ -100,7 +100,10 @@ Rails.application.routes.default_url_options[:host] =  'hroot.ingmar.net'
 Rails.application.routes.default_url_options[:protocol] =  'https'
 Mail.register_interceptor(DevelopmentMailInterceptor)
 
-Hroot::Application.config.middleware.use ExceptionNotifier,
-  :email_prefix => "[hroot qa] ",
-  :sender_address => %{"mail@ingmar.net"},
-  :exception_recipients => %w{mail@ingmar.net}
+Hroot::Application.config.middleware.use ExceptionNotification::Rack,
+  :email => {
+    :email_prefix => "[hroot qa] ",
+    :sender_address => %{"mail@ingmar.net"},
+    :exception_recipients => %w{mail@ingmar.net}
+  }
+
