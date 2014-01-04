@@ -1,41 +1,13 @@
 #encoding: utf-8
 
 class Task
-  def self.replace(text, user, experiment = nil, session = nil, link = nil)
-    rep = [
-        ["#firstname", user.firstname], 
-        ["#lastname", user.lastname]
-    ]
-
-    rep << ["#activation_link", Rails.application.routes.url_helpers.activation_url(user.import_token)] if !user.import_token.blank?
-    
-    if experiment
-      sessionlist_de = experiment.open_sessions.map{|s| s.start_at.strftime("%d.%m.%Y, %H:%M Uhr") }.join("\n")
-      sessionlist_en = experiment.open_sessions.map{|s| s.start_at.strftime("%Y-%m-%d, %H:%M ") }.join("\n")
-      
-      rep << ["#experiment_name", experiment.name]
-      rep << ["#sessionlist_de", sessionlist_de]
-      rep << ["#sessionlist_en", sessionlist_en]
-      rep << ["#sessionlist", sessionlist_de]
-    end
-
-    if session
-      rep << ["#session_date_de", session.start_at.strftime("%d.%m.%Y")]
-      rep << ["#session_date_en", session.start_at.strftime("%Y-%m-%d")]
-      rep << ["#session_date", session.start_at.strftime("%d.%m.%Y")]
-      rep << ["#session_start_time", session.start_at.strftime("%H:%M")]
-      rep << ["#session_end_time", session.end_at.strftime("%H:%M")]
-      rep << ["#session_location", if session.location then session.location.name else "" end]
-    end
-
-    if link
-      rep << ["#link", link]
-    end
-
-    text.to_s.mreplace(rep)    
+  # this method is run every 5 minutes
+  def self.run_tasks
+    send_invitations
+    process_mail_queue
+    send_session_reminders
   end
 
-  
   def self.send_session_reminders
     sql = <<EOSQL
     SELECT * FROM 
@@ -214,6 +186,42 @@ EOSQL
     
     Settings.last_invitation_task_execution = Time.now
   end  
+
+  # helper method for text variable replacement
+  def self.replace(text, user, experiment = nil, session = nil, link = nil)
+    rep = [
+        ["#firstname", user.firstname], 
+        ["#lastname", user.lastname]
+    ]
+
+    rep << ["#activation_link", Rails.application.routes.url_helpers.activation_url(user.import_token)] if !user.import_token.blank?
+    
+    if experiment
+      sessionlist_de = experiment.open_sessions.map{|s| s.start_at.strftime("%d.%m.%Y, %H:%M Uhr") }.join("\n")
+      sessionlist_en = experiment.open_sessions.map{|s| s.start_at.strftime("%Y-%m-%d, %H:%M ") }.join("\n")
+      
+      rep << ["#experiment_name", experiment.name]
+      rep << ["#sessionlist_de", sessionlist_de]
+      rep << ["#sessionlist_en", sessionlist_en]
+      rep << ["#sessionlist", sessionlist_de]
+    end
+
+    if session
+      rep << ["#session_date_de", session.start_at.strftime("%d.%m.%Y")]
+      rep << ["#session_date_en", session.start_at.strftime("%Y-%m-%d")]
+      rep << ["#session_date", session.start_at.strftime("%d.%m.%Y")]
+      rep << ["#session_start_time", session.start_at.strftime("%H:%M")]
+      rep << ["#session_end_time", session.end_at.strftime("%H:%M")]
+      rep << ["#session_location", if session.location then session.location.name else "" end]
+    end
+
+    if link
+      rep << ["#link", link]
+    end
+
+    text.to_s.mreplace(rep)    
+  end
+
   
   # todo later
   #def self.send_reminders_for_incomplete_sessions
