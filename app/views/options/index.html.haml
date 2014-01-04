@@ -30,6 +30,11 @@
       - else
         .alert.alert-error
           = t('.task_never_run_html', :task => task)
+      
+    - if SentMail.count > 10000
+      .alert.alert-error
+        = t('.too_may_sent_mails_html', :count => SentMail.count)
+      
 .row
   .span8
     %h3=t('.default_privileges_title')
@@ -46,28 +51,28 @@
       = submit_tag t('save')
 
 
-    /%h3=t('.validation_errors_title')
-    /%table.table
-    /  - User.all.each do |user|
-    /    - if !user.valid?
-    /      %tr
-    /        %td= link_to truncate(user.lastname, {:length => 15})+" "+truncate(user.firstname, {:length => 10}), user_path(user)
-    /        %td= render 'layouts/errors', object: user
-
-    
-    / = link_to "do it", "?run", :class => "btn btn-primary"
-    / 
-    / %h3=t('.unconfirmed_accounts_title')
-    / 
-    / %table.table
-    /   - User.where(:confirmed_at => nil).each do |user|
-    /     %tr
-    /       %td= link_to truncate(user.lastname, {:length => 15})+" "+truncate(user.firstname, {:length => 10}), user_path(user)
-    /       %td= l(user.created_at)  
-    / %ul
-    /   %li people with the same name
-    /   %li check for validation errors
-    /   %li poeple who have not activated their account
-    /   %li people who have not confirmed their account
-    /   %li people who have never logged in
-    /   %li todo nichts hier im Moment  
+    - # todo later...
+    - #%h3=t('.validation_errors_title')
+    - #%table.table
+    - #  - User.all.each do |user|
+    - #    - if !user.valid?
+    - #      %tr
+    - #        %td= link_to truncate(user.lastname, {:length => 15})+" "+truncate(user.firstname, {:length => 10}), user_path(user)
+    - #        %td= render 'layouts/errors', object: user
+    - #
+    - # = link_to "do it", "?run", :class => "btn btn-primary"
+    - # 
+    - # %h3=t('.unconfirmed_accounts_title')
+    - # 
+    - # %table.table
+    - #   - User.where(:confirmed_at => nil).each do |user|
+    - #     %tr
+    - #       %td= link_to truncate(user.lastname, {:length => 15})+" "+truncate(user.firstname, {:length => 10}), user_path(user)
+    - #       %td= l(user.created_at)  
+    - # %ul
+    - #   %li people with the same name
+    - #   %li check for validation errors
+    - #   %li poeple who have not activated their account
+    - #   %li people who have not confirmed their account
+    - #   %li people who have never logged in
+    - #   %li todo nichts hier im Moment  

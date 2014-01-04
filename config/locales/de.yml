@@ -234,6 +234,7 @@ de:
       task_is_delayed_html: "Warnung: Der Task <b>%{task}</b> wurde länger als 10 Minuten nicht ausgeführt."
       task_never_run_html: "Warnung: Der Task <b>%{task}</b> wurde noch nie ausgeführt!"
       task_is_ok_html: "Der Task <b>%{task}</b> wurde in den letzten 10 Minuten ausgeführt."
+      too_may_sent_mails_html: "Warnung: Die Speicherung der versendeten E-Mails umfasst %{count} Einträge."
       invitation: Einladungsversand
       incomplete_sessions: Benachrichtigung über unvollständige Sessions
       mail_queue: Mailversand
@@ -276,6 +277,10 @@ de:
       files: Dateien
       public_link: Öffentlicher Link
       message_history: Nachrichtenverlauf
+    message_history:  
+      message_history: Nachrichtenverlauf
+      mail_link: Nachrichtentext
+      no_messages: Für dieses Experiment wurden noch keine Nachrichten versendet. 
     mail:
       mailtexts: Mailtexte
       mail_for_invitation: E-Mail zur Einladung

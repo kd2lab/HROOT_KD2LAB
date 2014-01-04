@@ -1,15 +1,35 @@
 $ ->
   $('.files').fileTree()
   
-  $('*[data-poload]').on 'mouseenter mouseleave', ->
-    e = $(this)
-    e.off('mouseenter mouseleave')
-    $.get e.data('poload'), (d)->
-      e.popover({title: d.subject, content: d.message, width: "500px", trigger: 'hover', placement: 'left'}).popover('show')
 
-  #$('*[data-poload]').mouseout ->
-  #  $(this).popover('hide')
+  #$('*[data-poload]').popover({title: "test", html:true, content: "test", trigger: 'click', placement: 'left'})
+  
+  $('*[data-poload]').on 'click', (evt)->
+     e = $(this)
+     e.off('click')  
+     $.get e.data('poload'), (d)->
+       e.popover({title: d.subject, html:true, content: d.message, trigger: 'manual', placement: 'left'})
+       
+       e.click (evt)->
+         was_open = $(this).hasClass('opened-popup')
+         $('.opened-popup').popover('hide').removeClass('opened-popup')  
+         
+         if !was_open
+           $('.opened-popup').popover('hide').removeClass('opened-popup') 
+           $(this).addClass('opened-popup')
+           $(this).popover('toggle')
+         
+         evt.preventDefault()
+         false
+         
+       e.trigger('click')
 
+     evt.preventDefault()
+
+  $('body').click ->
+    $('.opened-popup').popover('hide').removeClass('opened-popup')  
+    
+    
   # todo later remove automatic capturing of translation errors
   $ ->
     s = $('html')[0].innerHTML

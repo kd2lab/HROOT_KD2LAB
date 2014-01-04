@@ -8,8 +8,8 @@ set :repo_url, 'git@github.com:wiso-forschungslabor/hroot.git'
 # set :deploy_to, '/var/www/my_app'
 # set :scm, :git
 
-# set :format, :pretty
-# set :log_level, :debug
+set :format, :pretty
+set :log_level, :debug
 # set :pty, true
 
 # set :linked_files, %w{config/database.yml}

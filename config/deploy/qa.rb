@@ -2,12 +2,16 @@ set :stage, :qa
 #server 'lvps91-250-116-64.dedicated.hosteurope.de', user: 'root', roles: %w{web app db}#, ssh_options: {keys: %w(/Users/ingmar/.ssh/id2_rsa), forward_agent: true}
 server 'europe', user: 'root', roles: %w{web app db}#, ssh_options: { keys: %w(/Users/ingmar/.ssh/id2_rsa), forward_agent: true}
 set :deploy_to, "/var/www/rails/#{fetch(:application)}"
+#set :rvm_type, :user # or :auto
+#set :pty, true
 set :rvm_ruby_version, '2.0.0@hroot'
+# set :rvm_custom_path, '/usr/local/rvm'
 #set :bundle_flags, '--deployment'
 set :linked_files, %w{config/database.yml}
-set :linked_dirs, %w{uploads}
+set :linked_dirs, %w{bin log uploads tmp/cache}
 set :branch, 'improve_filters'
 set :rails_env, 'qa' 
+#set :bundle_flags, '--deployment'
 
 namespace :deploy do
 

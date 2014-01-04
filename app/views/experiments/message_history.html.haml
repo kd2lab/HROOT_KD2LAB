@@ -12,21 +12,25 @@
 
 = render :partial => "tabs", :locals => {:selected => :invitations} 
 
-- @messages = SentMail.includes(:user).page(params[:page]).where(:experiment_id => @experiment.id).order('created_at DESC').all
+- @messages = SentMail.includes(:user).page(params[:page]).where(:experiment_id => @experiment.id).order('created_at DESC')
 
 
 = will_paginate @messages,  :renderer => WillPaginate::ActionView::BootstrapLinkRenderer , :previous_label => "&lt;&lt;&nbsp;", :next_label => "&nbsp;&gt;&gt;"
 
-%table.table.table-condensed
+- if @messages.length > 0
+  %table.table.table-condensed
 
-  - @messages.each do |mail|
-    %tr
-      %td=l(mail.created_at)
-      %td=mail.message_type_to_string
-      %td=mail.user.lastname+', '+mail.user.firstname
-      %td=mail.subject
-      %td
-        %a{:href => "#", :'data-poload'=>"?mail=#{mail.id}"}
-          = t('.mail_link')
+    - @messages.each do |mail|
+      %tr
+        %td=l(mail.created_at)
+        %td=mail.message_type_to_string
+        %td=mail.user.lastname+', '+mail.user.firstname
+        %td=mail.subject
+        %td
+          %a{:href => "#", :'data-poload'=>"?mail=#{mail.id}"}
+            = t('.mail_link')
 
-        
+- else
+  %br
+  = t('.no_messages')
+          

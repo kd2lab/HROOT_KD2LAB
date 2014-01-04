@@ -153,12 +153,11 @@ class ExperimentsController < ApplicationController
   def message_history
     if params[:mail]
       mail = SentMail.where(:id => params[:mail]).first
-      render :json => {:subject => mail.subject, :message => mail.message}
+      render :json => {:subject => mail.subject, :message => help.simple_format(mail.message)}
     end
   end
   
   def reminders
-   
     if params[:experiment]
       params[:experiment][:reminder_hours] = 48 if params[:experiment][:reminder_hours].to_i == 0
        
@@ -466,6 +465,16 @@ class ExperimentsController < ApplicationController
 
     return false
   end
-  
+
+
+  # access to text helpers - without polluting the namespace
+  def help
+    Helper.instance
+  end
+
+  class Helper
+    include Singleton
+    include ActionView::Helpers::TextHelper
+  end
   
 end
