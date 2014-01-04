@@ -47,9 +47,9 @@ Hroot::Application.configure do
   
   #config.email_regexp = /(.*@uni-hamburg.de$)|(.*@student.uni-hamburg.de$)|(.*@ingmar.net$)/
   
-  #config.email_restriction = {
-  #  :regex => /(.*@uni-hamburg.de$)|(.*@student.uni-hamburg.de$)|(.*@ingmar.net$)/
-  #}
+  config.email_restriction = {
+    :regex => /.*@uni-hamburg.de$/
+  }
   
   # this email is used by the development mail interceptor (see application.rb and lib/development_mail_interceptor.rb)
   # in all other that production mode, emails will be sent to this adress instead of the real recipient

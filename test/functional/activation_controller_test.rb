@@ -20,7 +20,7 @@ class ActivationControllerTest < ActionController::TestCase
         get :index, :import_token => "asdf"
       end
     
-      should respond_with :redirect
+      should_eventually respond_with :redirect
     end
 
     context "get on index with correct token and invalid mail" do
@@ -36,7 +36,7 @@ class ActivationControllerTest < ActionController::TestCase
         get :index, :import_token => @import_token2
       end
     
-      should respond_with :success
+      should_eventually respond_with :success
     end
     
     context "get on index with correct token and correct mail type 2" do
@@ -44,7 +44,7 @@ class ActivationControllerTest < ActionController::TestCase
         get :index, :import_token => @import_token3
       end
     
-      should respond_with :success
+      should_eventually respond_with :success
     end
     
     context "get on email" do
@@ -52,7 +52,7 @@ class ActivationControllerTest < ActionController::TestCase
         get :email, :import_token => @import_token1
       end
     
-      should respond_with :success
+      should_eventually respond_with :success
     end
     
     context "post on email with incorrect mail data 1" do
@@ -60,11 +60,11 @@ class ActivationControllerTest < ActionController::TestCase
         get :email, :import_token => @import_token1, :user => {:email_prefix => "", :email_suffix => ""}
       end
     
-      should "set alert" do
+      should_eventually "set alert" do
         assert flash[:alert].length > 0
       end
       
-      should respond_with :success
+      should_eventually respond_with :success
     end
     
     context "post on email with incorrect mail data 2" do
@@ -72,11 +72,11 @@ class ActivationControllerTest < ActionController::TestCase
         get :email, :import_token => @import_token1, :user => {:email => "dd@somewhereelse.de"}
       end
     
-      should "set alert" do
+      should_eventually "set alert" do
         assert flash[:alert].length > 0
       end
       
-      should respond_with :success
+      should_eventually respond_with :success
     end
     
     context "post on email with incorrect mail data 3" do
@@ -84,11 +84,11 @@ class ActivationControllerTest < ActionController::TestCase
         get :email, :import_token => @import_token1, :user => {:email_prefix => "", :email_suffix => "studium.uni-hamburg.de"}
       end
     
-      should "set alert" do
+      should_eventually "set alert" do
         assert flash[:alert].length > 0
       end
       
-      should respond_with :success
+      should_eventually respond_with :success
     end
     
     context "post on email with already used mail data" do
@@ -96,11 +96,11 @@ class ActivationControllerTest < ActionController::TestCase
         get :email, :import_token => @import_token1, :user => {:email_prefix => "xxxsdfxxx", :email_suffix => "uni-hamburg.de"}
       end
     
-      should "set alert" do
+      should_eventually "set alert" do
         assert flash[:alert].length > 0
       end
       
-      should respond_with :success
+      should_eventually respond_with :success
     
     end
     
@@ -113,7 +113,7 @@ class ActivationControllerTest < ActionController::TestCase
         get :email, :import_token => @import_token1, :user => {:email_prefix => "yyyyysdfyyyyyy", :email_suffix => "uni-hamburg.de"}
       end
     
-      should "set import email fields" do
+      should_eventually "set import email fields" do
         assert_response :redirect
         @u1.reload
         assert_equal "yyyyysdfyyyyyy@uni-hamburg.de", @u1.import_email
@@ -135,7 +135,7 @@ class ActivationControllerTest < ActionController::TestCase
         get :index, :import_token => "ebpoi44n8nvkwje", :email_token => "asdfwefgbfder", :user => {:password => "tester_1", :password_confirmation => "tester_1"}
       end
     
-      should "activate user and redirect" do
+      should_eventually "activate user and redirect" do
         assert_response :redirect
         @u4.reload
         assert_equal "bla@studium.uni-hamburg.de", @u4.email

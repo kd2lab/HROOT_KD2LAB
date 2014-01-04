@@ -15,9 +15,9 @@ class UsersControllerTest < ActionController::TestCase
       should respond_with :success
     end
     
-    context "get on index" do
+    context "get on print" do
       setup do
-        get :index, :user_action => "print_view"
+        get :print
       end
     
       should respond_with :success

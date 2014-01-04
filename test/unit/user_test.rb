@@ -10,8 +10,8 @@ class UserTest < ActiveSupport::TestCase
 
     #should validate_uniqueness_of(:email)
     
-    should allow_value("foo@bar.xyz").for(:email)
-    should allow_value("baz@foo.zya").for(:email)
+    should allow_value("foo@uni-hamburg.de").for(:email)
+    should allow_value("baz@uni-hamburg.de").for(:email)
     
     should_not allow_value("foo").for(:email)
     should_not allow_value("baz@.zya").for(:email)
@@ -121,7 +121,7 @@ class UserTest < ActiveSupport::TestCase
     setup do
       @u1 = FactoryGirl.create(:user, :firstname => "Hugo", :course_of_studies => 1, :experience => true, :degree => 1, :language => ["1"])
       @u2 = FactoryGirl.create(:user, :lastname => "Boss", :course_of_studies => 1, :experience => false, :degree => 2, :language => ["1", "2"])
-      @u3 = FactoryGirl.create(:user, :email => "somebody@somewhere.net", :course_of_studies => 2, :degree => 1, :language => ["1", "3"])
+      @u3 = FactoryGirl.create(:user, :email => "somebody@uni-hamburg.de", :course_of_studies => 2, :degree => 1, :language => ["1", "3"])
       @u4 = FactoryGirl.create(:user, :gender => 'f', :begin_of_studies => '2010-12-1', :course_of_studies => 2, :degree => 2, :language => ["1", "2", "3"])
       @u5 = FactoryGirl.create(:user, :gender => 'f', :begin_of_studies => '2011-3-1')
       @u6 = FactoryGirl.create(:user, :gender => 'm', :begin_of_studies => '2011-6-1')
@@ -202,7 +202,7 @@ class UserTest < ActiveSupport::TestCase
     should "find by email, name and lastname" do
       assert_equal [@u1], Search.search({:fulltext => 'uGO'})
       assert_equal [@u2], Search.search({:fulltext => 'Bos'})
-      assert_equal [@u3], Search.search({:fulltext => 'omewher'})
+      assert_equal [@u3], Search.search({:fulltext => 'omebod'})
     end
     
     should "search for role" do 

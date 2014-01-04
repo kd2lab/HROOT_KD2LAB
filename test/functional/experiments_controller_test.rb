@@ -68,7 +68,7 @@ class ExperimentsControllerTest < ActionController::TestCase
           post :create, :experiment => @exp.attributes
         end
         
-        assert_redirected_to experiment_sessions_path(Experiment.last)
+        assert_redirected_to reminders_experiment_path(Experiment.last)
       end
     end    
     
