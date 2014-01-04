@@ -92,6 +92,9 @@ Hroot::Application.configure do
   config.participants_table_columns = [:fullname, :role, :email, :course_of_studies, :noshow_count, :participations_count, :session]
   config.session_participants_table_columns = [:counter, :fullname, :email, :course_of_studies, :gender, :noshow_count, :participations_count]
   
+  # are users allowed to always edit their optional data?
+  config.users_can_edit_optional_data = false
+  
 end
 
 ActionMailer::Base.default :from => 'experiments@wiso.uni-hamburg.de'
