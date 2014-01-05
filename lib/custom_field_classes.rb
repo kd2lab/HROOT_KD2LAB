@@ -161,7 +161,11 @@ class CustomFieldManager
     instance.instance_eval(&block) if block
     instance
   end
-  
+
+  def field_names_for_search
+    @fields.select{|f| f.class.to_s != "TextField"}.map{|f| f.name.to_sym}
+  end
+
   def fields
     @fields
   end
