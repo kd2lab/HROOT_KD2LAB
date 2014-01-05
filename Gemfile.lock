@@ -1,5 +1,5 @@
 GEM
-  remote: http://rubygems.org/
+  remote: https://rubygems.org/
   specs:
     actionmailer (3.2.16)
       actionpack (= 3.2.16)
@@ -34,6 +34,8 @@ GEM
     atomic (1.1.14)
     bcrypt-ruby (3.1.2)
     builder (3.0.4)
+    bundler-audit (0.3.0)
+      bundler (~> 1.2)
     cancan (1.6.10)
     capistrano (3.0.1)
       i18n
@@ -204,6 +206,7 @@ PLATFORMS
 
 DEPENDENCIES
   acts-as-taggable-on (~> 2.2.2)
+  bundler-audit
   cancan
   capistrano (~> 3.0.1)
   capistrano-rails
@@ -215,14 +218,13 @@ DEPENDENCIES
   factory_girl_rails (~> 4.0)
   haml
   icalendar
-  jquery-rails (>= 1.0.12)
+  jquery-rails (~> 3.0.4)
   jslint_on_rails
   ledermann-rails-settings (~> 1.2.1)
   less-rails
   mocha
   mysql2
-  rails (~> 3.2.11)
-  rake
+  rails (~> 3.2.16)
   rubyzip (~> 1.1.0)
   rvm1-capistrano3
   sass
@@ -232,7 +234,7 @@ DEPENDENCIES
   simplecov
   spreadsheet
   therubyracer
-  twitter-bootstrap-rails
+  twitter-bootstrap-rails (~> 2.2.8)
   unicorn
   whenever
   will_paginate

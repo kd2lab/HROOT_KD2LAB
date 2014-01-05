@@ -51,6 +51,10 @@ Hroot::Application.configure do
     :host => 'localhost',
     :port => 3000
   }
+
+  #config.email_restriction = {
+  #  :regex => /.*@uni-hamburg.de$/
+  #}
   
   # are users allowed to always edit their optional data?
   config.users_can_edit_optional_data = false
