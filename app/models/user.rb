@@ -29,7 +29,7 @@ class User < ActiveRecord::Base
   validates_format_of :password, :with => /^.*(?=.{8,})(?=.*[a-zA-Z])(?=.*[\W_])(?=.*[\d]).*$/, :if => :password_present?
   
   # validate email on signup
-  validates_format_of :email, :with => Rails.configuration.email_restriction[:regex], :on => :create if Rails.configuration.respond_to?(:email_restriction)
+  validates_format_of :email, :with => Rails.configuration.email_restriction[:regex], :on => :create, :if => :is_not_admin_update? if Rails.configuration.respond_to?(:email_restriction)
 
   # setup custom datafields, see config/initializers/custom_fields.rb  
   CUSTOM_FIELDS.setup_model(self)

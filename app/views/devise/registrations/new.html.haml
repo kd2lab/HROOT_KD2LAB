@@ -22,8 +22,7 @@
     = simple_form_for resource, :as => resource_name, :url => registration_path(resource_name), :html => {:class => 'form-horizontal'} do |f| 
       %br
       
-      =# todo place translation og email hint in configurable place
-      = f.input :email, :placeholder => 'name@domain.com', :hint => t('.email_hint_html')
+      = f.input :email, :placeholder => 'name@domain.com', :hint => t('email_hint_html')
       = f.input :password  
       = f.input :password_confirmation, :hint => t('devise.registrations.new.password_hint')
   
@@ -48,13 +47,7 @@
       - CUSTOM_FIELDS.optional.each do |field|
         = field.add_to_form(f)
       
-      
-     
-            
-      /%br todo check fr removal
-      /= render :partial => 'users/edit_custom_fields', :locals => { :fields => Rails.configuration.custom_fields.select{|f| f[:required] == false}, :f => f}
-      
-      
+    
       %br
       %hr
   

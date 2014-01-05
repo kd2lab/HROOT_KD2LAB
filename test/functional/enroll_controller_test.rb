@@ -76,7 +76,7 @@ class EnrollControllerTest < ActionController::TestCase
         post :register, :session => @s1.id
       end
     
-      should redirect_to :enroll
+      should respond_with :redirect
       
       should "create a new Session Participation relation" do
         s = SessionParticipation.first

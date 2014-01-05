@@ -153,7 +153,7 @@ class NewFieldsAndHistoryEntryChanges < ActiveRecord::Migration
       h.update_attribute(:search, search.to_json)
     end 
 
-    # todo uncomment this
+    # todo later uncomment this
     #remove_column :history_entries, :filter_settings
   end
 

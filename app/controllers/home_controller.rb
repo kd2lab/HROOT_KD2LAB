@@ -86,6 +86,12 @@ class HomeController < ApplicationController
     
     render :json => obj
   end
+
+  def referral
+    @experiment = Experiment.where(:refkey => cookies[:refkey]).first
+
+    redirect_to root_url, :notice => t('controllers.home.notice_link_not_valid') unless @experiment
+  end
   
   private
   
@@ -94,6 +100,7 @@ class HomeController < ApplicationController
       e = Experiment.where(:refkey => params[:ref]).first
       if e
         cookies.permanent[:refkey] = params[:ref]
+        redirect_to home_referral_path
       end
     end
   end

@@ -17,6 +17,11 @@
     %br
     %br
     
+- if @experiment
+  .well
+    %h3=t('.referral_invitation')
+    %p=t('.referral_invitation_html')
+    
 .well
   %h3=t('.available_registrations')
   - if current_user.available_sessions.count > 0

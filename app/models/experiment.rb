@@ -97,6 +97,7 @@ class Experiment < ActiveRecord::Base
   # selected users, who have no session participation
   def remove_participations(user_ids)
     # alle ids selectieren, die nicht in einer session eingetragen sind
+    
     sql = <<EOSQL
       SELECT participations.user_id
       FROM participations WHERE
@@ -115,9 +116,12 @@ EOSQL
     # store ids to enable history
     ids_to_delete = ActiveRecord::Base.connection.execute(sql).collect{ |res| res[0] }
     
-    # delete participation entries
-    ActiveRecord::Base.connection.execute("DELETE FROM participations WHERE user_id IN (#{ids_to_delete.join(',')}) AND experiment_id=#{id}")
-    
+    # if there are users, who can be removed, since they are not part of a session
+    if ids_to_delete.length > 0
+      # delete participation entries
+      ActiveRecord::Base.connection.execute("DELETE FROM participations WHERE user_id IN (#{ids_to_delete.join(',')}) AND experiment_id=#{id}")
+    end
+
     ids_to_delete
   end
 

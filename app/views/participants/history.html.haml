@@ -37,9 +37,12 @@
             
           %td.span4= entry.to_s
           %td.span1
-            - HistoryEntry.get_filter_setting_string(JSON.parse(entry.search)).each do |tx|
-              %span.badge= tx
-              &nbsp;
+            - if entry.search.blank?
+            
+            - else
+              - HistoryEntry.get_filter_setting_string(JSON.parse(entry.search)).each do |tx|
+                %span.badge= tx
+                &nbsp;
         - if entry.id == params[:detail].to_i
           %tr
             %td{:colspan => "3", :style => "border:none; padding-left: 40px"}

@@ -1,7 +1,5 @@
 class ChangeToConfigurableFields < ActiveRecord::Migration
   def up
-    # todo log necessary changes to a file
-    
     add_column :users, :language, :text
     add_column :users, :begin_of_studies, :date
     add_column :users, :degree, :text

@@ -10,15 +10,15 @@
 
 %h3=t '.new_enrollment'
 
-- if @availabe_sessions.count > 0
+- if @available_sessions.count > 0
   =t '.available_sessions'
   %br
   %br
 
-  = form_tag enroll_confirm_path(params[:code]) do
+  = form_tag enroll_confirm_path do
     
     %table.table
-      - @availabe_sessions.each do |s|
+      - @available_sessions.each do |s|
         %tr
           %td
             = radio_button_tag "session", "#{s.id}" 

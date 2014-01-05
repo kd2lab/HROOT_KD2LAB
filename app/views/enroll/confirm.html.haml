@@ -12,7 +12,7 @@
 %br
 %br
 
-= form_tag enroll_register_path(params[:code]) do
+= form_tag enroll_register_path do
   = hidden_field_tag("session", @session.id)
   
   .well
@@ -45,5 +45,5 @@
   %br
   = submit_tag t('.enroll_for_sure'), :class => "btn btn-danger"
   = t '.or'
-  = link_to t('.back'), enroll_path(params[:code])
+  = link_to t('.back'), enroll_path
 

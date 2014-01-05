@@ -199,6 +199,9 @@ de:
       newest_tags: Neueste Tags
 
   enroll:
+    alert1: Experiment mit Folgesessions
+    alert2: Dieses Experiment hat mehrere Termine, bitte überprüfen Sie, ob Sie an allen angezeigten Terminen Zeit haben.
+
     index:
       new_enrollment: Anmeldung zu Experimenten (Schritt 1)
       available_sessions: 'Sie können sich zu folgenden Experiment-Sessions anmelden:'
@@ -211,7 +214,15 @@ de:
       enroll_for_sure: Verbindlich anmelden!
       or: oder
       back: zurück
-
+    report:
+      register_done: Ergebnis der Sessionanmeldung
+      success: Ihre Session-Anmeldung war erfolgreich!
+      failure: Ihre Session-Anmeldung war NICHT erfolgreich!
+      failure_reason_html: "Dies kann verschiedene Gründe haben - vielleicht ist kurz zuvor der letzte Platz vergeben worden, oder die Anmeldungphase des Experiments wurde beendet.<br/><br/>Wenden Sie sich bei Fragen an die Laborleitung."
+      session_overview: "Sie haben sich zu folgenden Sessionterminen angemeldet:"
+      sent_confirmation_mail: Es wurde Ihnen gerade eine Bestätigungs-E-Mail mit den Terminen zugesandt.
+      more_sessions: Zu weiteren Sessions in anderen Experimenten anmelden
+      back_to_account: Zurück zur Hauptseite
   options:
     tabs:
       general: Allgemein
@@ -322,8 +333,8 @@ de:
       default_address_is: Die Standard-Adresse ist
       experiment_finished: Dieses Experiment ist abgeschlossen
       experiment_in_statistic: Dieses Experiment in der Statistik berücksichtigen
-      exclude_tags_hint: "Nutzer, die an Experimenten mit diesen Tags teilgenommen haben, können keiner Session beitreten."
-      exclude_experiments_hint: "Nutzer, die an in diesen Experimenten teilgenommen haben, können keiner Session beitreten."
+      experiment_exclusion: Experimentausschluss
+      experiment_exclusion_html: "Teilnehmer, die folgenden Experimenten zugeordnet sind, können sich nicht zu diesem Experiment anmelden. Dies dient dazu, Teilnehmer auszuschliessen, die vor der Experimentzuordnung noch nicht in einem bestimmten Experiment eingetragen waren, und nach der Zuordnung dem auszuschliessenden Experiment beigetreten sind."
     reminders:
       reminder: Erinnerung
       reminder_email: E-Mail zur Erinnerung
@@ -348,6 +359,9 @@ de:
       confirmation: Sollen die ausgewählten Elemente wirklich gelöscht werden?
       new_folder: Neuer Ordner...
       folder_question: "Geben Sie den Namen des neuen Ordners an:"
+    public_link:
+      public_link: Öffentlicher Link
+      public_link_html: "Dieser Link kann dazu genutzt werden, um Teilnehmer öffentlich einzuladen. Senden Sie ihn per Mail an Personen, die an dem Experiment teilnehmen sollen.<br/><br/> Sobald die Teilnehmer den Link besuchen, wird ein Cookie gesetzt, und wenn sie sich das erste Mal bei hroot anmelden (entweder als Neuanmeldung oder mit einem bestehenden Account), werden sie als Teilnehmer zum Experiment hinzugefügt."
   sessions:
     new_session_link: Neue Session anlegen
     back_link: Zurück zur Session-Übersicht
@@ -384,8 +398,7 @@ de:
       message_subject: "Experiment-Session am %{date}"
       remove_marked: Markierte Teilnehmer aus dieser Session austragen.
       marked: Markierte Teilnehmer
-      move_marked1: Markierte Teilnehmer in Session
-      move_marked2: verschieben  
+      move_marked: "Markierte Teilnehmer in Session %{session} verschieben"
       save_changes_now: Änderungen jetzt speichern
       no_participants: Diese Session hat keine Teilnehmer
       data_menu: Daten
@@ -419,6 +432,7 @@ de:
     header_filter: Filterkriterien
     add_text: "%{count} Teilnehmer hinzugefügt"
     remove_text: "%{count} Teilnehmer entfernt"
+    add_public_key_text: Selbsteintragung mit öffentlichem Link
     exp1: "Einem der folgenden zugewiesen: "
     exp2: "Allen der folgenden zugewiesen: "
     exp3: "Keinem der folgenden zugewiesen: "
@@ -452,8 +466,7 @@ de:
       remove_searched_confirm: Sind Sie sicher, dass alle Teilnehmer der aktuellen Suche aus dem Experiment entfernt werden sollen?
       remove_marked: Alle markierten Teilnehmer aus dem Experiment austragen.
       remove_marked_confirm: Sind Sie sicher, dass alle markierten Teilnehmer aus dem Experiment entfernt werden sollen?
-      move_marked1: Markierte Teilnehmer in Session todo better translation
-      move_marked2: verschieben
+      move_marked: Markierte Teilnehmer in Session %{session} verschieben
       none_found: Kein Poolmitglied gefunden
       none_found_reason: Entweder wurden bereits alle Poolmitglieder zugeordnet, oder die Filtereinstellungen müssen geändert werden.
       message_all_searched: Nachricht an alle Teilnehmer der aktuellen Suche
@@ -633,6 +646,8 @@ de:
       available_registrations_text: 'Derzeit gibt es Sessions, zu denen Sie sich anmelden können:'
       enroll_now_button: Jetzt zu Experimenten anmelden!
       current_sessions_text: 'Sie sind derzeit verbindlich zu folgenden Terminen angemeldet:'
+      referral_invitation: Anmeldung über einen öffentlichen Link
+      referral_invitation_html: Sie wurden einem Experiment zugeordnet, zu welchem Sie einen öffentlichen Link erhalten haben. Sie können sich jetzt zu Sessions dieses Experiments anmelden.
     tabs:
       overview: Datenübersicht
       password: Passwort
@@ -736,7 +751,6 @@ de:
         experience: Ich habe bereits an wirtschaftswissenschaftlichen Experimenten teilgenommen.
         terms_and_conditions: Ich habe die Nutzerbedingungen gelesen und bin damit einverstanden.
         send_link: Anmeldung absenden
-        email_hint: "todo Gültige E-Mail-Adressen enden mit @uni-hamburg.de"
     mailer:
       confirmation_instructions:
         subject: 'hroot: Bestätigung der E-Mail-Adresse'
@@ -767,6 +781,7 @@ de:
     seat_nr: Sitznummer
     payment: Auszahlungsbetrag
     not_confirmed: Dieser Benutzer hat seine E-Mail-Adresse noch nicht bestätigt. Es werden noch keine E-Mails an diesen Benutzer geschickt.
+    user_was_added_by_public_link: Benutzer hat sich über einen öffentlichen Link angemeldet
   controllers:
     notice_saved_changes: Die Änderungen wurden gespeichert.
     notice_cant_delete_experiment: Das Experiment kann nicht gelöscht werden, da Sessions oder zugeordnete Teilnehmer vorhanden sind.
@@ -776,6 +791,7 @@ de:
       notice_alternative_mail2: Die E-Mail zur Bestätigung Ihrer alternativen E-Mail-Adresse wurde Ihnen erneut zugesendet.
       notice_all_data: Es wurden alle Daten eingegeben.
       notice_data_changed: Die Daten wurden erfolgreich geändert 
+      notice_added_via_cookie: Sie wurden einem Experiment über öffentlichem Link zugeordnet - Sie können sich jetzt anmelden.
     activation:
       notice_email_sent: Es wurde Ihnen eine E-Mail zur Bestätigung Ihrer neuen Adresse gesendet.
       notice_invalid_email: Diese E-Mail-Adresse ist nicht gültig.
@@ -810,8 +826,6 @@ de:
       notice_profession_not_deleted: Der Beruf kann nicht gelöscht werden, da User mit diesem Beruf existieren.
     enroll:
       location: "Ort:"
-      notice_registered: Sie wurden verbindlich angemeldet. Wenn noch weitere Anmeldungen möglich sind, können Sie sich erneut anmelden.
-      notice_not_registered: Die Anmeldung war NICHT erfolgreich, da keine Plätze mehr frei waren.
       notice_abort: Die Anmeldung wurde abgebrochen, da diese Session bereits voll ist.
     experiments:
       notice_created: Das Experiment wurde erfolgreich angelegt.
@@ -820,12 +834,15 @@ de:
       notice_mail_sent: Es wurde Ihnen eine E-Mail mit einem Link zur Freischaltung zugesendet.
       notice_invalid_email: Zu dieser E-Mail-Adresse gibt es keinen Account
       notice_alternative_email: Ihre alternative E-Mail-Adresse wurde bestätigt.
+      notice_link_not_valid: Dieser Link ist ungültig.
     participants:
       notice_mailqueue: Nachricht(en) wurden in die Mailqueue eingetragen.
       notice_session1: Die ausgewählten Teilnehmer wurden in die Session
       notice_session2: eingetragen
       notice_added_members: Die Poolmitglieder wurden zugeordnet
       notice_session: Die ausgewählten Teilnehmer wurden in die gewählte Session eingetragen
+      notice_removed_from_experiment: Die ausgewählten Teilnehmer wurden aus dem Experiment ausgetragen
+      notice_no_one_removed_from_experiment: Es wurden keine Teilnehmer aus dem Experiment ausgetragen - prüfen Sie, ob die Teilnehmer in einer Session eingetragen sind. Nur Teilnehmer ohne Session können ausgetagen werden.
     sessions:
       notice_new_session: Es wurde eine neue Session angelegt
       notice_cant_delete_following: Sessions mit Folgesessions können nicht gelöscht werden.
@@ -854,6 +871,16 @@ de:
     insert_header: Einfügen...
     delete_header: Löschen...
   home:
+    referral:
+      referral: Anmeldung über öffentlichen Link
+      referral_html: "Sie wurden über einen öffentlichen Link für eine Experimentteilnahme vorgemerkt, dies wurde in einem Cookie gespeichert. Bitte verwenden Sie zur Experimentanmeldung diesen Browser.<br/><br/>Zur Anmeldung am Experiment haben Sie die folgenden Möglichkeiten:"
+      no_account:  Haben Sie noch keinen hroot-Account?
+      account:  Haben Sie bereits einen hroot-Account?
+      no_account_html: Registrieren Sie sich bei hroot, um sich bei dem Experiment anzumelden.
+      account_html: Melden Sie sich zur Experimentanmeldung mit Ihren Zugangsdaten an.
+      login: zum Login
+      register: zur Registrierung
+      link_invalid: Dieser Link ist ungültig - vermutlich ist das Experiment bereits abgeschlossen.
     about:
       legal_notes: Haftungsausschluss
       software: Entwicklerteam und Software

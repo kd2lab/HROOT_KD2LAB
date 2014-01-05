@@ -1,0 +1,51 @@
+= content_for :breadcrumb do
+  %ul.breadcrumb
+    %li
+      =link_to t('login_area'), :controller => "account", :action => "index"
+      %span.divider
+        >
+    %li.active
+      =t '.register_done'
+
+%h3=t '.register_done'
+
+- if @session_participation
+  - s = @session_participation.session
+  
+  .alert.alert-success
+    %b= t('.success')
+  
+  %p
+    = t ('.session_overview')
+  
+  %br
+
+    %b= s.time_str
+    = s.location.name if s.location
+            
+    - if s.following_sessions.count > 0
+      %br
+      - s.following_sessions.each do |f|  
+        %b= f.time_str 
+        =f.location.name if f.location
+        %br
+  
+  %br
+  %br
+  %p
+    = t('.sent_confirmation_mail')
+    
+
+- else
+  .alert.alert-error
+    %b= t('.failure')
+  
+  = t('.failure_reason_html')
+  %br
+  %br
+  
+%br
+-  if current_user.available_sessions.count > 0
+  = link_to t('.more_sessions'), enroll_path, :class => 'btn btn-primary'
+  
+= link_to t('.back_to_account'), account_path, :class => 'btn'

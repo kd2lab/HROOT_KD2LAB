@@ -1,0 +1,41 @@
+= content_for :breadcrumb do
+  %ul.breadcrumb
+    %li
+      = link_to t(:root_page), root_path
+      %span.divider
+        &gt;
+    %li.active
+      =t '.referral'
+
+
+%h2
+  Experimentanmeldung
+
+
+%p
+  = t('.referral_html')
+    
+%br
+.row
+  .span4
+    %h4= t('.no_account')
+  
+    %p= t('.no_account_html')
+      
+    %br  
+  
+    = link_to t('.register'), register_path, :class => "btn"
+  
+  
+  .span4
+    %h4= t('.account')
+  
+    %p= t('.account_html')
+    
+    %br  
+  
+    = link_to t('.login'), login_path, :class => "btn"
+
+
+%br
+%br

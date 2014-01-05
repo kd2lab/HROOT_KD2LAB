@@ -6,11 +6,15 @@ class EnrollController < ApplicationController
   before_filter :load_session_and_participation, :only => [:confirm, :register]
   
   def index
-    @availabe_sessions = current_user.available_sessions
+    @available_sessions = current_user.available_sessions
   end
 
   def confirm
     
+  end
+
+  def report
+    @session_participation = SessionParticipation.find_by_user_id_and_session_id(current_user.id, params[:session_id])
   end
 
   def register
@@ -40,6 +44,8 @@ EOSQL
     end
     
     if @session_participation
+      # success!
+
       # add user to all following sessions
       sql = <<EOSQL
       INSERT INTO session_participations 
@@ -84,10 +90,9 @@ EOSQL
         :session_id => @session.id
       )
 
-      redirect_to enroll_path(params[:code]), :notice => t('controllers.enroll.notice_registered')
-    else
-      redirect_to enroll_path(params[:code]), :alert => t('controllers.enroll.notice_not_registered')
     end
+    
+    redirect_to enroll_report_path(:session_id => @session.id)
   end
 
   def enroll_sign_in
@@ -109,7 +114,7 @@ protected
 
   def load_session_and_participation
     @session = Session.find_by_id(params[:session])
-          
+    
     unless @session
       redirect_to enroll_path
       return 

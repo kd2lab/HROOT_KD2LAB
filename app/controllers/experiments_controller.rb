@@ -187,8 +187,7 @@ class ExperimentsController < ApplicationController
   # ------ file display
 
   
-  
-  # todo refactor, do not use template
+  # todo later - do not user template
   def filelist
     realpath, relpath = get_valid_dir(params[:dir] || '')
 
@@ -224,7 +223,7 @@ class ExperimentsController < ApplicationController
   # ------ Operations
 
   def new_folder
-    # todo sanizie param
+    # sanizie param
     realpath, relpath = get_valid_dir(params[:parent]+params['dirname'])
     
     if realpath
@@ -413,7 +412,7 @@ class ExperimentsController < ApplicationController
   end
 
   def get_valid_filename(path, filename)
-    # todo sanitize param
+    # sanitize param
     realpath, relpath = get_valid_dir(path)
     filename = sanitize_filename(filename)
 

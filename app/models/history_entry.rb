@@ -7,11 +7,13 @@ class HistoryEntry < ActiveRecord::Base
       I18n.t('filter_summary.add_text', :count => user_count)
     when "remove_filtered_users", "remove_selected_users"
       I18n.t('filter_summary.remove_text', :count => user_count)
+    when "added_by_public_key"
+      I18n.t('filter_summary.add_public_key_text')
     end
   end
   
   def is_adding_entry?
-    return action == "add_selected_users" || action == "add_filtered_users"
+    return action == "add_selected_users" || action == "add_filtered_users" || action=='added_by_public_key'
   end
   
   def arr_user_ids

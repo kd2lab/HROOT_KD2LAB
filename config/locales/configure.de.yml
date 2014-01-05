@@ -1,5 +1,3 @@
 de:
-  registrations:
-    new:
-      email_hint_html: "Gültige E-Mail-Adressen enden mit <b>@uni-hamburg.de</b>"
+  email_hint_html: "Gültige E-Mail-Adressen enden mit <b>@uni-hamburg.de</b>"
   

@@ -4,13 +4,19 @@ class AccountController < ApplicationController
   authorize_resource :class => false
   
   def index
-    if cookies[:refkey]
-      @experiment = Experiment.where(:refkey => cookies[:refkey]).first
+    @experiment = Experiment.where(:refkey => cookies[:refkey]).first
 
-      if @experiment
-        # todo add history entry
-        p = Participation.create(:user_id => current_user.id, :experiment_id => @experiment.id, :added_by_public_key => 1)
+    if @experiment && current_user.user?
+      
+      # participation already exists?
+      if Participation.where(:user_id => current_user.id, :experiment_id => @experiment.id).count == 0
+        # if not create participation and history entry
+        Participation.create(:user_id => current_user.id, :experiment_id => @experiment.id, :added_by_public_key => 1)
+        HistoryEntry.create(:search => '', :experiment_id => @experiment.id, :action => "added_by_public_key", :user_count => 1, :user_ids => [current_user.id].to_json)          
       end
+
+      # and delete cookie
+      cookies.delete :refkey
     end
   end
   

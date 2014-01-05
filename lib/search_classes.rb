@@ -95,7 +95,7 @@ end
 
 class TagsSearchField < SearchField
   def where_conditions(search)
-    # todo sanitize tag value
+    # todo later sanitize tag value
     res = search.select{|row| !row[:tag].blank?}.map do |row|
       experiment_tag_subquery = <<EOSQL
         (SELECT 
@@ -116,7 +116,7 @@ EOSQL
       elsif row[:op] == '<='
         experiment_tag_subquery += " <= #{row[:count].to_i}"
       else
-        experiment_tag_subquery += "ERRROR todo"
+        experiment_tag_subquery += " <= 0"
       end  
       experiment_tag_subquery
     end
@@ -147,7 +147,6 @@ class ExperimentsSearchField < SearchField
         # only users who are on the participant list of all these experiments
         where = "(SELECT COUNT(participations.id) FROM participations WHERE user_id = users.id AND participations.experiment_id IN (#{ids.join(',')})) = 0"
       when 4
-        # todo maybe we can simplify this
         where = "(SELECT COUNT(sp.id) FROM sessions s, session_participations sp WHERE sp.participated = 1 AND sp.user_id = users.id AND s.id = sp.session_id AND s.experiment_id IN (#{ids.join(',')})) > 0"
       when 5
         where = "(SELECT COUNT(sp.id) FROM sessions s, session_participations sp WHERE sp.participated = 1 AND sp.user_id = users.id AND s.id = sp.session_id AND s.experiment_id IN (#{ids.join(',')})) = #{ids.count}"

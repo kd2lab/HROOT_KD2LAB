@@ -4,11 +4,13 @@ Hroot::Application.routes.draw do
   match 'activation/:import_token(/:email_token)', :controller => 'activation', :action => 'index', :as => "activation"
   
   
-  match 'enroll/:code', :controller => 'enroll', :action => 'enroll_sign_in', :as => "enroll_sign_in"
   
+  match 'enroll/:code', :controller => 'enroll', :action => 'enroll_sign_in', :as => "enroll_sign_in"
   match 'enroll', :controller => 'enroll', :action => 'index', :as => "enroll"
   post 'enroll_confirm', :controller => 'enroll', :action => 'confirm', :as => 'enroll_confirm'
   post "enroll_register", :controller => 'enroll', :action => 'register', :as => 'enroll_register'
+  match 'enroll_report/:session_id', :controller => 'enroll', :action => 'report', :as => 'enroll_report'
+  
 
   match 'account', :controller => 'account', :action => 'index'
   #match 'account/email', :controller => 'account', :action => 'email'
@@ -17,7 +19,7 @@ Hroot::Application.routes.draw do
   match 'account/data', :controller => 'account', :action => 'data'  
   match 'account/optional', :controller => 'account', :action => 'optional'  
   match 'account/edit', :controller => 'account', :action => 'edit'  
-
+  
   match 'account/alternative_email', :controller => 'account', :action => 'alternative_email'  
   match 'home/confirm_alternative_email/:confirmation_token', :controller => 'home', :action => 'confirm_alternative_email', :as => 'secondary_email_confirmation'
 
@@ -28,6 +30,7 @@ Hroot::Application.routes.draw do
   match 'home/calendar/:key', :controller => 'home', :action => 'calendar', :as => 'public_calendar'
   
   match 'home/translations', :controller => 'home', :action => 'translations'
+  match 'home/referral', :controller => 'home', :action => 'referral'
   
   
   devise_for :users, :controllers => {:registrations => "registrations"}, :path_names => { :sign_in => 'login' }, skip: :registrations 
@@ -106,7 +109,6 @@ Hroot::Application.routes.draw do
         post :delete, :action => :delete
         post :upload_via_form
         get :files
-        get :filelist #todo remove
         post :filelist
         post :upload
         post :download

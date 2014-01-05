@@ -29,9 +29,10 @@ if(jQuery) (function($){
 			if( o.folderEvent == undefined ) o.folderEvent = 'click';
 			if( o.loadMessage == undefined ) o.loadMessage = 'Loading...';
 			
+      var $contextMenu = $("#context-menu");
+
 			$(this).each( function() {
-        var $filelist = $(this)
-        var $contextMenu = $("#contextMenu");
+        var $filelist = $(this)        
         var $clicked_li;
         
         function handleFileUpload(files, $droptarget) {
@@ -100,6 +101,8 @@ if(jQuery) (function($){
         
         // handle click on file - show context menu
         $filelist.on("click", "li", function (e) {
+          if (e.which == 3) return;
+
           $contextMenu.hide();
           
           if (e.shiftKey) {
@@ -147,6 +150,7 @@ if(jQuery) (function($){
             $filelist.find('li').removeClass('selected');
             $clicked_li.addClass('selected')
           }
+
           $contextMenu.css({
             position: "absolute",
             display: "block",
@@ -154,6 +158,7 @@ if(jQuery) (function($){
             top: e.pageY
           });
           
+          e.preventDefault();
           return false; 
         });
 
@@ -237,7 +242,8 @@ if(jQuery) (function($){
           return false    
         });
 
-        $(document).click(function () {
+        $(document).click(function (e) {
+          if (e.which!= 3)
             $contextMenu.hide();
         });
         

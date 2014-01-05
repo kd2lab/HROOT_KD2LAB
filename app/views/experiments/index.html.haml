@@ -11,7 +11,7 @@
           &gt;
     - if @tag
       %li
-        =  link_to(t(:tag)+": "+@tag.name, tagged_experiment_path(@tag.id))  
+        =  link_to "Tag: "+@tag.name, tagged_experiment_path(@tag.id)
 
 
 

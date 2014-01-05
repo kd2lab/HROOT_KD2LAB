@@ -44,7 +44,7 @@
         %li= link_to t('.message_all_marked'), '#', :class => "open-modal", :'data-to' => t('.to_all_marked'), :'data-mode' => 'selected', :'data-url' => send_message_experiment_participants_path(@experiment)
         %li= link_to t('.remove_marked'), '#', :'data-confirm' => t('.remove_marked_confirm'), :class => 'user_action_link', :'data-value' => 0
         - @experiment.sessions.main_sessions.each do |s|
-          %li= link_to t('.move_marked1')+" #{s.time_str} "+t('.move_marked2'), '#', :class => 'user_action_link', :'data-value' => s.id
+          %li= link_to t('.move_marked', :session => s.time_str), '#', :class => 'user_action_link', :'data-value' => s.id
   
   %br
   %br

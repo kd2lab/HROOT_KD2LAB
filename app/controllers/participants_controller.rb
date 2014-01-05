@@ -20,11 +20,14 @@ class ParticipantsController < ApplicationController
       if ids.length > 0   
         # remove users who have no session participation
         deleted_user_ids = @experiment.remove_participations(ids)
-      
-        # store all changes to the user base
-        history_entry = HistoryEntry.create(:search => params[:search].to_json, :experiment_id => @experiment.id, :action => "remove_filtered_users", :user_count => deleted_user_ids.length, :user_ids => deleted_user_ids.to_json)      
-        
-        flash.now[:notice] = t('controllers.participants.notice_removed_all')
+
+        if (deleted_user_ids.length > 0)
+          # store all changes to the user base
+          history_entry = HistoryEntry.create(:search => params[:search].to_json, :experiment_id => @experiment.id, :action => "remove_filtered_users", :user_count => deleted_user_ids.length, :user_ids => deleted_user_ids.to_json)      
+          flash.now[:notice] = t('controllers.participants.notice_removed_all')
+        else
+          flash.now[:notice] = t('controllers.participants.notice_no_one_removed_from_experiment')
+        end
       end
     end
     
@@ -32,12 +35,16 @@ class ParticipantsController < ApplicationController
       # aus allen sessions austragen, session participations löschen
       if params[:selected_users].length > 0   
         # remove users who have no session participation
+        puts params[:selected_users].keys.map(&:to_i).inspect
         deleted_user_ids = @experiment.remove_participations(params[:selected_users].keys.map(&:to_i))
 
-        # store all changes to the user base
-        history_entry = HistoryEntry.create(:search => params[:search].to_json, :experiment_id => @experiment.id, :action => "remove_selected_users", :user_count => deleted_user_ids.length, :user_ids => deleted_user_ids.to_json)          
-        
-        flash.now[:notice] = t('controllers.participants.notice_removed_from_session')
+        if (deleted_user_ids.length > 0)
+          # store all changes to the user base
+          history_entry = HistoryEntry.create(:search => params[:search].to_json, :experiment_id => @experiment.id, :action => "remove_selected_users", :user_count => deleted_user_ids.length, :user_ids => deleted_user_ids.to_json)          
+          flash.now[:notice] = t('controllers.participants.notice_removed_from_experiment')
+        else
+          flash.now[:notice] = t('controllers.participants.notice_no_one_removed_from_experiment')
+        end
       end
     end
       

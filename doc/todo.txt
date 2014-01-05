@@ -10,51 +10,22 @@ heroku workflow
   https://devcenter.heroku.com/articles/multiple-environments#managing-staging-and-production-configurations
 
 - integrate gem file from essex
-- rework account area
-- rework options page  
 - complete language overhaul
-
-- find all todos and cleanup
 - cleanup eventuallies in tests
 - environments bereinigen
 - Installation empty testen
-- do all this and check for bootstrap 3, fix gem on current version http://bootply.com/bootstrap-3-migration-guide
-- deployment public folder
 - replacements vereinheitlichen 
-
-
-- remove filter_settings
-  
-
 - #usernames in allgemeine messages
-- breite popup mails
-  
-  datum internationalisieren
-  
-  experiment.notice_created
-  
-  session_date not prefix
-  
-  clean up filters
-    
-  fix User.roles translation
-  
-  remove tagalize
-      
-  email und secondary mail?
-  
-  
+
   
   
 Später
 - remove path prefix where possible
-- warum ist die experimentlsite so langsam?
 - activation raus, später
 - check all with no extra columns
 - fix layout problems in search boxes
 - Bezug zu Hamburg bereinigen
 - Passwörter bereinigen
-- reintegrate exception mailing
 - add fulltext search to custom columns
 - htaccess: guest dj!d38dFghj
 
