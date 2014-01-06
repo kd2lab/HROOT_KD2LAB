@@ -1,6 +1,6 @@
 -# todo later refactor activation
 %h1
-  =t('activation_title')
+  =t('.activation_title')
 
 %br
 =t('.activation_text_1')
@@ -15,8 +15,9 @@
 %br
 %br
 
-= simple_form_for @activation_user, :html => {:class => "form-horizontal"}, :url => '' do |f| 
-  %br
+= simple_form_for User.new, :html => {:class => "form-horizontal"}, :url => '' do |f| 
+  
+  = f.input :email, :hint => t('email_hint_html')
   %br
   = f.submit t('.send_activation_email'), :class => "btn btn-primary"
 
@@ -30,15 +31,6 @@
 %br
 %p
   =t('.activation_text_6')
-%p
-  = link_to Rails.configuration.contact_email, 'mailto:'+Rails.configuration.contact_email
-            
-
-%br
-%br
-%h3= t('.contact') 
-%p
-  =t('.activation_text_7')
 %p
   = link_to Rails.configuration.contact_email, 'mailto:'+Rails.configuration.contact_email
             

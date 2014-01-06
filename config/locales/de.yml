@@ -758,13 +758,7 @@ de:
         subject: 'hroot: Anleitung zur Passwortänderung'
       unlock_instructions:
         subject: 'hroot: Account entsperren'
-    home:
-      activate:
-        activation: Aktivierung
-        activation_for_experiments: Freischaltung für die Teilnahme an Experimenten
-        activation_info1: Wenn Sie bereits Zugang zum bisherigen System hatten, sind Ihre Daten übertragen worden. Sie können hier Ihren Zugang zum neuen Einladungssystem freischalten.
-        activation_info2: 'Bitte geben Sie die E-Mail-Adresse an, mit der Sie beim bisherigen System angemeldet waren:'
-        send_email: E-Mail zur Freischaltung senden
+
   upload:
     upload_success: Die Datei wurde erfolgreich hochgeladen
     upload_failure: Fehler beim Upload der Datei
@@ -870,6 +864,29 @@ de:
     save_header: Speichern...
     insert_header: Einfügen...
     delete_header: Löschen...
+  activation:
+    email:
+      activation_title: Aktivierung
+      activation_text_1: Auf dieser Seite können Sie Ihren Account freischalten.
+      activation_text_2: Ihre bisherige E-Mail-Adresse
+      activation_text_3: kann in unserem neuen System nicht verwendet werden.
+      activation_text_4: 'Bitte geben Sie eine gültige E-Mail-Adresse der Universität Hamburg an:'
+      activation_text_5: Sie müssen diese E-Mail-Adresse einmal bestätigen und in Zukunft diese zum Login verwenden. Zukünftige E-Mails erhalten Sie aber wie gewohnt an die Adresse
+      activation_text_6: 'Wenn Sie keine E-Mail-Adresse der Uni Hamburg haben, dann kontaktieren Sie uns bitte unter:'
+      send_activation_email: E-Mail zur Bestätigung absenden
+
+    email_delivered:
+      activation_title: Aktivierung
+      delivered_text_1: Es wurde soeben eine E-Mail an Ihre Adresse
+      delivered_text_2: gesendet. Bitte bestätigen Sie Ihre E-Mail-Adresse, in dem Sie den Link in der E-Mail in Ihrem Browser aufrufen.
+
+    index:
+      activation_title: Aktivierung
+      activation_text_1: Auf dieser Seite können Sie Ihren Account freischalten.
+      activation_text_2: In unserem neuen Rekrutierungs- und Einladungssystem ist es erforderlich, dass Sie sich mit Ihrer E-Mail-Adresse und einem Passwort anmelden.
+      activation_text_3: 'Wählen Sie dazu bitte ein Passwort:'
+      password_hint: mindestens 8 Zeichen, mindestens eine Zahl, ein Buchstabe, ein Sonderzeichen
+      save_and_activate_link: Passwort speichern und Account freischalten
   home:
     referral:
       referral: Anmeldung über öffentlichen Link
@@ -881,6 +898,12 @@ de:
       login: zum Login
       register: zur Registrierung
       link_invalid: Dieser Link ist ungültig - vermutlich ist das Experiment bereits abgeschlossen.
+    activate:
+      activation: Aktivierung
+      activation_for_experiments: Freischaltung für die Teilnahme an Experimenten
+      activation_info1: Wenn Sie bereits Zugang zum bisherigen System hatten, sind Ihre Daten übertragen worden. Sie können hier Ihren Zugang zum neuen Einladungssystem freischalten.
+      activation_info2: 'Bitte geben Sie die E-Mail-Adresse an, mit der Sie beim bisherigen System angemeldet waren:'
+      send_email: E-Mail zur Freischaltung senden
     about:
       legal_notes: Haftungsausschluss
       software: Entwicklerteam und Software

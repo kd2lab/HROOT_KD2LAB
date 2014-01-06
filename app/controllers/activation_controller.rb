@@ -9,7 +9,17 @@ class ActivationController < ApplicationController
     # b) an email token was provided showing that the field import contains a valid new email adress OR
     # c) the old email is consistent with the new restrictions
     
-    #todo later refactor activation
+    
+    if Rails.configuration.respond_to?(:email_restriction) && !(@activation_user.email =~ Rails.configuration.email_restriction[:regex])
+      # this users email is not ok with current restrictions
+
+      # has he provided a new address?
+      unless !params[:email_token].blank? && params[:email_token] == @activation_user.import_email_confirmation_token
+        # if not, send him to email page
+        redirect_to :action => :email
+        return
+      end  
+    end
         
     # if we get here, we can use the password
     if params[:user]
@@ -37,22 +47,22 @@ class ActivationController < ApplicationController
   
   def email
     if params[:user] 
-      #todo later refactor activation
-      #if !params[:user][:email_prefix].blank? && !params[:user][:email_suffix].blank? && User.check_email(params[:user][:email_prefix], params[:user][:email_suffix])
-      #  new_email = params[:user][:email_prefix]+'@'+params[:user][:email_suffix]
-      #  unless User.find_by_email (new_email)
-      #    @activation_user.import_email = new_email
-      #    @activation_user.import_email_confirmation_token = SecureRandom.hex(16)
-      #    @activation_user.save
-      #    UserMailer.import_email_confirmation(@activation_user).deliver
-      #    redirect_to({:action => :email_delivered}, :notice => t('controllers.activation.notice_email_sent'))
-      #    return
-      #  end
-      #end
+      if Rails.configuration.respond_to?(:email_restriction) && (params[:user][:email]=~ Rails.configuration.email_restriction[:regex])
+        new_email = params[:user][:email]
+        
+        unless User.find_by_email (new_email)
+          @activation_user.import_email = new_email
+          @activation_user.import_email_confirmation_token = SecureRandom.hex(16)
+          @activation_user.save
+          UserMailer.import_email_confirmation(@activation_user).deliver
+          redirect_to({:action => :email_delivered}, :notice => t('controllers.activation.notice_email_sent'))
+          return
+        end
+      end
       
-      # in all other cases display error
-      flash[:alert] = t('controllers.activation.notice_invalid_email')
-    end
+      # error message otherwise
+      flash.now[:alert] = t('controllers.activation.notice_invalid_email')
+    end  
   end
   
   def email_delivered

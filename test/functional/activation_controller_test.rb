@@ -3,16 +3,14 @@ require 'test_helper'
 class ActivationControllerTest < ActionController::TestCase
   context "the activation controller with mail restrictions" do
     setup do
-      #Settings.mail_restrictions = [{"prefix"=>"sdf", "suffix"=>"uni-hamburg.de"}, {"prefix"=>"", "suffix"=>"studium.uni-hamburg.de"}]
-      
+      # invalid user
       @import_token1 = "sdjfhsdfkwefu238h23fksjdhf"
-      @u1 = FactoryGirl.create(:user, :email => "test@test.test", :import_token => @import_token1, :imported => true, :activated_after_import => false)
+      @u1 = FactoryGirl.create(:user, :email => "test@test.test", :import_token => @import_token1, :imported => true, :activated_after_import => false, :admin_update => true)
       
+      # valid user
       @import_token2 = "asdfasfwesdjfhsdfkwefu238h23fksjdhf"
       @u2 = FactoryGirl.create(:user, :email => "xxxsdfxxx@uni-hamburg.de", :import_token => @import_token2, :imported => true, :activated_after_import => false)
 
-      @import_token3 = "cweesdfasfwesdjfhsdfkwefefksjdhf"
-      @u3 = FactoryGirl.create(:user, :email => "blubber@studium.uni-hamburg.de", :import_token => @import_token3, :imported => true, :activated_after_import => false)
     end
     
     context "get on index with wrong token" do
@@ -20,7 +18,7 @@ class ActivationControllerTest < ActionController::TestCase
         get :index, :import_token => "asdf"
       end
     
-      should_eventually respond_with :redirect
+      should respond_with :redirect
     end
 
     context "get on index with correct token and invalid mail" do
@@ -28,23 +26,15 @@ class ActivationControllerTest < ActionController::TestCase
         get :index, :import_token => @import_token1
       end
     
-      should_eventually respond_with :redirect
+      should respond_with :redirect
     end
     
-    context "get on index with correct token and correct mail type 1" do
+    context "get on index with correct token and correct mail" do
       setup do
         get :index, :import_token => @import_token2
       end
     
-      should_eventually respond_with :success
-    end
-    
-    context "get on index with correct token and correct mail type 2" do
-      setup do
-        get :index, :import_token => @import_token3
-      end
-    
-      should_eventually respond_with :success
+      should respond_with :success
     end
     
     context "get on email" do
@@ -52,19 +42,19 @@ class ActivationControllerTest < ActionController::TestCase
         get :email, :import_token => @import_token1
       end
     
-      should_eventually respond_with :success
+      should respond_with :success
     end
     
-    context "post on email with incorrect mail data 1" do
+    context "post on email with incorrect mail data" do
       setup do
-        get :email, :import_token => @import_token1, :user => {:email_prefix => "", :email_suffix => ""}
+        get :email, :import_token => @import_token1, :user => {:email => "" }
       end
     
-      should_eventually "set alert" do
+      should "set alert" do
         assert flash[:alert].length > 0
       end
       
-      should_eventually respond_with :success
+      should respond_with :success
     end
     
     context "post on email with incorrect mail data 2" do
@@ -72,35 +62,24 @@ class ActivationControllerTest < ActionController::TestCase
         get :email, :import_token => @import_token1, :user => {:email => "dd@somewhereelse.de"}
       end
     
-      should_eventually "set alert" do
+      should "set alert" do
         assert flash[:alert].length > 0
       end
       
-      should_eventually respond_with :success
+      should respond_with :success
     end
     
-    context "post on email with incorrect mail data 3" do
-      setup do
-        get :email, :import_token => @import_token1, :user => {:email_prefix => "", :email_suffix => "studium.uni-hamburg.de"}
-      end
-    
-      should_eventually "set alert" do
-        assert flash[:alert].length > 0
-      end
-      
-      should_eventually respond_with :success
-    end
     
     context "post on email with already used mail data" do
       setup do
-        get :email, :import_token => @import_token1, :user => {:email_prefix => "xxxsdfxxx", :email_suffix => "uni-hamburg.de"}
+        get :email, :import_token => @import_token1, :user => {:email => "xxxsdfxxx@uni-hamburg.de"}
       end
     
-      should_eventually "set alert" do
+      should "set alert" do
         assert flash[:alert].length > 0
       end
       
-      should_eventually respond_with :success
+      should respond_with :success
     
     end
     
@@ -110,13 +89,13 @@ class ActivationControllerTest < ActionController::TestCase
         UserMailer.stubs(:import_email_confirmation).returns(m)
         m.expects(:deliver).times(1)
       
-        get :email, :import_token => @import_token1, :user => {:email_prefix => "yyyyysdfyyyyyy", :email_suffix => "uni-hamburg.de"}
+        get :email, :import_token => @import_token1, :user => {:email => "new@uni-hamburg.de"}
       end
     
-      should_eventually "set import email fields" do
+      should "set import email fields" do
         assert_response :redirect
         @u1.reload
-        assert_equal "yyyyysdfyyyyyy@uni-hamburg.de", @u1.import_email
+        assert_equal "new@uni-hamburg.de", @u1.import_email
         assert_equal 32, @u1.import_email_confirmation_token.length
       end
     end
@@ -128,17 +107,18 @@ class ActivationControllerTest < ActionController::TestCase
           :import_token => "ebpoi44n8nvkwje", 
           :imported => true, 
           :activated_after_import => false, 
-          :import_email => "bla@studium.uni-hamburg.de",
-          :import_email_confirmation_token => "asdfwefgbfder"
+          :import_email => "bla@uni-hamburg.de",
+          :import_email_confirmation_token => "asdfwefgbfder",
+          :admin_update => true
         )
-      
+
         get :index, :import_token => "ebpoi44n8nvkwje", :email_token => "asdfwefgbfder", :user => {:password => "tester_1", :password_confirmation => "tester_1"}
       end
     
-      should_eventually "activate user and redirect" do
+      should "activate user and redirect" do
         assert_response :redirect
         @u4.reload
-        assert_equal "bla@studium.uni-hamburg.de", @u4.email
+        assert_equal "bla@uni-hamburg.de", @u4.email
         assert_equal "test5@test5.de", @u4.secondary_email
         
         assert_equal nil, @u4.import_email
