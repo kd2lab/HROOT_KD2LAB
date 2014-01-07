@@ -256,6 +256,7 @@ de:
     duplicates:
       duplicates: Doppelte Benutzeraccounts
       duplicates_html: Die folgenden Benutzeraccounts haben übereinstimmende Vor- und Nachnamen. Als gelöscht markierte Accounts werden nicht berücksichtigt.
+      no_duplicates: Derzeit gibt es keine Benutzeraccounts mit übereinstimmenden Vor- und Nachnamen.
     emails:
       header1: E-Mail zur Experiment-Einladung
       header2: E-Mail zur Anmeldebestätigung

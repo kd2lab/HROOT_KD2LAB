@@ -295,6 +295,7 @@ en:
     duplicates:
       duplicates: Duplicate accounts
       duplicates_html: The following accounts have identical first and last names. Accounts marked as deleted are not displayed.
+      no_duplicates: There are no accounts with identical first and last names.
     emails:
       header1: Email for experiment invitation
       header2: Email for registration confirmation
