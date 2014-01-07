@@ -265,9 +265,12 @@ de:
       text: E-Mail-Text
   locations:
     create_new_location: Neuen Raum anlegen
+    edit_location: Raum bearbeiten
     confirm: Sind Sie sich sicher, dass Sie diesen Raum entfernen möchten?
     description: Beschreibung
     notice: 'Hinweis: Es können nur Räume gelöscht werden, die nicht belegt wurden.'
+    room_active_label: "Raum wird genutzt"
+  
   experiments:
     registration_active: Anmeldung ist aktiv
     registration_inactive: Anmeldung ist nicht aktiv
@@ -785,7 +788,6 @@ de:
       notice_alternative_mail2: Die E-Mail zur Bestätigung Ihrer alternativen E-Mail-Adresse wurde Ihnen erneut zugesendet.
       notice_all_data: Es wurden alle Daten eingegeben.
       notice_data_changed: Die Daten wurden erfolgreich geändert 
-      notice_added_via_cookie: Sie wurden einem Experiment über öffentlichem Link zugeordnet - Sie können sich jetzt anmelden.
     activation:
       notice_email_sent: Es wurde Ihnen eine E-Mail zur Bestätigung Ihrer neuen Adresse gesendet.
       notice_invalid_email: Diese E-Mail-Adresse ist nicht gültig.
@@ -799,25 +801,6 @@ de:
       notice_location_changed: Der Raum wurde geändert.
       notice_location_deleted: Der Raum wurde gelöscht.
       notice_location_not_deleted: Der Raum kann nicht gelöscht werden, da Sessions für diesen Raum eingetragen sind.
-    degree:
-      notice_degree_created: Das Abschlussziel wurde angelegt.
-      notice_degree_changed: Das Abschlussziel wurde geändert.
-      notice_degree_deleted: Das Abschlussziel wurde gelöscht.
-      notice_degree_not_deleted: Das Abschlussziel kann nicht gelöscht werden, da User mit diesem Abschlussziel existieren.
-    language:
-      notice_language_created: Die Sprache wurde angelegt.
-      notice_language_changed: Die Sprache wurde geändert.
-      notice_language_deleted: Die Sprache wurde gelöscht.  
-    study:
-      notice_study_created: Der Studiengang wurde angelegt.
-      notice_study_changed: Der Studiengang wurde geändert.
-      notice_study_deleted: Der Studiengang wurde gelöscht.   
-      notice_study_not_deleted: Der Studiengang kann nicht gelöscht werden, da User mit diesem Studiengang existieren.
-    profession:
-      notice_profession_created: Der Beruf wurde angelegt.
-      notice_profession_changed: Der Beruf wurde geändert.
-      notice_profession_deleted: Der Beruf wurde gelöscht.
-      notice_profession_not_deleted: Der Beruf kann nicht gelöscht werden, da User mit diesem Beruf existieren.
     enroll:
       location: "Ort:"
       notice_abort: Die Anmeldung wurde abgebrochen, da diese Session bereits voll ist.

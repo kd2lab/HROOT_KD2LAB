@@ -1,64 +1,64 @@
-de:
+en:
   search:
     hints:
-      course_of_studies: Studiengänge
-      degree: Abschlüsse
-      country_name: Land
-      language: Sprache
+      course_of_studies: Course of studies
+      degree: Degrees
+      country_name: Nationality
+      language: Language
     titles:
-      course_of_studies: Studiengänge  
-      degree: Abschlüsse
-      gender: Geschlecht
-      begin_of_studies: Studienbeginn
-      birthday: Geburtstag
-      preference: Präferenz
-      country_name: Land
-      language: Sprachen
-      experience: Erfahrung
+      course_of_studies: Course of studies  
+      degree: Degree
+      gender: Gender
+      begin_of_studies: Begin of studies
+      birthday: Date of birth
+      preference: Preference
+      country_name: Nationality
+      language: Languages
+      experience: Experience
     links:
-      course_of_studies: Studiengänge  
-      degree: Abschlüsse
-      gender: Geschlecht
-      begin_of_studies: Studienbeginn
-      birthday: Geburtstag
-      preference: Präferenz
-      country_name: Land
-      language: Sprachen
-      experience: Erfahrung
+      course_of_studies: Course of studies  
+      degree: Degree
+      gender: Gender
+      begin_of_studies: Begin of studies
+      birthday: Date of birth
+      preference: Preference
+      country_name: Nationality
+      language: Languages
+      experience: Experience
   activerecord:
     attributes:
       user:
-        phone: Mobilnummer
-        matrikel: Matrikelnummer
-        country_name: Nationalität
-        begin_of_studies: Studienbeginn
-        language: Sprachen
-        course_of_studies: Studiengang
-        degree: Abschluss(-ziel)
-        gender: Geschlecht
-        birthday: Geburtstag
-        preference: Interesse an
-        experience: Experimenterfahrung  
+        phone: mobile phone
+        matrikel: Student nr.
+        country_name: Natrionality
+        begin_of_studies: Begin of studies
+        language: Languages
+        course_of_studies: Course of studies
+        degree: Degree
+        gender: Gender
+        birthday: Date of birth
+        preference: Preference
+        experience: Experience  
   hints:
-    phone: "Eine Angabe erlaubt es uns, Sie schnell zu erreichen, wenn z.B. ein Experiment abgesagt werden muss."      
+    phone: "If you provide your phone number, we are able to contact you in case of last minute changes."      
   customfields:
     experience:
-      value0: noch nicht an wirtschaftswissenschaftlichen Experimenten teilgenommen
-      value1: an wirtschaftswissenschaftlichen Experimenten teilgenommen
+      value0: never participated in economic experiments
+      value1: already participated in economic experiments
     preference:
-      value0: Präsenz- und Online-Experimenten
-      value1: nur Präsenz-Experimente
-      value2: nur Online-Experimente
+      value0: online and lab based
+      value1: only lab based
+      value2: only online
     gender:
-      f: weiblich
-      m: männlich
+      f: female
+      m: male
     language:
-      value1: Deutsch
-      value2: Englisch
-      value3: Französisch
-      value4: Italienisch
-      value5: Spanisch
-      value6: Chinesisch
+      value1: German
+      value2: English
+      value3: French
+      value4: Italian
+      value5: Spanish
+      value6: Chinese
     profession:
     course_of_studies:
       value1: Betriebswirtschaftslehre
@@ -231,5 +231,4 @@ de:
       value6: Promotion
       value7: Staatsexamen
 
-    
 
