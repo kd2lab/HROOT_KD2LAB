@@ -82,7 +82,11 @@ class Session < ActiveRecord::Base
   def only_time_str
     I18n.l(start_at, :format => :time_only) + ' - ' + I18n.l(end_at, :format => :time_only)
   end
-    
+  
+  def folder_str
+    start_at.strftime("%Y-%m-%d_%H%M")
+  end
+
   def following_sessions
     Session.where(["experiment_id = ? AND reference_session_id = ? AND id <> reference_session_id", self.experiment_id, self.id]).order('start_at').all
   end

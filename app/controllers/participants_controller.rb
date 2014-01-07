@@ -35,7 +35,6 @@ class ParticipantsController < ApplicationController
       # aus allen sessions austragen, session participations löschen
       if params[:selected_users].length > 0   
         # remove users who have no session participation
-        puts params[:selected_users].keys.map(&:to_i).inspect
         deleted_user_ids = @experiment.remove_participations(params[:selected_users].keys.map(&:to_i))
 
         if (deleted_user_ids.length > 0)

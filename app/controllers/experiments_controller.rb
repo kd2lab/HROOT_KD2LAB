@@ -338,6 +338,9 @@ class ExperimentsController < ApplicationController
     require 'tempfile'
     require 'zip'
 
+    session_lookup = Hash.new
+    @experiment.sessions.each{|s| session_lookup["session__#{s.id}"] = s.folder_str}
+      
     files = JSON.parse(params[:files])
 
     if files.length == 1
@@ -348,7 +351,8 @@ class ExperimentsController < ApplicationController
       end
     end
 
-    begin    
+    begin
+      folder_name = @experiment.name.parameterize
       tempfile = Tempfile.new('hroot')
      
       #Initialize the temp file as a zip file
@@ -360,15 +364,22 @@ class ExperimentsController < ApplicationController
           realpath, relpath = get_valid_filename(f["path"], f["file"])
 
           if File.directory?(realpath)
+            destpath = "#{folder_name}/"+relpath  
+            destpath = destpath.mreplace(session_lookup)  
+            zip.add(destpath,realpath)
             Dir[File.join(realpath, '**', '**')].each do |file|
               begin
-                zip.add(file.sub(realpath,relpath),file)
+                destpath = "#{folder_name}/"+file.sub(realpath,relpath)
+                destpath = destpath.mreplace(session_lookup)
+                zip.add(destpath,file)
               rescue
               end
             end
           elsif File.file?(realpath)
             begin
-              zip.add(relpath, realpath)
+              destpath = "#{folder_name}/"+relpath  
+              destpath = destpath.mreplace(session_lookup)
+              zip.add(destpath, realpath)
             rescue
             end
           end
@@ -381,7 +392,7 @@ class ExperimentsController < ApplicationController
       #Send the data to the browser as an attachment
       #We do not send the file directly because it will
       #get deleted before rails actually starts sending it
-      send_data(zip_data, :type => 'application/zip', :filename => "hroot.zip")
+      send_data(zip_data, :type => 'application/zip', :filename => "#{folder_name}.zip")
     ensure
       #Close and delete the temp file
       tempfile.close

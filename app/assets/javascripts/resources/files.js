@@ -326,6 +326,7 @@ if(jQuery) (function($){
         })
 
         $filelist.on('dragstart', 'li', function(e) {
+          e.originalEvent.dataTransfer.setData('text/plain', 'data');
           if (!$(this).hasClass('selected')) {
             $filelist.find('li').removeClass('selected');
             $(this).addClass('selected');
