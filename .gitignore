@@ -8,5 +8,4 @@ coverage/*
 .sass-cache/*
 public/stylesheets/compiled/*
 db/schema.rb
-config/database.yml
 uploads
