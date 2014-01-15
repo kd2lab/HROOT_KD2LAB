@@ -34,59 +34,90 @@ Hroot::Application.configure do
   # Enable serving of images, stylesheets, and javascripts from an asset server
   #config.action_controller.asset_host = "https://www.wiso.uni-hamburg.de"
 
-  # Disable delivery errors, bad email addresses will be ignored
-  #config.action_mailer.delivery_method = :sendmail
-  #config.action_mailer.perform_deliveries = true
+  # set a site-wide path prefix here if hroot is supposed to run 
+  # in a subdirectory like http://youdomain.com/subdirectory/hroot
+  config.path_prefix = nil
+
+  # Mail configuration
+
+  # enable or disable actual delivery - set this to false to enable email sending
+  config.action_mailer.perform_deliveries = false
+
+
+  # ---------- email config example 1: send emails via gmail -----------------------
+
+  # send method
+  # config.action_mailer.delivery_method = :smtp
   
-  config.action_mailer.delivery_method = :smtp
-  config.action_mailer.perform_deliveries = true
-  config.action_mailer.smtp_settings = {
-    :address              => "localhost",
-    :port                 => "25"
-  }
-  config.action_mailer.raise_delivery_errors = true
+  #configure action mailer - example: use gmail as mail service
+  #config.action_mailer.smtp_settings = {
+  #  :address              => "smtp.gmail.com",
+  #  :port                 => "587",
+  #  :domain               => "googlemail.com",
+  #  :user_name            => "<your_gmail_account>@googlemail.com",
+  #  :password             => "<your_password>",
+  #  :authentication       => "plain",
+  #  :enable_starttls_auto => true
+  #}
+
+  # ---------- email config example 2: send emails via local sendmail -----------------------
+
+  #config.action_mailer.delivery_method = :smtp
+  #config.action_mailer.perform_deliveries = true
+  #config.action_mailer.smtp_settings = {
+  #  :address              => "localhost",
+  #  :port                 => "25"
+  #}
  
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation can not be found)
+  
   config.i18n.fallbacks = true
 
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
   
+  # urls in emails - add your site url here - you can delete port if your webserver runs on port 80
   config.action_mailer.default_url_options = {
-    :protocol => 'https',
-    :host => 'www.wiso.uni-hamburg.de/hroot'
+    :protocol => "http",
+    :host => 'localhost',
+    :port => 3000
   }
-  
-  #config.assets.prefix = "/hroot/assets"
-  config.path_prefix = nil
-  
-  # generic contact email adress
-  config.contact_email = 'experiments@wiso.uni-hamburg.de'
-  
-  # list of supported locales
-  config.locales = [:de, :en]
-  config.locale_names = {:de => 'Deutsch (de)', :en => 'English (en)'}
 
-  config.interceptor_email = "mail@ingmar.net"
+  # regular expression for restriction on valid email adresses - example:
+  # Allow only mail adresses '...@somedomain.org'
+  # see http://www.rubular.com/ for regular expressions
+  #config.email_restriction = {
+  #  :regex => /.*@somedomain.org$/
+  #}
+  
+  # are users allowed to always edit their optional data?
+  config.users_can_edit_optional_data = false
+  
+  # generic mail for contact of your lab - used in some pages to inform users where to ask questions
+  config.contact_email = '<Your contact email>'
+
+  # this email is used by the development mail interceptor (see application.rb and lib/development_mail_interceptor.rb)
+  # in all other that production mode, emails will be sent to this adress instead of the real recipient
+  config.interceptor_email = "<Your email>"
   
   # this email adress will be the default sender email
-  config.hroot_sender_email = 'development@wiso.uni-hamburg.de'
+  config.hroot_sender_email = '<Some email which acts as default sender adress>'
 
   # log messages will be sent this email adress
-  config.hroot_log_email = 'mail@ingmar.net'
+  config.hroot_log_email = '<your email adress>'
   
-  # configure uploads directory
+  # configure uploads directory - you can put your own path here
   config.upload_dir = Rails.root.join('uploads')
+
+  # catch all exceptions with exception notifier
+  config.catch_exceptions = true
 end
 
-ActionMailer::Base.default :from => 'experiments@wiso.uni-hamburg.de'
-
-Rails.application.routes.default_url_options[:host] =  'www.wiso.uni-hamburg.de/hroot'
-Rails.application.routes.default_url_options[:protocol] =  'https'
-Mail.register_interceptor(DevelopmentMailInterceptor)
-
-#Hroot::Application.config.middleware.use ExceptionNotifier,
-#  :email_prefix => "[hroot] ",
-#  :sender_address => %{"hroot notifier" <experiments@wiso.uni-hamburg.de>},
-#  :exception_recipients => %w{mail@ingmar.net}
+# enable exception mailing
+#Hroot::Application.config.middleware.use ExceptionNotification::Rack,
+#  :email => {
+#    :email_prefix => "[<your email prefix>] ",
+#    :sender_address => %{"<some@email.adress>"},
+#    :exception_recipients => %w{<some@email.adress>}
+#  }
