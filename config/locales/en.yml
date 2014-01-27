@@ -83,7 +83,7 @@ en:
     pm: pm
 
   date:
-    date:
+    datepicker: "yyyy-mm-dd"
     abbr_day_names:
     - Sun
     - Mon
@@ -789,7 +789,7 @@ en:
       new:
         breadcrumb_register: Sign up
         register: Sign up
-        enter_email: "Please enter your email and a password - these values will be used to login. The password should be at least 6 characters long."
+        enter_email: "Please enter your email and a password - these values will be used to login. The password should be at least 8 characters long."
         password_hint: "(one digit, one char and one special char needed)"
         please_provide_data: 'Please provide the following fields:'
         optional_data: The following fields are optional. The more fields you enter, the higher the chance of being invited to experiment sessions.
