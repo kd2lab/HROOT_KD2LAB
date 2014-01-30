@@ -6,5 +6,7 @@ class CreateSessionGroups < ActiveRecord::Migration
 
       t.timestamps
     end
+
+    add_column :sessions, :session_group_id, :integer
   end
 end
