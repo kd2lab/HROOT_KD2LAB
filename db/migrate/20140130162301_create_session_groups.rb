@@ -2,7 +2,7 @@ class CreateSessionGroups < ActiveRecord::Migration
   def change
     create_table :session_groups do |t|
       t.integer :signup_mode
-
+      t.integer :experiment_id
       t.timestamps
     end
 
