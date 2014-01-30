@@ -1,3 +1,5 @@
 class SessionGroup < ActiveRecord::Base
-  attr_accessible :id, :signup_mode
+  attr_accessible :signup_mode
+
+  has_many :sessions
 end
