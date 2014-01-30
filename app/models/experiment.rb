@@ -7,7 +7,7 @@ class Experiment < ActiveRecord::Base
   has_many :experimenters, :through => :experimenter_assignments, :source => :user
   has_many :participations
   has_many :participants, :through => :participations, :source => :user
-  
+  has_many :session_groups 
   has_many :sessions, :order => "start_at"
   has_many :history_entries, :order => :created_at
   
