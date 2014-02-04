@@ -3,7 +3,6 @@
 class Session < ActiveRecord::Base
   has_event_calendar
   
-  belongs_to :session_group
   belongs_to :experiment
   belongs_to :location
   has_many :session_participations
