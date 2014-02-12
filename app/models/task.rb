@@ -80,20 +80,24 @@ EOSQL
         subject = replace(recipient.message.subject, recipient.user, experiment, session)
         
         # message in context of an experiment
-        
-        UserMailer.email(subject, message, recipient.user.main_email, recipient.message.sender.main_email).deliver
+        address = recipient.user.main_email 
 
-        SentMail.create(
-          :subject => subject,
-          :message => message, 
-          :from => recipient.message.sender.main_email,
-          :to => recipient.user.main_email,
-          :message_type => UserMailer::REGULAR_MAIL,
-          :user_id => recipient.user.id,
-          :experiment_id => recipient.message.experiment_id,
-          :sender_id => recipient.message.sender_id,
-          :session_id => recipient.message.session_id
-        )
+        # user has valid address, email is actually sent
+        if !address.blank?
+          UserMailer.email(subject, message, recipient.user.main_email, recipient.message.sender.main_email).deliver
+
+          SentMail.create(
+            :subject => subject,
+            :message => message, 
+            :from => recipient.message.sender.main_email,
+            :to => recipient.user.main_email,
+            :message_type => UserMailer::REGULAR_MAIL,
+            :user_id => recipient.user.id,
+            :experiment_id => recipient.message.experiment_id,
+            :sender_id => recipient.message.sender_id,
+            :session_id => recipient.message.session_id
+          )
+        end  
 
         recipient.sent_at = Time.zone.now
         recipient.save
