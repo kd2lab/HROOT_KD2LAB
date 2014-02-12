@@ -2,10 +2,10 @@ development:
   adapter: mysql2
   encoding: utf8
   reconnect: false
-  database: hroot_feature_session_group
+  database: hroot_development
   pool: 5
-  username: hroot
-  password: toypass
+  username: insert_your_database_user_here
+  password: insert_your_database_password_here
   host: localhost
 
 # Warning: The database defined as "test" will be erased and
@@ -17,16 +17,16 @@ test:
   reconnect: false
   database: hroot_test
   pool: 5
-  username: hroot
-  password: toypass
+  username: insert_your_database_user_here
+  password: insert_your_database_password_here
   host: localhost
 
 production:
   adapter: mysql2
   encoding: utf8
   reconnect: false
-  database: hroot_feature_session_group
+  database: hroot_production
   pool: 5
-  username: hroot
-  password: toypass
-  host: localhost
+  username: insert_your_database_user_here
+  password: insert_your_database_password_here
+  host: insert_your_database_host_here
