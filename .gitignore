@@ -9,3 +9,5 @@ coverage/*
 public/stylesheets/compiled/*
 db/schema.rb
 uploads
+*.iml
+.idea
