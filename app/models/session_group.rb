@@ -1,5 +1,5 @@
 class SessionGroup < ActiveRecord::Base
   attr_accessible :signup_mode
-  belongs :experiment
+  belongs_to :experiment
   has_many :sessions
 end

@@ -407,8 +407,10 @@ en:
     public_link:
       public_link: Public link
       public_link_html: "This link can be used for a public experiment invitation. Send it to people you want to invite to this experiment.<br/><br/>When users visit this link, a cookie will be set, and when the user logs into hroot, he/she will be added to this experiment."
+
   sessions:
     new_session_link: Create new session
+    new_group_session_link: Create new group session
     back_link: Back to session overview
     session: Session
     following_session: Following session
