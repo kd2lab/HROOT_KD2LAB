@@ -23,36 +23,41 @@ class Task
 EOSQL
 
     SessionParticipation.find_by_sql(sql).each do |sp|
-      if sp.session.reminder_enabled
-        subject = sp.session.reminder_subject
-        text = sp.session.reminder_text
-      else
-        subject = sp.session.experiment.reminder_subject
-        text = sp.session.experiment.reminder_text
-      end    
-      
-      subject = replace(subject, sp.user, sp.session.experiment, sp.session)
-      text = replace(text, sp.user, sp.session.experiment, sp.session)
-      
-      # only deliver mails with subject and text
-      unless text.blank? || subject.blank?      
-        UserMailer.email(subject, text, sp.user.main_email, sp.session.experiment.sender_email_or_default).deliver
-
-        SentMail.create(
-          :subject => subject,
-          :message => text, 
-          :from => sp.session.experiment.sender_email_or_default,
-          :to => sp.user.main_email,
-          :message_type => UserMailer::REMINDER,
-          :user_id => sp.user.id,
-          :experiment_id => sp.session.experiment_id,
-          :sender_id => nil,
-          :session_id => sp.session.id
-        )
+      begin
+        if sp.session.reminder_enabled
+          subject = sp.session.reminder_subject
+          text = sp.session.reminder_text
+        else
+          subject = sp.session.experiment.reminder_subject
+          text = sp.session.experiment.reminder_text
+        end    
         
-        sp.reminded_at = Time.zone.now
-        sp.save
+        subject = replace(subject, sp.user, sp.session.experiment, sp.session)
+        text = replace(text, sp.user, sp.session.experiment, sp.session)
+        
+        # only deliver mails with subject and text
+        unless text.blank? || subject.blank?      
+          UserMailer.email(subject, text, sp.user.main_email, sp.session.experiment.sender_email_or_default).deliver
+
+          SentMail.create(
+            :subject => subject,
+            :message => text, 
+            :from => sp.session.experiment.sender_email_or_default,
+            :to => sp.user.main_email,
+            :message_type => UserMailer::REMINDER,
+            :user_id => sp.user.id,
+            :experiment_id => sp.session.experiment_id,
+            :sender_id => nil,
+            :session_id => sp.session.id
+          )
+          
+          sp.reminded_at = Time.zone.now
+          sp.save
+        end
+      rescue Exception => e
+        UserMailer.log_mail("Problem sending emails (reminder)", "Could not send reminder, Exception: #{e.inspect}").deliver
       end
+     
     end
     Settings.last_session_reminder_task_execution = Time.now    
   end
@@ -102,7 +107,7 @@ EOSQL
         recipient.sent_at = Time.zone.now
         recipient.save
       rescue Exception => e
-        UserMailer.log_mail("Problem sending emails", "The email with recipient id #{recipient.message.id} to \n#{recipient.user.inspect}\n can not be sent. Exception: #{e.inspect}").deliver
+        UserMailer.log_mail("Problem sending emails (queue)", "The email with recipient id #{recipient.message.id} to \n#{recipient.user.inspect}\n can not be sent. Exception: #{e.inspect}").deliver
       end
     end
     Settings.last_process_mail_queue_task_execution = Time.now
@@ -125,49 +130,53 @@ EOSQL
       
       # while there are open seats, send up to 50 messages
       p.each do |participation|
-        # ------------- possible early exits ---------------------------------
-      
-        # reload experiment and end loop if experiment sending is no longer active
-        experiment.reload
-        if experiment.invitation_start.nil?  
-          break;
-        end
+        begin
+          # ------------- possible early exits ---------------------------------
         
-        # check if there is still open space
-        unless experiment.has_open_sessions?
-          log += "#{Time.zone.now}: Invitation sending ended, no more open seats"
-          break
-        end
+          # reload experiment and end loop if experiment sending is no longer active
+          experiment.reload
+          if experiment.invitation_start.nil?  
+            break;
+          end
+          
+          # check if there is still open space
+          unless experiment.has_open_sessions?
+            log += "#{Time.zone.now}: Invitation sending ended, no more open seats"
+            break
+          end
+          
+          # ------------- invite user -----------------------------------------
+          
+          # get user model in this participatoin  
+          u = participation.user
+          log += "#{Time.zone.now}: Sending mail to #{u.email}\n"
+          
+          link = Rails.application.routes.url_helpers.enroll_sign_in_url(u.create_code)
         
-        # ------------- invite user -----------------------------------------
-        
-        # get user model in this participatoin  
-        u = participation.user
-        log += "#{Time.zone.now}: Sending mail to #{u.email}\n"
-        
-        link = Rails.application.routes.url_helpers.enroll_sign_in_url(u.create_code)
-      
-        subject = replace(experiment.invitation_subject.to_s, u, experiment, nil, link)
-        text = replace(experiment.invitation_text.to_s, u, experiment, nil, link)
+          subject = replace(experiment.invitation_subject.to_s, u, experiment, nil, link)
+          text = replace(experiment.invitation_text.to_s, u, experiment, nil, link)
 
-        if !u.main_email.blank?
-          UserMailer.email(subject, text, u.main_email, experiment.sender_email_or_default).deliver        
+          if !u.main_email.blank?
+            UserMailer.email(subject, text, u.main_email, experiment.sender_email_or_default).deliver        
 
-          SentMail.create(
-            :subject => subject,
-            :message => text, 
-            :from => experiment.sender_email_or_default,
-            :to => u.main_email,
-            :message_type => UserMailer::INVITATION,
-            :user_id => u.id,
-            :experiment_id => experiment.id,
-            :sender_id => nil,
-            :session_id => nil
-          )
+            SentMail.create(
+              :subject => subject,
+              :message => text, 
+              :from => experiment.sender_email_or_default,
+              :to => u.main_email,
+              :message_type => UserMailer::INVITATION,
+              :user_id => u.id,
+              :experiment_id => experiment.id,
+              :sender_id => nil,
+              :session_id => nil
+            )
+          end
+
+          participation.invited_at = Time.zone.now
+          participation.save
+        rescue Exception => e
+          UserMailer.log_mail("Problem sending emails (invitation)", "In the experiment #{experiment.name}, user #{participation.user_id} could not be invited. Exception: #{e.inspect}").deliver
         end
-        
-        participation.invited_at = Time.zone.now
-        participation.save
       end
       
       if p.count > 0
