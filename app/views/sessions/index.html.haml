@@ -16,7 +16,7 @@
 
 - if current_user.has_right?(@experiment, 'manage_sessions')
   = link_to t('sessions.new_session_link'), new_experiment_session_path(@experiment), :class => "btn btn-primary"
-  = link_to t('sessions.new_group_session_link'), new_experiment_session_path(@experiment)
+  = link_to t('sessions.new_group_session_link'), new_experiment_session_path(@experiment), :class => "btn"
 
 %br
 %br

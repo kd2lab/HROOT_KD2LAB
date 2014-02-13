@@ -368,6 +368,7 @@ de:
       public_link_html: "Dieser Link kann dazu genutzt werden, um Teilnehmer öffentlich einzuladen. Senden Sie ihn per Mail an Personen, die an dem Experiment teilnehmen sollen.<br/><br/> Sobald die Teilnehmer den Link besuchen, wird ein Cookie gesetzt, und wenn sie sich das erste Mal bei hroot anmelden (entweder als Neuanmeldung oder mit einem bestehenden Account), werden sie als Teilnehmer zum Experiment hinzugefügt."
   sessions:
     new_session_link: Neue Session anlegen
+    new_group_session_link: Neue Sessiongruppe anlegen
     back_link: Zurück zur Session-Übersicht
     session: Session
     following_session: Folgesession
