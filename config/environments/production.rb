@@ -62,12 +62,12 @@ Hroot::Application.configure do
 
   # ---------- email config example 2: send emails via local sendmail -----------------------
 
-  #config.action_mailer.delivery_method = :smtp
-  #config.action_mailer.perform_deliveries = true
-  #config.action_mailer.smtp_settings = {
-  #  :address              => "localhost",
-  #  :port                 => "25"
-  #}
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.smtp_settings = {
+    :address              => "localhost",
+    :port                 => "25"
+  }
  
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation can not be found)
