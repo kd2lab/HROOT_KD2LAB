@@ -1,12 +1,11 @@
 # encoding: utf-8
 
 class SessionGroupsController < ApplicationController
-  # authorize_resource :class => false
   load_and_authorize_resource :experiment
-  load_and_authorize_resource :session, :through => :experiment
-
-  def index 
-
+  
+  def create
+    SessionGroup.create(:experiment => @experiment)
+    redirect_to experiment_sessions_path(@experiment)
   end
 
 end

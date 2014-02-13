@@ -21,6 +21,9 @@
 %br
 %br
 
+= @experiment.session_groups.inspect
+
+
 %table.table
   - @sessions.each do |session| 
     = render :partial => 'line', :locals => {:session => session}
