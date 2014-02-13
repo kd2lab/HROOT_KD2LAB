@@ -150,19 +150,21 @@ EOSQL
         subject = replace(experiment.invitation_subject.to_s, u, experiment, nil, link)
         text = replace(experiment.invitation_text.to_s, u, experiment, nil, link)
 
-        UserMailer.email(subject, text, u.main_email, experiment.sender_email_or_default).deliver        
+        if !u.main_email.blank?
+          UserMailer.email(subject, text, u.main_email, experiment.sender_email_or_default).deliver        
 
-        SentMail.create(
-          :subject => subject,
-          :message => text, 
-          :from => experiment.sender_email_or_default,
-          :to => u.main_email,
-          :message_type => UserMailer::INVITATION,
-          :user_id => u.id,
-          :experiment_id => experiment.id,
-          :sender_id => nil,
-          :session_id => nil
-        )
+          SentMail.create(
+            :subject => subject,
+            :message => text, 
+            :from => experiment.sender_email_or_default,
+            :to => u.main_email,
+            :message_type => UserMailer::INVITATION,
+            :user_id => u.id,
+            :experiment_id => experiment.id,
+            :sender_id => nil,
+            :session_id => nil
+          )
+        end
         
         participation.invited_at = Time.zone.now
         participation.save
