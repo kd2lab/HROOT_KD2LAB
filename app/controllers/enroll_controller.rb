@@ -59,11 +59,11 @@ EOSQL
       ActiveRecord::Base.connection.execute(sql)
       
       # successful registration - send confirmation mail
-      subject = Task.replace(@session.experiment.confirmation_subject.to_s, current_user, nil, nil)
-      text = Task.replace(@session.experiment.confirmation_text.to_s, current_user, nil, nil)
+      subject = Task.replace(@session.experiment.confirmation_subject.to_s, current_user, nil, @session)
+      text = Task.replace(@session.experiment.confirmation_text.to_s, current_user, nil, @session)
 
-      sessionlist_de =  ([@session] + @session.following_sessions).map{|s| s.start_at.strftime("%d.%m.%Y") + (if s.location then " (#{t('controllers.enroll.location')} #{s.location.name.chomp})" else "" end) }.join("\n")
-      sessionlist_en =  ([@session] + @session.following_sessions).map{|s| s.start_at.strftime("%Y-%m-%d") + (if s.location then " (#{t('controllers.enroll.location')} #{s.location.name.chomp})" else "" end) }.join("\n")
+      sessionlist_de =  ([@session] + @session.following_sessions).map{|s| s.start_at.strftime("%d.%m.%Y, %H:%M") + ' - ' + s.end_at.strftime("%H:%M Uhr") + (if s.location then " (#{t('controllers.enroll.location')} #{s.location.name.chomp})" else "" end) }.join("\n")
+      sessionlist_en =  ([@session] + @session.following_sessions).map{|s| s.start_at.strftime("%Y-%m-%d, %H:%M") + ' - ' + s.end_at.strftime("%H:%M") + (if s.location then " (#{t('controllers.enroll.location')} #{s.location.name.chomp})" else "" end) }.join("\n")
       
       text = text.to_s.mreplace([
         ["#sessionlist_de", sessionlist_de],
