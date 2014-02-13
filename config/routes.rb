@@ -116,6 +116,8 @@ Hroot::Application.routes.draw do
         post :move
       end
     
+      resources :session_groups
+
       resources :sessions, :except => :show do
         collection do
           post :overlaps
