@@ -42,5 +42,6 @@
         %ul.dropdown-menu
           - unless session.is_subsession?
             %li= link_to t('.following_session'), new_experiment_session_path(:experiment_id => @experiment, :reference_session_id => session.id), :class => "session_new_subsession"
+            %li= link_to t('.make_group_session'), new_experiment_session_path(:experiment_id => @experiment, :reference_session_id => session.id), :class => "session_new_subsession"
           %li= link_to t('.duplicate'), duplicate_experiment_session_path(@experiment, session)
           %li= link_to t('.delete'), experiment_session_path(@experiment, session), :method => :delete, :confirm => t('.delete_confirm')

@@ -411,6 +411,7 @@ en:
   sessions:
     new_session_link: Create new session
     new_group_session_link: Create new group session
+    make_group_session: Make group session
     back_link: Back to session overview
     session: Session
     following_session: Following session
