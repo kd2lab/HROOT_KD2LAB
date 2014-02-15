@@ -7,7 +7,6 @@
 
 - if @users.count > 0
   .menu    
-    /= link_to t('.print'), print_experiment_session_path(@experiment, @session), :class => "btn btn-default new-window", :style => "float:right"
     .btn-group{:style => "float:right"}
       %a.btn.btn-default.dropdown-toggle{:'data-toggle' => "dropdown", :href => "#"}
         =t '.data_menu'
@@ -30,9 +29,8 @@
           %b.caret 
         %ul.dropdown-menu
           %li= link_to t('.remove_marked'), '#', :class => 'user_action_link', :'data-value' => 0
-          / todo refactor this
-          /- @session.alternative_sessions.each  do |s|
-          /  %li= link_to "#{t('.move_marked', :session => s.time_str)}", '#', :class => 'user_action_link', :'data-value' => s.id
+          - @session.alternative_sessions.each  do |s|
+            %li= link_to "#{t('.move_marked', :session => s.time_str)}", '#', :class => 'user_action_link', :'data-value' => s.id
             
     %br
     %br
