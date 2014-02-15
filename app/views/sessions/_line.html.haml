@@ -20,7 +20,7 @@
         else                            |
           "participants-green"          |
         end                             |
-      = link_to "#{t('.participants_label')} #{r.session_participations.count} (#{r.needed},#{r.reserve})#{", #{t('.group_size')} "+session.group_size.to_s if session.group_size}", participants_experiment_session_path(@experiment, session), :class => css_class
+      = link_to "#{t('.participants_label')} #{r.session_participations.joins(:user).where(:'users.deleted'=> 0).count} (#{r.needed},#{r.reserve})#{", #{t('.group_size')} "+session.group_size.to_s if session.group_size}", participants_experiment_session_path(@experiment, session), :class => css_class
   
       - if session.end_at < Time.zone.now then
         - if session.session_participations.where('showup=0 AND participated=0 AND noshow=0').count > 0
