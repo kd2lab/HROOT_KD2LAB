@@ -14,6 +14,7 @@
 
 = render :partial => "experiments/tabs", :locals => {:selected => :sessions}
 
+
 - if current_user.has_right?(@experiment, 'manage_sessions')
   = link_to t('sessions.new_session_link'), new_experiment_session_path(@experiment), :class => "btn btn-primary"
 
