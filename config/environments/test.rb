@@ -1,10 +1,61 @@
 Hroot::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
+  
+  ############# hroot configuration ########################
 
-  # The test environment is used exclusively to run your application's
-  # test suite.  You never need to work with it otherwise.  Remember that
-  # your test database is "scratch space" for the test suite and is wiped
-  # and recreated between test runs.  Don't rely on the data there!
+  # the following settings are specific to hroot, whereas general rails settings follow further down
+
+  # Tell Action Mailer not to deliver emails to the real world.
+  # The :test delivery method accumulates sent emails in the
+  # ActionMailer::Base.deliveries array.
+  config.action_mailer.delivery_method = :test
+
+  # generic mail for contact of your lab - used in some pages to inform users where to ask questions
+  config.contact_email = 'experiments@wiso.uni-hamburg.de'
+
+  # this email is used by the development mail interceptor (see application.rb and lib/development_mail_interceptor.rb)
+  # in all other that production mode, emails will be sent to this adress instead of the real recipient
+  config.interceptor_email = "mail@ingmar.net"
+  
+  # this email adress will be the default sender email
+  config.hroot_sender_email = 'development@wiso.uni-hamburg.de'
+
+  # log messages will be sent this email adress
+  config.hroot_log_email = 'mail@ingmar.net'
+  
+
+  # regular expression for restriction on valid email adresses - example:
+  # Allow only mail adresses '...@somedomain.org'
+  # see http://www.rubular.com/ for regular expressions
+  config.email_restriction = {
+    :regex => /.*@uni-hamburg.de$/
+  }
+  
+  # are users allowed to always edit their optional data?
+  config.users_can_edit_optional_data = false
+  
+  
+  # configure uploads directory - you can put your own path here
+  config.upload_dir = Rails.root.join('uploads')
+
+  # set a site-wide path prefix here if hroot is supposed to run 
+  # in a subdirectory like http://youdomain.com/subdirectory/hroot
+  # config.path_prefix = '/root'
+  config.path_prefix = ''
+
+  # catch all exceptions with exception notifier
+  config.catch_exceptions = false
+
+  # asset serving in debug mode
+  config.assets.debug = true
+
+  ##################### General Rails configuration #####################
+
+  # You can probably leave most of the values here untouched
+
+  # In the development environment your application's code is reloaded on
+  # every request.  This slows down response time but is perfect for development
+  # since you don't have to restart the webserver when you make code changes.
   config.cache_classes = true
 
   # Log error messages when you accidentally call methods on nil.
@@ -17,61 +68,17 @@ Hroot::Application.configure do
   # Raise exceptions instead of rendering exception templates
   config.action_dispatch.show_exceptions = false
 
-  # Disable request forgery protection in test environment
-  config.action_controller.allow_forgery_protection    = false
-
-  # Tell Action Mailer not to deliver emails to the real world.
-  # The :test delivery method accumulates sent emails in the
-  # ActionMailer::Base.deliveries array.
-  config.action_mailer.delivery_method = :test
-
-  config.action_mailer.default_url_options = {
-    :host => 'localhost',
-    :port => 3000
-  }
-
-  config.contact_email = 'experiments@wiso.uni-hamburg.de'
-
- 
-  # Use SQL instead of Active Record's schema dumper when creating the test database.
-  # This is necessary if your schema can't be completely dumped by the schema dumper,
-  # like if you have constraints or database-specific column types
-  # config.active_record.schema_format = :sql
+  # Don't care if the mailer can't send
+  config.action_mailer.raise_delivery_errors = false
 
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
-  
-  # list of supported locales
-  config.locales = [:de, :en]
-  config.locale_names = {:de => 'Deutsch (de)', :en => 'English (en)'}
-  
-  #config.email_regexp = /(.*@uni-hamburg.de$)|(.*@student.uni-hamburg.de$)|(.*@ingmar.net$)/
-  
-  config.email_restriction = {
-    :regex => /.*@uni-hamburg.de$/
-  }
-  
-  # this email is used by the development mail interceptor (see application.rb and lib/development_mail_interceptor.rb)
-  # in all other that production mode, emails will be sent to this adress instead of the real recipient
-  config.interceptor_email = "mail@ingmar.net"
-  
-  # this email adress will be the default sender email
-  config.hroot_sender_email = 'development@wiso.uni-hamburg.de'
 
-  # log messages will be sent this email adress
-  config.hroot_log_email = 'mail@ingmar.net'
-  
-  # configure uploads directory
-  config.upload_dir = Rails.root.join('uploads')
-  
-  # columns in user table
-  config.user_table_columns = [:fullname, :role, :email, :course_of_studies, :gender, :begin_of_studies, :created_at, :noshow_count, :participations_count]
-  config.add_user_table_columns = [:fullname, :role, :email, :course_of_studies, :gender, :noshow_count, :participations_count]
-  config.participants_table_columns = [:fullname, :role, :email, :course_of_studies, :noshow_count, :participations_count, :session]
-  
-  config.recipient_of_audit_reports = "someemail@somedomain.co.uk"
-  
-  
+  # Only use best-standards-support built into browsers
+  config.action_dispatch.best_standards_support = :builtin
+
+  # Disable request forgery protection in test environment
+  config.action_controller.allow_forgery_protection    = false
 end
 
 Rails.application.routes.default_url_options[:host] =  'test.host'
