@@ -3,6 +3,6 @@ class SessionGroup < ActiveRecord::Base
   USER_IS_RANDOMIZED_TO_ONE_SESSION = 2
   
   belongs_to :experiment
-  has_many :sessions
+  has_many :sessions, :dependent => :nullify
 
 end

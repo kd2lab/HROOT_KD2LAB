@@ -10,7 +10,8 @@ class SessionsController < ApplicationController
   helper_method :sort_column, :sort_direction
   
   def index
-    @sessions = @experiment.sessions.where("sessions.reference_session_id = sessions.id").order(:start_at)
+    @ungrouped_sessions = @experiment.sessions.where(:session_group_id => nil) 
+    @grouped_sessions = @experiment.sessions.where("session_group_id IS NOT NULL").group_by{|s| s.session_group_id}
   end
   
   def show
@@ -64,13 +65,40 @@ class SessionsController < ApplicationController
     end
   end
 
+  def create_group_with
+    # group current session session 'target' together
+    session_group = SessionGroup.create(:experiment_id => @experiment.id)
+    @session.update_attribute(:session_group_id, session_group.id)
+    Session.find_by_id(params[:target]).update_attribute(:session_group_id, session_group.id)
+    
+    redirect_to experiment_sessions_path(@experiment), :notice => t('controllers.sessions.group_created')
+  end
+
+  def remove_from_group
+    # remember group
+    session_group = @session.session_group
+    
+    # unset session_group_id
+    @session.update_attribute(:session_group_id, nil)
+
+    # remove group altogether, if it contains only one session
+    session_group.destroy if session_group.sessions.count <= 1
+
+    redirect_to experiment_sessions_path(@experiment), :notice => t('controllers.sessions.removed_from_group')
+  end
+
+  def add_to_group
+    # unset session_group_id
+    @session.update_attribute(:session_group_id, params[:target])
+
+    redirect_to experiment_sessions_path(@experiment), :notice => t('controllers.sessions.added_to_group')
+  end
+
   def edit
-    #@session = Session.find(params[:id])
+  
   end
   
   def update
-    #@session = Session.find(params[:id])
-    
     parse_date_and_time_params
     
     if @session.update_attributes(params[:session])
@@ -81,7 +109,6 @@ class SessionsController < ApplicationController
   end
   
   def reminders
-    #@session = Session.find(params[:id])    
     if params[:session] && @session.update_attributes(params[:session])
       flash[:notice] = t('controllers.notice_saved_changes')
     end
@@ -98,7 +125,6 @@ class SessionsController < ApplicationController
   end
   
   def destroy
-    #@session = Session.find(params[:id])
     
     # only delete sessions without subsessions and without participants
     if @session

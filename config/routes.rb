@@ -116,8 +116,6 @@ Hroot::Application.routes.draw do
         post :move
       end
     
-      resources :session_groups
-
       resources :sessions, :except => :show do
         collection do
           post :overlaps
@@ -133,7 +131,9 @@ Hroot::Application.routes.draw do
           post :csv
           post :excel
           post :send_message
-          
+          post :remove_from_group
+          post :create_group_with
+          post :add_to_group
         end
       end
 

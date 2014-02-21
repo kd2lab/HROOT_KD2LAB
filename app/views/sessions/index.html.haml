@@ -16,16 +16,23 @@
 
 - if current_user.has_right?(@experiment, 'manage_sessions')
   = link_to t('sessions.new_session_link'), new_experiment_session_path(@experiment), :class => "btn btn-primary"
-  = link_to t('sessions.new_group_session_link'), experiment_session_groups_path(@experiment), :class => "btn", :method => :post
 
 %br
 %br
 
-= @experiment.session_groups.inspect
-
-
+%h4
+  Ungrouped sessions 
+  
 %table.table
-  - @sessions.each do |session| 
+  - @ungrouped_sessions.each do |session| 
     = render :partial => 'line', :locals => {:session => session}
-    - session.following_sessions.each do |subsession|
-      = render :partial => 'line', :locals => {:session => subsession}
+  
+- @grouped_sessions.each do |group, sessions| 
+
+  %h4
+    Group 
+    = group
+  
+  %table.table
+    - sessions.each do |session|
+      = render :partial => 'line', :locals => {:session => session}

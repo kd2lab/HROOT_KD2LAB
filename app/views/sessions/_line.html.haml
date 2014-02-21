@@ -1,26 +1,24 @@
-%tr{:class =>if session.is_subsession? then "subsession" else "" end}
+%tr
   %td.span7
     %span.time{:class => if session.end_at < Time.zone.now then "past" end}
-   
-      = '+' if session.is_subsession?
       = session.time_str
+      = "test"+session.session_group_id.to_s
 
     .room
       =truncate(session.location.name, :length => 30) if session.location
-  
-    - r = session.is_subsession? ? session.reference_session : session
 
     .participants
-      - surplus = r.session_participations.count - r.needed
+      - surplus = session.session_participations.count - session.needed
 
       - css_class = if surplus < 0 then |
           "participants-red"            |
-        elsif surplus < r.reserve then  |
+        elsif surplus < session.reserve then  |
           "participants-yellow"         |
         else                            |
           "participants-green"          |
         end                             |
-      = link_to "#{t('.participants_label')} #{r.session_participations.count} (#{r.needed},#{r.reserve})#{", #{t('.group_size')} "+session.group_size.to_s if session.group_size}", participants_experiment_session_path(@experiment, session), :class => css_class
+
+      = link_to "#{t('.participants_label')} #{session.session_participations.count} (#{session.needed},#{session.reserve})#{", #{t('.group_size')} "+session.group_size.to_s if session.group_size}", participants_experiment_session_path(@experiment, session), :class => css_class
   
       - if session.end_at < Time.zone.now then
         - if session.session_participations.where('showup=0 AND participated=0 AND noshow=0').count > 0
@@ -40,8 +38,14 @@
           =t '.actions'
           %b.caret
         %ul.dropdown-menu
-          - unless session.is_subsession?
-            %li= link_to t('.following_session'), new_experiment_session_path(:experiment_id => @experiment, :reference_session_id => session.id), :class => "session_new_subsession"
-            %li= link_to t('.make_group_session'), new_experiment_session_path(:experiment_id => @experiment, :reference_session_id => session.id), :class => "session_new_subsession"
+          - if session.session_group_id == nil
+            - @ungrouped_sessions.reject{|s| s.id == session.id}.each do |s|
+              %li= link_to "Group this session with #{s.time_str}", create_group_with_experiment_session_path(@experiment, session, :target => s.id), :method => :post
+            - @grouped_sessions.each do |group_id, sessions|
+              %li= link_to "Add to group #{group_id}", add_to_group_experiment_session_path(@experiment, session, :target => group_id), :method => :post
+            
+          - else
+            %li= link_to "Remove from group", remove_from_group_experiment_session_path(@experiment, session), :method => :post
+          
           %li= link_to t('.duplicate'), duplicate_experiment_session_path(@experiment, session)
           %li= link_to t('.delete'), experiment_session_path(@experiment, session), :method => :delete, :confirm => t('.delete_confirm')
