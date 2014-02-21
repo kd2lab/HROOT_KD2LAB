@@ -5,6 +5,7 @@ class Session < ActiveRecord::Base
   
   belongs_to :experiment
   belongs_to :location
+  belongs_to :session_group
   has_many :session_participations
   
   validates_presence_of :start_at
