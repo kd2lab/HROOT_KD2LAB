@@ -64,7 +64,7 @@
 
       %tr{:class => classes.join(' ')}
         %td= check_box_tag "selected_users[#{user.id}]", '1', false, :class => 'user-selection-item'
-        %td
+        %td{:style=>'white-space: nowrap;'}
           - if !user.deleted && user.imported && !user.activated_after_import
             %i.icon-ban-circle.tool-tip{:title => t('popup.inactive_after_import')}
           - if !user.deleted && !user.confirmed_at 
@@ -72,7 +72,7 @@
           - if user.attributes.has_key?('invited_at') && !user.invited_at.nil?
             %i.icon-envelope.tool-tip{:title => t('popup.user_was_invited')}
           - if user.attributes.has_key?('reminded_at') && !user.reminded_at.nil?
-            %i.icon-user.tool-tip{:title => t('popup.user_was_reminded')}
+            %i.icon-flag.tool-tip{:title => t('popup.user_was_reminded')}
           - if !user.comment.blank?
             %i.icon-comment.tool-tip{:'data-html'=> 'true',  :title => raw(simple_format(user.comment))}
           - if user.attributes.has_key?('added_by_public_key') && user.added_by_public_key == 1

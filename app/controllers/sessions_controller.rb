@@ -275,8 +275,9 @@ class SessionsController < ApplicationController
     
     params[:search] = params[:search] || {}
     params[:search][:role] = {:value => ['user']} 
+    params[:search][:deleted] = {:value =>"show"}
 
-    @users = Search.search(params, {:experiment => @experiment, :session => @session.id, :sort_column => sort_column, :sort_direction => sort_direction, :exclude => false})
+    @users = Search.search(params[:search], {:experiment => @experiment, :session => @session.id, :sort_column => sort_column, :sort_direction => sort_direction, :exclude => false})
   end
   
   def overlaps

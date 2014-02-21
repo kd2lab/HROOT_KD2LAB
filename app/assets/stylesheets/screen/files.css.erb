@@ -1,0 +1,171 @@
+.filelist_container {
+  position: relative;
+}
+
+.files {
+  padding: 8px;
+  min-height: 100px;
+  border: 1px solid #ddd;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;  
+}
+
+#contextMenu {
+  display: none; 
+  z-index: 10000
+}
+
+
+.dropinfo {
+  display: none;
+  text-align: center;
+}
+
+.progress {
+  display:inline-block;
+  width: 400px;
+}
+
+.statusbar {
+    border-top:1px solid #A9CCD1;
+    min-height:25px;
+    xwidth:700px;
+    padding:30px 10px 0px 10px;
+    vertical-align:top;
+}
+/*.statusbar:nth-child(odd){
+    xbackground:#EBEFF0;
+}*/
+.filename {
+  display:inline-block;
+  vertical-align:top;
+  width: 330px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow:ellipsis;
+}
+
+.filesize {
+  display:inline-block;
+  vertical-align:top;
+  color:#30693D;
+  width:100px;
+  margin-left:10px;
+  margin-right:5px;
+}
+
+.abort-button {
+  display:inline-block;
+  vertical-align:top;
+  color:#30693D;
+  width:10px;
+  margin-left:10px;
+  margin-right:5px;
+  
+}
+
+.abort {
+  margin-left:20px;
+    background-color:#A8352F;
+    -moz-border-radius:4px;
+    -webkit-border-radius:4px;
+    border-radius:4px;display:inline-block;
+    color:#fff;
+    font-family:arial;font-size:13px;font-weight:normal;
+    padding:4px 15px;
+    cursor:pointer;
+    vertical-align:top
+}
+
+
+UL.jqueryFileTree {
+	font-family: Verdana, sans-serif;
+	font-size: 11px;
+	line-height: 18px;
+	padding: 0px;
+	margin: 0px;
+}
+
+UL.jqueryFileTree LI {
+	list-style: none;
+	padding: 0px;
+	padding-left: 20px;
+	margin: 0px;
+	white-space: nowrap;
+  overflow: hidden;
+  display: block;
+}
+
+.drop-target {
+  border: 1px solid green;
+}
+
+UL.jqueryFileTree LI.selected > .name {
+  background-color: #BDF;
+}
+
+/* Core Styles */
+.jqueryFileTree LI.directory { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/directory.png) left top no-repeat; }
+.jqueryFileTree LI.expanded  { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/folder_open.png) left top no-repeat; }
+.jqueryFileTree LI.file      { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/file.png) left top no-repeat; }
+.jqueryFileTree LI.wait      { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/spinner.gif) left top no-repeat; }
+/* File Extensions*/
+.jqueryFileTree LI.ext_3gp   { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/film.png) left top no-repeat; }
+.jqueryFileTree LI.ext_afp   { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/code.png) left top no-repeat; }
+.jqueryFileTree LI.ext_afpa  { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/code.png) left top no-repeat; }
+.jqueryFileTree LI.ext_asp   { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/code.png) left top no-repeat; }
+.jqueryFileTree LI.ext_aspx  { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/code.png) left top no-repeat; }
+.jqueryFileTree LI.ext_avi   { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/film.png) left top no-repeat; }
+.jqueryFileTree LI.ext_bat   { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/application.png) left top no-repeat; }
+.jqueryFileTree LI.ext_bmp   { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/picture.png) left top no-repeat; }
+.jqueryFileTree LI.ext_c     { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/code.png) left top no-repeat; }
+.jqueryFileTree LI.ext_cfm   { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/code.png) left top no-repeat; }
+.jqueryFileTree LI.ext_cgi   { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/code.png) left top no-repeat; }
+.jqueryFileTree LI.ext_com   { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/application.png) left top no-repeat; }
+.jqueryFileTree LI.ext_cpp   { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/code.png) left top no-repeat; }
+.jqueryFileTree LI.ext_css   { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/css.png) left top no-repeat; }
+.jqueryFileTree LI.ext_doc   { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/doc.png) left top no-repeat; }
+.jqueryFileTree LI.ext_exe   { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/application.png) left top no-repeat; }
+.jqueryFileTree LI.ext_gif   { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/picture.png) left top no-repeat; }
+.jqueryFileTree LI.ext_fla   { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/flash.png) left top no-repeat; }
+.jqueryFileTree LI.ext_h     { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/code.png) left top no-repeat; }
+.jqueryFileTree LI.ext_htm   { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/html.png) left top no-repeat; }
+.jqueryFileTree LI.ext_html  { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/html.png) left top no-repeat; }
+.jqueryFileTree LI.ext_jar   { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/java.png) left top no-repeat; }
+.jqueryFileTree LI.ext_jpg   { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/picture.png) left top no-repeat; }
+.jqueryFileTree LI.ext_jpeg  { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/picture.png) left top no-repeat; }
+.jqueryFileTree LI.ext_js    { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/script.png) left top no-repeat; }
+.jqueryFileTree LI.ext_lasso { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/code.png) left top no-repeat; }
+.jqueryFileTree LI.ext_log   { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/txt.png) left top no-repeat; }
+.jqueryFileTree LI.ext_m4p   { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/music.png) left top no-repeat; }
+.jqueryFileTree LI.ext_mov   { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/film.png) left top no-repeat; }
+.jqueryFileTree LI.ext_mp3   { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/music.png) left top no-repeat; }
+.jqueryFileTree LI.ext_mp4   { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/film.png) left top no-repeat; }
+.jqueryFileTree LI.ext_mpg   { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/film.png) left top no-repeat; }
+.jqueryFileTree LI.ext_mpeg  { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/film.png) left top no-repeat; }
+.jqueryFileTree LI.ext_ogg   { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/music.png) left top no-repeat; }
+.jqueryFileTree LI.ext_pcx   { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/picture.png) left top no-repeat; }
+.jqueryFileTree LI.ext_pdf   { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/pdf.png) left top no-repeat; }
+.jqueryFileTree LI.ext_php   { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/php.png) left top no-repeat; }
+.jqueryFileTree LI.ext_png   { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/picture.png) left top no-repeat }
+.jqueryFileTree LI.ext_ppt   { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/ppt.png) left top no-repeat; }
+.jqueryFileTree LI.ext_psd   { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/psd.png) left top no-repeat; }
+.jqueryFileTree LI.ext_pl    { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/script.png) left top no-repeat; }
+.jqueryFileTree LI.ext_py    { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/script.png) left top no-repeat; }
+.jqueryFileTree LI.ext_rb    { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/ruby.png) left top no-repeat; }
+.jqueryFileTree LI.ext_rbx   { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/ruby.png) left top no-repeat; }
+.jqueryFileTree LI.ext_rhtml { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/ruby.png) left top no-repeat; }
+.jqueryFileTree LI.ext_rpm   { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/linux.png) left top no-repeat; }
+.jqueryFileTree LI.ext_ruby  { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/ruby.png) left top no-repeat; }
+.jqueryFileTree LI.ext_sql   { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/db.png) left top no-repeat; }
+.jqueryFileTree LI.ext_swf   { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/flash.png) left top no-repeat; }
+.jqueryFileTree LI.ext_tif   { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/picture.png) left top no-repeat; }
+.jqueryFileTree LI.ext_tiff  { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/picture.png) left top no-repeat; }
+.jqueryFileTree LI.ext_txt   { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/txt.png) left top no-repeat; }
+.jqueryFileTree LI.ext_vb    { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/code.png) left top no-repeat; }
+.jqueryFileTree LI.ext_wav   { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/music.png) left top no-repeat; }
+.jqueryFileTree LI.ext_wmv   { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/film.png) left top no-repeat; }
+.jqueryFileTree LI.ext_xls   { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/xls.png) left top no-repeat; }
+.jqueryFileTree LI.ext_xml   { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/code.png) left top no-repeat; }
+.jqueryFileTree LI.ext_zip   { background: url(<%=Rails.configuration.path_prefix %>/assets/filetypes/zip.png) left top no-repeat; }

@@ -7,7 +7,6 @@
 
 - if @users.count > 0
   .menu    
-    /= link_to t('.print'), print_experiment_session_path(@experiment, @session), :class => "btn btn-default new-window", :style => "float:right"
     .btn-group{:style => "float:right"}
       %a.btn.btn-default.dropdown-toggle{:'data-toggle' => "dropdown", :href => "#"}
         =t '.data_menu'
