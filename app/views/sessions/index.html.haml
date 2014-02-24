@@ -4,10 +4,10 @@
       link_to(t(:experiments_header), experiments_path),                |
       link_to(@experiment.name,experiment_sessions_path(@experiment)), |
       t(:sessions_label)]
-      
+
 
 = render :partial => "experiments/enrollment"
-  
+
 %h1
   = @experiment.name
 
@@ -17,23 +17,27 @@
 
 - if current_user.has_right?(@experiment, 'manage_sessions')
   = link_to t('sessions.new_session_link'), new_experiment_session_path(@experiment), :class => "btn btn-primary"
-
+.btn-group
+  = link_to t('sessions.mode.singular'), new_experiment_session_path(@experiment), :class => "btn btn-default active"
+  -#= link_to t('sessions.mode.singular'), edit_experiment_mode_path(@experiment, 1), :class => "btn btn-default active"
+  = link_to t('sessions.mode.random'), new_experiment_session_path(@experiment), :class => "btn btn-default"
+  = link_to t('sessions.mode.all'), new_experiment_session_path(@experiment), :class => "btn btn-default"
 %br
 %br
 
 %h4
-  Ungrouped sessions 
-  
+  Ungrouped sessions
+
 %table.table
-  - @ungrouped_sessions.each do |session| 
+  - @ungrouped_sessions.each do |session|
     = render :partial => 'line', :locals => {:session => session}
-  
-- @grouped_sessions.each do |group, sessions| 
+
+- @grouped_sessions.each do |group, sessions|
 
   %h4
-    Group 
+    Group
     = group
-  
+
   %table.table
     - sessions.each do |session|
       = render :partial => 'line', :locals => {:session => session}

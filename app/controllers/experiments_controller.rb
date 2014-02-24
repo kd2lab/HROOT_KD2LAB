@@ -80,8 +80,8 @@ class ExperimentsController < ApplicationController
 
       redirect_to experimenters_experiment_path(@experiment), :notice => t('controllers.notice_saved_changes')
     end
-  end  
-  
+  end
+
   def update
     if params[:experiment][:tag_list]
       params[:experiment][:tag_list] = params[:experiment][:tag_list].join(", ")
