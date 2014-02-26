@@ -27,9 +27,9 @@
     = link_to t('sessions.mode.random'), update_mode_experiment_sessions_path(@experiment, :mode => SessionGroup::USER_VISITS_ALL_SESSIONS_OF_GROUP), :class => "btn btn-default #{ mode == 2 ? 'active' : ''}", :method => :post
     = link_to t('sessions.mode.all'), update_mode_experiment_sessions_path(@experiment, :mode => SessionGroup::USER_IS_RANDOMIZED_TO_ONE_SESSION), :class => "btn btn-default #{ mode == 3 ? 'active' : ''}", :method => :post
   = t(".explanation#{mode}")
-%br
-%br
-- if @grouped_sessions.size > 0 && @ungrouped_sessions.size > 0
+  %br
+  %br
+-else
   %h4
     Ungrouped sessions
 
