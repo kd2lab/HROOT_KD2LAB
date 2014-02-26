@@ -18,12 +18,15 @@
 - if current_user.has_right?(@experiment, 'manage_sessions')
   = link_to t('sessions.new_session_link'), new_experiment_session_path(@experiment), :class => "btn btn-primary"
 - if (@experiment.session_groups.size > 0)
+  %br
+  %br
+  Group mode:
   .btn-group
     - mode = @experiment.session_groups.first.signup_mode
     = link_to t('sessions.mode.singular'), update_mode_experiment_sessions_path(@experiment, :mode => SessionGroup::USER_VISITS_ONE_SESSION_OF_GROUP), :class => "btn btn-default #{ mode == 1 ? 'active' : ''}", :method => :post
     = link_to t('sessions.mode.random'), update_mode_experiment_sessions_path(@experiment, :mode => SessionGroup::USER_VISITS_ALL_SESSIONS_OF_GROUP), :class => "btn btn-default #{ mode == 2 ? 'active' : ''}", :method => :post
     = link_to t('sessions.mode.all'), update_mode_experiment_sessions_path(@experiment, :mode => SessionGroup::USER_IS_RANDOMIZED_TO_ONE_SESSION), :class => "btn btn-default #{ mode == 3 ? 'active' : ''}", :method => :post
-
+    = t(".explanation#{mode}")
 %br
 %br
 - if @grouped_sessions.size > 0 && @ungrouped_sessions.size > 0
