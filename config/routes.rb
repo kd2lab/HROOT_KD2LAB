@@ -119,6 +119,7 @@ Hroot::Application.routes.draw do
       resources :sessions, :except => :show do
         collection do
           post :overlaps
+          post :update_mode
         end
       
         member do
