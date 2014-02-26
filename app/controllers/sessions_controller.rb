@@ -74,6 +74,12 @@ class SessionsController < ApplicationController
     redirect_to experiment_sessions_path(@experiment), :notice => t('controllers.sessions.group_created')
   end
 
+  def update_mode
+    # change model here using params[:mode]
+    
+    redirect_to experiment_sessions_path(@experiment)
+  end
+
   def remove_from_group
     # remember group
     session_group = @session.session_group
