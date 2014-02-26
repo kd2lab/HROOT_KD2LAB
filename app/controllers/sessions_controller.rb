@@ -11,7 +11,6 @@ class SessionsController < ApplicationController
   
   def index
     @ungrouped_sessions = @experiment.sessions.where(:session_group_id => nil) 
-    @grouped_sessions = @experiment.sessions.where("session_group_id IS NOT NULL").group_by{|s| s.session_group_id}
   end
   
   def show

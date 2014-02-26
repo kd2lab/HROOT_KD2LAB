@@ -42,9 +42,9 @@
             - @ungrouped_sessions.reject{|s| s.id == session.id}.each do |s|
               -#TODO Pull label from en.yml
               %li= link_to "Group this session with #{s.time_str}", create_group_with_experiment_session_path(@experiment, session, :target => s.id), :method => :post
-            - @grouped_sessions.each do |group_id, sessions|
+            - @experiment.session_groups.each_with_index do |group, i|
               -#TODO Pull label from en.yml
-              %li= link_to "Add to group #{group_id}", add_to_group_experiment_session_path(@experiment, session, :target => group_id), :method => :post
+              %li= link_to "Add to group #{i+1}", add_to_group_experiment_session_path(@experiment, session, :target => group.id), :method => :post
 
           - else
             %li= link_to "Remove from group", remove_from_group_experiment_session_path(@experiment, session), :method => :post
