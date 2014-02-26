@@ -75,8 +75,11 @@ class SessionsController < ApplicationController
   end
 
   def update_mode
-    # change model here using params[:mode]
-    
+    # change all groups
+    @experiment.session_groups.each do |group|
+      group.update_attribute(:signup_mode, params[:mode])
+    end
+
     redirect_to experiment_sessions_path(@experiment)
   end
 
