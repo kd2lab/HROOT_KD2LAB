@@ -23,6 +23,8 @@ Hroot::Application.configure do
   # log messages will be sent this email adress
   config.hroot_log_email = 'mail@ingmar.net'
   
+  # set testing language to :de
+  config.i18n.default_locale = :de
 
   # regular expression for restriction on valid email adresses - example:
   # Allow only mail adresses '...@somedomain.org'

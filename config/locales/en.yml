@@ -935,15 +935,22 @@ en:
       legal_notes: Legal notes
       software: Developers and Software
       software_html: '
+
+
 <h3>Licence</h3>
-The program can be licensed free of charge.<br/> 
+
+The program can be licensed free of charge.<br/>
 When you report results of experiments administered with hroot, the licence requires that you mention it''s use in the publication and cite the Working Paper forthcoming.<br/><br/>
+
 The correct citation is:<br/>
 <i>The experiment was organized and recruited with the software hroot (Bock, Nicklisch, Baetge 2012).</i><br/><br/>
-Reference:<br/> 
-Olaf Bock; Andreas Nicklisch; Ingmar Baetge (2012): hroot: Hamburg registration and organization online tool. H-Lab Working Paper No. 1, 2012.<br/><br/>
-How to order hroot?<br/>
-To get a licence please contact: <a href="mailto:olaf.bock@wiso.uni-hamburg.de">olaf.bock@wiso.uni-hamburg.de</a><br/><br/>
+
+Reference:<br/>
+<i>Olaf Bock; Andreas Nicklisch; Ingmar Baetge (2012): hroot: Hamburg registration and organization online tool. WiSo-HH Working Paper Series No. 1, 2012.</i><br/><br/>
+
+<b>How to order hroot?</b><br/>
+To get a licence please contact: <a href="mailto:experiments@wiso.uni-hamburg.de">experiments@wiso.uni-hamburg.de</a><br/><br/>
+
 Universität Hamburg<br/>
 School of Business, Economics and Social Sciences<br/>
 WiSo-Research Laboratory <br/>
@@ -952,12 +959,16 @@ Von-Melle-Park 5 <br/>
 Germany<br/>
 Phone: +49 – (0) 40 - 42 83 8 - 37 59<br/>
 <a href="http://www.wiso.uni-hamburg.de/forschung/forschungslabor/experimentallabor/aktuelle-projekte/hroot/">Project site for hroot</a><br/><br/>
-We need the postal address to send you back the contract and we need an email address, to send you login and password for downloading hroot.<br/><br/> 
 
-In case of technical problems with the software: <a href="experiments@wiso.uni-hamburg.de">experiments@wiso.uni-hamburg.de</a><br/>
-Suggestions, corrections or hints on content: <a href="experiments@wiso.uni-hamburg.de">experiments@wiso.uni-hamburg.de</a> <br/><br/>
+We need a postal address to send you back the contract and we need an email address, to send you login and password for downloading hroot.<br/><br/>
 
-Software<br/>
-hroot is implemented with <a href="http://rubyonrails.org">Ruby on Rails.</a><br/><br/>
+hroot is created in a collaborative process and is constantly improved by its users. In order to ease and enhance the cooperation of all interested users of hroot we have set up a GitHub platform in the Internet (<a href="https://github.com">https://github.com</a>). There you will always find the latest version of hroot, as well as a wiki with a detailed installation guide. In GitHub you may also report errors to us. Especially it is possible to document your changes of the hroot code on this collaborative project site, so that the improvements of individual users are quickly available to all other licensees.<br/><br/>
+ 
+For licensees: In order to obtain the software via the GitHub platform, please register for a (free) user account on <a href="https://github.com">https://github.com</a>. You will immediately receive your own GitHub-User-ID there. If you then simply tell us your GitHub username (e-mail: <a href="jan.papmeier@wiso.uni-hamburg.de">jan.papmeier@wiso.uni-hamburg.de</a>), we will enroll you asap for the hroot project.<br/><br/>
 
-© 2011-2014 Universität Hamburg'
+
+<h3>Software</h3>
+hroot is implemented with Ruby on Rails.<br/><br/>
+
+© 2011-2014 Universität Hamburg
+'
