@@ -21,6 +21,7 @@ module Hroot
     # list of supported locales
     config.locales = [:en, :de]
     config.locale_names = {:en => 'English (en)', :de => 'Deutsch (de)'}
+    config.i18n.enforce_available_locales = true
     config.i18n.default_locale = :en
     
 
