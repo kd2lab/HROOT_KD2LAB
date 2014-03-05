@@ -10,11 +10,7 @@ class SessionsController < ApplicationController
   helper_method :sort_column, :sort_direction
 
   def index
-    @ungrouped_sessions = @experiment.sessions.where(:session_group_id => nil)
-    @grouped_sessions = @experiment.sessions.where("session_group_id IS NOT NULL").group_by{|s| s.session_group_id}
-    @session_groups = @experiment.session_groups
-    #Leave a blank first element so indexes match up with ids.
-    @human_to_database_group_ids = Array.new(@session_groups.size()+1)
+    @ungrouped_sessions = @experiment.sessions.where(:session_group_id => nil) 
   end
 
   def show

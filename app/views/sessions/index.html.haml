@@ -18,13 +18,10 @@
 - if current_user.has_right?(@experiment, 'manage_sessions')
   = link_to t('sessions.new_session_link'), new_experiment_session_path(@experiment), :class => "btn btn-primary"
 
-//= @ungrouped_sessions.inspect
-//= @grouped_sessions.inspect
-//= @session_groups.inspect
+%br
+%br
 
 - if (@experiment.session_groups.size > 0)
-  %br
-  %br
   Group mode:
   .btn-group
     - mode = @experiment.session_groups.first.signup_mode
@@ -35,14 +32,6 @@
   %br
   %br
 
-//TODO extra loop seems like a messy solution, could eliminate at bane of more database calls.
-//TODO make these ruby comments..
-//Populate map.
-- human_friendly_group_id = 0
-- @grouped_sessions.each do |group, sessions|
-  -@human_to_database_group_ids[human_friendly_group_id += 1] = group
-
-
 %h4
   Ungrouped sessions
 
@@ -51,13 +40,12 @@
   - @ungrouped_sessions.each do |session|
     = render :partial => 'line', :locals => {:session => session, :human_friendly_group_id => human_friendly_group_id += 1}
 
-- @grouped_sessions.each do |group, sessions|
+- @experiment.session_groups.each_with_index do |group, i|
 
   %h4
     Group
-
+    = i+1
   %table.table
-    - sessions.each do |session|
+    - group.sessions.each do |session|
       = render :partial => 'line', :locals => {:session => session}
 
-//= @human_to_database_group_ids.inspect
