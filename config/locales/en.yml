@@ -428,12 +428,10 @@ en:
 
     mode:
       participation_heading: Participation Rule
-      singular: Singular
-      random: Randomised
-      all: All
-      explanation1: TODO summerise normal sesson.
-      explanation2: Users are randomly placed within a session in a selected group.
-      explanation3: Users attend all sessions within a group.
+      mode1: Randomised
+      mode2: All
+      explanation1: Users are randomly placed within a session in a selected group.
+      explanation2: Users attend all sessions within a group.
 
     line:
       participants_label: 'Participants:'
