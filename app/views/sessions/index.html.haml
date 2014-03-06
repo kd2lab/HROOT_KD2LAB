@@ -20,17 +20,20 @@
 
 %br
 %br
+%br
+%br
 
 - if (@experiment.session_groups.size > 0)
+  - mode = @experiment.session_groups.first.signup_mode
+  .info{:style => "float:right; width:300px"}
+    = t("sessions.mode.explanation#{mode}")
   Group mode:
   .btn-group
-    - mode = @experiment.session_groups.first.signup_mode
     - [SessionGroup::USER_IS_RANDOMIZED_TO_ONE_SESSION, SessionGroup::USER_VISITS_ALL_SESSIONS_OF_GROUP].each do |m|
       = link_to t('sessions.mode.mode'+m.to_s), |
         update_mode_experiment_sessions_path(@experiment, :mode => m), |
         :class => "btn btn-default #{ mode == m ? 'active' : ''}", |
         :method => :post
-  = t("sessions.mode.explanation#{mode}")
   %br
   %br
 
