@@ -27,8 +27,12 @@
             %ul.dropdown-menu
               - Rails.configuration.locales.each do |loc|
                 %li  
-                  %a{:href => dashboard_url+"?locale=#{loc}"}
-                    = Rails.configuration.locale_names[loc]
+                  - if current_user.user?
+                    %a{:href => account_url+"?locale=#{loc}"}
+                      = Rails.configuration.locale_names[loc]
+                  -else
+                    %a{:href => dashboard_url+"?locale=#{loc}"}
+                      = Rails.configuration.locale_names[loc]
             
           
       - else
