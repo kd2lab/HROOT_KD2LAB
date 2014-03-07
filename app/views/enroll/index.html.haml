@@ -10,28 +10,23 @@
 
 %h3=t '.new_enrollment'
 
-- if @available_sessions.count > 0
+- if @ungrouped_sessions.count > 0
   =t '.available_sessions'
   %br
   %br
 
+
   = form_tag enroll_confirm_path do
     
     %table.table
-      - @available_sessions.each do |s|
+      - @ungrouped_sessions.each do |s|
         %tr
           %td
-            = radio_button_tag "session", "#{s.id}" 
+            = radio_button_tag "choice", "session,#{s.id}"
           %td
             %b= s.time_str
             = s.location.name if s.location
             
-            - if s.following_sessions.count > 0
-              %br
-              - s.following_sessions.each do |f|  
-                %b= f.time_str 
-                =f.location.name if f.location
-                %br
             %br
             
             - unless s.limitations.blank?
@@ -41,14 +36,24 @@
               = s.limitations
               %br
               %br
-      
-            - if s.following_sessions.count > 0
-              .alert.alert-block
-                %b=t 'enroll.alert1' 
-                %br
-                =t 'enroll.alert2'
-                %br
-    
+          %td
+      - @session_groups.each do |group|
+        %tr
+          %td
+            = radio_button_tag "choice", "group,#{group.id}" 
+          %td
+            - group.sessions.each do |s| 
+              %b= s.time_str
+              = s.location.name if s.location
+              %br
+            %br
+          %td
+            .well
+              - if group.is_randomized?
+                If you choose this group of sessions, you will be randomly assigned to one of the sessions.
+              - else
+                If you choose this group of sessions, you will have to attend all of the sessions.
+
     = submit_tag t('.register_for_sessions'), :class => "btn btn-primary"
     
     

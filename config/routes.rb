@@ -9,8 +9,8 @@ Hroot::Application.routes.draw do
   match 'enroll', :controller => 'enroll', :action => 'index', :as => "enroll"
   post 'enroll_confirm', :controller => 'enroll', :action => 'confirm', :as => 'enroll_confirm'
   post "enroll_register", :controller => 'enroll', :action => 'register', :as => 'enroll_register'
-  match 'enroll_report/:session_id', :controller => 'enroll', :action => 'report', :as => 'enroll_report'
-  
+  match 'enroll_report_session/:session_id', :controller => 'enroll', :action => 'report_session', :as => 'enroll_report_session'
+  match 'enroll_report_group/:group_id', :controller => 'enroll', :action => 'report_group', :as => 'enroll_report_group'
 
   match 'account', :controller => 'account', :action => 'index'
   #match 'account/email', :controller => 'account', :action => 'email'

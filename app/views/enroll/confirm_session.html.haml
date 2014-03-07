@@ -5,45 +5,32 @@
       %span.divider
         >
     %li.active
-      =t '.confirm_enrollment'
+      =t 'enroll.confirm_enrollment'
 
-%h3=t '.confirm_enrollment'
+%h3=t 'enroll.confirm_enrollment'
 =t '.confirm_enrollment_question'
 %br
 %br
 
 = form_tag enroll_register_path do
-  = hidden_field_tag("session", @session.id)
+  = hidden_field_tag("choice", "session,#{@session.id}")
   
   .well
-    =t('.dates')+':'
+    =t('.date')+':'
     
     %br
     %b= @session.time_str
     = @session.location.name if @session.location
             
-    - if @session.following_sessions.count > 0
-      %br
-      - @session.following_sessions.each do |f|  
-        %b= f.time_str 
-        =f.location.name if f.location
-        %br
     %br
     
     - unless @session.limitations.blank?
       %b=t('enroll.notes')+':'
       %br
       = @session.limitations
-          
-  - if @session.following_sessions.count > 0
-    .alert.alert-block
-      %b=t 'enroll.alert1' 
-      %br
-      =t 'enroll.alert2'
-      %br
-          
+                    
   %br
   = submit_tag t('.enroll_for_sure'), :class => "btn btn-danger"
-  = t '.or'
-  = link_to t('.back'), enroll_path
+  = t 'enroll.or'
+  = link_to t('enroll.back'), enroll_path
 

@@ -3,96 +3,140 @@
 class EnrollController < ApplicationController
   authorize_resource :class => false, :except => :enroll_sign_in
   
-  before_filter :load_session_and_participation, :only => [:confirm, :register]
+  before_filter :load_session_or_group_and_participation, :only => [:confirm, :register]
   
   def index
-    @available_sessions = current_user.available_sessions
+    @ungrouped_sessions, @session_groups = current_user.available_sessions
   end
 
   def confirm
-    
+    if @session
+      render :confirm_session
+    else
+      render :confirm_group
+    end 
   end
 
-  def report
+  def report_session
     @session_participation = SessionParticipation.find_by_user_id_and_session_id(current_user.id, params[:session_id])
   end
 
+  def report_group
+    @group = SessionGroup.find(params[:group_id])
+    @session_participations = SessionParticipation.where( :user_id => current_user.id, :session_id => @group.sessions.map(&:id))
+  end
+
+
   def register
-    # create session participation if there is space (a) and user is not in the session already (b)
-    sql = <<EOSQL
-      INSERT INTO session_participations 
-      SELECT NULL, #{@session.id}, #{current_user.id}, NULL, 0, 0, 0, NOW(), NOW(), NULL, NULL 
-      FROM sessions s
-      WHERE
-        s.id = #{@session.id} AND
-        ( -- (a)
-          SELECT s.needed + s.reserve - count(sp.id) 
-          FROM session_participations sp 
-          WHERE sp.session_id = s.id
-        ) > 0 AND
-        ( -- (b)
-          SELECT count(sps.id) FROM session_participations sps
-          WHERE sps.session_id = s.id AND sps.user_id = #{current_user.id}
-        ) = 0
-EOSQL
-   
-    ActiveRecord::Base.connection.execute(sql)
-   
-    # check for result - do not use cache :-)
-    SessionParticipation.uncached do
-      @session_participation = SessionParticipation.find_by_user_id_and_session_id(current_user.id, @session.id)
-    end
+    # create session participation if there is enough space
     
-    if @session_participation
-      # success!
+    # anythinghere should not use cache and should be in one transaction
+    SessionParticipation.uncached do 
+      SessionParticipation.transaction do
+        
+        # if user wants to enroll in a single session...
+        if @session
+          # first check if there is enough space in the sessions - reload session from the database
+          session = Session.find(@session.id)
+          
+          # if there is space
+          if session.session_participations.count < session.needed + session.reserve
+            # yes there is space - put the user in the session now
+            @new_participations = [SessionParticipation.create(:session => session, :user => current_user)]
+            @sessions = [session]
+          end
+        end
+      
+        # if user wants to enroll in a group...
+        if @group
+          # first check if there is enough space in the sessions - reload sessions from the database
+          sessions = @group.sessions.includes(:session_participations)
+          
+          # randomized case
+          if @group.is_randomized?
+            # first take sessions which have space
+            sessions_with_space = sessions.select do |session|
+              session.session_participations.count < session.needed + session.reserve
+            end
 
-      # add user to all following sessions
-      sql = <<EOSQL
-      INSERT INTO session_participations 
-      SELECT NULL, s.id, #{current_user.id}, NULL, 0, 0, 0, NOW(), NOW(), NULL, NULL
-      FROM sessions s
-      WHERE
-        s.reference_session_id = #{@session.id} AND
-        s.id <> s.reference_session_id
-EOSQL
-      
-      ActiveRecord::Base.connection.execute(sql)
-      
+            # find sessionwith lowest count of participants
+            min_session = sessions_with_space.min {|s1,s2| s1.session_participations.size <=> s2.session_participations.size}
+
+            # if there is a session, put the user in
+            if min_session
+              @new_participations = [SessionParticipation.create(:session => min_session, :user => current_user)]
+              @sessions = [min_session]
+            end
+          else
+            # non randomized case - try to put the user in each session - if it fails, abort the transaction
+            @new_participations = []
+            @sessions = []
+            sessions.each do |session|
+              # if there is space
+              if session.session_participations.count < session.needed + session.reserve
+                @new_participations << SessionParticipation.create(:session => session, :user => current_user)
+                @sessions << session
+              else
+                # if one session is already full, rollback
+                raise ActiveRecord::Rollback
+              end
+            end
+          end  
+        end # if @group
+      end # transaction
+    end # uncached
+
+    # send email on success
+    if @sessions.size > 0
       # successful registration - send confirmation mail
-      subject = Task.replace(@session.experiment.confirmation_subject.to_s, current_user, nil, @session)
-      text = Task.replace(@session.experiment.confirmation_text.to_s, current_user, nil, @session)
-
-      sessionlist_de =  ([@session] + @session.following_sessions).map{|s| s.start_at.strftime("%d.%m.%Y, %H:%M") + ' - ' + s.end_at.strftime("%H:%M Uhr") + (if s.location then " (#{t('controllers.enroll.location')} #{s.location.name.chomp})" else "" end) }.join("\n")
-      sessionlist_en =  ([@session] + @session.following_sessions).map{|s| s.start_at.strftime("%Y-%m-%d, %H:%M") + ' - ' + s.end_at.strftime("%H:%M") + (if s.location then " (#{t('controllers.enroll.location')} #{s.location.name.chomp})" else "" end) }.join("\n")
       
+      # todo - which session confirmation text is used in the group case?
+      subject = "TODO"
+      text = "TODO"
+      #subject = Task.replace(@session.experiment.confirmation_subject.to_s, current_user, nil, @session)
+      #text = Task.replace(@session.experiment.confirmation_text.to_s, current_user, nil, @session)
+
+      # todo refactor this with proper i18n
+      sessionlist_de =  @sessions.map{|s| s.start_at.strftime("%d.%m.%Y, %H:%M") + ' - ' + s.end_at.strftime("%H:%M Uhr") + (if s.location then " (#{t('controllers.enroll.location')} #{s.location.name.chomp})" else "" end) }.join("\n")
+      sessionlist_en =  @sessions.map{|s| s.start_at.strftime("%Y-%m-%d, %H:%M") + ' - ' + s.end_at.strftime("%H:%M") + (if s.location then " (#{t('controllers.enroll.location')} #{s.location.name.chomp})" else "" end) }.join("\n")
+            
       text = text.to_s.mreplace([
         ["#sessionlist_de", sessionlist_de],
         ["#sessionlist_en", sessionlist_en],
         ["#sessionlist", sessionlist_de]
       ])
-      
+            
       UserMailer.email(
         subject,
         text,
         current_user.main_email,
-        @session.experiment.sender_email_or_default
+        '' # todo refactor this @session.experiment.sender_email_or_default
       ).deliver
 
-      SentMail.create(
-        :subject => subject,
-        :message => text, 
-        :from => @session.experiment.sender_email_or_default,
-        :to => current_user.main_email,
-        :message_type => UserMailer::SESSION_CONFIRMATION,
-        :user_id => current_user.id,
-        :experiment_id => @session.experiment_id,
-        :sender_id => nil,
-        :session_id => @session.id
-      )
-
+      # todo refactor this
+      #SentMail.create(
+      #  :subject => subject,
+      #  :message => text, 
+      #  :from => @session.experiment.sender_email_or_default,
+      #  :to => current_user.main_email,
+      #  :message_type => UserMailer::SESSION_CONFIRMATION,
+      #  :user_id => current_user.id,
+      #  :experiment_id => @session.experiment_id,
+      #  :sender_id => nil,
+      #  :session_id => @session.id
+      #)
     end
     
-    redirect_to enroll_report_path(:session_id => @session.id)
+    if @session
+      # show report page for successful or unsuccessful session enrollment
+      redirect_to enroll_report_session_path(:session_id => @session.id)
+    elsif @group
+      # show report page for successful or unsuccessful group enrollment
+      redirect_to enroll_report_group_path(:group_id => @group.id)
+    else
+      # no enrollment, send back to start
+      redirect_to enroll_path, :alert => t('controllers.enroll.notice_abort')
+     end 
   end
 
   def enroll_sign_in
@@ -112,22 +156,58 @@ EOSQL
 
 protected
 
-  def load_session_and_participation
-    @session = Session.find_by_id(params[:session])
+  def load_session_or_group_and_participation
+    ungrouped_sessions, session_groups = current_user.available_sessions
+
+    # user has chosen a session?
+    choice, id = params[:choice].split(',')
+
+    if choice == 'session'
+      # user has picked session, load it
+      @session = Session.find_by_id(id.to_i)
     
-    unless @session
+      # check if it exists
+      unless @session
+        redirect_to enroll_path
+        return 
+      end
+    
+      # check that user is not already participating in that sessino
+      @session_participation = SessionParticipation.find_by_user_id_and_session_id(current_user.id, @session.id)
+      if @session_participation
+        redirect_to enroll_path
+        return
+      end
+    
+      # check again if this session is available to enroll
+      unless ungrouped_sessions.include?(@session)
+        redirect_to enroll_path, :alert => t('controllers.enroll.notice_abort')
+        return
+      end
+    elsif choice =='group'
+      # user has picked a session group, load it together with its sessions
+      @group = SessionGroup.where(:id => id.to_i).includes(:sessions).first
+
+      # check if this was successfull
+      unless @group
+        redirect_to enroll_path
+        return 
+      end
+    
+      # ensure that user is not participant in any of the sessions of this group
+      @session_participations = SessionParticipation.where(:user_id => current_user.id).where(:session_id => @group.sessions.collect(&:id)).count
+      if @session_participations > 0
+        redirect_to enroll_path
+        return
+      end
+    
+      # check again if this session group is available to enroll
+      unless session_groups.include?(@group)
+        redirect_to enroll_path, :alert => t('controllers.enroll.notice_abort')
+        return
+      end
+    else
       redirect_to enroll_path
-      return 
-    end
-    
-    @session_participation = SessionParticipation.find_by_user_id_and_session_id(current_user.id, @session.id)
-    if @session_participation
-      redirect_to enroll_path
-      return
-    end
-    
-    unless current_user.available_sessions.include?(@session)
-      redirect_to enroll_path, :alert => t('controllers.enroll.notice_abort')
       return
     end
   end

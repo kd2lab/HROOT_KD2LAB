@@ -238,30 +238,46 @@ en:
       newest_tags: Newest tags
 
   enroll:
-    alert1: experiment with following sessions
-    alert2: This experiment has following sessions. Please check, if you can participate in all sessions of this experiment.
+    confirm_enrollment: Confirm experiment registration
+    dates: session date and time
+    enroll_for_sure: Register for session
+    or: or
+    back: back
 
     index:
       new_enrollment: Register for experiment sessions
       available_sessions: 'You can register for the following sessions:'
       no_sessions_available: No sessions currently available.
       register_for_sessions: Register
-    confirm:
-      confirm_enrollment: Confirm experiment registration
-      confirm_enrollment_question: Do you really want to register for the selected sessions?
-      dates: session date and time
+    confirm_session:
+      date: Session date and time
       enroll_for_sure: Register for session
-      or: or
-      back: back
-    report:
+      confirm_enrollment_question: Do you really want to register for the selected sessions?
+    confirm_group:
+      dates: Session dates and times
+      enroll_for_sure: Register for sessions
+      confirm_enrollment_question_randomized_html: "Do you really want to register for one the selected sessions?<br/><br/> If you do, you will be <b>randomly assigned to one</b> of the sessions."
+      confirm_enrollment_question_all_html: "Do you really want to register for the selected sessions?<br/><br/> If you do, you have to <b>participate in all sessions</b>."
+    report_session:
       register_done: Result of session registration
       success: Your session registration was successfull.
       failure: Your session registration was NOT successfull.
       failure_reason_html: "There are several possible reasons - maybe the last seat was just taken, or the registration period has ended.<br/><br/>Contact the lab for more information."
-      session_overview: "You have registered for the following sessions:"
-      sent_confirmation_mail: A confirmation email was juset sent to you.
+      session_overview: "You have registered for the following session:"
+      sent_confirmation_mail: A confirmation email was just sent to you.
       more_sessions: Register for sessions in other experiments
       back_to_account: Back to main page
+    report_group:
+      register_done: Result of session registration
+      success: Your session registration was successfull.
+      failure: Your session registration was NOT successfull.
+      failure_reason_html: "There are several possible reasons - maybe the last seat was just taken, or the registration period has ended.<br/><br/>Contact the lab for more information."
+      session_overview_randomized: "You have been randomly assigned to the following session:"
+      session_overview_all: "You have registered for the following sessions:"
+      sent_confirmation_mail: A confirmation email was just sent to you.
+      more_sessions: Register for sessions in other experiments
+      back_to_account: Back to main page
+
   options:
     tabs:
       general: Options

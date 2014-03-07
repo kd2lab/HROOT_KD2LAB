@@ -23,13 +23,6 @@
     %b= s.time_str
     = s.location.name if s.location
             
-    - if s.following_sessions.count > 0
-      %br
-      - s.following_sessions.each do |f|  
-        %b= f.time_str 
-        =f.location.name if f.location
-        %br
-  
   %br
   %br
   %p
@@ -45,7 +38,8 @@
   %br
   
 %br
--  if current_user.available_sessions.count > 0
+- sessions, groups = current_user.available_sessions
+- if sessions.size > 0 || groups.size > 0
   = link_to t('.more_sessions'), enroll_path, :class => 'btn btn-primary'
   
 = link_to t('.back_to_account'), account_path, :class => 'btn'

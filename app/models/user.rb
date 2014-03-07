@@ -119,7 +119,6 @@ FROM
 WHERE
   experiments.registration_active=1 AND              
   sessions.experiment_id = experiments.id AND
-  sessions.id = sessions.reference_session_id AND
   participations.user_id = #{self.id} AND
   participations.experiment_id = experiments.id AND
   start_at > NOW() AND
@@ -158,7 +157,30 @@ EOSQL
     end  
 
     sessions_after_exclusion
+
+    # split up - ungrouped sessions and grouped sessions
+    ungrouped_sessions, grouped_sessions = sessions_after_exclusion.partition do |s| s.session_group_id.nil? end
+
+
+    # post processing on grouped sessions - only keep groups, where all sessions in the group are eligable for enrollment
+
+    # count number of sessions per group result will be a hash like {nil=>9, 10=>2, 100=>3}  (session_group_id => number of sessions)
+    # but first, only do that for relevant group ids
+    group_ids = grouped_sessions.collect do |s| s.session_group_id end
+    group_counts = Session.where(:session_group_id => group_ids).group(:session_group_id).count
+
+    # filter out groups where ALL sesssions are in sessions_after_exclusion
+    final_grouped_sessions = grouped_sessions.group_by{|s| s.session_group_id}.select do |group_id, sessions|
+      !group_id.nil? && sessions.size == group_counts[group_id]
+    end
+
+    # now we know the ids of the groups available to the user, we now load the SessionGroups together with their sessions
+    session_groups = SessionGroup.where(:id => final_grouped_sessions.keys.uniq).includes(:sessions).order('sessions.start_at')
+
+
+    return ungrouped_sessions, session_groups
   end
+
   
   def self.update_noshow_calculation(ids = nil)
     sql = <<EOSQL

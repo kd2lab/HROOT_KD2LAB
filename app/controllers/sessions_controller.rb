@@ -22,7 +22,6 @@ class SessionsController < ApplicationController
     @session.start_at = Time.zone.parse "#{Date.today} 10:00"
     @session.end_at = @session.start_at + 90.minutes
 
-    @session.reference_session_id ||= params[:reference_session_id]
   end
 
   def parse_date_and_time_params
@@ -52,12 +51,6 @@ class SessionsController < ApplicationController
     @session.reminder_text = Settings.reminder_text
 
     if @session.save
-      if (@session.id != @session.reference_session_id)
-        # copy session participants to following session
-        @session.reference_session.session_participations.each do |sp|
-          SessionParticipation.create(:session => @session, :user => sp.user)
-        end
-      end
       redirect_to experiment_sessions_path(@experiment), :notice => t('controllers.sessions.notice_new_session')
     else
       render :action => "new"

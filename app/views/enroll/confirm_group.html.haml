@@ -1,0 +1,33 @@
+= content_for :breadcrumb do
+  %ul.breadcrumb
+    %li
+      =link_to t('login_area'), :controller => "account", :action => "index"
+      %span.divider
+        >
+    %li.active
+      =t 'enroll.confirm_enrollment'
+
+%h3=t 'enroll.confirm_enrollment'
+
+= if @group.is_randomized? then t '.confirm_enrollment_question_randomized_html' else t '.confirm_enrollment_question_all_html' end
+  
+%br
+%br
+
+= form_tag enroll_register_path do
+  = hidden_field_tag("choice", "group,#{@group.id}" )
+  
+  .well
+    =t('.dates')+':'
+    
+    %br
+    - @group.sessions.each do |s| 
+      %b= s.time_str
+      = s.location.name if s.location
+      %br
+                
+  %br
+  = submit_tag t('.enroll_for_sure'), :class => "btn btn-danger"
+  = t 'enroll.or'
+  = link_to t('enroll.back'), enroll_path
+

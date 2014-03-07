@@ -24,7 +24,8 @@
     
 .well
   %h3=t('.available_registrations')
-  - if current_user.available_sessions.count > 0
+  - sessions, groups = current_user.available_sessions
+  - if sessions.size > 0 || groups.size > 0
     =t('.available_registrations_text')
     %br
     %br
@@ -35,7 +36,7 @@
 .well
   %h3= t('.current_sessions')
 
-  - @session_participations_in_the_future = current_user.session_participations.includes(:session).where("sessions.start_at > NOW() AND sessions.reference_session_id = sessions.id").order('start_at ASC')
+  - @session_participations_in_the_future = current_user.session_participations.includes(:session).where("sessions.start_at > NOW()").order('start_at ASC')
   - if @session_participations_in_the_future.count > 0
     = t('.current_sessions_text')
     %br
@@ -47,12 +48,6 @@
             = sp.session.time_str
             = sp.session.location.name if sp.session.location
             %br
-            
-            - sp.session.following_sessions.each do |f|  
-              = f.time_str 
-              = f.location.name if f.location
-              %br
-          
           
   - else
     = t('.no_current_sessions_text')

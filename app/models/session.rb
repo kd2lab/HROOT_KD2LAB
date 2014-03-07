@@ -22,17 +22,10 @@ class Session < ActiveRecord::Base
     where("end_at < NOW()")
   }
   
+  #todo remove
   scope :main_sessions, lambda { 
-    where("sessions.reference_session_id = sessions.id")
+    where("sessions.refertoence_session_id = sessions.id")
   }
-  
-  after_create :set_defaults
-  def set_defaults
-    unless reference_session_id
-      self.reference_session_id = self.id
-      self.save
-    end
-  end
   
   def self.session_times
     (0..23).to_a.product(["00","15","30","45"]).collect{|t| ("%02d:%02d" % t)}
@@ -88,14 +81,17 @@ class Session < ActiveRecord::Base
     start_at.strftime("%Y-%m-%d_%H%M")
   end
 
+  # todo remove
   def following_sessions
     Session.where(["experiment_id = ? AND reference_session_id = ? AND id <> reference_session_id", self.experiment_id, self.id]).order('start_at').all
   end
   
+  # todo remove
   def reference_session
     Session.find_by_id reference_session_id
   end
   
+  # todo remove
   def alternative_sessions
     Session.main_sessions.where(["sessions.experiment_id = ?", experiment_id])
       .where(["sessions.id <> ?", reference_session_id])

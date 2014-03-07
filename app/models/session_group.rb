@@ -5,4 +5,8 @@ class SessionGroup < ActiveRecord::Base
   belongs_to :experiment
   has_many :sessions, :dependent => :nullify
 
+  def is_randomized?
+  	signup_mode == USER_IS_RANDOMIZED_TO_ONE_SESSION
+  end
+
 end
