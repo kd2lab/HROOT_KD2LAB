@@ -89,12 +89,11 @@ class EnrollController < ApplicationController
     # send email on success
     if @sessions.size > 0
       # successful registration - send confirmation mail
-      
-      # todo - which session confirmation text is used in the group case?
-      subject = "TODO"
-      text = "TODO"
-      #subject = Task.replace(@session.experiment.confirmation_subject.to_s, current_user, nil, @session)
-      #text = Task.replace(@session.experiment.confirmation_text.to_s, current_user, nil, @session)
+      @first = @sessions.first
+      e = @first.experiment
+
+      subject = Task.replace(e.confirmation_subject.to_s, current_user, nil, @first)
+      text = Task.replace(e.confirmation_text.to_s, current_user, nil, @first)
 
       # todo refactor this with proper i18n
       sessionlist_de =  @sessions.map{|s| s.start_at.strftime("%d.%m.%Y, %H:%M") + ' - ' + s.end_at.strftime("%H:%M Uhr") + (if s.location then " (#{t('controllers.enroll.location')} #{s.location.name.chomp})" else "" end) }.join("\n")
@@ -110,21 +109,20 @@ class EnrollController < ApplicationController
         subject,
         text,
         current_user.main_email,
-        '' # todo refactor this @session.experiment.sender_email_or_default
+        e.sender_email_or_default
       ).deliver
 
-      # todo refactor this
-      #SentMail.create(
-      #  :subject => subject,
-      #  :message => text, 
-      #  :from => @session.experiment.sender_email_or_default,
-      #  :to => current_user.main_email,
-      #  :message_type => UserMailer::SESSION_CONFIRMATION,
-      #  :user_id => current_user.id,
-      #  :experiment_id => @session.experiment_id,
-      #  :sender_id => nil,
-      #  :session_id => @session.id
-      #)
+      SentMail.create(
+        :subject => subject,
+        :message => text, 
+        :from => e.sender_email_or_default,
+        :to => current_user.main_email,
+        :message_type => UserMailer::SESSION_CONFIRMATION,
+        :user_id => current_user.id,
+        :experiment_id => e.id,
+        :sender_id => nil,
+        :session_id => @first
+      )
     end
     
     if @session

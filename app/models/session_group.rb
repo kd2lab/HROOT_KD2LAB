@@ -3,7 +3,7 @@ class SessionGroup < ActiveRecord::Base
   USER_VISITS_ALL_SESSIONS_OF_GROUP = 2
   
   belongs_to :experiment
-  has_many :sessions, :dependent => :nullify
+  has_many :sessions, :order => 'start_at', :dependent => :nullify
 
   def is_randomized?
   	signup_mode == USER_IS_RANDOMIZED_TO_ONE_SESSION
