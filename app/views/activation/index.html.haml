@@ -12,5 +12,16 @@
   = f.input :password
   = f.input :password_confirmation, :hint => t('.password_hint')
   %br
+  - CUSTOM_FIELDS.required.each do |field|
+    = field.add_to_form(f)
+  
+  %hr
+  =t 'devise.registrations.new.optional_data'
+  %br
+  %br
+  - CUSTOM_FIELDS.optional.each do |field|
+    = field.add_to_form(f, :hint => false)
+
+
   = f.submit t('.save_and_activate_link'), :class => "btn btn-primary"
 

@@ -23,10 +23,8 @@ class ActivationController < ApplicationController
         
     # if we get here, we can use the password
     if params[:user]
-      @activation_user.password = params[:user][:password]
-      @activation_user.password_confirmation = params[:user][:password_confirmation]
       
-      if @activation_user.save
+      if @activation_user.update_attributes(params[:user])
         @activation_user.activated_after_import = true
         @activation_user.import_token = nil
         
@@ -51,9 +49,8 @@ class ActivationController < ApplicationController
         new_email = params[:user][:email]
         
         unless User.find_by_email (new_email)
-          @activation_user.import_email = new_email
-          @activation_user.import_email_confirmation_token = SecureRandom.hex(16)
-          @activation_user.save
+          @activation_user.update_attribute(:import_email, new_email)
+          @activation_user.update_attribute(:import_email_confirmation_token, SecureRandom.hex(16))
           UserMailer.import_email_confirmation(@activation_user).deliver
           redirect_to({:action => :email_delivered}, :notice => t('controllers.activation.notice_email_sent'))
           return
