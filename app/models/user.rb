@@ -39,7 +39,13 @@ class User < ActiveRecord::Base
   def is_not_admin_update?
     !admin_update
   end
-  
+
+  # flag for validation of custom fields
+  attr_accessor :skip_validation_of_customfields
+  def validate_customfields?
+    !skip_validation_of_customfields
+  end
+
   def self.roles
     %w[user experimenter admin]
   end
