@@ -905,6 +905,7 @@ en:
       removed_from_group:  Session removed from group.
       added_to_group:  Session added to group.
       notice_saved_changes: Session changes have been saved.
+      notice_cannot_merge_into_group_existing_participants: "Grouping not possible, session has participants."
     users:
       notice_mailqueue:  Messages have been queued.
       notice_mailqueue_activation:  Activation messages have been queued.
@@ -995,7 +996,7 @@ Phone: +49 – (0) 40 - 42 83 8 - 37 59<br/>
 We need a postal address to send you back the contract and we need an email address, to send you login and password for downloading hroot.<br/><br/>
 
 hroot is created in a collaborative process and is constantly improved by its users. In order to ease and enhance the cooperation of all interested users of hroot we have set up a GitHub platform in the Internet (<a href="https://github.com">https://github.com</a>). There you will always find the latest version of hroot, as well as a wiki with a detailed installation guide. In GitHub you may also report errors to us. Especially it is possible to document your changes of the hroot code on this collaborative project site, so that the improvements of individual users are quickly available to all other licensees.<br/><br/>
- 
+
 For licensees: In order to obtain the software via the GitHub platform, please register for a (free) user account on <a href="https://github.com">https://github.com</a>. You will immediately receive your own GitHub-User-ID there. If you then simply tell us your GitHub username (e-mail: <a href="jan.papmeier@wiso.uni-hamburg.de">jan.papmeier@wiso.uni-hamburg.de</a>), we will enroll you asap for the hroot project.<br/><br/>
 
 

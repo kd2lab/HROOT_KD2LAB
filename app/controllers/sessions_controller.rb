@@ -10,7 +10,7 @@ class SessionsController < ApplicationController
   helper_method :sort_column, :sort_direction
 
   def index
-    @ungrouped_sessions = @experiment.sessions.where(:session_group_id => nil) 
+    @ungrouped_sessions = @experiment.sessions.where(:session_group_id => nil)
   end
 
   def show
@@ -96,9 +96,14 @@ class SessionsController < ApplicationController
 
   def add_to_group
     # unset session_group_id
-    @session.update_attribute(:session_group_id, params[:target])
+    if @session.session_participations.count == 0
+      @session.update_attribute(:session_group_id, params[:target])
+      redirect_to experiment_sessions_path(@experiment), :notice => t('controllers.sessions.added_to_group')
+    else
+      redirect_to experiment_sessions_path(@experiment), :alert => t('controllers.sessions.notice_cannot_merge_into_group_existing_participants')
+    end
 
-    redirect_to experiment_sessions_path(@experiment), :notice => t('controllers.sessions.added_to_group')
+
   end
 
   def edit
