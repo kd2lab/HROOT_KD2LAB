@@ -1,0 +1,60 @@
+min_session could be multiple
+internationalisation
+
+CORRECT MODE ON NEW GROUP
+New group -> handle mode
+Correct mode on new group. (Based on the .first of current group_sessions).
+
+John: Works when first session already exists, but not if it's the first session to be grouped.
+Ingmar: Hide group buttons, use default modal value.
+
+RESTRICT GROUPING
+Restrict grouping of sessions to those with 0 participants
+    When merging two single sessions into group.
+
+session_controller
+Restrict grouping
+    eliminate option
+    raise error (controller -> create_group_with) if one user in one session. (is participations.invited_at)
+
+Need to test 
+
+John: Could go two ways, eliminate option or raise error once attempted.
+Ingmar: Both ftw.
+
+Notes: 
+Testing: User -> Available sessions 
+
+BUG:
+Cannot enrolling if one of the sessoins in group is full.
+
+TRANSLATIONS
+Translation of explanations.
+Formatting of explanations.
+Add translations for mode descriptions.
+
+CHATTER: Appropriate description for normal sessions?
+
+ASTHETICS
+Fancy style for modal description
+
+
+ENROL
+    index
+    confirm
+    Recode presentation of enrol:
+        index
+        confirm
+    
+    random
+        Session with least
+        if more than one, random.
+
+SESSION/PARTICIPANTS
+    moving
+    removing
+
+    if user moved to new group:
+            randomised: pick session
+            all: move to all sessions.
+            all -> seperate; remove from all sessions into seperate session.
