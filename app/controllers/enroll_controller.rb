@@ -73,8 +73,8 @@ class EnrollController < ApplicationController
 
             # if there is a session, put the user in
             if picked_session
-              @new_participations = [SessionParticipation.create(:session => min_session, :user => current_user)]
-              @sessions = [min_session]
+              @new_participations = [SessionParticipation.create(:session => picked_session, :user => current_user)]
+              @sessions = [picked_session]
             end
           else
             # non randomized case - try to put the user in each session - if it fails, abort the transaction
