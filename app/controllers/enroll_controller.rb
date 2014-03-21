@@ -63,9 +63,16 @@ class EnrollController < ApplicationController
 
             # find sessionwith lowest count of participants
             min_session = sessions_with_space.min {|s1,s2| s1.session_participations.size <=> s2.session_participations.size}
+            size_of_min_session = min_session.session_participations.size
+
+            min_sessions = sessions.select do |session| 
+              session.session_participations.size == min_session.session_participations.size
+            end
+
+            picked_session = min_sessions.shuffle.first
 
             # if there is a session, put the user in
-            if min_session
+            if picked_session
               @new_participations = [SessionParticipation.create(:session => min_session, :user => current_user)]
               @sessions = [min_session]
             end
