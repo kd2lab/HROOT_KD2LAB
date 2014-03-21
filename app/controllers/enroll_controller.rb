@@ -31,6 +31,8 @@ class EnrollController < ApplicationController
     # create session participation if there is enough space
     
     # anythinghere should not use cache and should be in one transaction
+    @sessions = []
+
     SessionParticipation.uncached do 
       SessionParticipation.transaction do
         
@@ -78,6 +80,7 @@ class EnrollController < ApplicationController
                 @sessions << session
               else
                 # if one session is already full, rollback
+                @sessions = []
                 raise ActiveRecord::Rollback
               end
             end
@@ -123,18 +126,18 @@ class EnrollController < ApplicationController
         :sender_id => nil,
         :session_id => @first
       )
-    end
-    
-    if @session
-      # show report page for successful or unsuccessful session enrollment
-      redirect_to enroll_report_session_path(:session_id => @session.id)
-    elsif @group
-      # show report page for successful or unsuccessful group enrollment
-      redirect_to enroll_report_group_path(:group_id => @group.id)
     else
-      # no enrollment, send back to start
-      redirect_to enroll_path, :alert => t('controllers.enroll.notice_abort')
-     end 
+      if @session
+        # show report page for successful or unsuccessful session enrollment
+        redirect_to enroll_report_session_path(:session_id => @session.id)
+      elsif @group
+        # show report page for successful or unsuccessful group enrollment
+        redirect_to enroll_report_group_path(:group_id => @group.id)
+      else
+        # no enrollment, send back to start
+        redirect_to enroll_path, :alert => t('controllers.enroll.notice_abort')
+      end
+    end 
   end
 
   def enroll_sign_in
