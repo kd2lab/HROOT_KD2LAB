@@ -133,17 +133,17 @@ class EnrollController < ApplicationController
         :sender_id => nil,
         :session_id => @first
       )
+    end
+      
+    if @session
+      # show report page for successful or unsuccessful session enrollment
+      redirect_to enroll_report_session_path(:session_id => @session.id)
+    elsif @group
+      # show report page for successful or unsuccessful group enrollment
+      redirect_to enroll_report_group_path(:group_id => @group.id)
     else
-      if @session
-        # show report page for successful or unsuccessful session enrollment
-        redirect_to enroll_report_session_path(:session_id => @session.id)
-      elsif @group
-        # show report page for successful or unsuccessful group enrollment
-        redirect_to enroll_report_group_path(:group_id => @group.id)
-      else
-        # no enrollment, send back to start
-        redirect_to enroll_path, :alert => t('controllers.enroll.notice_abort')
-      end
+      # no enrollment, send back to start
+      redirect_to enroll_path, :alert => t('controllers.enroll.notice_abort')
     end 
   end
 
