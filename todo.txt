@@ -27,6 +27,7 @@ Testing: User -> Available sessions
 
 BUG:
 Cannot enrolling if one of the sessoins in group is full.
+    User -> Avaiable Sessions
 
 TRANSLATIONS
 Translation of explanations.
