@@ -66,7 +66,7 @@ class EnrollController < ApplicationController
             size_of_min_session = min_session.session_participations.size
 
             min_sessions = sessions.select do |session| 
-              session.session_participations.size == min_session.session_participations.size
+              session.session_participations.size == size_of_min_session
             end
 
             picked_session = min_sessions.shuffle.first
