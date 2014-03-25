@@ -140,6 +140,10 @@ EOSQL
     return id != reference_session_id
   end
 
+  def has_no_participants
+    return session_participations.count == 0
+  end
+
   def path
     File.join(Rails.configuration.upload_dir, 'experiments', experiment.id.to_s, "session__#{id}")
   end

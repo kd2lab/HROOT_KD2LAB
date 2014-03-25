@@ -58,18 +58,23 @@ class SessionsController < ApplicationController
   end
 
   def create_group_with
-    # group current session session 'target' together
-    session_group = SessionGroup.create(:experiment_id => @experiment.id)
-    @session.update_attribute(:session_group_id, session_group.id)
-    Session.find_by_id(params[:target]).update_attribute(:session_group_id, session_group.id)
+    #Check both sessions lack participants.
+    @secondSession = Session.find_by_id(params[:target])
+    if @session.has_no_participants && @secondSession.has_no_participants
+      # group current session session 'target' together
+      session_group = SessionGroup.create(:experiment_id => @experiment.id)
+      @session.update_attribute(:session_group_id, session_group.id)
+      @secondSession.update_attribute(:session_group_id, session_group.id)
 
-    # Assign the signup mode of current groups to the new group.
-    session_group_signup_mode = @experiment.session_groups.first.signup_mode
-    session_group.update_attribute(:signup_mode, session_group_signup_mode)
-    #TODO What if no groups exist?
+      # Assign the signup mode of current groups to the new group.
+      session_group_signup_mode = @experiment.session_groups.first.signup_mode
+      session_group.update_attribute(:signup_mode, session_group_signup_mode)
+      #TODO What if no groups exist?
 
-
-    redirect_to experiment_sessions_path(@experiment), :notice => t('controllers.sessions.group_created')
+      redirect_to experiment_sessions_path(@experiment), :notice => t('controllers.sessions.group_created')
+    else
+      redirect_to experiment_sessions_path(@experiment), :alert => t('controllers.sessions.notice_cannot_create_group_existing_participants')
+    end
   end
 
   def update_mode
@@ -96,7 +101,7 @@ class SessionsController < ApplicationController
 
   def add_to_group
     # unset session_group_id
-    if @session.session_participations.count == 0
+    if @session.has_no_participants
       @session.update_attribute(:session_group_id, params[:target])
       redirect_to experiment_sessions_path(@experiment), :notice => t('controllers.sessions.added_to_group')
     else
