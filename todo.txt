@@ -28,9 +28,6 @@ BUG:
 Cannot enrol if one of the sessoins in group is full.
     User -> Avaiable Sessions
 
-ASTHETICS
-Fancy style for modal description
-
 ENROL
     index
     confirm
@@ -45,7 +42,7 @@ ENROL
 SESSION/PARTICIPANTS
     moving
     removing
-        Removing participants doesn't work (Not sure if this is known)
+        Removing participants doesn't work IF participant has enrolled (Not sure if this is known)
 
     if user moved to new group:
             randomised: pick session

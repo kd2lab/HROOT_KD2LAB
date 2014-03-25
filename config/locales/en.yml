@@ -249,6 +249,8 @@ en:
       available_sessions: 'You can register for the following sessions:'
       no_sessions_available: No sessions currently available.
       register_for_sessions: Register
+      random_choice_desc: If you choose this group of sessions, you will be randomly assigned to one of the sessions.
+      all_choice_desc: If you choose this group of sessions, you will have to attend all of the sessions.
     confirm_session:
       date: Session date and time
       enroll_for_sure: Register for session

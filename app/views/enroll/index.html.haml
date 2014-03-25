@@ -17,7 +17,8 @@
 
 
   = form_tag enroll_confirm_path do
-    
+
+    -#todo this menu currently returns "no sessions currently available" if all grouped sessions.
     %table.table
       - @ungrouped_sessions.each do |s|
         %tr
@@ -26,12 +27,12 @@
           %td
             %b= s.time_str
             = s.location.name if s.location
-            
+
             %br
-            
+
             - unless s.limitations.blank?
               %b
-                =t('enroll.notes')+':' 
+                =t('enroll.notes')+':'
               %br
               = s.limitations
               %br
@@ -40,9 +41,9 @@
       - @session_groups.each do |group|
         %tr
           %td
-            = radio_button_tag "choice", "group,#{group.id}" 
+            = radio_button_tag "choice", "group,#{group.id}"
           %td
-            - group.sessions.each do |s| 
+            - group.sessions.each do |s|
               %b= s.time_str
               = s.location.name if s.location
               %br
@@ -50,13 +51,13 @@
           %td
             .well
               - if group.is_randomized?
-                If you choose this group of sessions, you will be randomly assigned to one of the sessions.
+                = t '.random_choice_desc'
               - else
-                If you choose this group of sessions, you will have to attend all of the sessions.
+                = t '.all_choice_desc'
 
     = submit_tag t('.register_for_sessions'), :class => "btn btn-primary"
-    
-    
-- else    
+
+
+- else
   =t '.no_sessions_available'
-  
+

@@ -139,6 +139,7 @@ class SessionsController < ApplicationController
   def duplicate
     @session = Session.find(params[:id])
     @new_session = Session.new(@session.attributes)
+    #todo remove once follow up session factored out.
     if @session.id == @session.reference_session_id
       @new_session.reference_session_id = nil
     end
