@@ -1,16 +1,10 @@
 min_session could be multiple
 internationalisation
 
-CORRECT MODE ON NEW GROUP
-New group -> handle mode
-Correct mode on new group. (Based on the .first of current group_sessions).
-
-John: Works when first session already exists, but not if it's the first session to be grouped.
-Ingmar: Hide group buttons, use default modal value.
-
 Chatter for next time:
 John: Should we allow merging of a group if participants already exist? (Prob user specified)
 John: If a session has participants should we prevent it being removed from a group? (Prob user specified)
+John: I've placed default mode inside of Session_Group model, best place?
 
 Need to automatically test 
     Restrict grouping
@@ -21,26 +15,21 @@ Need to automatically test
             Ensure error is thrown on attempt to add two sessions together when one or more has participants
             Ensure error is thrown on attempt to add session with participants to group.
 
-John: Could go two ways, eliminate option or raise error once attempted.
-Ingmar: Both ftw.
-
-Notes: 
-Testing: User -> Available sessions 
+    Correct mode on new group
+        views
+            that modal buttons don't appear when no groups in session.
+        controllers
+            that the first created group in a session has the default mode.
+            That clicking a modal button changes the status of all tests.
+            That the second created group in a session has the mode of the first.
+            (This seems largely sequential)
 
 BUG:
-Cannot enrolling if one of the sessoins in group is full.
+Cannot enrol if one of the sessoins in group is full.
     User -> Avaiable Sessions
-
-TRANSLATIONS
-Translation of explanations.
-Formatting of explanations.
-Add translations for mode descriptions.
-
-CHATTER: Appropriate description for normal sessions?
 
 ASTHETICS
 Fancy style for modal description
-
 
 ENROL
     index

@@ -66,10 +66,15 @@ class SessionsController < ApplicationController
       @session.update_attribute(:session_group_id, session_group.id)
       @secondSession.update_attribute(:session_group_id, session_group.id)
 
-      # Assign the signup mode of current groups to the new group.
-      session_group_signup_mode = @experiment.session_groups.first.signup_mode
-      session_group.update_attribute(:signup_mode, session_group_signup_mode)
-      #TODO What if no groups exist?
+      # No groups? use default mode.
+      if session_group.count == 0
+        #Could let database handle this but makes it tough to have user defined settings.
+        session_group.update_attribute(:signup_mode, SessionGroup::DEFAULT_SIGNUP_MODE)
+      else
+        # Assign the signup mode of current groups to the new group.
+        session_group_signup_mode = @experiment.session_groups.first.signup_mode
+        session_group.update_attribute(:signup_mode, session_group_signup_mode)
+      end
 
       redirect_to experiment_sessions_path(@experiment), :notice => t('controllers.sessions.group_created')
     else
@@ -144,6 +149,7 @@ class SessionsController < ApplicationController
   def destroy
 
     # only delete sessions without subsessions and without participants
+    #todo remove once following_sessions factored out.
     if @session
       if @session.following_sessions.count > 0
         message = t('controllers.sessions.notice_cant_delete_following')
