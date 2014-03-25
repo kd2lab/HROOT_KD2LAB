@@ -9,22 +9,24 @@
 
 - if current_user.show_greeting
   .alert.alert-success
-  
+
     %h3= t('.welcome')
     %br
     - if Settings.welcome_text
       = Settings.welcome_text[I18n.locale.to_s]
     %br
     %br
-    
+
 - if @experiment
   .well
     %h3=t('.referral_invitation')
     %p=t('.referral_invitation_html')
-    
+
 .well
   %h3=t('.available_registrations')
   - sessions, groups = current_user.available_sessions
+  = sessions.inspect
+  = groups.inspect
   - if sessions.size > 0 || groups.size > 0
     =t('.available_registrations_text')
     %br
@@ -32,7 +34,7 @@
     = link_to t('.enroll_now_button'), enroll_path, :class => "btn btn-primary"
   - else
     =t('.currently_no_sessions')
-  
+
 .well
   %h3= t('.current_sessions')
 
@@ -48,7 +50,7 @@
             = sp.session.time_str
             = sp.session.location.name if sp.session.location
             %br
-          
+
   - else
     = t('.no_current_sessions_text')
-    
+

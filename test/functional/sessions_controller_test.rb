@@ -12,6 +12,23 @@ class SessionsControllerTest < ActionController::TestCase
       setup do
       end
 
+      context "changing signup mode" do
+        setup do
+          (1...3).each do |n|
+             FactoryGirl.create(:future_session_group, :experiment => @experiment)
+          end
+          @session_groups = SessionGroup.where(:experiment_id => @experiment.id)
+        end
+        should "change signup mode for all sessions" do
+          post :update_mode, :experiment_id => @experiment.id, :mode => SessionGroup::USER_VISITS_ALL_SESSIONS_OF_GROUP
+          @session_groups.each do | session_group |
+            assert_equal(session_group.signup_mode, SessionGroup::USER_VISITS_ALL_SESSIONS_OF_GROUP)
+          end
+
+          assert_response :redirect
+        end
+      end
+
       context "deleting from a two session group" do
         setup do
         @session_group_with_two_sessions = FactoryGirl.create(:future_session_group, :experiment => @experiment)
@@ -21,7 +38,7 @@ class SessionsControllerTest < ActionController::TestCase
             delete :remove_from_group, :id => @session_group_with_two_sessions.sessions.first.id, :experiment_id => @experiment.id
           end
 
-        assert_response :redirect
+          assert_response :redirect
         end
       end
 
