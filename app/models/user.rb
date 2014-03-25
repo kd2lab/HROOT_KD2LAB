@@ -112,6 +112,10 @@ class User < ActiveRecord::Base
     # - user must not have chosen another session from the same experiment
     # - session must be in the future
 
+    # Then find all groups a user could potentially register for.
+    # criteria:
+    # - each session within a group must match the criteria above.
+
     sql = <<EOSQL
 SELECT
  sessions.*
@@ -177,6 +181,7 @@ EOSQL
 
     # now we know the ids of the groups available to the user, we now load the SessionGroups together with their sessions
     session_groups = SessionGroup.where(:id => final_grouped_sessions.keys.uniq).includes(:sessions).order('sessions.start_at')
+
 
 
     return ungrouped_sessions, session_groups

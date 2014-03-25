@@ -67,7 +67,7 @@ class SessionsController < ApplicationController
       @secondSession.update_attribute(:session_group_id, session_group.id)
 
       # No groups? use default mode.
-      if session_group.count == 0
+      if @experiment.session_groups.count == 0
         #Could let database handle this but makes it tough to have user defined settings.
         session_group.update_attribute(:signup_mode, SessionGroup::DEFAULT_SIGNUP_MODE)
       else
