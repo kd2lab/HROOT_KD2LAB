@@ -6,6 +6,8 @@ John: Should we allow merging of a group if participants already exist? (Prob us
 John: If a session has participants should we prevent it being removed from a group? (Prob user specified)
 John: I've placed default mode inside of Session_Group model, best place?
 John: Should random groups be enrollable if some sessions are in the past? What about if there is only one session left... (I think we agreed not to do this)
+John: User tries to delete a session from group what happens?
+                                                    what if there are only two sessions?
 
 John: As it stands a user is only able to register for a group if he has been invited to all sessions. Seems more natural to be one or more? (Invitation seems to have a natural group-relationship, could be troublesome..)
 
