@@ -8,16 +8,18 @@ Correct mode on new group. (Based on the .first of current group_sessions).
 John: Works when first session already exists, but not if it's the first session to be grouped.
 Ingmar: Hide group buttons, use default modal value.
 
-RESTRICT GROUPING
-Restrict grouping of sessions to those with 0 participants
-    When merging two single sessions into group.
+Chatter for next time:
+John: Should we allow merging of a group if participants already exist? (Prob user specified)
+John: If a session has participants should we prevent it being removed from a group? (Prob user specified)
 
-session_controller
-Restrict grouping
-    eliminate option
-    raise error (controller -> create_group_with) if one user in one session. (is participations.invited_at)
-
-Need to test 
+Need to automatically test 
+    Restrict grouping
+        views
+            Ensure groups with participants don't have options to merge with other groups in actions.
+            Ensure groups without participants do not have the options to merge with groups that do.
+        controllers
+            Ensure error is thrown on attempt to add two sessions together when one or more has participants
+            Ensure error is thrown on attempt to add session with participants to group.
 
 John: Could go two ways, eliminate option or raise error once attempted.
 Ingmar: Both ftw.
@@ -54,6 +56,7 @@ ENROL
 SESSION/PARTICIPANTS
     moving
     removing
+        Removing participants doesn't work (Not sure if this is known)
 
     if user moved to new group:
             randomised: pick session
