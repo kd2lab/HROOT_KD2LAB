@@ -8,9 +8,54 @@ class SessionsControllerTest < ActionController::TestCase
       sign_in FactoryGirl.create(:admin)
     end
 
+    context "create group with" do
+      setup do
+        @session1 = FactoryGirl.create(:future_session, :experiment => @experiment)
+        @session2 = FactoryGirl.create(:future_session, :experiment => @experiment)
+      end
+
+      should "work if neither group has participants" do
+        assert_difference('SessionGroup.count', +1) do
+          post :create_group_with, :experiment_id => @experiment.id, :id => @session1, :target => @session2.id
+          assert_redirected_to experiment_sessions_path(@experiment)
+          assert_equal @controller.t('controllers.sessions.group_created'), flash[:notice]
+        end
+      end
+
+      should "not work if first group has participants" do
+        #TODO
+      end
+
+      should "not work if second group has participants" do
+        #TODO
+      end
+
+    end
+
     context "grouped sessions testing" do
       setup do
       end
+
+      context "attempting to add a session to a grouped session" do
+        setup do
+          @session_with_participant = FactoryGirl.create(:future_session, :experiment => @experiment, session_participations_count: 1)
+          @session_group_with_two_sessions = FactoryGirl.create(:future_session_group, :experiment => @experiment)
+        end
+
+        should "fail if session has partcipants" do
+          post :add_to_group, :experiment_id => @experiment.id, :id => @session_with_participant.id, :target => @session_group_with_two_sessions.id
+          assert_redirected_to experiment_sessions_path(@experiment)
+           assert_equal @controller.t('controllers.sessions.notice_cannot_merge_into_group_existing_participants'), flash[:alert]
+
+        end
+
+        should "succeed if session does not have participants" do
+          post :add_to_group, :experiment_id => @experiment.id, :id => @session.id, :target => @session_group_with_two_sessions.id
+          assert_redirected_to experiment_sessions_path(@experiment)
+          assert_equal @controller.t('controllers.sessions.added_to_group'), flash[:notice]
+        end
+      end
+
 
       context "changing signup mode" do
         setup do
@@ -29,9 +74,26 @@ class SessionsControllerTest < ActionController::TestCase
         end
       end
 
+      context "attempting to create" do
+        setup do
+          (1...3).each do |n|
+             FactoryGirl.create(:future_session_group, :experiment => @experiment)
+          end
+          @session_groups = SessionGroup.where(:experiment_id => @experiment.id)
+        end
+        should "change signup mode for all sessions" do
+          post :update_mode, :experiment_id => @experiment.id, :mode => SessionGroup::USER_VISITS_ALL_SESSIONS_OF_GROUP
+          @session_groups.each do | session_group |
+            assert_equal(session_group.signup_mode, SessionGroup::USER_VISITS_ALL_SESSIONS_OF_GROUP)
+          end
+
+          assert_response :redirect
+        end
+      end
+
       context "deleting from a two session group" do
         setup do
-        @session_group_with_two_sessions = FactoryGirl.create(:future_session_group, :experiment => @experiment)
+          @session_group_with_two_sessions = FactoryGirl.create(:future_session_group, :experiment => @experiment)
         end
         should "delete the group session" do
           assert_difference('SessionGroup.count', -1) do
@@ -39,6 +101,7 @@ class SessionsControllerTest < ActionController::TestCase
           end
 
           assert_response :redirect
+          assert_equal @controller.t('controllers.sessions.removed_from_group'), flash[:notice]
         end
       end
 
@@ -52,6 +115,7 @@ class SessionsControllerTest < ActionController::TestCase
           end
 
         assert_response :redirect
+        assert_equal @controller.t('controllers.sessions.removed_from_group'), flash[:notice]
         end
       end
     end

@@ -11,7 +11,7 @@ FactoryGirl.define do
     end
 
     after(:create) do |session, evaluator|
-      create_list(:session_participation, evaluator.session_participations_count, session: session, user: FactoryGirl.create(:user))
+      create_list(:session_participation, evaluator.session_participations_count, session: session)
     end
   end
 

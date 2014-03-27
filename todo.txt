@@ -1,16 +1,10 @@
 min_session could be multiple
 internationalisation
 
-Chatter for next time:
 John: If a session has participants should we prevent it being removed from a group? (Prob user specified)
 Ingmar: not possible. line 94 of sessions controller.
 
-John: I've placed default mode inside of Session_Group model, best place?
-Ingmar: It's ok but move to user if we wanted user specific stuff.
-
-John: Should random groups be enrollable if some sessions are in the past? What about if there is only one session left... (I think we agreed not to do this)
-Ingmar: No.
-
+Chatter for next time:
 John: As it stands a user is only able to register for a group if he has been invited to all sessions. Seems more natural to be one or more? (Invitation seems to have a natural group-relationship, could be troublesome..)
 
     note: Doing this would mean a if a session with invitations sent out is added to a group and then removed the user would be invited to both the group and the singular session. Niche issue in my opinion though. I'm conflicted..
