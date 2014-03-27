@@ -12,8 +12,8 @@ class Search
   # default search fields
   add FulltextSearchField.new(:fulltext)
   add SelectionSearchField.new(:role, :db_values => User.roles, :translate => true, :translation_prefix => "search.selections")
-  add ParticipationSearchField.new(:participation, :db_values => [1,2,3,4], :translation_prefix => "search.selections")
-  add DeletedSearchField.new(:deleted, :db_values => ["", "show"], :translation_prefix => "search.selections")
+  add ParticipationSearchField.new(:participation, :db_values => [1,2,3,4], :translate => true, :translation_prefix => "search.selections")
+  add DeletedSearchField.new(:deleted, :db_values => ["hide", "show"], :translate => true, :translation_prefix => "search.selections")
   add IntegerSearchField.new(:noshow_count, :range => 0..(User.maximum(:noshow_count) || 10))
   add IntegerSearchField.new(:participations_count, :range => 0..(User.maximum(:participations_count) || 10))
   add TagsSearchField.new(:tags)

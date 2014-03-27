@@ -572,10 +572,10 @@ en:
       only: Include only
       without: Exclude
       participation:
-        choice1: Include only assigned users who have participated
-        choice2: Include only assigned users who are registered in a session
-        choice3: Include only assigned users without session
-        choice4: Include only assigned users who are registered in a session, which is not over yet
+        value1: Include only assigned users who have participated
+        value2: Include only assigned users who are registered in a session
+        value3: Include only assigned users without session
+        value4: Include only assigned users who are registered in a session, which is not over yet
 
       experiments:
         choice1: who are assigned to one of the following experiments
@@ -590,8 +590,8 @@ en:
         experimenter: Experimenter
         admin: Administrators
       deleted:
-        hide_deleted: hide
-        show_deleted: show
+        hide: hide
+        show: show
     links:
       fulltext: Search fulltext
       role: Role

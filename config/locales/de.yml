@@ -500,10 +500,10 @@ de:
       only: Nur
       without: Ohne
       participation:
-        choice1: Nur Zugeordnete, die teilgenommen haben
-        choice2: Nur Zugeordnete, die bereits in eine Session eingetragen sind
-        choice3: Nur Zugeordnete ohne Session
-        choice4: Nur Zugeordnete in Sessions, die noch nicht vorbei sind
+        value1: Nur Zugeordnete, die teilgenommen haben
+        value2: Nur Zugeordnete, die bereits in eine Session eingetragen sind
+        value3: Nur Zugeordnete ohne Session
+        value4: Nur Zugeordnete in Sessions, die noch nicht vorbei sind
       experiments:
         choice1: die zu einem der folgenden Experimente zugeordnet sind
         choice2: die zu allen der folgenden Experimente zugeordnet sind
@@ -517,8 +517,8 @@ de:
         experimenter: Experimentatoren
         admin: Administratoren
       deleted:
-        hide_deleted: verstecken
-        show_deleted: anzeigen
+        hide: verstecken
+        show: anzeigen
     links:
       fulltext: Volltextsuche
       role: Rolle
