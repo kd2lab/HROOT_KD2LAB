@@ -3,10 +3,13 @@ internationalisation
 
 Chatter for next time:
 John: If a session has participants should we prevent it being removed from a group? (Prob user specified)
+Ingmar: not possible. line 94 of sessions controller.
+
 John: I've placed default mode inside of Session_Group model, best place?
+Ingmar: It's ok but move to user if we wanted user specific stuff.
+
 John: Should random groups be enrollable if some sessions are in the past? What about if there is only one session left... (I think we agreed not to do this)
-John: User tries to delete a session from group what happens?
-                                                    what if there are only two sessions?
+Ingmar: No.
 
 John: As it stands a user is only able to register for a group if he has been invited to all sessions. Seems more natural to be one or more? (Invitation seems to have a natural group-relationship, could be troublesome..)
 
@@ -50,7 +53,6 @@ SESSION/PARTICIPANTS
     moving
     removing
         Removing participants doesn't work IF participant has enrolled (Not sure if this is known)
-        Adding participants to a group doesn't get picked up on the enrol menu.
 
     if user moved to new group:
             randomised: pick session
