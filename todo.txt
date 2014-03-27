@@ -15,6 +15,8 @@ John: As it stands a user is only able to register for a group if he has been in
 
     note: Doing this would mean a if a session with invitations sent out is added to a group and then removed the user would be invited to both the group and the singular session. Niche issue in my opinion though. I'm conflicted..
 
+John: Is there a reason for the Session Participations class? I thought part of having the ORM was abstracting the fact there is an intermediate table storing the data?
+
 Need to automatically test 
     Restrict grouping
         views

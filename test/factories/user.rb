@@ -13,7 +13,7 @@ FactoryGirl.define do
     role "user"
     after(:create) { |user| user.confirm!}
   end
-  
+
   factory :admin, parent: :user do
     role 'admin'
   end
@@ -21,5 +21,5 @@ FactoryGirl.define do
   factory :experimenter, parent: :user do
     role 'experimenter'
   end
-  
+
 end

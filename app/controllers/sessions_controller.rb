@@ -60,7 +60,7 @@ class SessionsController < ApplicationController
   def create_group_with
     #Check both sessions lack participants.
     @secondSession = Session.find_by_id(params[:target])
-    if @session.has_no_participants && @secondSession.has_no_participants
+    if !@session.has_participants? && !@secondSession.has_participants?
       # group current session session 'target' together
       session_group = SessionGroup.create(:experiment_id => @experiment.id)
       @session.update_attribute(:session_group_id, session_group.id)
@@ -106,7 +106,7 @@ class SessionsController < ApplicationController
 
   def add_to_group
     # unset session_group_id
-    if @session.has_no_participants
+    if !@session.has_participants?
       @session.update_attribute(:session_group_id, params[:target])
       redirect_to experiment_sessions_path(@experiment), :notice => t('controllers.sessions.added_to_group')
     else

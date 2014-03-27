@@ -140,8 +140,8 @@ EOSQL
     return id != reference_session_id
   end
 
-  def has_no_participants
-    return session_participations.count == 0
+  def has_participants?
+    return session_participations.count != 0
   end
 
   def path

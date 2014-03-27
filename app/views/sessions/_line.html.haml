@@ -41,7 +41,7 @@
           - if session.session_group_id == nil
             - if session.session_participations.count == 0
               - @ungrouped_sessions.reject{|s| s.id == session.id}.each do |s|
-                - if s.has_no_participants
+                - if !s.has_participants?
                   %li= link_to t('.group_this_session', :session => s.time_str), create_group_with_experiment_session_path(@experiment, session, :target => s.id), :method => :post
                 - @experiment.session_groups.each_with_index do |group, i|
                   %li= link_to t('.add_to_group', :id => i+1), add_to_group_experiment_session_path(@experiment, session, :target => group.id), :method => :post
