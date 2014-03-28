@@ -15,4 +15,14 @@
     .search-header
       = t("search.titles.#{field}")
     
-    = render :partial => Search.partial_for(field), :locals => Search.options_for(field)
+    - options = Search.options_for(field)
+
+    - if options[:db_values]
+      - if options[:translate]
+        - vals = options[:db_values].map{|a| [I18n.t("#{options[:translation_prefix]}.#{field}.#{if a.kind_of? Integer then "value"+a.to_s else a end}"), a]}
+      - else
+        - vals = options[:db_values].map{|a| [a,a]}
+
+      = render :partial => Search.partial_for(field), :locals => options.merge({:values => vals})
+    - else
+      = render :partial => Search.partial_for(field), :locals => options

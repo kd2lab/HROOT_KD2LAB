@@ -10,7 +10,7 @@
 
 %h3=t '.new_enrollment'
 
-- if @ungrouped_sessions.count > 0
+- if @ungrouped_sessions.count + @session_groups.count > 0
   =t '.available_sessions'
   %br
   %br

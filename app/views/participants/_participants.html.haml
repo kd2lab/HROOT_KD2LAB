@@ -4,7 +4,7 @@
 = hidden_field_tag :user_action, ''
 
 .search
-  = render :partial => 'shared/search/search', :locals => { :fields => [:fulltext, :noshow_count, :participations_count, :tags, :experiments] + CUSTOM_FIELDS.field_names_for_search }
+  = render :partial => 'shared/search/search', :locals => { :fields => [:fulltext, :noshow_count, :participations_count, :tags, :experiments, :participation] + CUSTOM_FIELDS.field_names_for_search }
 
 .searchinfo
   = submit_tag t('.submit'), :name => 'submit_mode', :class => "btn btn-primary"
