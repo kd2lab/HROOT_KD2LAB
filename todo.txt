@@ -1,8 +1,8 @@
 Bigger boxes for filters in experiments / participants.
 Hide mode choice once session has participants.
-- I18nize lines 108 and 109 in enrollment controller
-- Attend-All-Session-Group should not be available for enrollment if one of the sessions is full
-
+I18nize lines 108 and 109 in enrollment controller
+Attend-All-Session-Group should not be available for enrollment if one of the sessions is full
+Fix Action Button menu on sessions page
 
 Need to automatically test 
     Restrict grouping
