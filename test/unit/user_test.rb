@@ -58,7 +58,7 @@ class UserTest < ActiveSupport::TestCase
     end
   end
 
-  context "finding available users" do
+  context "finding available sessions" do
     setup do
       @u1 = FactoryGirl.create(:user)
       

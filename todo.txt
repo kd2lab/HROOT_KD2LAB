@@ -1,7 +1,8 @@
-internationalisation
-
 Bigger boxes for filters in experiments / participants.
 Hide mode choice once session has participants.
+- I18nize lines 108 and 109 in enrollment controller
+- Attend-All-Session-Group should not be available for enrollment if one of the sessions is full
+
 
 Need to automatically test 
     Restrict grouping
@@ -12,38 +13,8 @@ Need to automatically test
             Ensure error is thrown on attempt to add two sessions together when one or more has participants
 
     Correct mode on new group
-        views
-            that modal buttons don't appear when no groups in session.
         controllers
             that the first created group in a session has the default mode.
-            That clicking a modal button changes the status of all tests.
+            That clicking a modal button changes the status of all groups.
             That the second created group in a session has the mode of the first.
             (This seems largely sequential)
-
-BUG:
-Cannot enrol if one of the sessoins in group is full.
-?User must have been invited to every session in group, could be automated but want to discuss first..
-    User -> Avaiable Sessions
-
-ENROL
-    index
-    confirm
-    Recode presentation of enrol:
-        index
-        confirm
-    
-    random
-        Session with least
-        if more than one, random.
-
-SESSION/PARTICIPANTS
-    moving
-    removing
-        Removing participants doesn't work IF participant has enrolled (Not sure if this is known)
-
-    if user moved to new group:
-            randomised: pick session
-            all: move to all sessions.
-            all -> seperate; remove from all sessions into seperate session.
-
-
