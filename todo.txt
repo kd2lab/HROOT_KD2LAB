@@ -1,15 +1,7 @@
-min_session could be multiple
 internationalisation
 
-John: If a session has participants should we prevent it being removed from a group? (Prob user specified)
-Ingmar: not possible. line 94 of sessions controller.
-
-Chatter for next time:
-John: As it stands a user is only able to register for a group if he has been invited to all sessions. Seems more natural to be one or more? (Invitation seems to have a natural group-relationship, could be troublesome..)
-
-    note: Doing this would mean a if a session with invitations sent out is added to a group and then removed the user would be invited to both the group and the singular session. Niche issue in my opinion though. I'm conflicted..
-
-John: Is there a reason for the Session Participations class? I thought part of having the ORM was abstracting the fact there is an intermediate table storing the data?
+Bigger boxes for filters in experiments / participants.
+Hide mode choice once session has participants.
 
 Need to automatically test 
     Restrict grouping
@@ -18,7 +10,6 @@ Need to automatically test
             Ensure groups without participants do not have the options to merge with groups that do.
         controllers
             Ensure error is thrown on attempt to add two sessions together when one or more has participants
-            Ensure error is thrown on attempt to add session with participants to group.
 
     Correct mode on new group
         views
