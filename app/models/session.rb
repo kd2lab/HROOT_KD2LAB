@@ -121,8 +121,12 @@ EOSQL
     Session.in_the_past.where('(SELECT count(s.id) FROM session_participations s WHERE s.session_id=sessions.id AND showup=false AND participated=false AND noshow=false) >0')
   end
 
-  def has_no_participants
-    return session_participations.count == 0
+  def has_no_participants?
+    return !has_participants?
+  end
+
+  def has_participants?
+    return session_participations.count != 0
   end
 
   def path
