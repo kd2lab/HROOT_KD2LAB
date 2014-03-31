@@ -1,15 +1,6 @@
-min_session could be multiple
-internationalisation
+- I18nize lines 108 and 109 in enrollment controller
+- Attend-All-Session-Group should not be available for enrollment if one of the sessions is full
 
-John: If a session has participants should we prevent it being removed from a group? (Prob user specified)
-Ingmar: not possible. line 94 of sessions controller.
-
-Chatter for next time:
-John: As it stands a user is only able to register for a group if he has been invited to all sessions. Seems more natural to be one or more? (Invitation seems to have a natural group-relationship, could be troublesome..)
-
-    note: Doing this would mean a if a session with invitations sent out is added to a group and then removed the user would be invited to both the group and the singular session. Niche issue in my opinion though. I'm conflicted..
-
-John: Is there a reason for the Session Participations class? I thought part of having the ORM was abstracting the fact there is an intermediate table storing the data?
 
 Need to automatically test 
     Restrict grouping
@@ -21,38 +12,13 @@ Need to automatically test
             Ensure error is thrown on attempt to add session with participants to group.
 
     Correct mode on new group
-        views
-            that modal buttons don't appear when no groups in session.
         controllers
             that the first created group in a session has the default mode.
-            That clicking a modal button changes the status of all tests.
+            That clicking a modal button changes the status of all groups.
             That the second created group in a session has the mode of the first.
             (This seems largely sequential)
 
-BUG:
-Cannot enrol if one of the sessoins in group is full.
-?User must have been invited to every session in group, could be automated but want to discuss first..
-    User -> Avaiable Sessions
 
-ENROL
-    index
-    confirm
-    Recode presentation of enrol:
-        index
-        confirm
-    
-    random
-        Session with least
-        if more than one, random.
 
-SESSION/PARTICIPANTS
-    moving
-    removing
-        Removing participants doesn't work IF participant has enrolled (Not sure if this is known)
-
-    if user moved to new group:
-            randomised: pick session
-            all: move to all sessions.
-            all -> seperate; remove from all sessions into seperate session.
 
 
