@@ -39,21 +39,23 @@
               %br
           %td
       - @session_groups.each do |group|
-        %tr
-          %td
-            = radio_button_tag "choice", "group,#{group.id}"
-          %td
-            - group.sessions.each do |s|
-              %b= s.time_str
-              = s.location.name if s.location
+        - sessions = - group.sessions_for_enrollment
+        - if sessions.length > 0
+          %tr
+            %td
+              = radio_button_tag "choice", "group,#{group.id}"
+            %td
+              - sessions.each do |s|
+                %b= s.time_str
+                = s.location.name if s.location
+                %br
               %br
-            %br
-          %td
-            .well
-              - if group.is_randomized?
-                = t '.random_choice_desc'
-              - else
-                = t '.all_choice_desc'
+            %td
+              .well
+                - if group.is_randomized?
+                  = t '.random_choice_desc'
+                - else
+                  = t '.all_choice_desc'
 
     = submit_tag t('.register_for_sessions'), :class => "btn btn-primary"
 

@@ -425,15 +425,20 @@ en:
     public_link:
       public_link: Public link
       public_link_html: "This link can be used for a public experiment invitation. Send it to people you want to invite to this experiment.<br/><br/>When users visit this link, a cookie will be set, and when the user logs into hroot, he/she will be added to this experiment."
-
+  session_groups:
+    group_type1: randomized
+    group_type2: attend all sessions
   sessions:
     new_session_link: Create new session
     new_group_session_link: Create new group session
     make_group_session: Make group session
     back_link: Back to session overview
     session: Session
-    following_session: Following session
     at_label: at
+    index:
+      group_mode: Group mode
+      ungrouped_sessions: Ungrouped sessions
+      group: Group
     print:
       header: Session at
       lastname: Name
@@ -475,6 +480,8 @@ en:
       remove_marked: Remove checked users from this session
       marked: Checked users
       move_marked: "Move checked users to session %{session}"
+      move_marked_group: Move checked users to group %{group_nr} (%{sessions})
+      move_marked_group_session: Move checked users to session %{session} in group %{group}
       save_changes_now: Save changes now
       no_participants: This session has no participants
       data_menu: Data
@@ -544,6 +551,8 @@ en:
       remove_marked: Remove selected users from the experiment.
       remove_marked_confirm: Are you sure you want to remove the selected users from the experiment?
       move_marked: Move selected users to session %{session}
+      move_marked_group: Move checked users to group %{group_nr} (%{sessions})
+      move_marked_group_session: Move checked users to session %{session} in group %{group}
       none_found: No pool members found
       none_found_reason: Please change search settings.
       message_all_searched: Message all users in this search result
@@ -901,7 +910,7 @@ en:
       notice_cant_delete_participants: Sessions with participants can not be deleted.
       notice_deleted: The session was deleted.
       notice_removed_from_session: The checked users were removed from the session.
-      notice_moved_to_session: "The selected users have been move to session %{session}."
+      notice_moved_to_session: "The selected users have been move to the selected session."
       notice_cant_delete_files: "Session can not be deleted - there are files in the session folder."
       group_created: A new group has been created.
       removed_from_group:  Session removed from group.

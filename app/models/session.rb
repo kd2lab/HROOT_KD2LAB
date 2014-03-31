@@ -22,11 +22,6 @@ class Session < ActiveRecord::Base
     where("end_at < NOW()")
   }
 
-  #todo remove
-  scope :main_sessions, lambda {
-    where("sessions.reference_session_id = sessions.id")
-  }
-
   def self.session_times
     (0..23).to_a.product(["00","15","30","45"]).collect{|t| ("%02d:%02d" % t)}
   end
@@ -52,14 +47,21 @@ class Session < ActiveRecord::Base
   end
 
   def self.move_members(members, experiment, target)
-    target_sessions = Session.where(:reference_session_id => target.reference_session_id)
     members.each do |id|
       if u = User.find(id)
+        # remove user from any sessions he is in
         SessionParticipation.where(:user_id => u.id, :session_id => experiment.sessions).delete_all
 
-        # put in all target sessions
-        target_sessions.each do |s|
-          SessionParticipation.create(:user => u, :session => s)
+        # put member in target session
+        if target.kind_of?(Session)
+          SessionParticipation.create(:user => u, :session => target)
+        else
+          # if the target is a session group, put the user in all sessions of the group
+          if target.signup_mode == SessionGroup::USER_VISITS_ALL_SESSIONS_OF_GROUP
+            target.sessions.each do |s|
+              SessionParticipation.create(:user => u, :session => s)
+            end
+          end
         end
       end
     end
@@ -79,23 +81,6 @@ class Session < ActiveRecord::Base
 
   def folder_str
     start_at.strftime("%Y-%m-%d_%H%M")
-  end
-
-  # todo remove
-  def following_sessions
-    Session.where(["experiment_id = ? AND reference_session_id = ? AND id <> reference_session_id", self.experiment_id, self.id]).order('start_at').all
-  end
-
-  # todo remove
-  def reference_session
-    Session.find_by_id reference_session_id
-  end
-
-  # todo remove
-  def alternative_sessions
-    Session.main_sessions.where(["sessions.experiment_id = ?", experiment_id])
-      .where(["sessions.id <> ?", reference_session_id])
-      .order(:start_at)
   end
 
   def self.find_overlapping_sessions_by_date(date, duration, location_id, session_id, time_before, time_after)
@@ -134,10 +119,6 @@ EOSQL
   def self.incomplete_sessions
     # load sessions in the past with incomplete lists
     Session.in_the_past.where('(SELECT count(s.id) FROM session_participations s WHERE s.session_id=sessions.id AND showup=false AND participated=false AND noshow=false) >0')
-  end
-
-  def is_subsession?
-    return id != reference_session_id
   end
 
   def has_no_participants

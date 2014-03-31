@@ -366,13 +366,21 @@ de:
     public_link:
       public_link: Öffentlicher Link
       public_link_html: "Dieser Link kann dazu genutzt werden, um Teilnehmer öffentlich einzuladen. Senden Sie ihn per Mail an Personen, die an dem Experiment teilnehmen sollen.<br/><br/> Sobald die Teilnehmer den Link besuchen, wird ein Cookie gesetzt, und wenn sie sich das erste Mal bei hroot anmelden (entweder als Neuanmeldung oder mit einem bestehenden Account), werden sie als Teilnehmer zum Experiment hinzugefügt."
+  session_groups:
+    group_type1: Randomisiert
+    group_type2: Mehrfachteilnahme
+
+
   sessions:
     new_session_link: Neue Session anlegen
     new_group_session_link: Neue Sessiongruppe anlegen
     back_link: Zurück zur Session-Übersicht
     session: Session
-    following_session: Folgesession
     at_label: am
+    index:
+      group_mode: Teilnahme-Modus
+      ungrouped_sessions: Ungruppierte Sessions
+      group: Gruppe
     print:
       header: Session am
       lastname: Name
@@ -382,6 +390,12 @@ de:
       showup: E
       participated: T
       noshow: N
+    mode:
+      participation_heading: Teilnahme-Modus
+      mode1: Randomisiert
+      mode2: An allen Sessions
+      explanation1: Teilnehmer wählen bei Anmeldung eine Gruppe und werden in eine Session randomisiert.
+      explanation2: Teilnehmer wählen bei Anmeldung eine Gruppe und nehmen an allen Sessions der Gruppe teil.
 
     line:
       participants_label: 'Teilnehmer:'
@@ -404,6 +418,8 @@ de:
       remove_marked: Markierte Teilnehmer aus dieser Session austragen.
       marked: Markierte Teilnehmer
       move_marked: "Markierte Teilnehmer in Session %{session} verschieben"
+      move_marked_group: Markierte Teilnehmer in Gruppe %{group_nr} (%{sessions}) verschieben
+      move_marked_group_session: Markierte Teilnehmer in Session %{session} der Gruppe %{group} verschieben
       save_changes_now: Änderungen jetzt speichern
       no_participants: Diese Session hat keine Teilnehmer
       data_menu: Daten
@@ -472,6 +488,8 @@ de:
       remove_marked: Alle markierten Teilnehmer aus dem Experiment austragen.
       remove_marked_confirm: Sind Sie sicher, dass alle markierten Teilnehmer aus dem Experiment entfernt werden sollen?
       move_marked: Markierte Teilnehmer in Session %{session} verschieben
+      move_marked_group: Markierte Teilnehmer in Gruppe %{group_nr} (%{sessions}) verschieben
+      move_marked_group_session: Markierte Teilnehmer in Session %{session} der Gruppe %{group} verschieben
       none_found: Kein Poolmitglied gefunden
       none_found_reason: Entweder wurden bereits alle Poolmitglieder zugeordnet, oder die Filtereinstellungen müssen geändert werden.
       message_all_searched: Nachricht an alle Teilnehmer der aktuellen Suche
@@ -828,7 +846,7 @@ de:
       notice_cant_delete_participants: Sessions mit Teilnehmern können nicht gelöscht werden.
       notice_deleted: Die Session wurde gelöscht.
       notice_removed_from_session: Die ausgewählten Teilnehmer wurden aus der Session ausgetragen
-      notice_moved_to_session: "Die ausgewählten Teilnehmer wurden in die Session %{session} verschoben"
+      notice_moved_to_session: "Die ausgewählten Teilnehmer wurden in die gewählte Session verschoben"
       notice_cant_delete_files: "Die Session kann nicht gelöscht werden, da noch Dateien im Dateiordner der Session liegen."
     users:
       notice_mailqueue: Die Nachricht(en) wurden in die Mailqueue eingetragen.

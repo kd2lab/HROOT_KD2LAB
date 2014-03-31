@@ -103,8 +103,7 @@
               
 .userinfo
   - ptable = {}; @user.session_participations.each do |sp| ptable[sp.session_id] = sp end
-  - participations = @user.session_participations.includes(:session).where('sessions.id=sessions.reference_session_id').order("sessions.start_at")
-  
+  - participations = @user.session_participations.includes(:session).order("sessions.start_at")
   - if participations.count > 0
 
     %h4=t '.participations_so_far'
@@ -114,27 +113,25 @@
     %table.table
       %tbody  
         - participations.each do |sp|
+          - s = sp.session
           %tr
             %td
-              = truncate(sp.session.experiment.name, :length => 60)
+              = truncate(s.experiment.name, :length => 60)
               %br
-              - ([sp.session] + sp.session.following_sessions).each do |s|
-                = link_to s.time_str, participants_experiment_session_path(s.experiment, s)
-                %br
+              = link_to s.time_str, participants_experiment_session_path(s.experiment, s)
+
             %td
-              - ([sp.session] + sp.session.following_sessions).each do |s|
-                - if ptable[s.id] && ptable[s.id].showup
-                  %span.label.label-success
-                    =t '.showup'
-                - if ptable[s.id] && ptable[s.id].noshow
-                  %span.label.label-important
-                    =t '.noshow'
-                %br
+              - if ptable[s.id] && ptable[s.id].showup
+                %span.label.label-success
+                  =t '.showup'
+              - if ptable[s.id] && ptable[s.id].noshow
+                %span.label.label-important
+                  =t '.noshow'
+              %br
             %td              
-              - ([sp.session] + sp.session.following_sessions).each do |s|
-                - if ptable[s.id] && ptable[s.id].participated
-                  %span.label.label-success
-                    =t '.participated'
+              - if ptable[s.id] && ptable[s.id].participated
+                %span.label.label-success
+                  =t '.participated'
                 %br
             %td
-              = link_to t('.remove_from_session'), remove_from_session_user_path(:session_id => sp.session.id), :class => 'btn btn-default', :confirm => t('.remove_from_session_confirm')
+              = link_to t('.remove_from_session'), remove_from_session_user_path(:session_id => s.id), :class => 'btn btn-default', :confirm => t('.remove_from_session_confirm')

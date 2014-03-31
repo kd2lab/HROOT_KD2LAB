@@ -3,7 +3,7 @@
 %br
 %br
 
-%h2=raw "#{@session.is_subsession? ? t('sessions.following_session') : t('sessions.session')} #{t('sessions.at_label')} #{@session.time_str}"
+%h2=raw "#{t('sessions.session')} #{t('sessions.at_label')} #{@session.time_str}"
 
 - if @session.location
   = @session.location.name 

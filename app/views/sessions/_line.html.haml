@@ -2,7 +2,6 @@
   %td.span7
     %span.time{:class => if session.end_at < Time.zone.now then "past" end}
       = session.time_str
-      = "test"+session.session_group_id.to_s
 
     .room
       =truncate(session.location.name, :length => 30) if session.location
@@ -40,7 +39,7 @@
         %ul.dropdown-menu
           - if session.session_group_id == nil
             - if session.session_participations.count == 0
-              - @ungrouped_sessions.reject{|s| s.id == session.id}.each do |s|
+              - @experiment.ungrouped_sessions.reject{|s| s.id == session.id}.each do |s|
                 - if s.has_no_participants
                   %li= link_to t('.group_this_session', :session => s.time_str), create_group_with_experiment_session_path(@experiment, session, :target => s.id), :method => :post
                 - @experiment.session_groups.each_with_index do |group, i|

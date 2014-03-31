@@ -26,7 +26,7 @@
 - if (@experiment.session_groups.size > 0)
   - mode = @experiment.session_groups.first.signup_mode
   .btn-panel{:style => "float:left"}
-    Group mode:
+    = t('.group_mode')
     .btn-group
       - [SessionGroup::USER_IS_RANDOMIZED_TO_ONE_SESSION, SessionGroup::USER_VISITS_ALL_SESSIONS_OF_GROUP].each do |m|
         = link_to t('sessions.mode.mode'+m.to_s), |
@@ -39,17 +39,17 @@
   %br
 
 %h4{:style => "clear:both"}
-  Ungrouped sessions
+  = t('.ungrouped_sessions')
 
 %table.table
   - human_friendly_group_id = 0
-  - @ungrouped_sessions.each do |session|
+  - @experiment.ungrouped_sessions.each do |session|
     = render :partial => 'line', :locals => {:session => session, :human_friendly_group_id => human_friendly_group_id += 1}
 
 - @experiment.session_groups.each_with_index do |group, i|
 
   %h4
-    Group
+    = t('.group')
     = i+1
   %table.table
     - group.sessions.each do |session|

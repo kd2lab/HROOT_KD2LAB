@@ -10,7 +10,7 @@ class SessionsController < ApplicationController
   helper_method :sort_column, :sort_direction
 
   def index
-    @ungrouped_sessions = @experiment.sessions.where(:session_group_id => nil)
+
   end
 
   def show
@@ -139,10 +139,7 @@ class SessionsController < ApplicationController
   def duplicate
     @session = Session.find(params[:id])
     @new_session = Session.new(@session.attributes)
-    #todo remove once follow up session factored out.
-    if @session.id == @session.reference_session_id
-      @new_session.reference_session_id = nil
-    end
+
     @new_session.save(:validate => false)
     redirect_to(experiment_sessions_path(@experiment), :flash => { :id => @new_session.id })
   end
@@ -150,11 +147,8 @@ class SessionsController < ApplicationController
   def destroy
 
     # only delete sessions without subsessions and without participants
-    #todo remove once following_sessions factored out.
     if @session
-      if @session.following_sessions.count > 0
-        message = t('controllers.sessions.notice_cant_delete_following')
-      elsif @session.session_participations.count.to_i > 0
+      if @session.session_participations.count.to_i > 0
         message = t('controllers.sessions.notice_cant_delete_participants')
       elsif @session.has_files?
         message = t('controllers.sessions.notice_cant_delete_files')
@@ -209,94 +203,81 @@ class SessionsController < ApplicationController
   def participants
     @session = Session.find(params[:id])
 
-    if !params[:user_action].blank?
-
-      #
-      # move session members
-      #
-      #
-      # this is only allowed if the user has the right 'manage_participants'
-      #
-
-      if current_user.has_right?(@experiment, 'manage_participants')
-        if params[:user_action] == "0"
-          Session.remove_members_from_sessions(params['selected_users'].keys.map(&:to_i), @experiment)
-          flash[:notice] = t('controllers.sessions.notice_removed_from_session')
-          User.update_noshow_calculation(params['selected_users'].keys)
+    # operations on the session participants require the privilege 'manage_participants'
+    if params[:user_action_type] && current_user.has_right?(@experiment, 'manage_participants')
+      if params[:user_action_type] == "move_to_session" && params[:user_action_value].to_i == 0
+        # remove users from session - todo careful: when removing from a session group, mybe remove from all sessions
+        Session.remove_members_from_sessions(params['selected_users'].keys.map(&:to_i), @experiment)
+        flash[:notice] = t('controllers.sessions.notice_removed_from_session')
+        User.update_noshow_calculation(params['selected_users'].keys)
+      elsif ["move_to_session", "move_to_group"].include?(params[:user_action_type]) && params[:selected_users]
+        # move users to other session
+        target = if (params[:user_action_type] == "move_to_session")
+          Session.find(params[:user_action_value].to_i)
         else
-          target = Session.find(params[:user_action].to_i)
-
-          if target
-            Session.move_members(params['selected_users'].keys.map(&:to_i), @experiment, target)
-            flash[:notice] = t('controllers.sessions.notice_moved_to_session', :session => target.time_str)
-            User.update_noshow_calculation(params['selected_users'].keys)
-          end
-        end
-      end
-    else
-
-      #
-      # change showup or noshow information
-      #
-      #
-      # this is only allowed if the user has the right 'manage_participants' or the right 'manage_showups'
-      #
-
-      if current_user.has_right?(@experiment, 'manage_participants') || current_user.has_right?(@experiment, 'manage_showups')
-        changes = 0
-
-        # save session participations
-        if params['save']
-          params['participations'] = {} unless params['participations']
-          params["ids"].keys.each do |user_id|
-            sp = SessionParticipation.find_by_session_id_and_user_id(@session.id, user_id)
-
-            if params['showups'] && params['showups'][user_id]
-              unless sp.showup && (sp.participated == (params['participations'][user_id] == "1")) && !sp.noshow
-                sp.showup = true
-                sp.participated = params['participations'][user_id].to_i
-                sp.noshow = false
-                changes += 1
-                sp.save
-              end
-            elsif params['noshows'] && params['noshows'][user_id]
-              # only save if changes are detected
-              unless !sp.showup && !sp.participated && sp.noshow
-                sp.showup = false
-                sp.participated = false
-                sp.noshow = true
-                sp.save
-                changes +=1
-              end
-            else
-              if (sp.showup || sp.participated || sp.noshow)
-                sp.showup = false
-                sp.participated = false
-                sp.noshow = false
-                sp.save
-                changes +=1
-              end
-            end
-
-            if params['seat_nr'] && params['seat_nr'][user_id]
-              sp.seat_nr = params['seat_nr'][user_id].to_i
-              sp.save
-            end
-
-            if params['payment'] && params['payment'][user_id]
-              sp.payment = params['payment'][user_id].to_f
-              sp.save
-            end
-          end
+          SessionGroup.find(params[:user_action_value].to_i)
         end
 
-        if changes > 0
-          flash[:notice] = t('controllers.notice_saved_changes')
-          User.update_noshow_calculation(params["ids"].keys)
+        if target
+          Session.move_members(params[:selected_users].keys.map(&:to_i), @experiment, target)
+          User.update_noshow_calculation(params[:selected_users].keys.map(&:to_i))
+          flash.now[:notice] = t('controllers.sessions.notice_moved_to_session')
         end
       end
     end
 
+      # this is only allowed if the user has the right 'manage_participants' or the right 'manage_showups'
+      #
+
+    if current_user.has_right?(@experiment, 'manage_participants') || current_user.has_right?(@experiment, 'manage_showups')
+      changes = 0
+      # save session participations
+      if params['save']
+        params['participations'] = {} unless params['participations']
+        params["ids"].keys.each do |user_id|
+          sp = SessionParticipation.find_by_session_id_and_user_id(@session.id, user_id)
+          if params['showups'] && params['showups'][user_id]
+            unless sp.showup && (sp.participated == (params['participations'][user_id] == "1")) && !sp.noshow
+              sp.showup = true
+              sp.participated = params['participations'][user_id].to_i
+              sp.noshow = false
+              changes += 1
+              sp.save
+            end
+          elsif params['noshows'] && params['noshows'][user_id]
+            # only save if changes are detected
+            unless !sp.showup && !sp.participated && sp.noshow
+              sp.showup = false
+              sp.participated = false
+              sp.noshow = true
+              sp.save
+              changes +=1
+            end
+          else
+            if (sp.showup || sp.participated || sp.noshow)
+              sp.showup = false
+              sp.participated = false
+              sp.noshow = false
+              sp.save
+              changes +=1
+            end
+          end
+          if params['seat_nr'] && params['seat_nr'][user_id]
+            sp.seat_nr = params['seat_nr'][user_id].to_i
+            sp.save
+          end
+          if params['payment'] && params['payment'][user_id]
+            sp.payment = params['payment'][user_id].to_f
+            sp.save
+          end
+        end
+      end
+      if changes > 0
+        flash[:notice] = t('controllers.notice_saved_changes')
+        User.update_noshow_calculation(params["ids"].keys)
+      end
+    end
+   
     params[:search] = params[:search] || {}
     params[:search][:role] = {:value => ['user']}
     params[:search][:deleted] = {:value =>"show"}

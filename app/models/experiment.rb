@@ -21,7 +21,11 @@ class Experiment < ActiveRecord::Base
     generate_token
     save
   end
-  
+
+  def ungrouped_sessions
+    sessions.where(:session_group_id => nil)
+  end
+
   # search for experiments, also in experimenters
   def self.search(search='')  
     includes(:experimenter_assignments, :experimenters).where(

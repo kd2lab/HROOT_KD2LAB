@@ -10,4 +10,16 @@ class SessionGroup < ActiveRecord::Base
   	signup_mode == USER_IS_RANDOMIZED_TO_ONE_SESSION
   end
 
+  def to_s
+  	"#{sessions.map{|s| I18n.l(s.start_at.to_date)}.join(', ')}"
+  end
+
+  def sessions_for_enrollment
+    # if one of the sessions is in the past, no session is open for enrollment
+    if sessions.where('start_at < NOW()').count > 0
+      []
+    else
+      sessions.select{|s| s.space_left > 0}
+    end
+  end
 end

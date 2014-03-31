@@ -1,7 +1,9 @@
 = hidden_field_tag :direction, params[:direction]
 = hidden_field_tag :sort, params[:sort]
 = hidden_field_tag :page, params[:page] || 1
-= hidden_field_tag :user_action, ''
+
+= hidden_field_tag :user_action_type, ''
+= hidden_field_tag :user_action_value, ''
 
 .search
   = render :partial => 'shared/search/search', :locals => { :fields => [:fulltext, :noshow_count, :participations_count, :tags, :experiments, :participation] + CUSTOM_FIELDS.field_names_for_search }
@@ -42,10 +44,23 @@
         %b.caret 
       %ul.dropdown-menu
         %li= link_to t('.message_all_marked'), '#', :class => "open-modal", :'data-to' => t('.to_all_marked'), :'data-mode' => 'selected', :'data-url' => send_message_experiment_participants_path(@experiment)
-        %li= link_to t('.remove_marked'), '#', :'data-confirm' => t('.remove_marked_confirm'), :class => 'user_action_link', :'data-value' => 0
-        - @experiment.sessions.main_sessions.each do |s|
-          %li= link_to t('.move_marked', :session => s.time_str), '#', :class => 'user_action_link', :'data-value' => s.id
-  
+        %li= link_to t('.remove_marked'), '#', :'data-confirm' => t('.remove_marked_confirm'), :class => 'user_action_link', :'data-type' => 'remove'
+        %li.divider
+
+        - @experiment.ungrouped_sessions.each do |s|
+          %li= link_to t('.move_marked', :session => s.time_str), '#', :class => 'user_action_link', :'data-type' => 'move_to_session', :'data-value' => s.id
+
+        - @experiment.session_groups.where(:signup_mode => SessionGroup::USER_VISITS_ALL_SESSIONS_OF_GROUP).each_with_index do |g, i|
+          - if i==0
+            %li.divider
+          %li= link_to t('.move_marked_group', :group_nr => i+1, :sessions => g.to_s), '#', :class => 'user_action_link', :'data-type' => 'move_to_group', :'data-value' => g.id
+
+        - @experiment.session_groups.where(:signup_mode => SessionGroup::USER_IS_RANDOMIZED_TO_ONE_SESSION).each_with_index do |g, i|
+          - if i==0
+            %li.divider
+
+          - g.sessions.each do |s|
+            %li= link_to t('.move_marked_group_session', :session => s.time_str, :group => i+1), '#', :class => 'user_action_link', :'data-type' => 'move_to_session', :'data-value' => s.id
   %br
   %br
   

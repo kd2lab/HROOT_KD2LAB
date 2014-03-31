@@ -121,9 +121,6 @@ class Search
     sort_column = options[:sort_column] || 'lastname'
     sort_direction = options[:sort_direction] || 'ASC'
     
-    
-    
-    
     <<EOSQL
         SELECT #{select.join(',')}
         FROM users
@@ -143,7 +140,6 @@ EOSQL
         FROM users
         #{joins.join(' ')}
         #{('WHERE ' + where.join(' AND ')) unless where.blank?} 
-        #{('GROUP BY ' + group.join(' AND ')) unless group.blank?} 
 EOSQL
   end  
   

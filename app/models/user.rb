@@ -166,23 +166,13 @@ EOSQL
     # split up - ungrouped sessions and grouped sessions
     ungrouped_sessions, grouped_sessions = sessions_after_exclusion.partition do |s| s.session_group_id.nil? end
 
+    # get groups
+    session_groups = SessionGroup.where(:id => grouped_sessions.collect do |s| s.session_group_id end).includes(:sessions).order('sessions.start_at')
 
-    # post processing on grouped sessions - only keep groups, where all sessions in the group are eligable for enrollment
-
-    # count number of sessions per group result will be a hash like {nil=>9, 10=>2, 100=>3}  (session_group_id => number of sessions)
-    # but first, only do that for relevant group ids
-    group_ids = grouped_sessions.collect do |s| s.session_group_id end
-    group_counts = Session.where(:session_group_id => group_ids).group(:session_group_id).count
-
-    # filter out groups where ALL sesssions are in sessions_after_exclusion
-    final_grouped_sessions = grouped_sessions.group_by{|s| s.session_group_id}.select do |group_id, sessions|
-      !group_id.nil? && sessions.size == group_counts[group_id]
+    # remove groups where one session of the group is in the past
+    session_groups = session_groups.select do |group|
+      group.sessions.where('start_at < NOW()').count == 0
     end
-
-    # now we know the ids of the groups available to the user, we now load the SessionGroups together with their sessions
-    session_groups = SessionGroup.where(:id => final_grouped_sessions.keys.uniq).includes(:sessions).order('sessions.start_at')
-
-
 
     return ungrouped_sessions, session_groups
   end
@@ -197,15 +187,10 @@ SET
               count(sessions.id)
             FROM sessions, session_participations, experiments
             WHERE
-              sessions.id = sessions.reference_session_id AND
               session_participations.session_id = sessions.id AND
               session_participations.user_id = users.id AND
               experiments.id = sessions.experiment_id AND
-              (SELECT count(s.id)  FROM sessions s WHERE s.reference_session_id = sessions.id) =
-              (SELECT count(s.id)  FROM session_participations s, sessions s2 WHERE  s.session_id = s2.id AND s.user_id = users.id AND s2.reference_session_id = sessions.id AND s.showup = 1)
-              AND
-              (SELECT count(s.id)  FROM sessions s WHERE s.reference_session_id = sessions.id) > 0
-              AND
+              session_participations.showup = 1 AND
               experiments.show_in_stats = 1
             ),
             0
@@ -216,12 +201,11 @@ SET
               count(sessions.id)
             FROM sessions, session_participations, experiments
             WHERE
-              sessions.id = sessions.reference_session_id AND
               session_participations.session_id = sessions.id AND
               session_participations.user_id = users.id AND
               experiments.id = sessions.experiment_id AND
               experiments.show_in_stats = 1 AND
-              (SELECT count(s.id)  FROM session_participations s, sessions s2 WHERE  s.session_id = s2.id AND s.user_id=users.id AND s2.reference_session_id = sessions.id AND s.noshow = 1) >0
+              session_participations.noshow = 1
             ),
             0
           )
