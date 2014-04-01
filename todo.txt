@@ -1,7 +1,6 @@
 Bigger boxes for filters in experiments / participants. (Ingmar)
 I18nize lines 108 and 109 in enrollment controller (Ingmar)
 Attend-All-Session-Group should not be available for enrollment if one of the sessions is full (Ingmar)
-Fix Action Button menu on sessions page (John)
 
 Need to automatically test 
     Restrict grouping
