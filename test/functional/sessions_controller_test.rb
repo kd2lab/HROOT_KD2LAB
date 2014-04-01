@@ -1,6 +1,9 @@
 require 'test_helper'
 
 class SessionsControllerTest < ActionController::TestCase
+
+
+
   context "the sessions controller" do
     setup do
       @experiment = FactoryGirl.create(:experiment)
@@ -20,14 +23,16 @@ class SessionsControllerTest < ActionController::TestCase
           assert_redirected_to experiment_sessions_path(@experiment)
           assert_equal @controller.t('controllers.sessions.group_created'), flash[:notice]
         end
+        @session_group = SessionGroup.where(:experiment_id => @experiment.id).first
+        assert_equal(SessionGroup::DEFAULT_SIGNUP_MODE, @session_group.signup_mode)
       end
 
       should "not work if first group has participants" do
-        #TODO
+        assert(false, "todo")
       end
 
       should "not work if second group has participants" do
-        #TODO
+        assert(false, "todo")
       end
 
     end
@@ -46,7 +51,6 @@ class SessionsControllerTest < ActionController::TestCase
           post :add_to_group, :experiment_id => @experiment.id, :id => @session_with_participant.id, :target => @session_group_with_two_sessions.id
           assert_redirected_to experiment_sessions_path(@experiment)
            assert_equal @controller.t('controllers.sessions.notice_cannot_merge_into_group_existing_participants'), flash[:alert]
-
         end
 
         should "succeed if session does not have participants" do
@@ -64,8 +68,10 @@ class SessionsControllerTest < ActionController::TestCase
           end
           @session_groups = SessionGroup.where(:experiment_id => @experiment.id)
         end
+
         should "change signup mode for all sessions" do
           post :update_mode, :experiment_id => @experiment.id, :mode => SessionGroup::USER_VISITS_ALL_SESSIONS_OF_GROUP
+
           @session_groups.each do | session_group |
             assert_equal(session_group.signup_mode, SessionGroup::USER_VISITS_ALL_SESSIONS_OF_GROUP)
           end
