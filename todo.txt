@@ -1,5 +1,4 @@
 Bigger boxes for filters in experiments / participants. (Ingmar)
-Hide mode choice once session has participants. (John)
 I18nize lines 108 and 109 in enrollment controller (Ingmar)
 Attend-All-Session-Group should not be available for enrollment if one of the sessions is full (Ingmar)
 Fix Action Button menu on sessions page (John)
@@ -9,8 +8,10 @@ Need to automatically test
         views
             Ensure groups with participants don't have options to merge with other groups in actions. (John)
             Ensure groups without participants do not have the options to merge with groups that do. (John)
+            Ensure groups with participants can't change mode.
         controllers
             Ensure error is thrown on attempt to add two sessions together when one or more has participants (John)
+            Ensure groups with participants can't change mode.
 
     Correct mode on new group
         controllers

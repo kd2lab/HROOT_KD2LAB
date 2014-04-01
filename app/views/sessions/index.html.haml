@@ -22,8 +22,7 @@
 %br
 %br
 %br
-
-- if (@experiment.session_groups.size > 0)
+- if (@experiment.session_groups.size > 0 && @experiment.has_no_participants_in_grouped_sessions?)
   - mode = @experiment.session_groups.first.signup_mode
   .btn-panel{:style => "float:left"}
     = t('.group_mode')

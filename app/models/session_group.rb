@@ -22,4 +22,17 @@ class SessionGroup < ActiveRecord::Base
       sessions.select{|s| s.space_left > 0}
     end
   end
+
+  def has_no_participants?
+    return !has_participants?
+  end
+
+  def has_participants?
+    sessions.each do |session|
+      if session.has_participants?
+        return true
+      end
+    end
+    return false
+  end
 end
