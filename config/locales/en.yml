@@ -918,6 +918,7 @@ en:
       notice_saved_changes: Session changes have been saved.
       notice_cannot_merge_into_group_existing_participants: "Grouping not possible, session has participants."
       notice_cannot_create_group_existing_participants: "Grouping not possible, session has participants."
+      notice_cannot_change_group_mode_existing_participants: "Mode change not possible, at least one session in a group has participants."
     users:
       notice_mailqueue:  Messages have been queued.
       notice_mailqueue_activation:  Activation messages have been queued.

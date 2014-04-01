@@ -39,7 +39,7 @@
               %br
           %td
       - @session_groups.each do |group|
-        - sessions = - group.sessions_for_enrollment
+        - sessions = group.sessions_for_enrollment
         - if sessions.length > 0
           %tr
             %td

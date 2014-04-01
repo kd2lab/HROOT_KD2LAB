@@ -83,12 +83,17 @@ class SessionsController < ApplicationController
   end
 
   def update_mode
-    # change all groups
-    @experiment.session_groups.each do |group|
-      group.update_attribute(:signup_mode, params[:mode])
+    if (@experiment.has_no_participants_in_grouped_sessions?)
+      # change all groups
+      @experiment.session_groups.each do |group|
+        group.update_attribute(:signup_mode, params[:mode])
+      end
+    redirect_to experiment_sessions_path(@experiment)
+    else
+      #participants in groups, prevent change.
+      redirect_to experiment_sessions_path(@experiment), :alert => t('controllers.sessions.notice_cannot_change_group_mode_existing_participants')
     end
 
-    redirect_to experiment_sessions_path(@experiment)
   end
 
   def remove_from_group
@@ -277,7 +282,7 @@ class SessionsController < ApplicationController
         User.update_noshow_calculation(params["ids"].keys)
       end
     end
-   
+
     params[:search] = params[:search] || {}
     params[:search][:role] = {:value => ['user']}
     params[:search][:deleted] = {:value =>"show"}
