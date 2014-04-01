@@ -253,21 +253,6 @@ class SessionsControllerTest < ActionController::TestCase
       end
     end
 
-    context "deleting a session with subsessions" do
-      setup do
-        @session2 = Session.create(:experiment => @experiment, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 20, :reserve => 4)
-        @subsession = Session.create(:experiment => @experiment, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 20, :reserve => 4, :reference_session_id => @session2.id)
-      end
-
-      should "not delete the session" do
-        assert_difference('Session.count', 0) do
-          delete :destroy, :id => @session2.id, :experiment_id => @experiment.id
-        end
-
-        assert_response :redirect
-      end
-    end
-
     context "deleting a session with participants" do
       setup do
         @session2 = Session.create(:experiment => @experiment, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 20, :reserve => 4)

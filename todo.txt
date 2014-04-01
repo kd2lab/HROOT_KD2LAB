@@ -19,3 +19,5 @@ Need to automatically test
             That the second created group in a session has the mode of the first.
             
     Enrollcontroller, Participationscontroller: Ingmar adds tests
+
+Update tests "remove selected participations" and "get on participants to move users". (Ingmar?)
