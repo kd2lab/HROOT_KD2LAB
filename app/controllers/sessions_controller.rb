@@ -233,7 +233,6 @@ class SessionsController < ApplicationController
 
       # this is only allowed if the user has the right 'manage_participants' or the right 'manage_showups'
       #
-
     if current_user.has_right?(@experiment, 'manage_participants') || current_user.has_right?(@experiment, 'manage_showups')
       changes = 0
       # save session participations

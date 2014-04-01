@@ -15,6 +15,7 @@ class SessionsControllerTest < ActionController::TestCase
       setup do
         @session1 = FactoryGirl.create(:future_session, :experiment => @experiment)
         @session2 = FactoryGirl.create(:future_session, :experiment => @experiment)
+        @user = FactoryGirl.create(:user)
       end
 
       should "work if neither group has participants" do
@@ -25,26 +26,37 @@ class SessionsControllerTest < ActionController::TestCase
         end
         @session_group = SessionGroup.where(:experiment_id => @experiment.id).first
         assert_equal(SessionGroup::DEFAULT_SIGNUP_MODE, @session_group.signup_mode)
+        assert_redirected_to experiment_sessions_path(@experiment)
       end
 
       should "not work if first group has participants" do
-        assert(false, "todo")
+        @session_participation = FactoryGirl.create(:session_participation, :user => @user, :session => @session1)
+        assert_difference('SessionGroup.count', 0) do
+          post :create_group_with, :experiment_id => @experiment.id, :id => @session1, :target => @session2.id
+        end
+        assert_redirected_to experiment_sessions_path(@experiment)
+        assert_equal @controller.t('controllers.sessions.notice_cannot_create_group_existing_participants'), flash[:alert]
       end
 
       should "not work if second group has participants" do
-        assert(false, "todo")
+        @session_participation = FactoryGirl.create(:session_participation, :user => @user, :session => @session1)
+        assert_difference('SessionGroup.count', 0) do
+          post :create_group_with, :experiment_id => @experiment.id, :id => @session1, :target => @session2.id
+        end
+        assert_redirected_to experiment_sessions_path(@experiment)
+        assert_equal @controller.t('controllers.sessions.notice_cannot_create_group_existing_participants'), flash[:alert]
       end
 
     end
 
     context "grouped sessions testing" do
       setup do
+        @session_group_with_two_sessions = FactoryGirl.create(:future_session_group, :experiment => @experiment)
       end
 
       context "attempting to add a session to a grouped session" do
         setup do
           @session_with_participant = FactoryGirl.create(:future_session, :experiment => @experiment, session_participations_count: 1)
-          @session_group_with_two_sessions = FactoryGirl.create(:future_session_group, :experiment => @experiment)
         end
 
         should "fail if session has partcipants" do
@@ -59,7 +71,6 @@ class SessionsControllerTest < ActionController::TestCase
           assert_equal @controller.t('controllers.sessions.added_to_group'), flash[:notice]
         end
       end
-
 
       context "changing signup mode" do
         setup do
@@ -78,29 +89,28 @@ class SessionsControllerTest < ActionController::TestCase
 
           assert_response :redirect
         end
-      end
 
-      context "attempting to create" do
-        setup do
-          (1...3).each do |n|
-             FactoryGirl.create(:future_session_group, :experiment => @experiment)
-          end
-          @session_groups = SessionGroup.where(:experiment_id => @experiment.id)
-        end
-        should "change signup mode for all sessions" do
+        should "not work if session has participants" do
+          #assert(false, "todo, need to get participations to pass first..")
+
+          @user = FactoryGirl.create(:user)
+
+          @session1 = @session_group_with_two_sessions.sessions[0];
+          @session2 = @session_group_with_two_sessions.sessions[1];
+          @session_participation = FactoryGirl.create(:session_participation, :user => @user, :session => @session1)
+
+          @original_signup_mode = @session_group_with_two_sessions.signup_mode
           post :update_mode, :experiment_id => @experiment.id, :mode => SessionGroup::USER_VISITS_ALL_SESSIONS_OF_GROUP
-          @session_groups.each do | session_group |
-            assert_equal(session_group.signup_mode, SessionGroup::USER_VISITS_ALL_SESSIONS_OF_GROUP)
-          end
-
-          assert_response :redirect
+          assert_equal(@original_signup_mode, @session_group_with_two_sessions.signup_mode)
+          assert_equal @controller.t('controllers.sessions.notice_cannot_change_group_mode_existing_participants'), flash[:alert]
+          assert_redirected_to experiment_sessions_path(@experiment)
         end
       end
 
       context "deleting from a two session group" do
         setup do
-          @session_group_with_two_sessions = FactoryGirl.create(:future_session_group, :experiment => @experiment)
         end
+
         should "delete the group session" do
           assert_difference('SessionGroup.count', -1) do
             delete :remove_from_group, :id => @session_group_with_two_sessions.sessions.first.id, :experiment_id => @experiment.id
