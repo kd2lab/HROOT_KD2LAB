@@ -165,7 +165,9 @@ class SessionsControllerTest < ActionController::TestCase
 
           should "fail" do
           assert_difference('@session_group_with_three_sessions.sessions.count', 0) do
-            delete :remove_from_group, :id => @session_group_with_three_sessions.sessions.first.id, :experiment_id => @experiment.id
+            @session_group_with_three_sessions.sessions.each do |session|
+              delete :remove_from_group, :id => @session.id, :experiment_id => @experiment.id
+            end
           end
           assert_redirected_to experiment_sessions_path(@experiment)
           assert_equal @controller.t('controllers.sessions.notice_cannot_change_group_sessions_participants'), flash[:alert]
