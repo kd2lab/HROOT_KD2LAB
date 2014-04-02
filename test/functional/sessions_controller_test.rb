@@ -107,7 +107,7 @@ class SessionsControllerTest < ActionController::TestCase
         end
       end
 
-      context "deleting from a two session group" do
+      context "removing from a two session group" do
         setup do
         end
 
@@ -121,7 +121,7 @@ class SessionsControllerTest < ActionController::TestCase
         end
       end
 
-      context "deleting from a three session group" do
+      context "removing from a three session group" do
         setup do
           @session_group_with_three_sessions = FactoryGirl.create(:future_session_group, sessions_count: 3, :experiment => @experiment)
         end
@@ -132,6 +132,22 @@ class SessionsControllerTest < ActionController::TestCase
 
         assert_response :redirect
         assert_equal @controller.t('controllers.sessions.removed_from_group'), flash[:notice]
+        end
+
+        context "removing from a three session group with participants" do
+          setup do
+            @user = FactoryGirl.create(:user)
+            @session = @session_group_with_three_sessions.sessions.first
+            SessionParticipation.create(:user => @user, :session => @session)
+          end
+
+          should "fail" do
+          assert_difference('@session_group_with_three_sessions.sessions.count', 0) do
+            delete :remove_from_group, :id => @session_group_with_three_sessions.sessions.first.id, :experiment_id => @experiment.id
+          end
+          assert_redirected_to experiment_sessions_path(@experiment)
+          assert_equal @controller.t('controllers.sessions.notice_cannot_change_group_sessions_participants'), flash[:alert]
+          end
         end
       end
     end
