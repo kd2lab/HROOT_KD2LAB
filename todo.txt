@@ -3,6 +3,10 @@ I18nize lines 108 and 109 in enrollment controller (Ingmar)
 
 Need to automatically test
 
+- even if group mode can't be changed due to participants in grouped sessions, mode should still be displayed
+- Label ungrouped session should not be displayed if there are now groups
+- once there are participants in some sessions of a group, the user should not be able to remove any session of that group
+
 John: Thinking of using rspec (Possibly even rspec-given, that framework just looks so nice) with Capybara for view testing; not sure of appropriate place for this.
     Restrict grouping
         views
