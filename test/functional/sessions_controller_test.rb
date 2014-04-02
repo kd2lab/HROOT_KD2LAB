@@ -54,19 +54,41 @@ class SessionsControllerTest < ActionController::TestCase
         @session_group_with_two_sessions = FactoryGirl.create(:future_session_group, :experiment => @experiment)
       end
 
-      context "attempting to add a session to a grouped session" do
+      context "attempting to add a session to a grouped session with participants" do
+        setup do
+          @user = FactoryGirl.create(:user)
+          @session = @session_group_with_two_sessions.sessions.first
+          SessionParticipation.create(:user => @user, :session => @session)
+          @sessionToAdd = FactoryGirl.create(:future_session, :experiment => @experiment)
+        end
+
+        should "fail" do
+          assert_difference('@session_group_with_two_sessions.sessions.count', 0) do
+            post :add_to_group, :experiment_id => @experiment.id, :id => @sessionToAdd.id, :target => @session_group_with_two_sessions.id
+          end
+          assert_redirected_to experiment_sessions_path(@experiment)
+          assert_equal @controller.t('notice_cannot_merge_into_group_it_has_participants'), flash[:alert]
+        end
+
+      end
+
+      context "attempting to add a session with participants to a grouped session" do
         setup do
           @session_with_participant = FactoryGirl.create(:future_session, :experiment => @experiment, session_participations_count: 1)
         end
 
         should "fail if session has partcipants" do
-          post :add_to_group, :experiment_id => @experiment.id, :id => @session_with_participant.id, :target => @session_group_with_two_sessions.id
+          assert_difference('@session_group_with_two_sessions.sessions.count', 0) do
+            post :add_to_group, :experiment_id => @experiment.id, :id => @session_with_participant.id, :target => @session_group_with_two_sessions.id
+          end
           assert_redirected_to experiment_sessions_path(@experiment)
-           assert_equal @controller.t('controllers.sessions.notice_cannot_merge_into_group_existing_participants'), flash[:alert]
+          assert_equal @controller.t('controllers.sessions.notice_cannot_merge_into_group_existing_participants'), flash[:alert]
         end
 
         should "succeed if session does not have participants" do
-          post :add_to_group, :experiment_id => @experiment.id, :id => @session.id, :target => @session_group_with_two_sessions.id
+          assert_difference('@session_group_with_two_sessions.sessions.count', +1) do
+            post :add_to_group, :experiment_id => @experiment.id, :id => @session.id, :target => @session_group_with_two_sessions.id
+          end
           assert_redirected_to experiment_sessions_path(@experiment)
           assert_equal @controller.t('controllers.sessions.added_to_group'), flash[:notice]
         end
