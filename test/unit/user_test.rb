@@ -79,15 +79,20 @@ class UserTest < ActiveSupport::TestCase
       @sess1 = Session.create(:experiment => @e1, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 20, :reserve => 4)
       
       # session group, one session in the past, so none of those sessions should be available
-      @group1 = SessionGroup.create(:signup_mode => 1)
+      @group1 = SessionGroup.create(:signup_mode => SessionGroup::USER_IS_RANDOMIZED_TO_ONE_SESSION)
       @sess1_b = Session.create(:experiment => @e1, :start_at => Time.now-2.hours, :end_at => Time.now+3.hours, :needed => 20, :reserve => 4, :session_group_id => @group1.id)
       @sess1_c = Session.create(:experiment => @e1, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 20, :reserve => 4, :session_group_id => @group1.id)
       
-      # session group, one session has no space, but group should be available
-      @group2 = SessionGroup.create(:signup_mode => 1)
+      # session group, one session has no space, but group should be available, since it is a randomized group
+      @group2 = SessionGroup.create(:signup_mode => SessionGroup::USER_IS_RANDOMIZED_TO_ONE_SESSION)
       @sess1_d = Session.create(:experiment => @e1, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 0, :reserve => 0, :session_group_id => @group2.id)
       @sess1_e = Session.create(:experiment => @e1, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 20, :reserve => 4, :session_group_id => @group2.id)
-      
+
+      # session group, one session has no space, group should not be availabe since it is a attend-all group
+      @group3 = SessionGroup.create(:signup_mode => SessionGroup::USER_VISITS_ALL_SESSIONS_OF_GROUP)
+      @sess1_f = Session.create(:experiment => @e1, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 0, :reserve => 0, :session_group_id => @group3.id)
+      @sess1_g = Session.create(:experiment => @e1, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 20, :reserve => 4, :session_group_id => @group3.id)
+
 
       # a session without space - not available
       @sess2 = Session.create(:experiment => @e1, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 0, :reserve => 0)

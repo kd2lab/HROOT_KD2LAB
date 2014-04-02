@@ -60,12 +60,12 @@ class EnrollController < ApplicationController
               session.session_participations.count < session.needed + session.reserve
             end
 
-            # find sessionwith lowest count of participants
-            min_session = sessions_with_space.min {|s1,s2| s1.session_participations.size <=> s2.session_participations.size}
-            size_of_min_session = min_session.session_participations.size
+            # find session most space
+            session_with_most_seats = sessions_with_space.max {|s1,s2| s1.space_left <=> s2.space_left}
+            space_left = session_with_most_seats.space_left
 
             min_sessions = sessions.select do |session|
-              session.session_participations.size == size_of_min_session
+              session.space_left == space_left
             end
 
             picked_session = min_sessions.shuffle.first

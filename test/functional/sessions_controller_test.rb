@@ -154,11 +154,36 @@ class SessionsControllerTest < ActionController::TestCase
         SessionParticipation.create(:user => @user2, :session => @session)
         SessionParticipation.create(:user => @user3, :session => @session)
 
-        get :participants, :experiment_id => @experiment.id, :user_action => "0", :selected_users => {@user1.id => "1", @user2.id => "1"}, :id => @session.id
+        get :participants, :experiment_id => @experiment.id, :user_action_type => "move_to_session", :user_action_value => "0", :selected_users => {@user1.id => "1", @user2.id => "1"}, :id => @session.id
       end
 
       should "remove selected participations" do
         assert_equal 1, SessionParticipation.count
+      end
+    end
+
+    context "get on participants to remove users from an attend-all group" do
+      setup do
+        @user1 = FactoryGirl.create(:user)
+        @user2 = FactoryGirl.create(:user)
+        @user3 = FactoryGirl.create(:user)
+
+        @group = SessionGroup.create(:signup_mode => SessionGroup::USER_VISITS_ALL_SESSIONS_OF_GROUP)
+        @session2 = Session.create(:experiment => @experiment, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 20, :reserve => 4, :session_group_id => @group.id)
+        @session3 = Session.create(:experiment => @experiment, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 20, :reserve => 4, :session_group_id => @group.id)
+
+        SessionParticipation.create(:user => @user1, :session => @session2)
+        SessionParticipation.create(:user => @user2, :session => @session2)
+        SessionParticipation.create(:user => @user3, :session => @session2)
+        SessionParticipation.create(:user => @user1, :session => @session3)
+        SessionParticipation.create(:user => @user2, :session => @session3)
+        SessionParticipation.create(:user => @user3, :session => @session3)
+
+        get :participants, :experiment_id => @experiment.id, :user_action_type => "move_to_session", :user_action_value => "0", :selected_users => {@user1.id => "1", @user2.id => "1"}, :id => @session.id
+      end
+
+      should "remove selected participations" do
+        assert_equal 2, SessionParticipation.count
       end
     end
 
@@ -174,12 +199,68 @@ class SessionsControllerTest < ActionController::TestCase
 
         @session2 = Session.create(:experiment => @experiment, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 20, :reserve => 4)
 
-        get :participants, :experiment_id => @experiment.id, :user_action => @session2.id, :selected_users => {@user1.id => "1", @user2.id => "1"}, :id => @session.id
+        get :participants, :experiment_id => @experiment.id, :user_action_type => "move_to_session", :user_action_value => @session2.id, :selected_users => {@user1.id => "1", @user2.id => "1"}, :id => @session.id
       end
 
-      should "move selected participations" do
+      should "move selected participants" do
         assert_equal 1, SessionParticipation.where(:user_id => @user1.id, :session_id => @session2.id).count
         assert_equal 1, SessionParticipation.where(:user_id => @user2.id, :session_id => @session2.id).count
+        assert_equal 1, SessionParticipation.where(:user_id => @user3.id, :session_id => @session.id).count
+
+        assert_equal 3, SessionParticipation.count
+      end
+    end
+
+    context "get on participants to move users to a attend-all group" do
+      setup do
+        @user1 = FactoryGirl.create(:user)
+        @user2 = FactoryGirl.create(:user)
+        @user3 = FactoryGirl.create(:user)
+
+        SessionParticipation.create(:user => @user1, :session => @session)
+        SessionParticipation.create(:user => @user2, :session => @session)
+        SessionParticipation.create(:user => @user3, :session => @session)
+
+        @group = SessionGroup.create(:signup_mode => SessionGroup::USER_VISITS_ALL_SESSIONS_OF_GROUP)
+        @session2 = Session.create(:experiment => @experiment, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 20, :reserve => 4, :session_group_id => @group.id)
+        @session3 = Session.create(:experiment => @experiment, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 20, :reserve => 4, :session_group_id => @group.id)
+
+        get :participants, :experiment_id => @experiment.id, :user_action_type => "move_to_group", :user_action_value => @group.id, :selected_users => {@user1.id => "1", @user2.id => "1"}, :id => @session.id
+      end
+
+      should "move selected participants to all sessions of the group" do
+        assert_equal 1, SessionParticipation.where(:user_id => @user1.id, :session_id => @session2.id).count
+        assert_equal 1, SessionParticipation.where(:user_id => @user2.id, :session_id => @session2.id).count
+        assert_equal 1, SessionParticipation.where(:user_id => @user1.id, :session_id => @session3.id).count
+        assert_equal 1, SessionParticipation.where(:user_id => @user2.id, :session_id => @session3.id).count
+
+        assert_equal 1, SessionParticipation.where(:user_id => @user3.id, :session_id => @session.id).count
+
+        assert_equal 5, SessionParticipation.count
+      end
+    end
+
+    context "get on participants to move users to a randomized group session" do
+      setup do
+        @user1 = FactoryGirl.create(:user)
+        @user2 = FactoryGirl.create(:user)
+        @user3 = FactoryGirl.create(:user)
+
+        SessionParticipation.create(:user => @user1, :session => @session)
+        SessionParticipation.create(:user => @user2, :session => @session)
+        SessionParticipation.create(:user => @user3, :session => @session)
+
+        @group = SessionGroup.create(:signup_mode => SessionGroup::USER_IS_RANDOMIZED_TO_ONE_SESSION)
+        @session2 = Session.create(:experiment => @experiment, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 20, :reserve => 4, :session_group_id => @group.id)
+        @session3 = Session.create(:experiment => @experiment, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 20, :reserve => 4, :session_group_id => @group.id)
+
+        get :participants, :experiment_id => @experiment.id, :user_action_type => "move_to_session", :user_action_value => @session2.id, :selected_users => {@user1.id => "1", @user2.id => "1"}, :id => @session.id
+      end
+
+      should "move selected participants to the specified session" do
+        assert_equal 1, SessionParticipation.where(:user_id => @user1.id, :session_id => @session2.id).count
+        assert_equal 1, SessionParticipation.where(:user_id => @user2.id, :session_id => @session2.id).count
+
         assert_equal 1, SessionParticipation.where(:user_id => @user3.id, :session_id => @session.id).count
 
         assert_equal 3, SessionParticipation.count

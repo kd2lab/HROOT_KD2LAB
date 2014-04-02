@@ -161,8 +161,6 @@ EOSQL
       (session.experiment.excluded_ids & experiment_ids).length == 0
     end
 
-    sessions_after_exclusion
-
     # split up - ungrouped sessions and grouped sessions
     ungrouped_sessions, grouped_sessions = sessions_after_exclusion.partition do |s| s.session_group_id.nil? end
 
@@ -173,6 +171,16 @@ EOSQL
     session_groups = session_groups.select do |group|
       group.sessions.where('start_at < NOW()').count == 0
     end
+
+    # remove attend-all groups, where one session is full
+    session_groups = session_groups.select do |group|
+      if group.signup_mode == SessionGroup::USER_VISITS_ALL_SESSIONS_OF_GROUP
+        group.sessions.select{ |s| s.space_left <= 0 }.count == 0
+      else
+        true
+      end
+    end
+
 
     return ungrouped_sessions, session_groups
   end
