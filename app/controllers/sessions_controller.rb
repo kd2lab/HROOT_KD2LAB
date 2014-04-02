@@ -100,13 +100,17 @@ class SessionsController < ApplicationController
     # remember group
     session_group = @session.session_group
 
-    # unset session_group_id
-    @session.update_attribute(:session_group_id, nil)
+    if session_group.has_no_participants?
+      # unset session_group_id
+      @session.update_attribute(:session_group_id, nil)
 
-    # remove group altogether, if it contains only one session
-    session_group.destroy if session_group.sessions.count <= 1
-
-    redirect_to experiment_sessions_path(@experiment), :notice => t('controllers.sessions.removed_from_group')
+      # remove group altogether, if it contains only one session
+      session_group.destroy if session_group.sessions.count <= 1
+      redirect_to experiment_sessions_path(@experiment), :notice => t('controllers.sessions.removed_from_group')
+    else
+      #todo change text.
+      redirect_to experiment_sessions_path(@experiment), :alert => t('controllers.sessions.notice_cannot_change_group_sessions_participants')
+    end
   end
 
   def add_to_group
