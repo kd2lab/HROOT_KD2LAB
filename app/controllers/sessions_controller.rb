@@ -114,8 +114,12 @@ class SessionsController < ApplicationController
   end
 
   def add_to_group
+    session_group = SessionGroup.where(:id => params[:target]).first
+
+    if session_group.has_participants?
+      redirect_to experiment_sessions_path(@experiment), :alert => t('notice_cannot_merge_into_group_it_has_participants')
+    elsif @session.has_no_participants?
     # unset session_group_id
-    if !@session.has_participants?
       @session.update_attribute(:session_group_id, params[:target])
       redirect_to experiment_sessions_path(@experiment), :notice => t('controllers.sessions.added_to_group')
     else
