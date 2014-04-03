@@ -22,16 +22,17 @@
 %br
 %br
 %br
-- if (@experiment.session_groups.size > 0 && @experiment.has_no_participants_in_grouped_sessions?)
+- if @experiment.session_groups.size > 0 
   - mode = @experiment.session_groups.first.signup_mode
-  .btn-panel{:style => "float:left"}
-    = t('.group_mode')
-    .btn-group
-      - [SessionGroup::USER_IS_RANDOMIZED_TO_ONE_SESSION, SessionGroup::USER_VISITS_ALL_SESSIONS_OF_GROUP].each do |m|
-        = link_to t('sessions.mode.mode'+m.to_s), |
-          update_mode_experiment_sessions_path(@experiment, :mode => m), |
-          :class => "btn btn-default #{ mode == m ? 'active' : ''}", |
-          :method => :post
+  - if @experiment.has_no_participants_in_grouped_sessions?
+    .btn-panel{:style => "float:left"}
+      = t('.group_mode')
+      .btn-group
+        - [SessionGroup::USER_IS_RANDOMIZED_TO_ONE_SESSION, SessionGroup::USER_VISITS_ALL_SESSIONS_OF_GROUP].each do |m|
+          = link_to t('sessions.mode.mode'+m.to_s), |
+            update_mode_experiment_sessions_path(@experiment, :mode => m), |
+            :class => "btn btn-default #{ mode == m ? 'active' : ''}", |
+            :method => :post
   .well.well-small{:style => "margin-left: 10px; float:left; width:300px"}
     = t("sessions.mode.explanation#{mode}")
   %br
