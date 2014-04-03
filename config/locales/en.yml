@@ -712,6 +712,7 @@ en:
       showup: Showed up
       noshow: No show
       participated: Participated
+      not_activated: not activated after import
     print:
       role: Role
       study: Field of study

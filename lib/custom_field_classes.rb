@@ -34,7 +34,7 @@ class Field
     if options[:required]
       field_name = name
       klass.class_eval do
-        validates_presence_of field_name
+        validates_presence_of field_name, :if => :validate_customfields?
       end
     end  
   end

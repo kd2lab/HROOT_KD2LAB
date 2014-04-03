@@ -648,6 +648,7 @@ de:
       showup: Erschienen
       participated: Teilgenommen
       noshow: Nicht erschienen
+      not_activated: Nach Import noch nicht aktiviert
     print:
       role: Rolle
       study: Fach

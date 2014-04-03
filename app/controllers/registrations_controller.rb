@@ -21,6 +21,16 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
   def update
-    super
+    if current_user.valid_password?(params[:user][:current_password])
+      current_user.skip_validation_of_customfields = true
+      if current_user.update_attributes(params[:user])
+        sign_in(current_user, :bypass => true)
+        redirect_to edit_user_registration_path, :notice => I18n.t('devise.registrations.user.updated')
+      else
+        render 'devise/registrations/edit'
+      end
+    else
+      redirect_to edit_user_registration_path, :alert => I18n.t('devise.registrations.edit.please_confirm_password')
+    end
   end
 end
