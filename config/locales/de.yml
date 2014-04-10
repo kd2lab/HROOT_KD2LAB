@@ -199,30 +199,50 @@ de:
       newest_tags: Neueste Tags
 
   enroll:
-    alert1: Experiment mit Folgesessions
-    alert2: Dieses Experiment hat mehrere Termine, bitte überprüfen Sie, ob Sie an allen angezeigten Terminen Zeit haben.
-
+    confirm_enrollment: Bestätigen der Anmeldung
+    or: oder
+    back: zurück
     index:
       new_enrollment: Anmeldung zu Experimenten (Schritt 1)
       available_sessions: 'Sie können sich zu folgenden Experiment-Sessions anmelden:'
       register_for_sessions: Jetzt anmelden (Bestätigung in Schritt 2)
       no_sessions_available: Es gibt derzeit keine weiteren Experimente, zu denen Sie sich anmelden können.
-    confirm:
-      confirm_enrollment: Anmeldung bestätigen (Schritt 2)
+      random_choice_desc: Wenn die diese Session-Gruppe auswählen, werden Sie bei Anmeldung zufällig einem Termin zugordnet.
+      all_choice_desc: Wenn die diese Session-Gruppe auswählen, müssen Sie an allen Terminen teilnehmen.
+    confirm_session:
+      date: 'Datum und Zeit der Session:'
+      enroll_for_sure: Verbindlich anmelden
       confirm_enrollment_question: 'Bitte bestätigen Sie die Teilnahme an folgenden Terminen verbindlich:'
-      dates: 'Termine:'
+    confirm_group:
+      dates: 'Datum und Zeit der Sessions'
       enroll_for_sure: Verbindlich anmelden!
-      or: oder
-      back: zurück
+      confirm_enrollment_question_randomized_html: 'Bitte bestätigen Sie, dass Sie an allen folgenden Terminen Zeit haben (Sie werden einem Termin per Zufall zugeteilt)'
+      confirm_enrollment_question_all_html: 'Bitte bestätigen Sie die Teilnahme an folgenden Terminen verbindlich:'
+    report_session:
+      register_done: Ergebnis der Anmeldung
+      success: Die Anmeldung war erfolgreich
+      failure: Die Anmeldung war nicht erfolgreich
+      failure_reason_html: "Dafür kann es verschiedene Gründe geben - vielleicht wurde der letzte Platz gerade eben vergeben, oder die Anmeldefrist ist gerade abgelaufen.<br/><br/>Für weitere Informationen wenden Sie sich an die Laborleitung."
+      session_overview: "Sie wurden in die folgende Experiment-Session eingetragen:"
+      sent_confirmation_mail: Es wurde Ihnen eine Bestätigung-E-Mail zugesandt.
+      more_sessions: Zu weiteren Sessions anmelden
+      back_to_account: Zurück zur Hauptseite
+    report_group:
+      register_done: Ergebnis der Sessionanmeldung
+      success: Ihre Session-Anmeldung war erfolgreich!
+      failure: Ihre Session-Anmeldung war NICHT erfolgreich!
+      failure_reason_html: "Dies kann verschiedene Gründe haben - vielleicht ist kurz zuvor der letzte Platz vergeben worden, oder die Anmeldungphase des Experiments wurde beendet.<br/><br/>Wenden Sie sich bei Fragen an die Laborleitung."
+      session_overview_all: "Sie haben sich zu folgenden Sessionterminen angemeldet:"
+      session_overview_randomized: "Sie wurden per Zufall folgendem Sessiontermin zugeteilt:"
+      sent_confirmation_mail: Es wurde Ihnen gerade eine Bestätigungs-E-Mail mit den Terminen zugesandt.
+      more_sessions: Zu weiteren Sessions in anderen Experimenten anmelden
+      back_to_account: Zurück zur Hauptseite
     report:
       register_done: Ergebnis der Sessionanmeldung
       success: Ihre Session-Anmeldung war erfolgreich!
       failure: Ihre Session-Anmeldung war NICHT erfolgreich!
       failure_reason_html: "Dies kann verschiedene Gründe haben - vielleicht ist kurz zuvor der letzte Platz vergeben worden, oder die Anmeldungphase des Experiments wurde beendet.<br/><br/>Wenden Sie sich bei Fragen an die Laborleitung."
       session_overview: "Sie haben sich zu folgenden Sessionterminen angemeldet:"
-      sent_confirmation_mail: Es wurde Ihnen gerade eine Bestätigungs-E-Mail mit den Terminen zugesandt.
-      more_sessions: Zu weiteren Sessions in anderen Experimenten anmelden
-      back_to_account: Zurück zur Hauptseite
   options:
     tabs:
       general: Allgemein

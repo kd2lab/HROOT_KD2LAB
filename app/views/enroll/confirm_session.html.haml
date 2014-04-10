@@ -17,10 +17,13 @@
   
   .well
     =t('.date')+':'
-    
+
+    %br
     %br
     %b= @session.time_str
-    = @session.location.name if @session.location
+    - if @session.location
+      %br
+      = @session.location.name
             
     %br
     

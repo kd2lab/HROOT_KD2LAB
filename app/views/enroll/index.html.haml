@@ -26,7 +26,9 @@
             = radio_button_tag "choice", "session,#{s.id}"
           %td
             %b= s.time_str
-            = s.location.name if s.location
+            - if s.location
+              %br
+              = s.location.name
 
             %br
 
@@ -47,11 +49,14 @@
             %td
               - sessions.each do |s|
                 %b= s.time_str
-                = s.location.name if s.location
+                - if s.location
+                  %br
+                  = s.location.name
+                %br
                 %br
               %br
             %td
-              .well
+              .well{:style=>"width:300px"}
                 - if group.is_randomized?
                   = t '.random_choice_desc'
                 - else

@@ -19,11 +19,15 @@
   
   .well
     =t('.dates')+':'
-    
+
+    %br
     %br
     - @group.sessions.each do |s| 
       %b= s.time_str
-      = s.location.name if s.location
+      - if s.location
+        %br
+        = s.location.name 
+      %br
       %br
                 
   %br

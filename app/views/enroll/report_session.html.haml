@@ -21,7 +21,9 @@
   %br
 
     %b= s.time_str
-    = s.location.name if s.location
+    - if s.location
+      %br
+      = s.location.name
             
   %br
   %br
