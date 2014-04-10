@@ -1,7 +1,6 @@
 Need to automatically test
 John: add translation for change attempt to merge into group with participants.
         hide add to group from view under these conditions.
-Fix location
 enrol on random desc text - possibly incoherent.
 successful -> successfull
 
