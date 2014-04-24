@@ -1,18 +1,18 @@
 Hroot::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
-
+  
   ############# hroot configuration ########################
 
   # the following settings are specific to hroot, whereas general rails settings follow further down
 
   # enable or disable actual delivery - set this to true to enable email sending
   config.action_mailer.perform_deliveries = false
-
+  
   # ---------- email config example 1: send emails via gmail -----------------------
 
   # send method
   # config.action_mailer.delivery_method = :smtp
-
+  
   #configure action mailer - example: use gmail as mail service
   #config.action_mailer.smtp_settings = {
   #  :address              => "smtp.gmail.com",
@@ -39,13 +39,13 @@ Hroot::Application.configure do
   # this email is used by the development mail interceptor (see application.rb and lib/development_mail_interceptor.rb)
   # in all other that production mode, emails will be sent to this adress instead of the real recipient
   config.interceptor_email = "<Your email>"
-
+  
   # this email adress will be the default sender email
   config.hroot_sender_email = '<Some email which acts as default sender address>'
 
   # log messages will be sent this email adress
   config.hroot_log_email = '<your email adress>'
-
+  
 
   # regular expression for restriction on valid email adresses - example:
   # Allow only mail adresses '...@somedomain.org'
@@ -53,15 +53,15 @@ Hroot::Application.configure do
   #config.email_restriction = {
   #  :regex => /.*@somedomain.org$/
   #}
-
+  
   # are users allowed to always edit their optional data?
   config.users_can_edit_optional_data = false
-
-
+  
+  
   # configure uploads directory - you can put your own path here
   config.upload_dir = Rails.root.join('uploads')
 
-  # set a site-wide path prefix here if hroot is supposed to run
+  # set a site-wide path prefix here if hroot is supposed to run 
   # in a subdirectory like http://youdomain.com/subdirectory/hroot
   # config.path_prefix = '/root'
   config.path_prefix = ''
@@ -99,8 +99,8 @@ Hroot::Application.configure do
   config.action_dispatch.best_standards_support = :builtin
 end
 
-Rails.application.routes.default_url_options[:host] =  'localhost'
-Rails.application.routes.default_url_options[:protocol] =  'https'
+# Rails.application.routes.default_url_options[:host] =  'www.yoursite.com/hroot'
+# Rails.application.routes.default_url_options[:protocol] =  'https'
 
 # enable exception mailing
 #Hroot::Application.config.middleware.use ExceptionNotification::Rack,
