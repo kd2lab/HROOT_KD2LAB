@@ -1,8 +1,5 @@
 Need to automatically test
-John: add translation for change attempt to merge into group with participants.
-        hide add to group from view under these conditions.
 enrol on random desc text - possibly incoherent.
-successful -> successfull
 
 
 	John: Thinking of using rspec (Possibly even rspec-given, that framework just looks so nice) with Capybara for view testing; not sure of appropriate place for this.
@@ -11,9 +8,6 @@ successful -> successfull
             Ensure groups with participants don't have options to merge with other groups in actions. (John)
             Ensure groups without participants do not have the options to merge with groups that do. (John)
             Ensure groups with participants can't change mode. (John)
-
-Discuss:
-John: Found issue with sessions. Previously they could be merged into groups that have participants. This is now fixed but thought I'd double check intended behaviour.
 
 Later (Ingmar):
   Bigger boxes for filters in experiments / participants. (Ingmar)

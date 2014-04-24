@@ -67,7 +67,7 @@ class SessionsControllerTest < ActionController::TestCase
             post :add_to_group, :experiment_id => @experiment.id, :id => @sessionToAdd.id, :target => @session_group_with_two_sessions.id
           end
           assert_redirected_to experiment_sessions_path(@experiment)
-          assert_equal @controller.t('notice_cannot_merge_into_group_it_has_participants'), flash[:alert]
+          assert_equal @controller.t('controllers.sessions.notice_cannot_merge_into_group_existing_participants'), flash[:alert]
         end
 
       end

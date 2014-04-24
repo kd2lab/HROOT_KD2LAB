@@ -117,7 +117,7 @@ class SessionsController < ApplicationController
     session_group = SessionGroup.where(:id => params[:target]).first
 
     if session_group.has_participants?
-      redirect_to experiment_sessions_path(@experiment), :alert => t('notice_cannot_merge_into_group_it_has_participants')
+      redirect_to experiment_sessions_path(@experiment), :alert => t('controllers.sessions.notice_cannot_merge_into_group_existing_participants')
     elsif @session.has_no_participants?
     # unset session_group_id
       @session.update_attribute(:session_group_id, params[:target])

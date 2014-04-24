@@ -43,7 +43,8 @@
                 - if s.has_no_participants?
                   %li= link_to t('.group_this_session', :session => s.time_str), create_group_with_experiment_session_path(@experiment, session, :target => s.id), :method => :post
               - @experiment.session_groups.each_with_index do |group, i|
-                %li= link_to t('.add_to_group', :id => i+1), add_to_group_experiment_session_path(@experiment, session, :target => group.id), :method => :post
+                - if group.has_no_participants?
+                  %li= link_to t('.add_to_group', :id => i+1), add_to_group_experiment_session_path(@experiment, session, :target => group.id), :method => :post
           - elsif session.session_group.has_no_participants?
             %li= link_to t('.remove_from_group'), remove_from_group_experiment_session_path(@experiment, session), :method => :post
 
