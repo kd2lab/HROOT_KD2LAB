@@ -258,7 +258,7 @@ en:
     confirm_group:
       dates: Session dates and times
       enroll_for_sure: Register for sessions
-      confirm_enrollment_question_randomized_html: "Do you really want to register for one the selected sessions?<br/><br/> If you do, you will be <b>randomly assigned to one</b> of the sessions."
+      confirm_enrollment_question_randomized_html: "Do you really want to register for one of the selected sessions?<br/><br/> If you do, you will be <b>randomly assigned to one</b> of the sessions."
       confirm_enrollment_question_all_html: "Do you really want to register for the selected sessions?<br/><br/> If you do, you have to <b>participate in all sessions</b>."
     report_session:
       register_done: Result of session registration
