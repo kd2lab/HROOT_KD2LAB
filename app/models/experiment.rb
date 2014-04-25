@@ -163,8 +163,6 @@ EOSQL
     end while Experiment.exists?(:refkey => self[:refkey])
   end
 
-<<<<<<< HEAD
-=======
   def excluded_ids
     # first, all direct experiment exclusions
     ids = exclude_experiments.map(&:to_i)    
@@ -179,12 +177,20 @@ EOSQL
     ids
   end
   
->>>>>>> master
   def sender_email_or_default
     if sender_email.blank?
       Rails.configuration.hroot_sender_email
     else
       sender_email
+    end
+  end
+
+  def self.list_with_experimenters
+    Experiment.includes(:experimenters).order(:name).collect do |e|
+      experimenters = e.experimenters.collect(&:lastname).join(', ')    
+      name = e.name 
+      name += ' - '+experimenters unless experimenters.blank?
+      [name, e.id]  
     end
   end
 end

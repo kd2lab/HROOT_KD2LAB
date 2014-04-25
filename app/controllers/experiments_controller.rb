@@ -51,6 +51,9 @@ class ExperimentsController < ApplicationController
     @experiment.reminder_text = Settings.reminder_text
     
     if @experiment.save
+      if current_user.can_create_experiment
+        ExperimenterAssignment.create(:experiment_id => @experiment.id, :user_id => current_user.id, :rights => ExperimenterAssignment.right_keys.join(','))
+      end
       redirect_to reminders_experiment_path(@experiment), :notice => t('controllers.experiments.notice_created')
     else
       render :action => "new"

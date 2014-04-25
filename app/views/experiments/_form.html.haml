@@ -24,7 +24,7 @@
   
 
   = f.input :exclude_tags, :collection => ActsAsTaggableOn::Tag.order(:name).map{|s| [s.name, s.name]}, :input_html => {:class => "chzn-select-experiments", :multiple => true,:'data-placeholder' => "Tags..."}
-  = f.input :exclude_experiments, :collection => Experiment.order(:name).map{|s| [s.name, s.id]}, :input_html => {:class => "chzn-select-experiments", :multiple => true, :'data-placeholder' => "Experiments..."}
+  = f.input :exclude_experiments, :collection => Experiment.list_with_experimenters, :input_html => {:class => "chzn-select-experiments", :multiple => true, :'data-placeholder' => "Experiments..."}
     
     
   

@@ -23,7 +23,11 @@ class ExperimenterAssignment < ActiveRecord::Base
     end
     h
   end 
-  
+ 
+  def self.right_keys
+    right_list.collect{|r| r[1]}
+  end
+
   def self.update_experiment_rights experiment, privileges, ignore_id = 0
     ids_to_delete = experiment.experimenter_assignments.where(["user_id <> ?", ignore_id]).map(&:id)
     ExperimenterAssignment.delete(ids_to_delete)

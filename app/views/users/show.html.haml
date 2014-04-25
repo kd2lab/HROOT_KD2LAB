@@ -90,6 +90,11 @@
   .row
     .span10 
       %h4= t('.rights')
+      - if (@user.can_create_experiment)
+        = t('.can_create_experiment')
+        %br
+        %br
+
       %table#usertable.table{:'data-rights' => ExperimenterAssignment.right_list.to_json, :'data-rights-label' => I18n.t(:rights_label)}
         - @user.experimenter_assignments.each do |assign|
           %tr.removable{:'data-id' => assign.user_id}
