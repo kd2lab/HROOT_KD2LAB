@@ -7,7 +7,7 @@
   - method = :put
   
   
-= simple_form_for @user, :url => url, :method => method, :html => {:class => "guarded_form form-horizontal"} do |f| 
+= simple_form_for @user, :url => url, :method => method, :html => {:class => "guarded_form form-horizontal", :'data-alert' => t('guarded_form_message')} do |f| 
   .row
     .span5
       %h4= t('.general')

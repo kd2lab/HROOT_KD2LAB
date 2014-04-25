@@ -7,7 +7,7 @@
   - id = @session.id.to_s
   - button_text = t('.save_session')
   
-= simple_form_for @session, {:html => {:class => "guarded_form session_update form-horizontal"}, :url => url } do |f|   
+= simple_form_for @session, {:html => {:class => "guarded_form session_update form-horizontal", :'data-alert' => t('guarded_form_message')}, :url => url } do |f|   
   = f.input :reference_session_id, :as => :hidden
 
   = f.input :start_date, 

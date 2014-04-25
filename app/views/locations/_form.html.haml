@@ -3,7 +3,7 @@
 - else
   - url = location_path(@location)
   
-= simple_form_for @location, {:html => {:class => "guarded_form form-horizontal"}, :url => url} do |f| 
+= simple_form_for @location, {:html => {:class => "guarded_form form-horizontal", :'data-alert' => t('guarded_form_message')}, :url => url} do |f| 
   = f.input :name, :required => false, :input_html => { :class => 'span4' }
   = f.input :description, :as => :text, :input_html => { :class => 'span4' }  
   = f.input :active, :inline_label => t('locations.room_active_label'), :as => :boolean, :label => false
