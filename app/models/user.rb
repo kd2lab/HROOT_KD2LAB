@@ -18,7 +18,7 @@ class User < ActiveRecord::Base
 
   
   # Setup accessible (or protected) attributes for your model - main part
-  attr_accessible :email, :secondary_email, :password, :password_confirmation, :remember_me, :firstname, :lastname, :role, :terms_and_conditions, :deleted, :comment, :imported, :activated_after_import, :import_token, :import_email, :import_email_confirmation_token
+  attr_accessible :email, :secondary_email, :password, :password_confirmation, :remember_me, :firstname, :lastname, :role, :terms_and_conditions, :deleted, :comment, :imported, :activated_after_import, :import_token, :import_email, :import_email_confirmation_token, :can_create_experiment
   
   # validations
   validates_presence_of :firstname, :lastname

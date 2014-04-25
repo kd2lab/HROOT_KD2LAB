@@ -167,4 +167,13 @@ EOSQL
       sender_email
     end
   end
+
+  def self.list_with_experimenters
+    Experiment.includes(:experimenters).order(:name).collect do |e|
+      experimenters = e.experimenters.collect(&:lastname).join(', ')    
+      name = e.name 
+      name += ' - '+experimenters unless experimenters.blank?
+      [name, e.id]  
+    end
+  end
 end

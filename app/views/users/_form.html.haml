@@ -46,16 +46,17 @@
       .span10 
         %h4= t('.rights')
         %table#privilege-table.table{:'data-rights' => ExperimenterAssignment.right_list.to_json, :'data-rights-label' => I18n.t(:rights_label), :'data-default-rights' => Settings.default_privileges}
-          - params[:privileges].each do |privilege|
-            %tr{:'data-id' => privilege[:id]}
-              %td
-                = hidden_field_tag 'privileges[][id]', privilege[:id]
-                = hidden_field_tag 'privileges[][name]', privilege[:name]
-                = privilege[:name]
-              %td
-                - rights = options_for_select(ExperimenterAssignment.right_list, privilege[:list])
-                = select_tag("privileges[][list]", rights, {:class => "chzn-select-roles", :multiple => true, :style => "width:600px", :'data-placeholder' => t(:rights), :include_blank => true})
-                %button.close.removeline{:href => '#'} &times;
+          - if params[:privileges]
+            - params[:privileges].each do |privilege|
+              %tr{:'data-id' => privilege[:id]}
+                %td
+                  = hidden_field_tag 'privileges[][id]', privilege[:id]
+                  = hidden_field_tag 'privileges[][name]', privilege[:name]
+                  = privilege[:name]
+                %td
+                  - rights = options_for_select(ExperimenterAssignment.right_list, privilege[:list])
+                  = select_tag("privileges[][list]", rights, {:class => "chzn-select-roles", :multiple => true, :style => "width:600px", :'data-placeholder' => t(:rights), :include_blank => true})
+                  %button.close.removeline{:href => '#'} &times;
           %tr
             %td
               - options = options_for_select(Experiment.order(:name).collect do |e| [e.name, e.id] end)

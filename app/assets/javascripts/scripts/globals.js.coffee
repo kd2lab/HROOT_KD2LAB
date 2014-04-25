@@ -45,7 +45,7 @@ $ ->
   $('.event-popover').each ->
     $(this).popover
       html: true,
-      title: $(this).data('title'),
+      title: $(this).data('title')+' '+$(this).data('timestr'),
       content: "<i> #{ $(this).data('location') }</i>                
                 <br/><br/>
                 #{ $(this).data('exp') }
