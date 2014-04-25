@@ -81,7 +81,7 @@ $ ->
   # form change detection
   $(".guarded_form :input").change ->
     $(this).closest('form').data 'changed', true
-    window.onbeforeunload = -> "Achtung: Die Änderungen wurden noch nicht gespeichert!"
+    window.onbeforeunload = -> $('.guarded_form').data('alert')
   
   $('.guarded_form_save').click ->
     window.onbeforeunload = null

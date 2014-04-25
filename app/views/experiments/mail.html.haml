@@ -13,7 +13,7 @@
 = render :partial => "tabs", :locals => {:selected => :invitations} 
 
 
-= form_for @experiment, :url => {:action => "mail"}, :html => {:method => :post, :class => "guarded_form"} do |f|
+= form_for @experiment, :url => {:action => "mail"}, :html => {:method => :post, :class => "guarded_form", :'data-alert' => t('guarded_form_message')} do |f|
   %table.table.accordion  
     %tr
       %td 

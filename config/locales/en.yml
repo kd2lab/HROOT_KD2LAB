@@ -56,7 +56,7 @@ en:
   login_area: Login area
   text_templates: Text templates
   mailqueue: Mail queue
-
+  guarded_form_message: "Warning: changes not yet saved!"
   mails:
     message_type1: Session reminder
     message_type2: Message

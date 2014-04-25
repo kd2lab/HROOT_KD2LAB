@@ -9,9 +9,9 @@ en:
       course_of_studies: Course of studies  
       degree: Degree
       gender: Gender
-      begin_of_studies: Begin of studies
+      begin_of_studies: Beginning of studies
       birthday: Date of birth
-      preference: Preference
+      preference: Experiment preference
       country_name: Nationality
       language: Languages
       experience: Experience
@@ -19,9 +19,9 @@ en:
       course_of_studies: Course of studies  
       degree: Degree
       gender: Gender
-      begin_of_studies: Begin of studies
+      begin_of_studies: Beginning of studies
       birthday: Date of birth
-      preference: Preference
+      preference: Experiment preference
       country_name: Nationality
       language: Languages
       experience: Experience
@@ -30,8 +30,8 @@ en:
       user:
         phone: mobile phone
         matrikel: Student nr.
-        country_name: Natrionality
-        begin_of_studies: Begin of studies
+        country_name: Nationality
+        begin_of_studies: Beginning of studies
         language: Languages
         course_of_studies: Course of studies
         degree: Degree

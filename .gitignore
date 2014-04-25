@@ -8,6 +8,6 @@ coverage/*
 .sass-cache/*
 public/stylesheets/compiled/*
 db/schema.rb
-uploads
+uploads/*
 *.iml
 .idea

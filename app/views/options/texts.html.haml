@@ -10,7 +10,7 @@
 = render :partial => "tabs", :locals => {:selected => :texts} 
 
 
-= form_tag options_texts_path, :method => "post", :class => "guarded_form form-horizontal" do
+= form_tag options_texts_path, :method => "post", :class => "guarded_form form-horizontal", :'data-alert' => t('guarded_form_message') do
   %h3=t '.privacy_header'
 
   =t '.privacy_info'

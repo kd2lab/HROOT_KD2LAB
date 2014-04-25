@@ -1,11 +1,18 @@
 # encoding: utf-8
+
+DB_HOST = "localhost"
+DB_NAME = "datenbank"
+DB_USER = "user"
+DB_PASSWORD = "password"
+
+
 namespace :import do
-  desc 'Import a user csv file'
-  task :all => :environment do
+  desc 'Import users from an orsee database'
+  task :users => :environment do
     require 'sequel'
     
     # connect to database to import from
-    db = Sequel.connect(:adapter=>'mysql2', :host=>'localhost', :database=>'controlling_orsee', :user=>'root', :password=>'abc8765')
+    db = Sequel.connect(:adapter=>'mysql2', :host=>DB_HOST, :database=>DB_NAME, :user=>DB_USER, :password=>DB_PASSWORD)
    
         
     # import studies from orsee
@@ -15,7 +22,7 @@ namespace :import do
     db[:or_lang].where(:content_type => "field_of_studies").collect{|row| studies[row[:content_name]] = {:name => row[:de]} }    
     studies.each do |key, row|
       unless row[:name] == '-'
-        row[:id] = Study.find_or_create_by_name(row[:name]).id
+        row[:id] = row[:name]
       end
     end
     
@@ -24,7 +31,8 @@ namespace :import do
       
     puts  "--------- importing users ------------"
     count = 0
-    db[:or_participants].each do |row|
+    
+    db[:or_participants].each_with_index do |row, index|
       field_of_studies = studies[row[:field_of_studies].to_s]
       unless field_of_studies[:name] == '-'
         study_id = field_of_studies[:id]
@@ -32,53 +40,38 @@ namespace :import do
         study_id = nil
       end
       
-      # calculate creation date minus 6 months per semester
-      start_reference =   Date.new(1970,1,1)+row[:creation_time].seconds-(6.months*(row[:begin_of_studies].to_i-1))
-      m = start_reference.month
-      y = start_reference.year
-      
-      if m>=4
-        if m >= 10
-          m = 10
-        else
-          m = 4
-        end
-      else
-        m=10
-        y = y-1
-      end
-      
       pw = SecureRandom.hex(16)+'_1'
       u = User.new(
         :email => row[:email], 
         :firstname => row[:fname],
         :lastname => row[:lname],
-        :matrikel => if row[:matrikelnummer].blank? then "0" else row[:matrikelnummer] end,
+        :comment => row[:remarks],
         :gender => row[:gender] == '?'? '?' : row[:gender],
         :phone => row[:phone_number],
         :password => pw,
         :password_confirmation => pw,
         :role => 'user',
-        :begin_month => m,
-        :begin_year => y,
+        :begin_of_studies => Date.new(row[:begin_of_studies].to_i,4,1),
         :birthday => nil,
         :deleted => row[:deleted] == 'y',
         :imported => true,
         :activated_after_import => false,
         :import_token => SecureRandom.hex(16),
-        :study_id => study_id
+        :course_of_studies => study_id
       )
       
-      u.admin_update = true
 
       # this line is very important, otherwise devise will send a confirmation mail
       # do not comment, you could trigger a mass mailing to all imported users!
       u.skip_confirmation!
+      u.admin_update = true
+      u.skip_validation_of_customfields = true
       u.save
       
       if !u.valid?
         error_mails << u.email  
-        puts u.email+" "+u.errors.inspect
+        puts u.errors.inspect
+        #puts u.email+" "+u.errors.inspect
       else
         # set correct creation date (timestamp in orsee)
         u.created_at = Date.new(1970,1,1)+row[:creation_time].seconds
@@ -93,6 +86,14 @@ namespace :import do
     error_mails.each do |mail|
       puts mail
     end
+  end
+  
+  desc 'Import users from an orsee database'
+  task :experiments => :environment do
+    require 'sequel'
+    
+    # connect to database to import from
+    db = Sequel.connect(:adapter=>'mysql2', :host=>DB_HOST, :database=>DB_NAME, :user=>DB_USER, :password=>DB_PASSWORD)
   
     # import experiments
     puts "--------- importing EXPERIMENTS ------------"
@@ -141,9 +142,13 @@ namespace :import do
           end
           
           # import location of this session
-          location_name = db[:or_lang].first(:content_name => session[:laboratory_id])[:de]
+          begin
+            location_name = db[:or_lang].first(:content_name => session[:laboratory_id])[:de]
           
-          l = Location.find_or_create_by_name(location_name)
+            l = Location.find_or_create_by_name(location_name)
+          rescue
+            l = nil
+          end
           
           s = Session.new(
             :experiment_id => e.id,
@@ -163,10 +168,11 @@ namespace :import do
           # import session dependent participations
           db[:or_participate_at].filter(:experiment_id => row[:experiment_id], :session_id => session[:session_id]).each do |part|
             or_user = db[:or_participants].first(:participant_id => part[:participant_id])
-            user = User.find_by_email(or_user[:email])
+            
+            user = User.find_by_email(or_user[:email]) if or_user
         
             unless user
-              @report << or_user[:email]+" not found"
+              puts "Participant id #{part[:participant_id]} not found in experiment #{row[:experiment_name]}"
             else
               # only allow onw Participation
               unless Participation.find_by_user_id_and_experiment_id(user.id, e.id)
@@ -196,10 +202,10 @@ namespace :import do
         # import session independent participations
         db[:or_participate_at].filter(:experiment_id => row[:experiment_id], :session_id => 0).each do |part|
           or_user = db[:or_participants].first(:participant_id => part[:participant_id])
-          user = User.find_by_email(or_user[:email])
+          user = User.find_by_email(or_user[:email]) if or_user
           
           unless user
-            puts or_user[:email]+" not found"
+            puts "Participant id #{part[:participant_id]} not found in experiment #{row[:experiment_name]}"
           else
             unless Participation.find_by_user_id_and_experiment_id(user.id, e.id)
               p = Participation.new(
@@ -221,5 +227,60 @@ namespace :import do
     # update noshow calculation
     User.update_noshow_calculation
     
+  end
+
+  desc 'Import experimeners from an orsee database'
+  task :experimenters => :environment do
+    require 'sequel'
+    
+    # connect to database to import from
+    db = Sequel.connect(:adapter=>'mysql2', :host=>DB_HOST, :database=>DB_NAME, :user=>DB_USER, :password=>DB_PASSWORD)
+    
+    puts  "--------- importing experimenters ------------"
+    
+
+    mapping = Hash.new
+    db[:or_admin].each_with_index do |row, index|
+      pw = SecureRandom.hex(16)+'_1'
+      u = User.new(
+        :email => row[:email], 
+        :firstname => row[:fname],
+        :lastname => row[:lname],
+        :password => "hn_9jz43",
+        :password_confirmation => "hn_9jz43",
+        :role => 'experimenter',
+        :activated_after_import => true,
+      )
+
+      u.skip_confirmation!
+      u.admin_update = true
+      u.skip_validation_of_customfields = true
+      if u.save
+        puts "#{index} Imported "+u.email
+      else
+        puts "E-Mail schon vorhanden: #{u.email}"
+      end
+      mapping[row[:adminname]] = u
+    end
+
+    db[:or_experiments].each_with_index do |row, index|
+      e = Experiment.find_by_name(row[:experiment_name])
+
+      if e
+        experimenters = []
+        row[:experimenter].split(',').each do |adminname|
+          if mapping[adminname]
+            experimenters << mapping[adminname] 
+          else
+            puts "missing #{adminname}"
+          end
+        end
+
+        experimenters.each do |experimenter|
+          ExperimenterAssignment.create(:user_id => experimenter.id, :experiment_id => e.id, :rights => '')
+        end
+      end
+
+    end
   end
 end

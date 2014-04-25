@@ -17,7 +17,7 @@
 = render :partial => "sessions/tabs", :locals => {:selected => :reminders}
 
 
-= form_for @session, :url => {:action => "reminders"}, :html => {:method => :post, :class => "guarded_form"} do |f|
+= form_for @session, :url => {:action => "reminders"}, :html => {:method => :post, :class => "guarded_form", :'data-alert' => t('guarded_form_message')} do |f|
   %h3=t '.email_title'
     
   %br  

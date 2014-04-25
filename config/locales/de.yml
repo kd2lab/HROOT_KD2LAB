@@ -56,6 +56,7 @@ de:
   login_area: Login-Bereich
   text_templates: Textvorlagen
   mailqueue: Mail-Queue
+  guarded_form_message: "Achtung: Die Änderungen wurden noch nicht gespeichert!"
 
   mails:
     message_type1: Sessionerinnerung
