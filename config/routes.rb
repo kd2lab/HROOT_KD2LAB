@@ -19,6 +19,7 @@ Hroot::Application.routes.draw do
   match 'account/data', :controller => 'account', :action => 'data'  
   match 'account/optional', :controller => 'account', :action => 'optional'  
   match 'account/edit', :controller => 'account', :action => 'edit'  
+  match 'account/missing', :controller => 'account', :action => 'missing'
   
   match 'account/alternative_email', :controller => 'account', :action => 'alternative_email'  
   match 'home/confirm_alternative_email/:confirmation_token', :controller => 'home', :action => 'confirm_alternative_email', :as => 'secondary_email_confirmation'

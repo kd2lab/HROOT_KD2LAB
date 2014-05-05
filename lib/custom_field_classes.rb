@@ -33,8 +33,21 @@ class Field
   def add_validation(klass)
     if options[:required]
       field_name = name
-      klass.class_eval do
-        validates_presence_of field_name, :if => :validate_customfields?
+
+      if options[:store_multiple]
+        klass.class_eval do
+          validates_each field_name do |record, attr, value|
+            if (!value.blank? && value.kind_of?(Array) && value.reject{ |c| c.empty? }.length > 0)
+              true
+            else
+              record.errors.add(attr, :blank)
+            end
+          end
+        end
+      else
+        klass.class_eval do
+          validates_presence_of field_name, :if => :validate_customfields?
+        end
       end
     end  
   end

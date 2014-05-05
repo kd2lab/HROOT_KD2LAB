@@ -22,7 +22,7 @@ class User < ActiveRecord::Base
   
   # validations
   validates_presence_of :firstname, :lastname
-  validates_uniqueness_of :calendar_key
+  validates_uniqueness_of :calendar_key, :allow_nil => true
   validates_acceptance_of :terms_and_conditions
   validates :secondary_email, :email => true, :allow_blank => true
   # http://www.zorched.net/2009/05/08/password-strength-validation-with-regular-expressions/                                        

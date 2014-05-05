@@ -10,6 +10,7 @@ FactoryGirl.define do
     birthday Date.today
     country_name "Germany"
     preference 1
+    language ["99"]
     role "user"
     after(:create) { |user| user.confirm!}
   end

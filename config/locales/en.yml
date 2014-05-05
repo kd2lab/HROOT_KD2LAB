@@ -722,6 +722,9 @@ en:
       optional_fields_empty: Optional data
       explanation_empty_field_html: Providing the data on this page is optional. However, the more data you provide, the higher is the chance of being invited to an experiment.
       explanation_filled_field_html: The following data is stored in hroot. If you have requests about any parts of the data, please contact the lab.
+    missing:
+      header: Missing information
+      explanation_html: "Please provide the following information to participate in experiments:"
   user_mailer:
     subject_secondary_email_confirmation: "hroot: Please confirm you alternative email address"
     subject_import_email_confirmation: "hroot signup: Please confirm you new email address"

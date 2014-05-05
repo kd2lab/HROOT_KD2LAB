@@ -2,7 +2,8 @@
 
 class AccountController < ApplicationController
   authorize_resource :class => false
-  
+  before_filter :check_for_missing_data, :except => [:missing]
+
   def index
     @experiment = Experiment.where(:refkey => cookies[:refkey]).first
 
@@ -63,5 +64,27 @@ class AccountController < ApplicationController
       end
     end
   end
+
+  def missing
+    if current_user.valid?
+      redirect_to account_url
+    else
+      if params[:user]
+        if current_user.update_attributes(params[:user])
+          redirect_to account_path, :notice => t('controllers.account.notice_data_changed')
+        end
+      end
+    end
+  end
+
+private
+
+  def check_for_missing_data
+    # is all data ok? if not, ask user
+    if current_user.user? && !current_user.valid?
+      redirect_to account_missing_path
+    end
+  end
+
 
 end

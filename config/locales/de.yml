@@ -682,6 +682,9 @@ de:
       optional_fields_empty: Optionale Daten
       explanation_empty_field_html: Die Angabe der Daten auf dieser Seite ist freiwillig. Allerdings sind diese Daten für manche Experimente erforderlich, in diesem Fall werden Sie nur eingeladen, wenn Sie diese Daten angegeben haben.
       explanation_filled_field_html: Die folgenden Angaben wurden bei hroot gespeichert. Kontaktieren Sie bitte die Laborleitung, falls Angaben hier nicht korrekt sind.
+    missing:
+      header: Fehlende Daten
+      explanation_html: "Bitte geben Sie noch die folgenden Pflichtdaten an, damit Sie an Experimenten teilnehmen können:"
   user_mailer:
     subject_secondary_email_confirmation: "hroot: Bestätigung der alternativen E-Mail-Adresse"
     subject_import_email_confirmation: "hroot: Bestätigung der neuen E-Mail-Adresse"
