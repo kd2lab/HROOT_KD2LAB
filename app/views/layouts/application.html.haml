@@ -18,7 +18,7 @@
       = render :partial => 'layouts/topbar'
       .row
         .span12
-          = yield :breadcrumb
+          = render_breadcrumbs '>'
       .row
         .span12.flash
           = render :partial => 'layouts/flasher'

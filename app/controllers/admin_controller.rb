@@ -2,6 +2,7 @@ class AdminController < ApplicationController
   authorize_resource :class => false, :except => :templates
   
   def index
+    add_breadcrumb :index, :admin_index_path
     if current_user.admin?
       @next_sessions = Session.where('DATE(start_at) >= DATE(NOW())').order('start_at').limit(20).group_by{|s| s.experiment_id}
       @latest_experiments = Experiment.order('created_at DESC').limit(5)
@@ -17,6 +18,7 @@ class AdminController < ApplicationController
   end
   
   def calendar
+    add_breadcrumb :calendar, :calendar_path
     @month = (params[:month] || (Time.zone || Time).now.month).to_i
     @year = (params[:year] || (Time.zone || Time).now.year).to_i
     @shown_month = Date.civil(@year, @month)

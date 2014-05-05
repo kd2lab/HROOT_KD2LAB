@@ -1,0 +1,59 @@
+de:
+  breadcrumbs:
+    account:
+      alternative_email: 'Alternative E-Mail'
+      data: 'Account Einstellungen'
+      missing: 'Fehlende Daten'
+      optional: 'Optionale Daten'
+    admin:
+      calendar: 'Kalender'
+      index: 'Dashboard'
+    application:
+      root: 'Home'
+    enroll:
+      confirm: 'Bestätigung'
+      index: 'Für Experiment Sessions anmelden'
+      report: 'Resultat'
+    experiments:
+      edit: 'Allgemeine Daten'
+      experimenters: 'Experimentatoren'
+      files: 'Dateien'
+      index: 'Experimente'
+      invitation: 'Einladungsversand'
+      mail: 'E-Mail Texte'
+      message_history: 'Nachrichtenverlauf'
+      new: 'Neu'
+      public_link: 'Öffentlicher Link'
+      reminders: 'Erinnerung'
+    home:
+      about: 'Impressum und Kontakt'
+      activate: 'Aktivierung'
+      referral: 'Experimentanmeldung mit öffentlichem Link'
+      version: 'Version'
+    locations:
+      index: 'Räume'
+      options: 'Einstellungen'
+    options:
+      emails: 'E-Mail Texte'
+      index: 'Einstellungen'
+      duplicates: 'Doppelte Benutzer'
+      texts: 'Texte'
+    participants:
+      experiments: 'Experimente'
+      history: 'Verlauf der Teilnehmerzuordnung'
+      index: 'Teilnehmer'
+      manage: 'Teilnehmer zuweisen'
+    registrations:
+      edit: 'Passwort ändern'
+      data: 'Account Einstellungen'
+      new: 'Registrierung'
+    sessions:
+      edit: 'bearbeiten'
+      experiments: 'Experimente'
+      index: 'Sessions'
+      new: 'neu'
+      reminders: 'Reminders'
+    users:
+      edit: 'bearbeiten'
+      index: 'Benutzer'
+      new: 'neu'

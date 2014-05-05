@@ -1,12 +1,3 @@
-= content_for :breadcrumb do
-  %ul.breadcrumb
-    %li
-      =link_to t('login_area'), :controller => "account", :action => "index"
-      %span.divider
-        >
-    %li.active
-      =t '.confirm_enrollment'
-
 %h3=t '.confirm_enrollment'
 =t '.confirm_enrollment_question'
 %br

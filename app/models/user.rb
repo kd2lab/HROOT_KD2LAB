@@ -221,6 +221,9 @@ EOSQL
     end while !l.valid?
     
     return l.code
-  end  
-  
+  end
+
+  def to_s
+    [self.firstname, self.lastname].reject(&:blank?).join(" ")
+  end
 end

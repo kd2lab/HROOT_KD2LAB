@@ -4,8 +4,12 @@ class ParticipantsController < ApplicationController
   load_and_authorize_resource :experiment, :raise_on_record_not_found => false
   before_filter :check_right
   helper_method :sort_column, :sort_direction
+  add_breadcrumb :experiments, :experiments_path
   
-  def index   
+  def index
+    add_breadcrumb @experiment, :experiment_sessions_path
+    add_breadcrumb :index, :experiment_participants_path
+
     params[:search] = params[:search]  || Settings.standard_search || {} 
     
     # default: include deleted and only users in this view
@@ -97,6 +101,9 @@ class ParticipantsController < ApplicationController
   end
   
   def manage
+    add_breadcrumb @experiment, :experiment_sessions_path
+    add_breadcrumb :manage, :manage_experiment_participants_path
+
     params[:search] = params[:search] || Settings.standard_search || {}
     
     # default: only show users in this view
@@ -136,7 +143,8 @@ class ParticipantsController < ApplicationController
   end
   
   def history
-    
+    add_breadcrumb @experiment, :experiment_sessions_path
+    add_breadcrumb :history, :history_experiment_participants
   end
   
   def send_message

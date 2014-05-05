@@ -168,6 +168,10 @@ EOSQL
     end
   end
 
+  def to_s
+    self.name
+  end
+
   def self.list_with_experimenters
     Experiment.includes(:experimenters).order(:name).collect do |e|
       experimenters = e.experimenters.collect(&:lastname).join(', ')    
