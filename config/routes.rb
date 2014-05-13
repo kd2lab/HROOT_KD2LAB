@@ -34,7 +34,7 @@ Hroot::Application.routes.draw do
   match 'home/referral', :controller => 'home', :action => 'referral'
   
   
-  devise_for :users, :controllers => {:registrations => "registrations"}, :path_names => { :sign_in => 'login' }, skip: :registrations 
+  devise_for :users, :controllers => {:registrations => "registrations", :passwords => "passwords"}, :path_names => { :sign_in => 'login' }, skip: :registrations 
   
   devise_scope :user do
     get    "/login" => "devise/sessions#new"
