@@ -2,6 +2,7 @@
 
 class EnrollController < ApplicationController
   authorize_resource :class => false, :except => :enroll_sign_in
+  add_breadcrumb :index, :enroll_path
   
   before_filter :load_session_and_participation, :only => [:confirm, :register]
   
@@ -10,10 +11,11 @@ class EnrollController < ApplicationController
   end
 
   def confirm
-    
+    add_breadcrumb :confirm, :enroll_confirm_path
   end
 
   def report
+    add_breadcrumb :report, :enroll_report_path
     @session_participation = SessionParticipation.find_by_user_id_and_session_id(current_user.id, params[:session_id])
   end
 

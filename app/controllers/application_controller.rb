@@ -1,6 +1,7 @@
 #encoding: utf-8
 class ApplicationController < ActionController::Base
   protect_from_forgery
+  add_breadcrumb :root, :root_path
   
   rescue_from(ActiveRecord::RecordNotFound) {
     redirect_to root_url, :alert => t('controllers.application.notice_login_required')

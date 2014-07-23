@@ -2,6 +2,7 @@
 
 class OptionsController < ApplicationController
   authorize_resource :class => false
+  add_breadcrumb :index, :options_path
   
   def index
     if params[:commit]
@@ -11,6 +12,7 @@ class OptionsController < ApplicationController
   end
 
   def emails
+    add_breadcrumb :emails, :options_emails_path
     if params[:invitation_subject]
       Settings.invitation_subject = params[:invitation_subject]
       Settings.invitation_text = params[:invitation_text]
@@ -27,6 +29,7 @@ class OptionsController < ApplicationController
   end
 
   def duplicates
+    add_breadcrumb :duplicates, :options_duplicates_path
     sql = <<EOSQL
       SELECT u.id
 FROM `users` u, (
@@ -52,6 +55,7 @@ EOSQL
   end
   
   def texts
+    add_breadcrumb :texts, :options_texts_path
     Settings.terms_and_conditions = {} unless Settings.terms_and_conditions
     Settings.welcome_text = {} unless Settings.welcome_text
     Settings.credits_text = {} unless Settings.credits_text

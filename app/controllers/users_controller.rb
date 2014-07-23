@@ -4,6 +4,7 @@ class UsersController < ApplicationController
   load_and_authorize_resource
   
   helper_method :sort_column, :sort_direction
+  add_breadcrumb :index, :users_path
   
   def index
     params[:search] = params[:search] || Settings.standard_search || {}
@@ -25,7 +26,7 @@ class UsersController < ApplicationController
   end
   
   def show
-   
+    add_breadcrumb @user
   end
   
   def remove_from_session
@@ -37,11 +38,16 @@ class UsersController < ApplicationController
   end
     
   def new
+    add_breadcrumb :new, :users_path
+
     @user = User.new
     @user.role = "user"
   end
 
   def edit
+    add_breadcrumb @user
+    add_breadcrumb :edit, :users_path
+    
     unless params[:privileges]
       params[:privileges] = []
 

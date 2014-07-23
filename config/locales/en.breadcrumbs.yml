@@ -1,0 +1,59 @@
+en:
+  breadcrumbs:
+    account:
+      alternative_email: 'Secondary EMail'
+      data: 'Account options'
+      missing: 'Missing information'
+      optional: 'Optional data'
+    admin:
+      calendar: 'Calendar'
+      index: 'Dashboard'
+    application:
+      root: 'Home'
+    enroll:
+      confirm: 'Confirm'
+      index: 'Register for experiment sessions'
+      report: 'Result'
+    experiments:
+      edit: 'General'
+      experimenters: 'Experimenters'
+      files: 'Files'
+      index: 'Experiments'
+      invitation: 'Send invitations'
+      mail: 'Email texts'
+      message_history: 'Message history'
+      new: 'new'
+      public_link: 'Public link'
+      reminders: 'Reminder'
+    home:
+      about: 'Site credits and contact'
+      activate: 'Activate'
+      referral: 'Registration via public invitation link'
+      version: 'Version'
+    locations:
+      index: 'Locations'
+      options: 'Settings'
+    options:
+      emails: 'EMail texts'
+      index: 'Settings'
+      duplicates: 'Duplicate users'
+      texts: 'Texts'
+    participants:
+      experiments: 'Experiments'
+      history: 'History of participant assignment'
+      index: 'Participants'
+      manage: 'Assign participants'
+    registrations:
+      edit: 'Change password'
+      data: 'Account options'
+      new: 'Sign up'
+    sessions:
+      edit: 'edit'
+      experiments: 'Experiments'
+      index: 'Sessions'
+      new: 'new'
+      reminders: 'Reminders'
+    users:
+      edit: 'edit'
+      index: 'Users'
+      new: 'new'

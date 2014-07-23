@@ -4,12 +4,14 @@ class SessionsController < ApplicationController
   # authorize_resource :class => false
   load_and_authorize_resource :experiment
   load_and_authorize_resource :session, :through => :experiment, :except => :create
-  
+  add_breadcrumb :experiments, :experiments_path
   
   #before_filter :load_experiment_and_sessions
   helper_method :sort_column, :sort_direction
   
   def index
+    add_breadcrumb @experiment, :experiment_sessions_path
+    add_breadcrumb :index, :experiment_sessions_path
     @sessions = @experiment.sessions.where("sessions.reference_session_id = sessions.id").order(:start_at)
   end
   
@@ -18,6 +20,10 @@ class SessionsController < ApplicationController
   end
 
   def new
+    add_breadcrumb @experiment, :experiment_sessions_path
+    add_breadcrumb :index, :experiment_sessions_path
+    add_breadcrumb :new, :new_experiment_session_path
+
     @session = Session.new
     @session.start_at = Time.zone.parse "#{Date.today} 10:00"
     @session.end_at = @session.start_at + 90.minutes
@@ -65,7 +71,9 @@ class SessionsController < ApplicationController
   end
 
   def edit
-    #@session = Session.find(params[:id])
+    add_breadcrumb @experiment, :experiment_sessions_path
+    add_breadcrumb :index, :experiment_sessions_path
+    add_breadcrumb :edit, :edit_experiment_session_path
   end
   
   def update
@@ -81,7 +89,9 @@ class SessionsController < ApplicationController
   end
   
   def reminders
-    #@session = Session.find(params[:id])    
+    add_breadcrumb @experiment
+    add_breadcrumb :index, :experiment_sessions_path
+    add_breadcrumb :reminders, :reminders_experiment_session_path  
     if params[:session] && @session.update_attributes(params[:session])
       flash[:notice] = t('controllers.notice_saved_changes')
     end
@@ -157,6 +167,10 @@ class SessionsController < ApplicationController
   end
   
   def participants
+    add_breadcrumb @experiment
+    add_breadcrumb :index, :experiment_sessions_path
+    add_breadcrumb @session
+
     @session = Session.find(params[:id])
     
     if !params[:user_action].blank?

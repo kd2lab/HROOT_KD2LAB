@@ -2,6 +2,8 @@
 
 class LocationsController < ApplicationController
   load_and_authorize_resource
+  add_breadcrumb :options, :options_path
+  add_breadcrumb :index, :locations_path
   
   def index
     @locations = Location.all :order => 'name'

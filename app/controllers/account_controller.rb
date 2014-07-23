@@ -22,14 +22,24 @@ class AccountController < ApplicationController
   end
   
   def optional
+    add_breadcrumb :data, :account_data_path
+    add_breadcrumb :optional, :account_optional_path
+
     if params[:user]      
       if current_user.update_attributes(params[:user])
         redirect_to(account_optional_path, :notice => t('controllers.account.notice_data_changed')) 
       end
     end  
   end
+
+  def data
+    add_breadcrumb :data, :account_data_path
+  end
   
-  def alternative_email    
+  def alternative_email
+    add_breadcrumb :data, :account_data_path
+    add_breadcrumb :alternative_email, :account_alternative_email_path
+
     if params[:delete]
       current_user.secondary_email = nil
       current_user.secondary_email_confirmation_token = nil
@@ -66,6 +76,9 @@ class AccountController < ApplicationController
   end
 
   def missing
+    add_breadcrumb :data, :account_data_path
+    add_breadcrumb :missing, :account_missing_path
+    
     if current_user.valid?
       redirect_to account_url
     else

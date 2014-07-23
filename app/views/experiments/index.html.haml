@@ -1,20 +1,3 @@
-= content_for :breadcrumb do
-  %ul.breadcrumb
-    %li
-      =link_to t(:administration), :controller => "admin", :action => "index"
-      %span.divider
-        &gt;
-    %li
-      = link_to t(:experiments_header), experiments_path
-      - if @tag
-        %span.divider
-          &gt;
-    - if @tag
-      %li
-        =  link_to "Tag: "+@tag.name, tagged_experiment_path(@tag.id)
-
-
-
 - if current_user.admin? || current_user.can_create_experiment
   = link_to t('experiments.new_experiment'), new_experiment_path, :class => "btn btn-primary", :style => "float:right"
 

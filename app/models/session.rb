@@ -156,4 +156,7 @@ EOSQL
     FileUtils.rmdir(path)
   end
 
+  def to_s
+    self.time_str
+  end
 end

@@ -1,10 +1,3 @@
-= content_for :breadcrumb do
-  = render :partial => "layouts/crumb", :object => [           |
-      link_to(t('administration'), :controller => "admin", :action => "index"), |
-      link_to(t(:experiments_header), experiments_path),                |
-      link_to(@experiment.name,experiment_sessions_path(@experiment)), |
-      t('.breadcrumb_history')]
-  
 = render :partial => "experiments/enrollment"
   
 %h1

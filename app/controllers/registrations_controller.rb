@@ -13,10 +13,18 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
   def new
+    add_breadcrumb :new, :register_path
     super
   end
 
   def create
+    super
+  end
+
+  def edit
+    add_breadcrumb :data, :account_data_path
+    add_breadcrumb @user
+    add_breadcrumb :edit, :users_path
     super
   end
 
