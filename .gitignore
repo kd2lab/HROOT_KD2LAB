@@ -9,3 +9,4 @@ coverage/*
 public/stylesheets/compiled/*
 db/schema.rb
 uploads/*
+config/database.yml
