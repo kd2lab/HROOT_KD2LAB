@@ -75,7 +75,7 @@ en:
   time:
     formats:
       default: ! '%Y-%m-%d %H:%M'
-      date_only: ! '%Y-%m-%d'      
+      date_only: ! '%Y-%m-%d'
       time_only: ! '%H:%M'
       long: ! '%B %d, %Y %H:%M'
       short: ! '%d %b %H:%M'
@@ -93,7 +93,7 @@ en:
     - Fri
     - Sat
     abbr_month_names:
-    - 
+    -
     - Jan
     - Feb
     - Mar
@@ -119,7 +119,7 @@ en:
       long: ! '%B %d, %Y'
       short: ! '%b %d'
     month_names:
-    - 
+    -
     - January
     - February
     - March
@@ -135,13 +135,13 @@ en:
     order:
     - :year
     - :month
-    - :day   
-  
+    - :day
+
   will_paginate:
     previous_label: "&lt; &lt;"
     next_label: "&gt; &gt;"
     page_gap: "&hellip;"
-  
+
   activerecord:
     errors:
       models:
@@ -164,7 +164,7 @@ en:
               already_confirmed: is already confirmed
             secondary_email:
               invalid: is invalid
-            password: 
+            password:
               confirmation: must be repeated
               too_short: is to short (at least 8 characters)
               invalid: is invalid (one digit, one char and one special char needed)
@@ -177,7 +177,7 @@ en:
             reset_password_token:
               invalid: is invalid. Please re-request an email for password change
     attributes:
-      user: 
+      user:
         current_password: Current password
         password: Password
         password_confirmation: Repeat password
@@ -238,30 +238,48 @@ en:
       newest_tags: Newest tags
 
   enroll:
-    alert1: experiment with following sessions
-    alert2: This experiment has following sessions. Please check, if you can participate in all sessions of this experiment.
-    
+    confirm_enrollment: Confirm experiment registration
+    dates: session date and time
+    enroll_for_sure: Register for session
+    or: or
+    back: back
+
     index:
       new_enrollment: Register for experiment sessions
       available_sessions: 'You can register for the following sessions:'
       no_sessions_available: No sessions currently available.
       register_for_sessions: Register
-    confirm:
-      confirm_enrollment: Confirm experiment registration
-      confirm_enrollment_question: Do you really want to register for the selected sessions?
-      dates: session date and time
+      random_choice_desc: If you choose this group of sessions, you will be randomly assigned to one of the sessions.
+      all_choice_desc: If you choose this group of sessions, you will have to attend all of the sessions.
+    confirm_session:
+      date: Session date and time
       enroll_for_sure: Register for session
-      or: or
-      back: back
-    report:
+      confirm_enrollment_question: Do you really want to register for the selected sessions?
+    confirm_group:
+      dates: Session dates and times
+      enroll_for_sure: Register for sessions
+      confirm_enrollment_question_randomized_html: "Do you really want to register for one of the selected sessions?<br/><br/> If you do, you will be <b>randomly assigned to one</b> of the sessions."
+      confirm_enrollment_question_all_html: "Do you really want to register for the selected sessions?<br/><br/> If you do, you have to <b>participate in all sessions</b>."
+    report_session:
       register_done: Result of session registration
       success: Your session registration was successfull.
       failure: Your session registration was NOT successfull.
       failure_reason_html: "There are several possible reasons - maybe the last seat was just taken, or the registration period has ended.<br/><br/>Contact the lab for more information."
-      session_overview: "You have registered for the following sessions:"
-      sent_confirmation_mail: A confirmation email was juset sent to you.
+      session_overview: "You have registered for the following session:"
+      sent_confirmation_mail: A confirmation email was just sent to you.
       more_sessions: Register for sessions in other experiments
       back_to_account: Back to main page
+    report_group:
+      register_done: Result of session registration
+      success: Your session registration was successfull.
+      failure: Your session registration was NOT successfull.
+      failure_reason_html: "There are several possible reasons - maybe the last seat was just taken, or the registration period has ended.<br/><br/>Contact the lab for more information."
+      session_overview_randomized: "You have been randomly assigned to the following session:"
+      session_overview_all: "You have registered for the following sessions:"
+      sent_confirmation_mail: A confirmation email was just sent to you.
+      more_sessions: Register for sessions in other experiments
+      back_to_account: Back to main page
+
   options:
     tabs:
       general: Options
@@ -271,11 +289,11 @@ en:
       duplicates: Duplicate accounts
     texts:
       privacy_header: Text for Terms and Conditions
-      privacy_info: This text has to accepted by all users during signup.      
-  
+      privacy_info: This text has to accepted by all users during signup.
+
       welcome_header: Welcome text for users.
       welcome_info: This text will be shown to users after login.
-      
+
       credits_header: Site credits and contact information
       credits_info: This text is shown on the site credits and contact page. You may use HTML tags here.
       submit_link: Save texts
@@ -322,15 +340,15 @@ en:
       data_and_options: Options
       common_data: General
       reminders: Experiment reminders
-      experimenters: Experimenters  
+      experimenters: Experimenters
       invitations: Invitations
       add_participants: Assign new participants
-      view_participants: Assigned participants 
+      view_participants: Assigned participants
       history_participants: History of participant assignment
       files: Files
       public_link: Public link
       message_history: Message history
-    message_history:  
+    message_history:
       message_history: Message history
       mail_link: Message
       no_messages: No messages have been sent in the context of this experiment.
@@ -340,7 +358,7 @@ en:
       invitation_text: Invitation text
       mail_for_confirmation: Confirmation email
       confirmation_text: Confirmation text
-    
+
 
 
     invitation:
@@ -407,12 +425,20 @@ en:
     public_link:
       public_link: Public link
       public_link_html: "This link can be used for a public experiment invitation. Send it to people you want to invite to this experiment.<br/><br/>When users visit this link, a cookie will be set, and when the user logs into hroot, he/she will be added to this experiment."
+  session_groups:
+    group_type1: randomized
+    group_type2: attend all sessions
   sessions:
     new_session_link: Create new session
+    new_group_session_link: Create new group session
+    make_group_session: Make group session
     back_link: Back to session overview
     session: Session
-    following_session: Following session
     at_label: at
+    index:
+      group_mode: Group mode
+      ungrouped_sessions: Ungrouped sessions
+      group: Group
     print:
       header: Session at
       lastname: Name
@@ -423,9 +449,19 @@ en:
       participated: P
       noshow: N
 
+    mode:
+      participation_heading: Participation Rule
+      mode1: Randomised
+      mode2: All
+      explanation1: Users are randomly placed within a session in a selected group.
+      explanation2: Users attend all sessions within a group.
+
     line:
       participants_label: 'Participants:'
       participants_link: 'Participants'
+      group_this_session: "Group this session with %{session}"
+      add_to_group: "Add to group %{id}"
+      remove_from_group: "Remove from group"
       incomplete: Participation list is not complete.
       actions: Actions
       following_session: Following session
@@ -444,10 +480,12 @@ en:
       remove_marked: Remove checked users from this session
       marked: Checked users
       move_marked: "Move checked users to session %{session}"
+      move_marked_group: Move checked users to group %{group_nr} (%{sessions})
+      move_marked_group_session: Move checked users to session %{session} in group %{group}
       save_changes_now: Save changes now
       no_participants: This session has no participants
       data_menu: Data
-      save_as_csv: Save as CSV 
+      save_as_csv: Save as CSV
       save_as_excel: Save as Excel
     new:
       new_label1: Create new
@@ -467,7 +505,7 @@ en:
       session_at: Session at
       email_title: reminder email for this session
       activate_sending: activate automatic reminder emails for this session
-      sending_label1: Send reminder mails 
+      sending_label1: Send reminder mails
       sending_label2: hours before session begin
       reminder_text: Reminder text
   filter_summary:
@@ -477,7 +515,7 @@ en:
     add_text: "%{count} users added"
     remove_text: "%{count} users removed"
     add_public_key_text: Added via public link
-    exp1: Assigned to one of 
+    exp1: Assigned to one of
     exp2: Assigned to all of
     exp3: Assigned to none of
     exp4: Participated in one of
@@ -513,6 +551,8 @@ en:
       remove_marked: Remove selected users from the experiment.
       remove_marked_confirm: Are you sure you want to remove the selected users from the experiment?
       move_marked: Move selected users to session %{session}
+      move_marked_group: Move checked users to group %{group_nr} (%{sessions})
+      move_marked_group_session: Move checked users to session %{session} in group %{group}
       none_found: No pool members found
       none_found_reason: Please change search settings.
       message_all_searched: Message all users in this search result
@@ -521,7 +561,7 @@ en:
       to_all_marked: Selected users
       print: Print
       data_menu: Data
-      save_as_csv: Save as CSV 
+      save_as_csv: Save as CSV
       save_as_excel: Save as Excel
     print:
       header: Experiment
@@ -541,11 +581,11 @@ en:
       only: Include only
       without: Exclude
       participation:
-        choice1: Include only assigned users who have participated
-        choice2: Include only assigned users who are registered in a session
-        choice3: Include only assigned users without session
-        choice4: Include only assigned users who are registered in a session, which is not over yet
-    
+        value1: Include only assigned users who have participated
+        value2: Include only assigned users who are registered in a session
+        value3: Include only assigned users without session
+        value4: Include only assigned users who are registered in a session, which is not over yet
+
       experiments:
         choice1: who are assigned to one of the following experiments
         choice2: who are assigned to all of the following experiments
@@ -554,13 +594,13 @@ en:
         choice5: who have participated in at least one session of all of the following experiments
         choice6: who have not participated in any session of the following experiments
 
-      role:  
+      role:
         user: User
         experimenter: Experimenter
         admin: Administrators
       deleted:
-        hide_deleted: hide
-        show_deleted: show
+        hide: hide
+        show: show
     links:
       fulltext: Search fulltext
       role: Role
@@ -592,7 +632,7 @@ en:
     firstname: Firstname
     lastname: Lastname
     email: Email
-    role: Role  
+    role: Role
     created_at: created at
     session: Session
     form_fields:
@@ -610,7 +650,7 @@ en:
     close: Close
     subject: Subject
     to: To
-    send: Send    
+    send: Send
   shared:
     messaging:
       send: Send message
@@ -644,7 +684,7 @@ en:
       marked_users: Selected users
       no_users: No pool members found
       data_menu: Data
-      save_as_csv: Save as CSV 
+      save_as_csv: Save as CSV
       save_as_excel: Save as Excel
     new:
       create_new_user: Create new user
@@ -688,7 +728,7 @@ en:
       available_registrations: Register for new sessions
       currently_no_sessions: You are currently not invited to experiment sessions.
       current_sessions:  Current session registrations
-      no_current_sessions_text: You are currently not registered for experiment sessions.    
+      no_current_sessions_text: You are currently not registered for experiment sessions.
       available_registrations_text: You can currenty register for experiment sessions.
       enroll_now_button: Register now
       current_sessions_text: 'You are registered for the following experiment sessions:'
@@ -710,7 +750,7 @@ en:
       alternative_email: Secondary E-Mail
       alternative_email_text: You can configure a secondary email, information and invitations for experiments will be sent to this secondary email. For login, please continue to use your primary email.
       save_alternative_email: Save secondary email
-      your_current_alternative_email: Your secondary email address 
+      your_current_alternative_email: Your secondary email address
       was_confirmed: was confirmed and will now be used.
       was_not_confirmed: is currently not confirmed. An email was sent to your secondary email address with a confirmation link.
       delete_alternative_email: Delete secondary email
@@ -730,7 +770,7 @@ en:
     subject_import_email_confirmation: "hroot signup: Please confirm you new email address"
     subject_import_email_activation: "hroot: Activation for experiment participation"
 
-  devise:    
+  devise:
     passwords:
       new:
         breadcrumb_forgot_password: Forgot password
@@ -788,7 +828,7 @@ en:
 
         please_confirm_password: Current password
       user:
-        updated: 'Your password was successfully changed. You are now logged in.'    
+        updated: 'Your password was successfully changed. You are now logged in.'
         signed_up_but_unconfirmed: We have sent you an email to confirm your account registration.
       new:
         breadcrumb_register: Sign up
@@ -814,7 +854,7 @@ en:
     upload_success: The file has been uploaded successfully
     upload_failure: Error uploading file
 
-  popup:  
+  popup:
     showup: Show up
     participated: Participated
     noshow: No show
@@ -874,18 +914,27 @@ en:
       notice_cant_delete_participants: Sessions with participants can not be deleted.
       notice_deleted: The session was deleted.
       notice_removed_from_session: The checked users were removed from the session.
-      notice_moved_to_session: "The selected users have been move to session %{session}."
+      notice_moved_to_session: "The selected users have been move to the selected session."
       notice_cant_delete_files: "Session can not be deleted - there are files in the session folder."
+      group_created: A new group has been created.
+      removed_from_group:  Session removed from group.
+      added_to_group:  Session added to group.
+      notice_saved_changes: Session changes have been saved.
+      notice_cannot_merge_into_group_existing_participants: "Grouping not possible, session has participants."
+      notice_cannot_merge_into_group_it_has_participants: "Grouping not possible, the group already has participants."
+      notice_cannot_create_group_existing_participants: "Grouping not possible, session has participants."
+      notice_cannot_change_group_mode_existing_participants: "Mode change not possible, the group already has participants."
+      notice_cannot_change_group_sessions_participants: "Cannot remove session from group, the group already has participants."
     users:
       notice_mailqueue:  Messages have been queued.
       notice_mailqueue_activation:  Activation messages have been queued.
       notice_created_user: User was successfully created.
       notice_activated_after_import: The user was activated after import.
-      notice_removed_from_session: The user was removed from the selected session.     
+      notice_removed_from_session: The user was removed from the selected session.
       notice_search_stored: The current search settings have been stored as default search settings.
 
   templates:
-    confirm_save: Do you want to save the text as template? The previously stored text will be lost! 
+    confirm_save: Do you want to save the text as template? The previously stored text will be lost!
     confirm_delete: Do you want to delete the template?
     confirm_replace: Do you want to replace with the template text?
     prompt_text: Please enter a template title
@@ -942,7 +991,6 @@ en:
 
 
 <h3>Licence</h3>
-
 The program can be licensed free of charge.<br/>
 When you report results of experiments administered with hroot, the licence requires that you mention it''s use in the publication and cite the Working Paper.<br/><br/>
 
@@ -967,7 +1015,7 @@ Phone: +49 – (0) 40 - 42 83 8 - 37 59<br/>
 We need a postal address to send you back the contract and we need an email address, to send you login and password for downloading hroot.<br/><br/>
 
 hroot is created in a collaborative process and is constantly improved by its users. In order to ease and enhance the cooperation of all interested users of hroot we have set up a GitHub platform in the Internet (<a href="https://github.com">https://github.com</a>). There you will always find the latest version of hroot, as well as a wiki with a detailed installation guide. In GitHub you may also report errors to us. Especially it is possible to document your changes of the hroot code on this collaborative project site, so that the improvements of individual users are quickly available to all other licensees.<br/><br/>
- 
+
 For licensees: In order to obtain the software via the GitHub platform, please register for a (free) user account on <a href="https://github.com">https://github.com</a>. You will immediately receive your own GitHub-User-ID there. If you then simply tell us your GitHub username (e-mail: <a href="jan.papmeier@wiso.uni-hamburg.de">jan.papmeier@wiso.uni-hamburg.de</a>), we will enroll you asap for the hroot project.<br/><br/>
 
 

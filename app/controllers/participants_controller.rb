@@ -16,7 +16,7 @@ class ParticipantsController < ApplicationController
     params[:search][:role] = {:value => ['user']} 
     params[:search][:deleted] = {:value =>"show"}
     
-    if params[:user_action] == "remove_all"
+    if params[:user_action_type] == "remove_all"
       # add filter to select only users without a session - we don't want to delete users, who are in a session
       params[:search][:participation] = {:value => 3}
       ids =  Search.search_ids(params[:search], {:experiment => @experiment, :sort_column => sort_column, :sort_direction => sort_direction, :exclude_non_participants => 1})
@@ -28,14 +28,14 @@ class ParticipantsController < ApplicationController
         if (deleted_user_ids.length > 0)
           # store all changes to the user base
           history_entry = HistoryEntry.create(:search => params[:search].to_json, :experiment_id => @experiment.id, :action => "remove_filtered_users", :user_count => deleted_user_ids.length, :user_ids => deleted_user_ids.to_json)      
-          flash.now[:notice] = t('controllers.participants.notice_removed_all')
+          flash.now[:notice] = t('controllers.participants.notice_removed_from_experiment')
         else
           flash.now[:notice] = t('controllers.participants.notice_no_one_removed_from_experiment')
         end
       end
     end
     
-    if params[:user_action] == "0" && params[:selected_users]
+    if params[:user_action_type] == "remove" && params[:selected_users]
       # aus allen sessions austragen, session participations löschen
       if params[:selected_users].length > 0   
         # remove users who have no session participation
@@ -51,14 +51,18 @@ class ParticipantsController < ApplicationController
       end
     end
       
-    if params[:user_action].to_i > 0 && params[:selected_users]
-      target = Session.find(params[:user_action].to_i)
+    if ["move_to_session", "move_to_group"].include?(params[:user_action_type]) && params[:selected_users]
+      target = if (params[:user_action_type] == "move_to_session")
+        Session.find(params[:user_action_value].to_i)
+      else
+        SessionGroup.find(params[:user_action_value].to_i)
+      end
       
       if target
         Session.move_members(params[:selected_users].keys.map(&:to_i), @experiment, target)
         User.update_noshow_calculation(params[:selected_users].keys.map(&:to_i))
 
-        flash.now[:notice] = t('controllers.participants.notice_session', :target => "#{target.time_str}")
+        flash.now[:notice] = t('controllers.participants.notice_session')
       end
     end
 

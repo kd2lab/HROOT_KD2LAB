@@ -17,7 +17,7 @@ class Field
     
     @options[:filter_operator] = options.fetch(:filter_operator, false)
     @options[:filter_search_multiple] = options.fetch(:filter_search_multiple, false)
-    
+    @options[:translation_prefix] = options.fetch(:translation_prefix, "customfields")
     @options[:db_values] = options.fetch(:db_values, [])    
     @values = @options[:db_values]
   end
@@ -90,16 +90,7 @@ class SelectionField < Field
   end
   
   def search_field
-    if options[:translate]
-      vals = values.map do |val|
-        varname = if val.kind_of? Integer then "value"+val.to_s else val end
-        [I18n.t('customfields.'+name+'.'+varname), val]
-      end
-    else
-      vals = values
-    end
-    
-    SelectionSearchField.new(name.to_sym, options.merge({:values => vals}))
+    SelectionSearchField.new(name.to_sym, @options)
   end  
 
   def display_value(user)

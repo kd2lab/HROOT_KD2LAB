@@ -11,9 +11,9 @@ class Search
   
   # default search fields
   add FulltextSearchField.new(:fulltext)
-  add SelectionSearchField.new(:role, :values => User.roles.map{|r| [I18n.t("search.selections.role.#{r}"), r]})
-  add ParticipationSearchField.new(:participation, :values => {I18n.t('search.selections.participation.choice1') => '1', I18n.t('search.selections.participation.choice2') => '2', I18n.t('search.selections.participation.choice3') => '3', I18n.t('search.selections.participation.choice4') => '4'})
-  add DeletedSearchField.new(:deleted, :values => {I18n.t('search.selections.deleted.hide_deleted') => '', I18n.t('search.selections.deleted.show_deleted') => 'show'})
+  add SelectionSearchField.new(:role, :db_values => User.roles, :translate => true, :translation_prefix => "search.selections")
+  add ParticipationSearchField.new(:participation, :db_values => [1,2,3,4], :translate => true, :translation_prefix => "search.selections")
+  add DeletedSearchField.new(:deleted, :db_values => ["hide", "show"], :translate => true, :translation_prefix => "search.selections")
   add IntegerSearchField.new(:noshow_count, :range => 0..(User.maximum(:noshow_count) || 10))
   add IntegerSearchField.new(:participations_count, :range => 0..(User.maximum(:participations_count) || 10))
   add TagsSearchField.new(:tags)
@@ -65,7 +65,8 @@ class Search
     joins = []
     select = ['DISTINCT users.*']
     experiment = options[:experiment]
-    
+    group = []
+
     # include / exclude participants in experiment
     if experiment
       joins << "LEFT JOIN participations p ON p.user_id = users.id AND p.experiment_id = #{experiment.id} "
@@ -79,12 +80,7 @@ class Search
         if options[:session]
           # load specific given session
           joins << "JOIN (sessions sj JOIN session_participations sps ON sj.id = sps.session_id AND sj.id = #{options[:session].to_i}) ON sj.experiment_id = #{experiment.id} AND sps.user_id = users.id "         
-        else
-          # or load session_participation and join reference sessions
-          joins << "LEFT JOIN (sessions sj JOIN session_participations sps ON sj.id = sps.session_id) ON sj.experiment_id = #{experiment.id} AND sj.id = sj.reference_session_id AND sps.user_id = users.id "         
-        end
-        
-        select << "sps.reminded_at, 
+          select << "sps.reminded_at,
                    sj.start_at as session_start_at,
                    sj.id as session_id, 
                    p.invited_at,
@@ -94,6 +90,12 @@ class Search
                    sps.participated as session_participated,
                    sps.seat_nr as seat_nr,
                    sps.payment as payment"
+        else
+          # or load session_participation and join sessions
+          joins << "LEFT JOIN (sessions sj JOIN session_participations sps ON sj.id = sps.session_id) ON sj.experiment_id = #{experiment.id} AND sps.user_id = users.id "
+          select << "GROUP_CONCAT(sj.start_at SEPARATOR ',') as session_start_at"
+          group << "users.id"
+        end
         
         # only select users with a successful participation
         # this filter only makes sense, when we select participants of an experiment
@@ -109,31 +111,29 @@ class Search
       end
     end
     
-    return select, joins, where
+    return select, joins, where, group
   end
     
   # assembles the full query  
   def self.create_query(search, options)
-    select, joins, where = create_sql_parts(search, options)
+    select, joins, where, group = create_sql_parts(search, options)
     
     sort_column = options[:sort_column] || 'lastname'
     sort_direction = options[:sort_direction] || 'ASC'
-    
-    
-    
     
     <<EOSQL
         SELECT #{select.join(',')}
         FROM users
         #{joins.join(' ')}
         #{('WHERE ' + where.join(' AND ')) unless where.blank?} 
+        #{('GROUP BY ' + group.join(' AND ')) unless group.blank?} 
         ORDER BY #{sort_column + ' ' + sort_direction}   
 EOSQL
   end
   
   # assembles a full count query
   def self.create_count_query(search, options)
-    select, joins, where = create_sql_parts(search, options)
+    select, joins, where, group = create_sql_parts(search, options)
     
     <<EOSQL
         SELECT count(DISTINCT users.id)

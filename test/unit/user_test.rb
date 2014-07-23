@@ -58,7 +58,7 @@ class UserTest < ActiveSupport::TestCase
     end
   end
 
-  context "finding available users" do
+  context "finding available sessions" do
     setup do
       @u1 = FactoryGirl.create(:user)
       
@@ -78,10 +78,22 @@ class UserTest < ActiveSupport::TestCase
       # normal available session
       @sess1 = Session.create(:experiment => @e1, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 20, :reserve => 4)
       
-      # following sessions, should not be part of available sessions
-      @sess1_b = Session.create(:experiment => @e1, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 20, :reserve => 4, :reference_session_id => @sess1.id)
-      @sess1_c = Session.create(:experiment => @e1, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 20, :reserve => 4, :reference_session_id => @sess1.id)
+      # session group, one session in the past, so none of those sessions should be available
+      @group1 = SessionGroup.create(:signup_mode => SessionGroup::USER_IS_RANDOMIZED_TO_ONE_SESSION)
+      @sess1_b = Session.create(:experiment => @e1, :start_at => Time.now-2.hours, :end_at => Time.now+3.hours, :needed => 20, :reserve => 4, :session_group_id => @group1.id)
+      @sess1_c = Session.create(:experiment => @e1, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 20, :reserve => 4, :session_group_id => @group1.id)
       
+      # session group, one session has no space, but group should be available, since it is a randomized group
+      @group2 = SessionGroup.create(:signup_mode => SessionGroup::USER_IS_RANDOMIZED_TO_ONE_SESSION)
+      @sess1_d = Session.create(:experiment => @e1, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 0, :reserve => 0, :session_group_id => @group2.id)
+      @sess1_e = Session.create(:experiment => @e1, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 20, :reserve => 4, :session_group_id => @group2.id)
+
+      # session group, one session has no space, group should not be availabe since it is a attend-all group
+      @group3 = SessionGroup.create(:signup_mode => SessionGroup::USER_VISITS_ALL_SESSIONS_OF_GROUP)
+      @sess1_f = Session.create(:experiment => @e1, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 0, :reserve => 0, :session_group_id => @group3.id)
+      @sess1_g = Session.create(:experiment => @e1, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 20, :reserve => 4, :session_group_id => @group3.id)
+
+
       # a session without space - not available
       @sess2 = Session.create(:experiment => @e1, :start_at => Time.now+2.hours, :end_at => Time.now+3.hours, :needed => 0, :reserve => 0)
       
@@ -113,7 +125,11 @@ class UserTest < ActiveSupport::TestCase
     end
     
     should "just work :-)" do
-      assert_same_elements [@sess1, @sess4], @u1.available_sessions
+      ungrouped_sessions, session_groups = @u1.available_sessions
+      assert_same_elements [@sess1, @sess4], ungrouped_sessions
+      assert_same_elements [@group2], session_groups
+      assert_equal [@sess1_e], @group2.sessions_for_enrollment
+      assert_equal [], @group1.sessions_for_enrollment
     end
   end
   
@@ -273,7 +289,7 @@ class UserTest < ActiveSupport::TestCase
     end
     
     should "find available sessions" do
-      assert_same_elements [@sess1, @sess2], @u9.available_sessions
+      assert_same_elements [@sess1, @sess2], @u9.available_sessions.first
     end
     
     should "find by language" do
@@ -294,15 +310,17 @@ class UserTest < ActiveSupport::TestCase
       @e2 = FactoryGirl.create(:experiment)
       @e3 = FactoryGirl.create(:experiment)
       
-      @e1_s1 = FactoryGirl.create(:future_session, :experiment => @e1)
-      @e1_s2 = FactoryGirl.create(:past_session  , :experiment => @e1, :reference_session_id => @e1_s1.id)
-      @e1_s3 = FactoryGirl.create(:future_session, :experiment => @e1, :reference_session_id => @e1_s1.id)
-      @e1_s4 = FactoryGirl.create(:past_session  , :experiment => @e1)
-      @e1_s5 = FactoryGirl.create(:future_session, :experiment => @e1, :reference_session_id => @e1_s4.id)
+      @group1 = SessionGroup.create(:signup_mode => 1)
+      @group2 = SessionGroup.create(:signup_mode => 1)
+      @e1_s1 = FactoryGirl.create(:future_session, :experiment => @e1, :session_group_id => @group1.id)
+      @e1_s2 = FactoryGirl.create(:past_session  , :experiment => @e1, :session_group_id => @group1.id)
+      @e1_s3 = FactoryGirl.create(:future_session, :experiment => @e1, :session_group_id => @group1.id)
+      @e1_s4 = FactoryGirl.create(:past_session  , :experiment => @e1, :session_group_id => @group2.id)
+      @e1_s5 = FactoryGirl.create(:future_session, :experiment => @e1, :session_group_id => @group2.id)
       @e2_s1 = FactoryGirl.create(:past_session  , :experiment => @e2)
-      @e2_s2 = FactoryGirl.create(:future_session, :experiment => @e2, :reference_session_id => @e2_s1.id)
+      @e2_s2 = FactoryGirl.create(:future_session, :experiment => @e2)
       @e3_s1 = FactoryGirl.create(:past_session  , :experiment => @e3)
-      @e3_s2 = FactoryGirl.create(:future_session, :experiment => @e3, :reference_session_id => @e3_s1.id)
+      @e3_s2 = FactoryGirl.create(:future_session, :experiment => @e3)
       @e3_s3 = FactoryGirl.create(:past_session  , :experiment => @e3)
       
       Participation.create(:user => @u1, :experiment => @e1)
@@ -312,10 +330,8 @@ class UserTest < ActiveSupport::TestCase
       
       Participation.create(:user => @u1, :experiment => @e2)
       SessionParticipation.create(:user => @u1, :session_id => @e2_s1.id, :noshow => true)
-      SessionParticipation.create(:user => @u1, :session_id => @e2_s2.id, :noshow => true)
       
       Participation.create(:user => @u1, :experiment => @e2)
-      SessionParticipation.create(:user => @u1, :session_id => @e3_s1.id, :showup => true, :participated => true)
       SessionParticipation.create(:user => @u1, :session_id => @e3_s2.id, :showup => true, :participated => true)
       
       User.update_noshow_calculation
@@ -324,7 +340,7 @@ class UserTest < ActiveSupport::TestCase
     should "count correct numbers for show and noshow" do
       user =  Search.search({:fulltext => 'Hugo'}).first
       
-      assert_equal 2, user.participations_count
+      assert_equal 4, user.participations_count
       assert_equal 1, user.noshow_count
       
     end

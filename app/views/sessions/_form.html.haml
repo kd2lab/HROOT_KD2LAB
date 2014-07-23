@@ -8,8 +8,6 @@
   - button_text = t('.save_session')
   
 = simple_form_for @session, {:html => {:class => "guarded_form session_update form-horizontal", :'data-alert' => t('guarded_form_message')}, :url => url } do |f|   
-  = f.input :reference_session_id, :as => :hidden
-
   = f.input :start_date, 
           :required => false, 
           :as => :string, 
@@ -33,14 +31,13 @@
        
   = f.input :duration, :collection => (1..16).map{|x| x*15}+[360, 720, 1440], :default => 15
   
-  - unless @session.is_subsession?
-    = f.input :needed, :default => 20
-    = f.input :reserve, :default => 3
+
+  = f.input :needed, :default => 20
+  = f.input :reserve, :default => 3
   
   
   = f.input :description, :as => :text
-  - unless @session.is_subsession?
-    = f.input :limitations, :as => :text, :hint => t('.limitations_hint')
+  = f.input :limitations, :as => :text, :hint => t('.limitations_hint')
  
   
   = f.input :time_before, :collection =>  (0..12).map{|x| [(x*5).to_s+" #{t('.minutes')}", x*5]}, :include_blank => false

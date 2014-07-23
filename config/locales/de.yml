@@ -200,30 +200,50 @@ de:
       newest_tags: Neueste Tags
 
   enroll:
-    alert1: Experiment mit Folgesessions
-    alert2: Dieses Experiment hat mehrere Termine, bitte überprüfen Sie, ob Sie an allen angezeigten Terminen Zeit haben.
-
+    confirm_enrollment: Bestätigen der Anmeldung
+    or: oder
+    back: zurück
     index:
       new_enrollment: Anmeldung zu Experimenten (Schritt 1)
       available_sessions: 'Sie können sich zu folgenden Experiment-Sessions anmelden:'
       register_for_sessions: Jetzt anmelden (Bestätigung in Schritt 2)
       no_sessions_available: Es gibt derzeit keine weiteren Experimente, zu denen Sie sich anmelden können.
-    confirm:
-      confirm_enrollment: Anmeldung bestätigen (Schritt 2)
+      random_choice_desc: Wenn die diese Session-Gruppe auswählen, werden Sie bei Anmeldung zufällig einem Termin zugordnet.
+      all_choice_desc: Wenn die diese Session-Gruppe auswählen, müssen Sie an allen Terminen teilnehmen.
+    confirm_session:
+      date: 'Datum und Zeit der Session:'
+      enroll_for_sure: Verbindlich anmelden
       confirm_enrollment_question: 'Bitte bestätigen Sie die Teilnahme an folgenden Terminen verbindlich:'
-      dates: 'Termine:'
+    confirm_group:
+      dates: 'Datum und Zeit der Sessions'
       enroll_for_sure: Verbindlich anmelden!
-      or: oder
-      back: zurück
+      confirm_enrollment_question_randomized_html: 'Bitte bestätigen Sie, dass Sie an allen folgenden Terminen Zeit haben (Sie werden einem Termin per Zufall zugeteilt)'
+      confirm_enrollment_question_all_html: 'Bitte bestätigen Sie die Teilnahme an folgenden Terminen verbindlich:'
+    report_session:
+      register_done: Ergebnis der Anmeldung
+      success: Die Anmeldung war erfolgreich
+      failure: Die Anmeldung war nicht erfolgreich
+      failure_reason_html: "Dafür kann es verschiedene Gründe geben - vielleicht wurde der letzte Platz gerade eben vergeben, oder die Anmeldefrist ist gerade abgelaufen.<br/><br/>Für weitere Informationen wenden Sie sich an die Laborleitung."
+      session_overview: "Sie wurden in die folgende Experiment-Session eingetragen:"
+      sent_confirmation_mail: Es wurde Ihnen eine Bestätigung-E-Mail zugesandt.
+      more_sessions: Zu weiteren Sessions anmelden
+      back_to_account: Zurück zur Hauptseite
+    report_group:
+      register_done: Ergebnis der Sessionanmeldung
+      success: Ihre Session-Anmeldung war erfolgreich!
+      failure: Ihre Session-Anmeldung war NICHT erfolgreich!
+      failure_reason_html: "Dies kann verschiedene Gründe haben - vielleicht ist kurz zuvor der letzte Platz vergeben worden, oder die Anmeldungphase des Experiments wurde beendet.<br/><br/>Wenden Sie sich bei Fragen an die Laborleitung."
+      session_overview_all: "Sie haben sich zu folgenden Sessionterminen angemeldet:"
+      session_overview_randomized: "Sie wurden per Zufall folgendem Sessiontermin zugeteilt:"
+      sent_confirmation_mail: Es wurde Ihnen gerade eine Bestätigungs-E-Mail mit den Terminen zugesandt.
+      more_sessions: Zu weiteren Sessions in anderen Experimenten anmelden
+      back_to_account: Zurück zur Hauptseite
     report:
       register_done: Ergebnis der Sessionanmeldung
       success: Ihre Session-Anmeldung war erfolgreich!
       failure: Ihre Session-Anmeldung war NICHT erfolgreich!
       failure_reason_html: "Dies kann verschiedene Gründe haben - vielleicht ist kurz zuvor der letzte Platz vergeben worden, oder die Anmeldungphase des Experiments wurde beendet.<br/><br/>Wenden Sie sich bei Fragen an die Laborleitung."
       session_overview: "Sie haben sich zu folgenden Sessionterminen angemeldet:"
-      sent_confirmation_mail: Es wurde Ihnen gerade eine Bestätigungs-E-Mail mit den Terminen zugesandt.
-      more_sessions: Zu weiteren Sessions in anderen Experimenten anmelden
-      back_to_account: Zurück zur Hauptseite
   options:
     tabs:
       general: Allgemein
@@ -367,12 +387,21 @@ de:
     public_link:
       public_link: Öffentlicher Link
       public_link_html: "Dieser Link kann dazu genutzt werden, um Teilnehmer öffentlich einzuladen. Senden Sie ihn per Mail an Personen, die an dem Experiment teilnehmen sollen.<br/><br/> Sobald die Teilnehmer den Link besuchen, wird ein Cookie gesetzt, und wenn sie sich das erste Mal bei hroot anmelden (entweder als Neuanmeldung oder mit einem bestehenden Account), werden sie als Teilnehmer zum Experiment hinzugefügt."
+  session_groups:
+    group_type1: Randomisiert
+    group_type2: Mehrfachteilnahme
+
+
   sessions:
     new_session_link: Neue Session anlegen
+    new_group_session_link: Neue Sessiongruppe anlegen
     back_link: Zurück zur Session-Übersicht
     session: Session
-    following_session: Folgesession
     at_label: am
+    index:
+      group_mode: Teilnahme-Modus
+      ungrouped_sessions: Ungruppierte Sessions
+      group: Gruppe
     print:
       header: Session am
       lastname: Name
@@ -382,6 +411,12 @@ de:
       showup: E
       participated: T
       noshow: N
+    mode:
+      participation_heading: Teilnahme-Modus
+      mode1: Randomisiert
+      mode2: An allen Sessions
+      explanation1: Teilnehmer wählen bei Anmeldung eine Gruppe und werden in eine Session randomisiert.
+      explanation2: Teilnehmer wählen bei Anmeldung eine Gruppe und nehmen an allen Sessions der Gruppe teil.
 
     line:
       participants_label: 'Teilnehmer:'
@@ -404,6 +439,8 @@ de:
       remove_marked: Markierte Teilnehmer aus dieser Session austragen.
       marked: Markierte Teilnehmer
       move_marked: "Markierte Teilnehmer in Session %{session} verschieben"
+      move_marked_group: Markierte Teilnehmer in Gruppe %{group_nr} (%{sessions}) verschieben
+      move_marked_group_session: Markierte Teilnehmer in Session %{session} der Gruppe %{group} verschieben
       save_changes_now: Änderungen jetzt speichern
       no_participants: Diese Session hat keine Teilnehmer
       data_menu: Daten
@@ -472,6 +509,8 @@ de:
       remove_marked: Alle markierten Teilnehmer aus dem Experiment austragen.
       remove_marked_confirm: Sind Sie sicher, dass alle markierten Teilnehmer aus dem Experiment entfernt werden sollen?
       move_marked: Markierte Teilnehmer in Session %{session} verschieben
+      move_marked_group: Markierte Teilnehmer in Gruppe %{group_nr} (%{sessions}) verschieben
+      move_marked_group_session: Markierte Teilnehmer in Session %{session} der Gruppe %{group} verschieben
       none_found: Kein Poolmitglied gefunden
       none_found_reason: Entweder wurden bereits alle Poolmitglieder zugeordnet, oder die Filtereinstellungen müssen geändert werden.
       message_all_searched: Nachricht an alle Teilnehmer der aktuellen Suche
@@ -500,10 +539,10 @@ de:
       only: Nur
       without: Ohne
       participation:
-        choice1: Nur Zugeordnete, die teilgenommen haben
-        choice2: Nur Zugeordnete, die bereits in eine Session eingetragen sind
-        choice3: Nur Zugeordnete ohne Session
-        choice4: Nur Zugeordnete in Sessions, die noch nicht vorbei sind
+        value1: Nur Zugeordnete, die teilgenommen haben
+        value2: Nur Zugeordnete, die bereits in eine Session eingetragen sind
+        value3: Nur Zugeordnete ohne Session
+        value4: Nur Zugeordnete in Sessions, die noch nicht vorbei sind
       experiments:
         choice1: die zu einem der folgenden Experimente zugeordnet sind
         choice2: die zu allen der folgenden Experimente zugeordnet sind
@@ -517,8 +556,8 @@ de:
         experimenter: Experimentatoren
         admin: Administratoren
       deleted:
-        hide_deleted: verstecken
-        show_deleted: anzeigen
+        hide: verstecken
+        show: anzeigen
     links:
       fulltext: Volltextsuche
       role: Rolle
@@ -832,7 +871,7 @@ de:
       notice_cant_delete_participants: Sessions mit Teilnehmern können nicht gelöscht werden.
       notice_deleted: Die Session wurde gelöscht.
       notice_removed_from_session: Die ausgewählten Teilnehmer wurden aus der Session ausgetragen
-      notice_moved_to_session: "Die ausgewählten Teilnehmer wurden in die Session %{session} verschoben"
+      notice_moved_to_session: "Die ausgewählten Teilnehmer wurden in die gewählte Session verschoben"
       notice_cant_delete_files: "Die Session kann nicht gelöscht werden, da noch Dateien im Dateiordner der Session liegen."
     users:
       notice_mailqueue: Die Nachricht(en) wurden in die Mailqueue eingetragen.
