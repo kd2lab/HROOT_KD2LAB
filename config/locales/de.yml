@@ -208,8 +208,8 @@ de:
       available_sessions: 'Sie können sich zu folgenden Experiment-Sessions anmelden:'
       register_for_sessions: Jetzt anmelden (Bestätigung in Schritt 2)
       no_sessions_available: Es gibt derzeit keine weiteren Experimente, zu denen Sie sich anmelden können.
-      random_choice_desc: Wenn die diese Session-Gruppe auswählen, werden Sie bei Anmeldung zufällig einem Termin zugordnet.
-      all_choice_desc: Wenn die diese Session-Gruppe auswählen, müssen Sie an allen Terminen teilnehmen.
+      random_choice_desc: Wenn Sie diese Session-Gruppe auswählen, werden Sie bei Anmeldung zufällig einem Termin zugordnet.
+      all_choice_desc: Wenn Sie diese Session-Gruppe auswählen, müssen Sie an allen Terminen teilnehmen.
     confirm_session:
       date: 'Datum und Zeit der Session:'
       enroll_for_sure: Verbindlich anmelden
