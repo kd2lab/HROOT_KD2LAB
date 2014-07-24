@@ -2,7 +2,7 @@ de:
   breadcrumbs:
     account:
       alternative_email: 'Alternative E-Mail'
-      data: 'Account Einstellungen'
+      data: 'Account-Einstellungen'
       missing: 'Fehlende Daten'
       optional: 'Optionale Daten'
     admin:
@@ -12,7 +12,7 @@ de:
       root: 'Home'
     enroll:
       confirm: 'Bestätigung'
-      index: 'Für Experiment Sessions anmelden'
+      index: 'Für Experiment-Sessions anmelden'
       report: 'Resultat'
     experiments:
       edit: 'Allgemeine Daten'
@@ -34,7 +34,7 @@ de:
       index: 'Räume'
       options: 'Einstellungen'
     options:
-      emails: 'E-Mail Texte'
+      emails: 'E-Mail-Texte'
       index: 'Einstellungen'
       duplicates: 'Doppelte Benutzer'
       texts: 'Texte'

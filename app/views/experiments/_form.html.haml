@@ -9,9 +9,6 @@
   = f.input :contact, :as => :text, :input_html => {:class => "span5", :rows => 4} 
   = f.input :sender_email, :hint => "("+t('.default_address_is')+" #{UserMailer.default[:from]})", :input_html => {:class => "span5"} 
   
-  = f.input :exclude_tags, :collection => ActsAsTaggableOn::Tag.order(:name).map{|s| [s.name, s.name]}, :hint => t('.exclude_tags_hint'), :input_html => {:class => "chzn-select", :multiple => true,:'data-placeholder' => "Tags..."}
-  = f.input :exclude_experiments, :collection => Experiment.order(:name).map{|s| [s.name, s.id]}, :hint => t('.exclude_experiments_hint'), :input_html => {:class => "chzn-select", :multiple => true, :'data-placeholder' => "Experiments..."}
-
   - unless @experiment.new_record?
     = f.input :finished, :inline_label => t('.experiment_finished'), :as => :boolean, :label => false
     

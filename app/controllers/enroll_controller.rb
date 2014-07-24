@@ -21,12 +21,12 @@ class EnrollController < ApplicationController
   end
 
   def report_session
-    add_breadcrumb :report, :enroll_report_path
+    add_breadcrumb :report, :enroll_report_session_path
     @session_participation = SessionParticipation.find_by_user_id_and_session_id(current_user.id, params[:session_id])
   end
 
   def report_group
-    add_breadcrumb :report, :enroll_report_path
+    add_breadcrumb :report, :enroll_report_group_path
 
     @group = SessionGroup.find(params[:group_id])
     @session_participations = SessionParticipation.where( :user_id => current_user.id, :session_id => @group.sessions.map(&:id))

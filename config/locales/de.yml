@@ -417,7 +417,6 @@ de:
       mode2: An allen Sessions
       explanation1: Teilnehmer wählen bei Anmeldung eine Gruppe und werden in eine Session randomisiert.
       explanation2: Teilnehmer wählen bei Anmeldung eine Gruppe und nehmen an allen Sessions der Gruppe teil.
-
     line:
       participants_label: 'Teilnehmer:'
       participants_link: 'Teilnehmer'
@@ -428,6 +427,9 @@ de:
       delete: Löschen
       group_size: 'Gruppengröße:'
       delete_confirm: Soll diese Session wirklich gelöscht werden?
+      group_this_session: "Mit Session %{session} gruppieren"
+      add_to_group: "Zur Gruppe %{id} hinzufügen"
+      remove_from_group: "Aus Gruppe entfernen"
     session_participants:
       header: Session am
       print: Drucken
@@ -873,6 +875,15 @@ de:
       notice_removed_from_session: Die ausgewählten Teilnehmer wurden aus der Session ausgetragen
       notice_moved_to_session: "Die ausgewählten Teilnehmer wurden in die gewählte Session verschoben"
       notice_cant_delete_files: "Die Session kann nicht gelöscht werden, da noch Dateien im Dateiordner der Session liegen."
+      group_created: Eine neue Gruppe wurde angelegt.
+      removed_from_group:  Die Session wurde von der Gruppe entfernt.
+      added_to_group:  Die Session wurde der Gruppe hinzugefügt.
+      notice_saved_changes: Die Änderungen wurden gespeichert.
+      notice_cannot_merge_into_group_existing_participants: "Gruppierung nicht möglich, die Session hat bereits Teilnehmer"
+      notice_cannot_merge_into_group_it_has_participants: "Gruppierung nicht möglich, die Session hat bereits Teilnehmer"
+      notice_cannot_create_group_existing_participants: "Gruppierung nicht möglich, die Session hat bereits Teilnehmer"
+      notice_cannot_change_group_mode_existing_participants: "Wechsel des Gruppierungsmodus nicht möglich, die Session hat bereits Teilnehmer"
+      notice_cannot_change_group_sessions_participants: "Session kann nicht aus der Gruppe entfernt werden, die Session hat bereits Teilnehmer"
     users:
       notice_mailqueue: Die Nachricht(en) wurden in die Mailqueue eingetragen.
       notice_mailqueue_activation: Die Aktivierungs-Einladungen(en) wurden in die Mailqueue eingetragen.
