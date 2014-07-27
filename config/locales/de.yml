@@ -552,7 +552,9 @@ de:
         choice4: die an mindestens einer Session eines der folgenden Experimente teilgenommen haben
         choice5: die an mindestens einer Session von jedem der folgenden Experimente teilgenommen haben
         choice6: die an keiner Session der folgenden Experimente teilgenommen haben    
-
+      import:
+        value0: Nur Benutzer, die importiert wurden und sich noch aktiviert haben
+        value1: Nur Benutzer, die importiert wurden und sich freigeschaltet haben
       role:  
         user: Benutzer
         experimenter: Experimentatoren
@@ -569,6 +571,7 @@ de:
       participation: Sessionteilnahme
       experiments: Experimente
       deleted: Gelöschte Benutzer
+      import: Import
 
     titles:
       fulltext: "Suche in Name, E-Mail: "
@@ -581,6 +584,7 @@ de:
       experiments: "Teilnehmer,"
       participation: Sessionteilnahme
       deleted: Gelöschte Benutzer
+      import: Import
 
     hints:
       tags: Tag...
@@ -681,7 +685,17 @@ de:
       no_users: Kein User gefunden
       header: Nutzerliste
       filter_settings: Suchkiterien
-
+  passwords:
+    new:
+      breadcrumb_forgot_password: Passwort vergessen
+      forgot_password: Passwort vergessen?
+      forgot_password_text: Kein Problem, geben Sie einfach Ihre E-Mail-Adresse an, mit der Sie sich bei hroot angemeldet haben. Wir senden Ihnen dann einen Link zu, mit dem Sie Ihr Passwort ändern können.
+      forgot_link: E-Mail für Passwortänderung senden
+    edit:
+      breadcrumb_forgot_password: Passwort ändern
+      change_password: Passwort ändern
+      password_hint: mindestens 8 Zeichen, mindestens eine Zahl, ein Buchstabe, ein Sonderzeichen
+      change_password_link: Passwort ändern  
   account:
     index:
       home: Home
@@ -730,21 +744,11 @@ de:
     subject_secondary_email_confirmation: "hroot: Bestätigung der alternativen E-Mail-Adresse"
     subject_import_email_confirmation: "hroot: Bestätigung der neuen E-Mail-Adresse"
     subject_import_email_activation: "hroot: Freischaltung für die Teilnahme an Experimenten"
-  devise:    
+  devise:
     passwords:
-      new:
-        breadcrumb_forgot_password: Passwort vergessen
-        forgot_password: Passwort vergessen?
-        forgot_password_text: Kein Problem, geben Sie einfach Ihre E-Mail-Adresse an, mit der Sie sich bei hroot angemeldet haben. Wir senden Ihnen dann einen Link zu, mit dem Sie Ihr Passwort ändern können.
-        forgot_link: E-Mail für Passwortänderung senden
       user:
         send_instructions: Es wurde Ihnen eine E-Mail mit einer Anleitung für die Passwortänderung zugesendet.
         updated: Ihr Passwort wurde geändert, Sie sind jetzt eingeloggt.
-      edit:
-        breadcrumb_forgot_password: Passwort ändern
-        change_password: Passwort ändern
-        password_hint: mindestens 8 Zeichen, mindestens eine Zahl, ein Buchstabe, ein Sonderzeichen
-        change_password_link: Passwort ändern
     confirmations:
       new:
         resend_email: Bestätigungs-E-Mail erneut senden

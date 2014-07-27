@@ -23,7 +23,6 @@ class RegistrationsController < Devise::RegistrationsController
 
   def edit
     add_breadcrumb :data, :account_data_path
-    add_breadcrumb @user
     add_breadcrumb :edit, :users_path
     super
   end

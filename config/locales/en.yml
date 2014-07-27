@@ -593,7 +593,9 @@ en:
         choice4: who have participated in at least one session of one of the following experiments
         choice5: who have participated in at least one session of all of the following experiments
         choice6: who have not participated in any session of the following experiments
-
+      import:
+        value0: "Only imported users, who haven't activated their account"
+        value1: "Only imported users, who activated their account"
       role:
         user: User
         experimenter: Experimenter
@@ -610,7 +612,7 @@ en:
       participation: Session participation
       experiments: Experiments
       deleted: Deleted users
-
+      import: Import
     titles:
       fulltext: "Search in name, email: "
       role: "Role:"
@@ -622,7 +624,7 @@ en:
       experiments: "Include only users,"
       participation: Session participation
       deleted: Deleted users
-
+      import: Import
     hints:
       tags: Tag...
       experiments: Experiments...
@@ -721,6 +723,17 @@ en:
       created_at: Registration date
       no_users: No user was found
       header: User list
+  passwords:
+    new:
+      breadcrumb_forgot_password: Forgot password
+      forgot_password: Forgot password?
+      forgot_link: Send email for password change
+      forgot_password_text: Enter the email address you used to register with hroot. We will send you an email to set a new password.
+    edit:
+      breadcrumb_forgot_password: Forgot password
+      change_password: Change password
+      password_hint: "(one digit, one char and one special char needed)"
+      change_password_link: Change Password
   account:
     index:
       home: Home
@@ -779,7 +792,7 @@ en:
         forgot_password_text: Enter the email address you used to register with hroot. We will send you an email to set a new password.
       user:
         send_instructions: We have sent an email to change your password.
-        updated: Your password has bee updated.
+        updated: Your password has been updated.
       edit:
         breadcrumb_forgot_password: Forgot password
         change_password: Change password

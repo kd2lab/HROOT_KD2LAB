@@ -45,7 +45,7 @@ de:
       manage: 'Teilnehmer zuweisen'
     registrations:
       edit: 'Passwort ändern'
-      data: 'Account Einstellungen'
+      data: 'Account-Einstellungen'
       new: 'Registrierung'
     sessions:
       edit: 'bearbeiten'
