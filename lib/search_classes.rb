@@ -70,6 +70,16 @@ class DeletedSearchField < SearchField
   end
 end
 
+class ImportedSearchField < SearchField
+  def where_conditions(search)
+    "users.imported=1 && users.activated_after_import=#{search[:value].to_i}" if search
+  end  
+  
+  def partial
+    "shared/search/selection"
+  end
+end
+
 class IntegerSearchField < SearchField
   def where_conditions(search)
     # sanitize

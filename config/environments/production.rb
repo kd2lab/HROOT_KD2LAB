@@ -39,6 +39,7 @@ Hroot::Application.configure do
   # this email is used by the development mail interceptor (see application.rb and lib/development_mail_interceptor.rb)
   # in all other that production mode, emails will be sent to this adress instead of the real recipient
   config.interceptor_email = "<Your email>"
+  # config.interceptor_subject_prefix = '[hroot]' # add a prefix to all intercepted mail subject
   
   # this email adress will be the default sender email
   config.hroot_sender_email = '<Some email which acts as default sender address>'

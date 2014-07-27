@@ -1,13 +1,6 @@
-= content_for :breadcrumb do
-  = render :partial => "layouts/crumb", :object => [           |
-      link_to(t('administration'), :controller => "admin", :action => "index"), |
-      link_to(t(:experiments_header), experiments_path),                |
-      link_to(@experiment.name,experiment_sessions_path(@experiment)), |
-      t(:sessions_label)]
-      
-
+- # todo fix breadcrumb here
 = render :partial => "experiments/enrollment"
-  
+
 %h1
   = @experiment.name
 
@@ -20,9 +13,38 @@
 
 %br
 %br
+%br
+%br
+- if @experiment.session_groups.size > 0 
+  - mode = @experiment.session_groups.first.signup_mode
+  - if @experiment.has_no_participants_in_grouped_sessions?
+    .btn-panel{:style => "float:left"}
+      = t('.group_mode')
+      .btn-group
+        - [SessionGroup::USER_IS_RANDOMIZED_TO_ONE_SESSION, SessionGroup::USER_VISITS_ALL_SESSIONS_OF_GROUP].each do |m|
+          = link_to t('sessions.mode.mode'+m.to_s), |
+            update_mode_experiment_sessions_path(@experiment, :mode => m), |
+            :class => "btn btn-default #{ mode == m ? 'active' : ''}", |
+            :method => :post
+  .well.well-small{:style => "margin-left: 10px; float:left; width:300px"}
+    = t("sessions.mode.explanation#{mode}")
+  %br
+  %br
+
+%h4{:style => "clear:both"}
+  = t('.ungrouped_sessions') if @experiment.session_groups.count > 0
 
 %table.table
-  - @sessions.each do |session| 
-    = render :partial => 'line', :locals => {:session => session}
-    - session.following_sessions.each do |subsession|
-      = render :partial => 'line', :locals => {:session => subsession}
+  - human_friendly_group_id = 0
+  - @experiment.ungrouped_sessions.each do |session|
+    = render :partial => 'line', :locals => {:session => session, :human_friendly_group_id => human_friendly_group_id += 1}
+
+- @experiment.session_groups.each_with_index do |group, i|
+
+  %h4
+    = t('.group')
+    = i+1
+  %table.table
+    - group.sessions.each do |session|
+      = render :partial => 'line', :locals => {:session => session}
+

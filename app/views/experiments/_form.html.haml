@@ -1,4 +1,5 @@
 = simple_form_for @experiment, :html => {:class => "guarded_form form-horizontal"} do |f| 
+
   = f.input :name, :required => false, :input_html => {:class => "span5"}
   
   = f.input :tag_list
@@ -20,7 +21,7 @@
   
 
   = f.input :exclude_tags, :collection => ActsAsTaggableOn::Tag.order(:name).map{|s| [s.name, s.name]}, :input_html => {:class => "chzn-select-experiments", :multiple => true,:'data-placeholder' => "Tags..."}
-  = f.input :exclude_experiments, :collection => Experiment.order(:name).map{|s| [s.name, s.id]}, :input_html => {:class => "chzn-select-experiments", :multiple => true, :'data-placeholder' => "Experiments..."}
+  = f.input :exclude_experiments, :collection => Experiment.list_with_experimenters, :input_html => {:class => "chzn-select-experiments", :multiple => true, :'data-placeholder' => "Experiments..."}
     
     
   

@@ -1,14 +1,5 @@
 = stylesheet_link_tag "event_calendar" 
 
-= content_for :breadcrumb do
-  %ul.breadcrumb
-    %li
-      =link_to t('administration'), :controller => "admin", :action => "index"
-      %span.divider
-        &gt;
-    %li.active
-      =t '.cal_title'
-
 %h1
   =t '.cal_title'
 

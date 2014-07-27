@@ -8,6 +8,6 @@
   - if @session.location
     = @session.location.name 
 
--if @users.count > 0
-  = render :partial => "shared/print", :locals => {:users => @users, :columns => Rails.configuration.session_participants_table_print_columns, :red => true}
+  -if @users.count > 0
+    = render :partial => "shared/print", :locals => {:users => @users, :columns => Rails.configuration.session_participants_table_print_columns, :red => true}
   

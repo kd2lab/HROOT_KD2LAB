@@ -1,11 +1,3 @@
-= content_for :breadcrumb do
-  = render :partial => "layouts/crumb", :object => [           |
-      link_to(t('administration'), :controller => "admin", :action => "index"), |
-      link_to(t(:experiments_header), experiments_path),                |
-      link_to(@experiment.name,experiment_sessions_path(@experiment)), |
-      t(:sessions_label)]
-      
-
 = render :partial => "experiments/enrollment"
   
 %h1
@@ -18,7 +10,7 @@
 
 %br
 %br
-%h2= "#{t('.new_label1')} #{@session.is_subsession? ? t('sessions.following_session') : t('sessions.session')} #{t('.new_label2')}"
+%h2= "#{t('.new_label1')} #{t('sessions.session')} #{t('.new_label2')}"
   
 %br
 

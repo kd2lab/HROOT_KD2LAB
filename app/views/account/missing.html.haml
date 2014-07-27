@@ -1,0 +1,28 @@
+.row
+  .span8
+    
+      
+    %h1= t '.header'
+    %p
+      %br
+      =t '.explanation_html'
+      %br
+      %br
+    = render 'layouts/errors', object: current_user 
+    
+    - current_user.valid?
+      
+    = simple_form_for current_user, :url => '', :html => {:class => 'form-horizontal'} do |f| 
+      %br
+      
+      
+      - CUSTOM_FIELDS.required.each do |field|
+        = field.add_to_form(f)
+          
+      
+      = f.submit t('save'), :id => 'register_button', :class => "btn btn-primary"
+  
+      %br
+      %br
+      %br
+  

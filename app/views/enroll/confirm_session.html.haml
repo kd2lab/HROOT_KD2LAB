@@ -1,0 +1,39 @@
+= content_for :breadcrumb do
+  %ul.breadcrumb
+    %li
+      =link_to t('login_area'), :controller => "account", :action => "index"
+      %span.divider
+        >
+    %li.active
+      =t 'enroll.confirm_enrollment'
+
+%h3=t 'enroll.confirm_enrollment'
+=t '.confirm_enrollment_question'
+%br
+%br
+
+= form_tag enroll_register_path do
+  = hidden_field_tag("choice", "session,#{@session.id}")
+  
+  .well
+    =t('.date')+':'
+
+    %br
+    %br
+    %b= @session.time_str
+    - if @session.location
+      %br
+      = @session.location.name
+            
+    %br
+    
+    - unless @session.limitations.blank?
+      %b=t('enroll.notes')+':'
+      %br
+      = @session.limitations
+                    
+  %br
+  = submit_tag t('.enroll_for_sure'), :class => "btn btn-danger"
+  = t 'enroll.or'
+  = link_to t('enroll.back'), enroll_path
+

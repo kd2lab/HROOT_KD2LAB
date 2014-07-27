@@ -1,12 +1,3 @@
-= content_for :breadcrumb do
-  = render :partial => "layouts/crumb", :object => [           |
-      link_to(t('administration'), :controller => "admin", :action => "index"), |
-      link_to(t(:experiments_header), experiments_path),                |
-      link_to(@experiment.name,experiment_sessions_path(@experiment)), |
-      t(:experimenters_header)]
-
-
-
 = render :partial => "experiments/enrollment"
   
 %h1
@@ -17,7 +8,7 @@
 %h3=t :experimenters_header
 %br
 
-= simple_form_for @experiment,:url => '', :html => {:method => :post, :class => "guarded_form form-horizontal"} do |f| 
+= simple_form_for @experiment,:url => '', :html => {:method => :post, :class => "guarded_form form-horizontal", :'data-alert' => t('guarded_form_message')} do |f| 
   %table#privilege-table.table{:'data-rights' => ExperimenterAssignment.right_list.to_json, :'data-rights-label' => I18n.t(:rights_label), :'data-default-rights' => Settings.default_privileges}
     - params[:privileges].each do |privilege|
       %tr{:'data-id' => privilege[:id]}

@@ -9,8 +9,8 @@ Hroot::Application.routes.draw do
   match 'enroll', :controller => 'enroll', :action => 'index', :as => "enroll"
   post 'enroll_confirm', :controller => 'enroll', :action => 'confirm', :as => 'enroll_confirm'
   post "enroll_register", :controller => 'enroll', :action => 'register', :as => 'enroll_register'
-  match 'enroll_report/:session_id', :controller => 'enroll', :action => 'report', :as => 'enroll_report'
-  
+  match 'enroll_report_session/:session_id', :controller => 'enroll', :action => 'report_session', :as => 'enroll_report_session'
+  match 'enroll_report_group/:group_id', :controller => 'enroll', :action => 'report_group', :as => 'enroll_report_group'
 
   match 'account', :controller => 'account', :action => 'index'
   #match 'account/email', :controller => 'account', :action => 'email'
@@ -19,6 +19,7 @@ Hroot::Application.routes.draw do
   match 'account/data', :controller => 'account', :action => 'data'  
   match 'account/optional', :controller => 'account', :action => 'optional'  
   match 'account/edit', :controller => 'account', :action => 'edit'  
+  match 'account/missing', :controller => 'account', :action => 'missing'
   
   match 'account/alternative_email', :controller => 'account', :action => 'alternative_email'  
   match 'home/confirm_alternative_email/:confirmation_token', :controller => 'home', :action => 'confirm_alternative_email', :as => 'secondary_email_confirmation'
@@ -33,7 +34,7 @@ Hroot::Application.routes.draw do
   match 'home/referral', :controller => 'home', :action => 'referral'
   
   
-  devise_for :users, :controllers => {:registrations => "registrations"}, :path_names => { :sign_in => 'login' }, skip: :registrations 
+  devise_for :users, :controllers => {:registrations => "registrations", :passwords => "passwords"}, :path_names => { :sign_in => 'login' }, skip: :registrations 
   
   devise_scope :user do
     get    "/login" => "devise/sessions#new"
@@ -119,6 +120,7 @@ Hroot::Application.routes.draw do
       resources :sessions, :except => :show do
         collection do
           post :overlaps
+          post :update_mode
         end
       
         member do
@@ -131,7 +133,9 @@ Hroot::Application.routes.draw do
           post :csv
           post :excel
           post :send_message
-          
+          post :remove_from_group
+          post :create_group_with
+          post :add_to_group
         end
       end
 

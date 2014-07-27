@@ -95,7 +95,10 @@
             - when :created_at
               %td= I18n.l(user.created_at, :format => :date_only)
             - when :session
-              %td= "#{I18n.l(user.session_start_at) if user.session_start_at}" 
+              - if !user.session_start_at.blank?
+                %td=raw user.session_start_at.split(',').map{|d| I18n.l(Time.zone.parse(d))}.join('<br/>')
+              - else
+                %td
             - when :form_fields
               %td
                 = check_box_tag "noshows[#{user.id}]", "1", user.session_noshow == 1, :class => "noshow_checkbox", :'data-id' => user.id, :disabled => !participation_boxes

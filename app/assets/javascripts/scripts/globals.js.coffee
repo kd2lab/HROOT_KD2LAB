@@ -45,7 +45,7 @@ $ ->
   $('.event-popover').each ->
     $(this).popover
       html: true,
-      title: $(this).data('title'),
+      title: $(this).data('title')+' '+$(this).data('timestr'),
       content: "<i> #{ $(this).data('location') }</i>                
                 <br/><br/>
                 #{ $(this).data('exp') }
@@ -81,7 +81,7 @@ $ ->
   # form change detection
   $(".guarded_form :input").change ->
     $(this).closest('form').data 'changed', true
-    window.onbeforeunload = -> "Achtung: Die Änderungen wurden noch nicht gespeichert!"
+    window.onbeforeunload = -> $('.guarded_form').data('alert')
   
   $('.guarded_form_save').click ->
     window.onbeforeunload = null

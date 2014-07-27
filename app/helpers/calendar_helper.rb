@@ -63,6 +63,7 @@ module CalendarHelper
           data-location="#{session.location.name if session.location}"
           data-expid="#{session.experiment.id}"
           data-sessionid="#{session.id}"
+          data-timestr="#{session.only_time_str}"
           data-count="#{I18n.t(:cal_participants)} #{session.session_participations.count} (#{session.needed},#{session.reserve})"
           data-exp="#{session.experiment.experimenters.collect{|u| u.firstname[0]+". "+u.lastname}.join(' | ')}">
             <div class="participation-marker #{part_css_class}"></div>

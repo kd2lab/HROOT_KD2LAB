@@ -7,11 +7,15 @@ class DevelopmentMailInterceptor
     
     unless Rails.env.production?
       # add original to.field to subject
-      message.subject = "#{message.to} #{message.subject}"
+      if Rails.configuration.respond_to?(:interceptor_subject_prefix) and not Rails.configuration.interceptor_subject_prefix.blank?
+        message.subject = "#{Rails.configuration.interceptor_subject_prefix}#{message.subject} [original to: #{message.to}]"
+      else
+        message.subject = "#{message.to} #{message.subject}"
+      end
       
       if Rails.configuration.respond_to?(:interceptor_email)
         # change recipient if configured
-        message.to = Rails.configuration.interceptor_email 
+        message.to = Rails.configuration.interceptor_email
       else
         # or have no recipient at all (message fails then)
         message.to = ""

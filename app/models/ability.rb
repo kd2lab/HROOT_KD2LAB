@@ -6,6 +6,10 @@ class Ability
       if user.admin?
         can :manage, :all 
       elsif user.experimenter?
+        can [:new, :create], Experiment do |experiment|
+          user.can_create_experiment
+        end
+
         can :read, Experiment do |experiment|
           experiment.experimenter_assignments.where(:user_id => user.id).count > 0
         end

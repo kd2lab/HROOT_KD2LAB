@@ -16,8 +16,14 @@ class HomeController < ApplicationController
   def info
     render :layout => 'info'
   end
+
+  def about
+    add_breadcrumb :about, :home_about_path
+  end
     
   def activate
+    add_breadcrumb :activate, :activate_path
+
     if params[:email]
       @user = User.where(:imported => true).where(:activated_after_import => false).where(:email => params[:email]).first
       if @user
@@ -87,7 +93,12 @@ class HomeController < ApplicationController
     render :json => obj
   end
 
+  def version
+    add_breadcrumb :version, :home_version_path
+  end
+
   def referral
+    add_breadcrumb :referral, :home_referral_path
     @experiment = Experiment.where(:refkey => cookies[:refkey]).first
 
     redirect_to root_url, :notice => t('controllers.home.notice_link_not_valid') unless @experiment

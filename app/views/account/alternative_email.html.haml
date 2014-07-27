@@ -1,12 +1,3 @@
-= content_for :breadcrumb do
-  %ul.breadcrumb
-    %li
-      =link_to t('login_area'), :controller => "account", :action => "index"
-      %span.divider
-        &gt;
-    %li.active
-      =t 'account_options'
-
 %h3=t 'account_options'
 
 = render :partial => "tabs", :locals => {:selected => :alternative_email} 
@@ -47,7 +38,7 @@
     = link_to t('.resend_confirmation_mail'), {:resend => 1}, :class => "btn"
     %br
 - else    
-  = simple_form_for current_user, :html => {:class => "guarded_form form-horizontal"}, :url => '' do |f| 
+  = simple_form_for current_user, :html => {:class => "guarded_form form-horizontal", :'data-alert' => t('guarded_form_message')}, :url => '' do |f| 
     %br
     = f.input :secondary_email, :placeholder => 'name@domain.com', :as => 'email'
     = f.submit t('.save_alternative_email'), :class => "btn btn-primary guarded_form_save"

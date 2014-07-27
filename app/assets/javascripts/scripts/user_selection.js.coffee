@@ -32,13 +32,8 @@ $ ->
     if $(this).attr('data-confirm') && !confirm($(this).attr('data-confirm'))
       return false
     
-    $('#user_action').val($(this).attr('data-value'))
-    if $(this).attr('data-target')
-      $('#user_search').attr("target", $(this).attr('data-target'))
+    $('#user_action_type').val($(this).attr('data-type'))
+    $('#user_action_value').val($(this).attr('data-value'))
       
     $('#user_search').submit()
-    
-    # reset form values again, so form can be submitted again
-    $('#user_search').removeAttr("target")
-    $('#user_action').val('')  
-    return false
+    false

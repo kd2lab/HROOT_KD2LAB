@@ -2,6 +2,7 @@
 
 class ExperimentsController < ApplicationController
   load_and_authorize_resource :except => :autocomplete_tags
+  add_breadcrumb :index, :experiments_path
   
   def index
     if current_user.admin?
@@ -34,11 +35,13 @@ class ExperimentsController < ApplicationController
   end
 
   def new
+    add_breadcrumb :new, :new_experiment_path
     @experiment = Experiment.new
   end
 
   def edit
-
+    add_breadcrumb @experiment, experiment_sessions_path(@experiment)
+    add_breadcrumb :edit, experiment_sessions_path(@experiment)
   end
 
   def create
@@ -51,6 +54,9 @@ class ExperimentsController < ApplicationController
     @experiment.reminder_text = Settings.reminder_text
     
     if @experiment.save
+      if current_user.can_create_experiment
+        ExperimenterAssignment.create(:experiment_id => @experiment.id, :user_id => current_user.id, :rights => ExperimenterAssignment.right_keys.join(','))
+      end
       redirect_to reminders_experiment_path(@experiment), :notice => t('controllers.experiments.notice_created')
     else
       render :action => "new"
@@ -62,6 +68,9 @@ class ExperimentsController < ApplicationController
   end
 
   def experimenters
+    add_breadcrumb @experiment, experiment_sessions_path(@experiment)
+    add_breadcrumb :experimenters, :experimenters_experiment_path
+
     unless params[:privileges]
       params[:privileges] = []
 
@@ -80,8 +89,8 @@ class ExperimentsController < ApplicationController
 
       redirect_to experimenters_experiment_path(@experiment), :notice => t('controllers.notice_saved_changes')
     end
-  end  
-  
+  end
+
   def update
     if params[:experiment][:tag_list]
       params[:experiment][:tag_list] = params[:experiment][:tag_list].join(", ")
@@ -118,6 +127,8 @@ class ExperimentsController < ApplicationController
   end
   
   def invitation
+    add_breadcrumb @experiment, experiment_sessions_path(@experiment)
+    add_breadcrumb :invitation, :invitation_experiment_path
     current_user.settings.templates = {} unless current_user.settings.templates
 
     # stop invitation
@@ -147,10 +158,14 @@ class ExperimentsController < ApplicationController
   end
 
   def public_link
-
+    add_breadcrumb @experiment, experiment_sessions_path(@experiment)
+    add_breadcrumb :public_link, :public_link_experiment_path
   end
 
   def message_history
+    add_breadcrumb @experiment, experiment_sessions_path(@experiment)
+    add_breadcrumb :message_history, :message_history_experiment_path
+
     if params[:mail]
       mail = SentMail.where(:id => params[:mail]).first
       render :json => {:subject => mail.subject, :message => help.simple_format(mail.message)}
@@ -158,6 +173,9 @@ class ExperimentsController < ApplicationController
   end
   
   def reminders
+    add_breadcrumb @experiment, experiment_sessions_path(@experiment)
+    add_breadcrumb :reminders, :reminders_experiment_path
+
     if params[:experiment]
       params[:experiment][:reminder_hours] = 48 if params[:experiment][:reminder_hours].to_i == 0
        
@@ -168,6 +186,8 @@ class ExperimentsController < ApplicationController
   end
   
   def mail
+    add_breadcrumb @experiment, experiment_sessions_path(@experiment)
+    add_breadcrumb :mail, :mail_experiment_path
     if params[:experiment] && @experiment.update_attributes(params[:experiment])
       flash[:notice] = t('controllers.notice_saved_changes')
     end
@@ -177,7 +197,10 @@ class ExperimentsController < ApplicationController
     redirect_to :action => 'invitation'
   end
   
-  def files 
+  def files
+    add_breadcrumb @experiment, experiment_sessions_path(@experiment)
+    add_breadcrumb :files, :files_experiment_path
+
     @experiment.sessions.each do |session|
       realpath, relpath = get_valid_dir("session__#{session.id}") 
       FileUtils::mkdir(realpath) unless File.exists?(realpath)

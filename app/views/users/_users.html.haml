@@ -5,7 +5,7 @@
 
 .search    
   
-  = render :partial => 'shared/search/search', :locals => { :fields => [:fulltext, :role, :noshow_count, :participations_count, :deleted,:tags, :experiments] + CUSTOM_FIELDS.field_names_for_search}
+  = render :partial => 'shared/search/search', :locals => { :fields => [:fulltext, :role, :noshow_count, :participations_count, :deleted,:tags, :experiments, :import] + CUSTOM_FIELDS.field_names_for_search}
  
 .searchinfo
   = submit_tag t('.submit'), :name => 'submit_mode', :class => "btn btn-primary"

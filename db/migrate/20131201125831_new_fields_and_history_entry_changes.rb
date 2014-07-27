@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class NewFieldsAndHistoryEntryChanges < ActiveRecord::Migration
   def up
     add_column :session_participations, :seat_nr, :integer

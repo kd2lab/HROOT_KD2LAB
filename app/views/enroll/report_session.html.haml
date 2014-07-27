@@ -1,0 +1,38 @@
+%h3=t '.register_done'
+
+- if @session_participation
+  - s = @session_participation.session
+  
+  .alert.alert-success
+    %b= t('.success')
+  
+  %p
+    = t ('.session_overview')
+  
+  %br
+
+    %b= s.time_str
+    - if s.location
+      %br
+      = s.location.name
+            
+  %br
+  %br
+  %p
+    = t('.sent_confirmation_mail')
+    
+
+- else
+  .alert.alert-error
+    %b= t('.failure')
+  
+  = t('.failure_reason_html')
+  %br
+  %br
+  
+%br
+- sessions, groups = current_user.available_sessions
+- if sessions.size > 0 || groups.size > 0
+  = link_to t('.more_sessions'), enroll_path, :class => 'btn btn-primary'
+  
+= link_to t('.back_to_account'), account_path, :class => 'btn'
