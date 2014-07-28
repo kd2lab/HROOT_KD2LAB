@@ -189,6 +189,7 @@ en:
         secondary_email: Secondary email
         terms_and_conditions: Terms and conditions
         reset_password_token: Passwork link
+        can_create_experiment: User can create new experiments
       session:
         group_size: Group size
         start_date: Start date
@@ -715,6 +716,7 @@ en:
       noshow: No show
       participated: Participated
       not_activated: not activated after import
+      can_create_experiment: User can create new experiments
     print:
       role: Role
       study: Field of study

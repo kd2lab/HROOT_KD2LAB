@@ -151,6 +151,7 @@ de:
         secondary_email: Alternative E-Mail
         terms_and_conditions: Nutzungsbedingungen
         reset_password_token: Passwort-Link
+        can_create_experiment: User darf neue Experimente anlegen
       session:
         group_size: Gruppengröße
         start_date: Startdatum
@@ -676,6 +677,7 @@ de:
       participated: Teilgenommen
       noshow: Nicht erschienen
       not_activated: Nach Import noch nicht aktiviert
+      can_create_experiment: Dieser Nutzer darf neue Experimente anlegen
     print:
       role: Rolle
       study: Fach
