@@ -45,6 +45,9 @@
     .row
       .span10 
         %h4= t('.rights')
+
+        = f.input :can_create_experiment
+
         %table#privilege-table.table{:'data-rights' => ExperimenterAssignment.right_list.to_json, :'data-rights-label' => I18n.t(:rights_label), :'data-default-rights' => Settings.default_privileges}
           - if params[:privileges]
             - params[:privileges].each do |privilege|
