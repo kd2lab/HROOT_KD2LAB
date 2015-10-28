@@ -11,18 +11,18 @@ Hroot::Application.configure do
   # ---------- email config example 1: send emails via gmail -----------------------
 
   # send method
-  # config.action_mailer.delivery_method = :smtp
+  config.action_mailer.delivery_method = :smtp
   
   #configure action mailer - example: use gmail as mail service
-  #config.action_mailer.smtp_settings = {
-  #  :address              => "smtp.gmail.com",
-  #  :port                 => "587",
-  #  :domain               => "googlemail.com",
-  #  :user_name            => "<your_gmail_account>@googlemail.com",
-  #  :password             => "<your_password>",
-  #  :authentication       => "plain",
-  #  :enable_starttls_auto => true
-  #}
+  config.action_mailer.smtp_settings = {
+    :address              => "smtp.kit.edu",
+    :port                 => "587",
+    :domain               => "kit.edu",
+    :user_name            => "jadon.herrmann@kit.edu",
+    :password             => "3Iim!",
+    :authentication       => "plain",
+    :enable_starttls_auto => true
+  }
 
   # ---------- email config example 2: send emails via local sendmail -----------------------
 
@@ -34,18 +34,18 @@ Hroot::Application.configure do
   #}
 
   # generic mail for contact of your lab - used in some pages to inform users where to ask questions
-  config.contact_email = '<Your contact email>'
+  config.contact_email = 'jadon.herrmann@kit.edu'
 
   # this email is used by the development mail interceptor (see application.rb and lib/development_mail_interceptor.rb)
   # in all other that production mode, emails will be sent to this adress instead of the real recipient
-  config.interceptor_email = "<Your email>"
+#  config.interceptor_email = "<Your email>"
   # config.interceptor_subject_prefix = '[hroot]' # add a prefix to all intercepted mail subject
   
   # this email adress will be the default sender email
-  config.hroot_sender_email = '<Some email which acts as default sender address>'
+  config.hroot_sender_email = 'jadon.herrmann@kit.edu'
 
   # log messages will be sent this email adress
-  config.hroot_log_email = '<your email adress>'
+  config.hroot_log_email = 'jadon.herrmann@kit.edu'
   
 
   # regular expression for restriction on valid email adresses - example:
@@ -56,7 +56,7 @@ Hroot::Application.configure do
   #}
   
   # are users allowed to always edit their optional data?
-  config.users_can_edit_optional_data = false
+  config.users_can_edit_optional_data = true
   
   
   # configure uploads directory - you can put your own path here
@@ -108,8 +108,8 @@ Hroot::Application.configure do
   config.active_support.deprecation = :notify
 end
 
-# Rails.application.routes.default_url_options[:host] =  'www.yoursite.com/hroot'
-# Rails.application.routes.default_url_options[:protocol] =  'https'
+Rails.application.routes.default_url_options[:host] =  'iism-kd2-hroot.iism.kit.edu'
+Rails.application.routes.default_url_options[:protocol] =  'http'
 
 # enable exception mailing
 #Hroot::Application.config.middleware.use ExceptionNotification::Rack,
